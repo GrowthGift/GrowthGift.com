@@ -1,0 +1,19 @@
+<template name="notifications">
+  {{#if hasNotifications}}
+  {{#each notifications.messages}}
+    <div class='notifications-item list padding pointer {{status}}'>
+      <div class='flexbox padding-small-b'>
+        <div class='flex1 bold'>{{subject}}</div>
+        <div class='font-small'>{{xDisplay.timeFromNow}}</div>
+      </div>
+      <div class='flexbox'>
+        <i class='{{xDisplay.icon}} font-large margin-r'></i>
+        <div class='flex1 font-small'>{{html}}</div>
+        <i class='fa fa-chevron-right text-muted'></i>
+      </div>
+    </div>
+  {{/each}}
+  {{else}}
+  <div class='h3 center'>No alerts yet!</div>
+  {{/if}}
+</template>

@@ -1,0 +1,29 @@
+<template name="devTestTest">
+
+  test
+
+  {{#autoForm collection="AFTestCollection" doc=afTest id="afTestForm" type=afMethod meteormethod="saveTestDoc"}}
+    {{> afQuickField name="text1"}}
+    {{> afQuickField name="file1" type="file"}}
+    <!-- {{> afQuickField name="datetime1" type="datetime-local" label="datetime-local"}}
+    {{> afQuickField name="datetime2" type="datetime" label="datetime"}} -->
+    {{> afQuickField type="datetimepicker" name="datetime1" opts=optsDatetimepicker}}
+    {{> afQuickField type="datetimepicker" name="datetime2" opts=optsDatetimepickerNoTime}}
+  {{/autoForm}}
+
+  <br /><br />
+  Notifications:<br />
+  <div class='margin-b'>
+    <div class='dev-test-test-push-btn btn'>Push</div>
+  </div>
+  <div class='margin-b'>
+    <div class='dev-test-test-email-btn btn'>Email</div>
+  </div>
+  <div class='margin-b'>
+    <div class='dev-test-test-notify-notiftype1-btn btn'>Notify: notifType1</div>
+  </div>
+
+  <br /><br />
+  Mock Data:<br />
+  
+</template>

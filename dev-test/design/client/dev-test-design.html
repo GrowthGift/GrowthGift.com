@@ -1,0 +1,51 @@
+<template name="devTestDesign">
+
+  <div class='margin-xlarge-tb'>
+    <h2>buttons</h2>
+    <div class='margin'>
+      <a class='btn-link'>Link</a>
+    </div>
+    <div class='margin'>
+      <span class='btn'>Btn</span>
+      <span class='btn btn-primary'>Primary</span>
+      <span class='btn btn-warning'>Warning</span>
+      <span class='btn btn-danger'>Danger</span>
+      <span class='btn btn-success'>Success</span>
+      <!--
+      <span class='btn btn-info'>Info</span>
+      <span class='btn btn-inverse'>Inverse</span>
+      -->
+    </div>
+  </div>
+  
+  <div class='margin-xlarge-tb'>
+    <h2>typography</h2>
+    
+    <div class='margin-large-tb'>
+      <h4>font families</h4>
+      <div class=''>Normal: The quick brown fox jumped over the lazy dog..</div>
+    </div>
+    
+    <div class='margin-large-tb'>
+      <h4>font sizes</h4>
+      <div class='h1'>xxx large: The quick brown fox jumped over the lazy dog.</div>
+      <div class='h2'>xx large: The quick brown fox jumped over the lazy dog.</div>
+      <div class='h3'>x large: The quick brown fox jumped over the lazy dog.</div>
+      <div class='h4'>large: The quick brown fox jumped over the lazy dog.</div>
+      <div class='h5'>normal: The quick brown fox jumped over the lazy dog.</div>
+      <div class='h6'>small: The quick brown fox jumped over the lazy dog.</div>
+    </div>
+  </div>
+  
+  <div class='margin-xlarge-tb'>
+    <h2>colors</h2>
+    
+    {{#each colors}}
+    <div class='design-color-item margin-small-tb {{class}}'>
+      <div class='design-color-swatch'>&nbsp;</div><div class='design-color-text'>{{class}}</div>
+      <div class='design-color-color'>{{class}}</div>
+    </div>
+    {{/each}}
+  </div>
+  
+</template>

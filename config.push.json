@@ -1,0 +1,23 @@
+{
+  "apn": {
+    "passphrase": "todoseed",
+    "key": "",
+    "cert": "",
+    "gateway": "gateway.push.apple.com"
+  },
+  "apn-dev": {
+    "passphrase": "todoseed",
+    "key": "",
+    "cert": "",
+    "gateway": "gateway.sandbox.push.apple.com"
+  },
+  "gcm": {
+    "apiKey": "todoseed",
+    "projectNumber": "todoseed"
+  },
+  "production": false,
+  "badge": true,
+  "sound": false,
+  "alert": true,
+  "vibrate": true
+}

@@ -1,0 +1,77 @@
+@header-height: 50px;
+@iOS-status-height: 20px;
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+.header.header-default {
+  //background-color: @gray;
+  .background-image(linear-gradient(to right, #7d9d9a 0%,#8e959b 100%));
+  color: @white;
+}
+.header.header-blue-dark {
+  background-color: @blueDark;
+  color: @white;
+}
+.header.header-gray-dark {
+  background-color: @grayDark;
+  color: @white;
+}
+.flexbox.header-iOS {
+  padding-top: @iOS-status-height;
+}
+.header-spacer {
+  height: @header-height;   //hardcoded
+}
+.header-spacer.header-iOS {
+  height: @header-height + @iOS-status-height;   //hardcoded
+}
+
+.header-logo {
+  width: 129px;
+  height: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.header-left-btn, .header-right-btn {
+  font-size: 25px;
+}
+.header-left-btn, .header-right-btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.header-title {
+}
+.header-title-without-subtitle {
+  .font-large();
+  padding-top: 12px;
+  padding-bottom: 13px;
+}
+.header-title-with-subtitle {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+.header-btn-alert {
+  position:absolute;
+  border-radius: 20px;
+  padding: 0 5px;
+  background-color: @green;
+  color: @white;
+  .font-small;
+  left: -7px;
+  top: 0px;
+  line-height: 18px;
+}
+
+@media (min-width: 600px) {
+  .header-logo {
+    width: 161px;
+    height: 25px;
+    padding-top: 12px;
+    padding-bottom: 13px;
+  }
+}

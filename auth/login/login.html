@@ -1,0 +1,14 @@
+<template name="login">
+  <div class='login-cont padding'>
+    {{#autoForm schema="UserLoginSchema" id="loginForm" resetOnSuccess=false}}
+      {{> afQuickField name="email"}}
+      {{> afQuickField type="password" name="password"}}
+      <div class='center margin-tb'>
+        <button type="submit" class='btn btn-primary login-btn'>Login</button>
+      </div>
+    {{/autoForm}}
+    <div class='center margin-tb'>
+      <a class='white' href='/signup'>Or Sign Up</a>
+    </div>
+  </div>
+</template>

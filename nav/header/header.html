@@ -1,0 +1,38 @@
+<template name="header">
+  <header class=''>
+    <div id='header' class='header {{curNav.classes.cont}}'>
+      <div class='flexbox {{deviceType}}'>
+
+        {{#each curNav.buttons.left}}
+        <div class='pointer padding-lr header-left-btn'><i class='{{icon}}'></i></div>
+        {{/each}}
+        
+        <div class='flex1 center pointer header-title'>
+          {{#if curNav.title.logo}}
+          <div class='header-logo center-margin'>LOGO</div>
+          {{else }}
+            {{#if curNav.useSubTitle}}
+              <div class='header-title-with-subtitle'>
+                <div class='font-large'>{{curNav.title.html}}</div>
+                <div class='h6'>{{curNav.subTitle.html}}</div>
+              </div>
+            {{else }}
+              <div class='header-title-without-subtitle'>{{curNav.title.html}}</div>
+            {{/if }}
+          {{/if }}
+        </div>
+        
+        {{#each curNav.buttons.right}}
+          {{#if icon}}
+          <div class='pointer padding-lr header-right-btn'><i class='{{icon}}'></i></div>
+          {{else}}
+          <div class='pointer padding-lr header-right-btn'>{{{html}}}</div>
+          {{/if}}
+        {{/each}}
+        
+      </div>
+    </div>
+    <div class='header-spacer {{deviceType}}'>&nbsp;</div>
+  </header>
+  {{> navMenu}}
+</template>

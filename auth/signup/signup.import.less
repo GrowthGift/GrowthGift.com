@@ -1,0 +1,32 @@
+.signup-cont {
+  color: @white;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.layout-body.layout-signup {
+  position: relative;
+}
+//http://css-tricks.com/snippets/css/transparent-background-images/
+.layout-body.layout-signup::after {
+  content: "";
+  //background-image: url("@{pathImgBg}/todoseed.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.9;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.header.header-signup {
+  background-color: @bgBlueGreenTransparent;
+  color: @white;
+}
+.layout-content.layout-signup {
+  background-color: @bgBlueGreenTransparent;
+}

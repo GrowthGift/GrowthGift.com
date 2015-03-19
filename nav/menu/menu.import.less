@@ -1,0 +1,46 @@
+.side-menu {
+  background-color: @blueDark;
+  color: @white;
+  position: fixed;
+  overflow-y: auto;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  //max-width:320px;
+  //min-width: 160px;
+  width: 240px;
+  z-index: 10001;
+  padding-top: 25px;
+}
+.gray-overlay {
+  background-color: @grayOverlay;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 10000;
+}
+.nav-menu-item{
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 30px;
+  padding-right: 10px;
+}
+
+.nav-menu-alert {
+  position:absolute;
+  border-radius: 20px;
+  padding: 0 5px;
+  background-color: @green;
+  color: @white;
+  .font-small;
+  left: -38px;
+  top: -3px;
+  line-height: 18px;
+}
+
+.nav-menu-item-icon {
+  width: 25px;
+  text-align: center;
+}

@@ -1,0 +1,37 @@
+<template name="navMenu">
+  <div class='menu {{contentVisibility}}'>
+    <div class='gray-overlay'> </div>
+    <div class='side-menu'>
+      {{#unless loggedIn}}
+        {{#each menuLoggedOut}}
+          {{> navMenuItem}}
+        {{/each}}
+      {{else}}
+        {{#if userName}}
+          <div class = 'padding-tb nav-menu-item bold'>
+            {{userName}}
+          </div>
+        {{/if}}
+        {{#each menu}}
+          {{> navMenuItem}}
+        {{/each}}
+        
+        {{#with menuItemLogout}}
+          {{> navMenuItem}}
+        {{/with}}
+        
+      {{/unless}}
+      <div class='padding-tb nav-menu-item font-small'>
+        {{appVersion}}
+      </div>
+    </div>
+
+  </div>
+  
+</template>
+
+<template name='navMenuItem'>
+  <div class = 'padding-tb pointer nav-menu-item'>
+    <i class='{{icon}} inline-block nav-menu-item-icon'></i><div class='padding-l inline-block'>{{{title}}}</div>
+  </div>
+</template>

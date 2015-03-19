@@ -1,0 +1,80 @@
+{
+  "__comment": "use camelCase for all field names, NOT underscores and lowercase!",
+  "__comment2": "keep the 'users' collection as slim as possible - all apps should have similar 'users' collections and then add NEW collections with 'users' or 'userId' (if singular) as fields within that collection to link the user to the new collection, rather than the other way around.",
+  "users": {
+    "_id": "{String} bbca5d6a-2156-41c4-89da-0329e8c99a4f",
+    "username": "{String} cool_kid_13",
+    "emails": [
+      {
+        "address": "{String} cool@example.com",
+        "verified": "{Boolean} true"
+      }
+    ],
+    "createdAt": "{String} Wed Aug 21 2013 15:16:52 GMT-0700 (PDT)",
+    "profile": {
+      "name": "{String} Joe Schmoe"
+    },
+    "services": {
+      "facebook": {
+        "id": "{String} 709050",
+        "accessToken": "{String} AAACCgdX7G2...AbV9AZDZD"
+      },
+      "resume": {
+        "loginTokens": [
+          {
+            "token": "{String} 97e8c205-c7e4-47c9-9bea-8e2ccc0694cd",
+            "when": "{Number} 1349761684048"
+          }
+        ]
+      }
+    },
+    "photos": [
+      {
+        "photoUrl": "{String}",
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "title": "{String}"
+      }
+    ]
+  },
+  "notifications": {
+    "_id": "{String}",
+    "userId": "{String}",
+    "settings": {
+      "enabled": {
+        "inApp": "{Number} 1 to recieve in app notifications",
+        "email": "{Number} 1 to receive email notifications",
+        "sms": "{Number} 1 to receive sms (text) notifications",
+        "push": "{Number} 1 to receive push notifications",
+        "__comment": "This is the MASTER override - if off, nothing else below matters"
+      },
+      "all": {
+        "inApp": "{Number} 1 to recieve in app notifications",
+        "email": "{Number} 1 to receive email notifications",
+        "sms": "{Number} 1 to receive sms (text) notifications",
+        "push": "{Number} 1 to receive push notifications"
+      },
+      "type": {
+        "todoseed": {
+          "inApp": "{Number} 1 to recieve in app notifications",
+          "email": "{Number} 1 to receive email notifications",
+          "sms": "{Number} 1 to receive sms (text) notifications",
+          "push": "{Number} 1 to receive push notifications",
+          "__comment": "The below fields/keys ALSO have the same keys as here, they are just omitted for brevity"
+        },
+        "todoseed2": {}
+      }
+    },
+    "messages": [
+      {
+        "_id":"{String} 123l4k234l",
+        "status": "{String} one of: 'archived', 'read', 'unread'",
+        "subject": "{String} my message",
+        "html": "{String} a bunch of text here",
+        "notificationType": "{String} The notification type - should match a key in the settings above, i.e. 'todoseed'",
+        "linkUrlPart": "{String} eg. event-view?id=...&page=...",
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+      }
+    ],
+    "notificationCount": "{Number} Nearly derived field for number of messages above that are unread. BUT gets reset to 0 each time they view notifications, even if they still have unread messages. So basically, each time user gets a new unread message (in app notification), increment this counter and each time they view notifications, set it to 0."
+  }
+}
