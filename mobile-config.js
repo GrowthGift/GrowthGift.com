@@ -1,11 +1,19 @@
-App.info({
-  name: 'todoseed',
-  // description: 'A recipe sharing app made in Meteor.',
-  // author: 'Percolate Studio Team',
-  // email: 'us@percolatestudio.com',
-  // website: '',
-  version: '0.0.1'
-});
+if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.process.env.ENV ==='prod') {
+  App.info({
+    name: 'todoseed',
+    // description: 'A recipe sharing app made in Meteor.',
+    // author: 'Percolate Studio Team',
+    // email: 'us@percolatestudio.com',
+    // website: '',
+    version: '0.0.1'
+  });
+}
+else {
+  App.info({
+    name: 'todoseeddev',
+    version: '0.0.1'
+  });
+}
 
 App.icons({
   // iOS
