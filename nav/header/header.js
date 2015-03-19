@@ -71,6 +71,11 @@ if(Meteor.isClient){
   navConfig.notifications.url = 'notifications';
   navConfig.notifications.title.html ='Alerts';
 
+  //allow access to root path / home page without being logged in - simply comment out this section to redirect to login page
+  navConfig.home =EJSON.clone(navDefault);
+  navConfig.home.url ='';
+  navConfig.home.auth ={};
+
   Session.set('navUpdated', false);
 
   //set default
