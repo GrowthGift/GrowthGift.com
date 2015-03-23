@@ -53,6 +53,10 @@ if(Meteor.isClient){
   navConfig.devtestdesign.url ='dev-test-design';
   navConfig.devtestdesign.auth ={};
 
+  navConfig.devtesttest =EJSON.clone(navDefault);
+  navConfig.devtesttest.url ='dev-test-test';
+  navConfig.devtesttest.auth ={};
+
   navConfig.login =EJSON.clone(navDefault);
   navConfig.login.url ='login';
   navConfig.login.classes.cont ='header-login';

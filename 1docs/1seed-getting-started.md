@@ -2,10 +2,11 @@
 
 This placeholder project has been made to quickly build new Meteor apps with some common functionality built in from the start. The list below is the custom stuff you'll still need to do (mostly app specific configuration stuff). Eventually we could turn this into a Yeoman generator with prompts that do this for you.
 
-- copy & paste all the files & folders from this seed repo/project into your project
+- file / folder setup
   - remove default Meteor created files/folders from `meteor create APPNAME`
     - APPNAME.css, APPNAME.js, APPNAME.html
-  - `git init .`
+  - copy & paste all the files & folders from this seed repo/project into your project EXCEPT:
+    - `.git` folder
 - update packages:
   - uninstall (either manually edit/delete from `.meteor/packages` or use `meteor remove` from command line)
     autopublish
@@ -33,6 +34,7 @@ This placeholder project has been made to quickly build new Meteor apps with som
 
     notorii:autoform-datetimepicker
 - search for and update all `todoseed` items in code (should be self explanatory)
+- `git init .`
 - [OPTIONAL] add custom fonts in `public/font` and reference them in `client/less/fonts.import.less`
 - [LATER - only needed for mobile iOS push notifications] add .pem files for iOS push notifications in `private` folder and then reference them in `config.push.json` file
 - [LATER - only needed for mobile Cordova app builds] change mobile app assets in `public/app-assets` folder
