@@ -7,11 +7,16 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        Accounts.resetPassword(Router.current().params.query.token, insertDoc.password, function(err) {
+        var token =Router.current().params.query.token;
+        //look up the user now (before reset token is cleared) in case want to auto login the user after successful reset or do other processing after (re)set.
+        var user =Meteor.users.findOne({"services.password.reset.token": token }, {fields: {profile:1, emails:1}});
+
+        Accounts.resetPassword(token, insertDoc.password, function(err) {
           if(err) {
             alert("Oops there was an error: "+err);
           }
           else {
+            //successful password (re)set - go to login (or could auto login the user here now)
             Router.go('login');
           }
         });
@@ -46,5 +51,11 @@ if(Meteor.isClient) {
         return 'Reset Password';
       }
     }
+  });
+}
+
+if(Meteor.isServer) {
+  Meteor.publish('reset-password-user', function(token) {
+    return Meteor.users.find({"services.password.reset.token": token }, {});
   });
 }
