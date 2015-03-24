@@ -29,4 +29,17 @@ if(Meteor.isClient) {
       }
     }
   });
+
+  Template.login.events({
+    'click .login-forgot-password-btn': function(evt, template) {
+      var email =document.getElementById('loginForm').elements['email'].value;    //hardcoded
+      if(email && email.length >1) {
+        Accounts.forgotPassword({email:email});
+        alert('Check your email at '+email+' to reset your password');
+      }
+      else {
+        alert('Please enter a valid email');
+      }
+    }
+  });
 }

@@ -70,6 +70,13 @@ if(Meteor.isClient){
   navConfig.signup.layoutClasses.cont ='layout-signup';
   navConfig.signup.layoutClasses.contBody ='layout-signup';
   navConfig.signup.auth ={};
+  
+  navConfig.resetpassword =EJSON.clone(navDefault);
+  navConfig.resetpassword.url ='reset-password';
+  navConfig.resetpassword.classes.cont ='header-login';
+  navConfig.resetpassword.layoutClasses.cont ='layout-login';
+  navConfig.resetpassword.layoutClasses.contBody ='layout-login';
+  navConfig.resetpassword.auth ={};
 
   navConfig.notifications =EJSON.clone(navDefault);
   navConfig.notifications.url = 'notifications';

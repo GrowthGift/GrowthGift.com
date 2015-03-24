@@ -26,6 +26,7 @@ This placeholder project has been made to quickly build new Meteor apps with som
     nrane9:array1
     lukemadera:config
     lukemadera:auth
+    lukemadera:accounts-password
     lukemadera:notify
     lukemadera:mocks
 
