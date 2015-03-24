@@ -163,6 +163,15 @@ if(Meteor.isClient) {
     },
     'click .dev-test-test-notify-notiftype1-btn': function(evt, template) {
       Meteor.call("devTestTestNotify", {type: 'devTest'});
+    },
+    'click .dev-test-test-signup-user-btn': function(evt, template) {
+      var userData ={
+        email: document.getElementById('dev-test-test-signup-user-email').value,    //hardcoded
+        profile: {
+          name: 'Test '+(Math.random() + 1).toString(36).substring(7)
+        }
+      };
+      Meteor.call("lmAccountsPasswordSignupUser", userData, {});
     }
   });
 }

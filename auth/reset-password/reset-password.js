@@ -21,4 +21,30 @@ if(Meteor.isClient) {
       }
     }
   });
+
+  Template.resetPassword.helpers({
+    passwordLabel: function() {
+      if(!this.token) {
+        alert("Invalid url - must have a token");
+        Router.go('login');
+      }
+      
+      var curUrl =Iron.Location.get().pathname;
+      if(curUrl ==='/enroll-account') {
+        return 'Password';
+      }
+      else {
+        return 'New Password';
+      }
+    },
+    btnTextResetPassword: function() {
+      var curUrl =Iron.Location.get().pathname;
+      if(curUrl ==='/enroll-account') {
+        return 'Set Password';
+      }
+      else {
+        return 'Reset Password';
+      }
+    }
+  });
 }
