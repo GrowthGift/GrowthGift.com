@@ -1,30 +1,29 @@
 Config ={};
 Config.ENV =false;
 
-//http://stackoverflow.com/questions/14184643/detecting-environment-with-meteor-js
-Meteor.methods({
-  getEnvironment: function() {
+Config.init =function(params) {
+  if(Meteor.isServer) {
     var env ='dev';   //DEFAULT
-    if(Meteor.isServer) {
-      if(process.env !==undefined && process.env.ENV !==undefined) {
-        env =process.env.ENV;
-      }
-      else if(Meteor.settings !==undefined && Meteor.settings.env !==undefined) {
-        env =Meteor.settings.env;
-      }
-      Config.ENV =env;
-      console.log('Config.ENV: '+Config.ENV);
+    if(process.env !==undefined && process.env.ENV !==undefined) {
+      env =process.env.ENV;
     }
-    return env;
-  }
-});
-
-if(Meteor.isClient) {
-  Meteor.call("getEnvironment", function(err, result) {
-    Config.ENV =result;
+    else if(Meteor.settings !==undefined && Meteor.settings.public !==undefined && Meteor.settings.public.env !==undefined) {
+      env =Meteor.settings.public.env;
+    }
+    Config.ENV =env;
     console.log('Config.ENV: '+Config.ENV);
-  });
-}
+  }
+  if(Meteor.isClient) {
+    var env ='dev';   //DEFAULT
+    if(Meteor.settings !==undefined && Meteor.settings.public !==undefined && Meteor.settings.public.env !==undefined) {
+      env =Meteor.settings.public.env;
+    }
+    Config.ENV =env;
+    console.log('Config.ENV: '+Config.ENV); 
+  }
+};
+
+Config.init({});
 
 Config.appInfo =function(params) {
   var ret ={

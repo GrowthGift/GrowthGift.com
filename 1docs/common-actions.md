@@ -5,6 +5,9 @@ APPNAME appName
 APPNAMEDEV appNameDev
 
 1. Deploy to server:
+  - prod non meteor: `npm run prod`
+    - TODO: un-hardcoded meteor settings from METEOR_SETTINGS variable
+    - TODO: un-hardcode other things too?
   - prod: `meteor deploy APPNAME.meteor.com --settings=settings-prod.json`
   - dev: `meteor deploy APPNAMEDEV.meteor.com`
 2.  package/build for mobile

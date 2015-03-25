@@ -21,4 +21,4 @@ If needed, use `Config.ENV` (available in both client and server) to determine w
   - `ENV=prod meteor`
 - OR use the Meteor settings, which is the only way to do it for deploying to *.meteor.com:
   - `meteor --settings=settings-prod.json`
-  - and then in `settings-prod.json` add an `env` key
+  - and then in `settings-prod.json` add an `env` key inside the `public` object
