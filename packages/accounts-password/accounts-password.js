@@ -9,7 +9,7 @@ Meteor.methods({
 if(Meteor.isServer) {
   AccountsPassword.initServer =function(params) {
     var configEmail =Config.email();
-    Accounts.emailTemplates.from =configEmail.addresses.contact.email;
+    Accounts.emailTemplates.from =configEmail.addresses.contact.name+" <"+configEmail.addresses.contact.email+">";
     Accounts.emailTemplates.siteName =Config.appInfo().name;
 
     //reset password
