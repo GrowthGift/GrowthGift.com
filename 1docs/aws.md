@@ -20,3 +20,10 @@
   - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/managing-users.html
   - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#retrieving-the-public-key
 - set up linux ubuntu server as normal / as needed
+
+
+## Domain Names
+
+- point the A record at your domain registrar (i.e. GoDaddy) to your Amazon (Elastic) IP address
+  - can optionally lower the TTL first and wait a period of time equal to the original TTL to make the change and this will make it much faster to propagate. Then once the propagation is done, re-raise the TTL for better caching / performance.
+    - http://kb.mediatemple.net/questions/908/Understanding+TTL+(time-to-live)
