@@ -99,3 +99,5 @@ Package code looks very similar to a node.js module/file. Create an object, add 
   - https://dweldon.silvrback.com/common-mistakes
   - http://stackoverflow.com/questions/26398952/meteor-publish-publish-collection-which-depends-on-other-collection
   - https://www.discovermeteor.com/blog/reactive-joins-in-meteor/
+- Return values from a Meteor.call() on the client side:
+  - http://stackoverflow.com/questions/10677491/how-to-get-meteor-call-to-return-value-for-template
