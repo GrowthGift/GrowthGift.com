@@ -3,6 +3,9 @@ AccountsPassword ={};
 Meteor.methods({
   lmAccountsPasswordSignupUser: function(userData, type, params) {
     return AccountsPassword.signupUser(userData, type, params);
+  },
+  lmAccountsPasswordResendEnrollmentEmail: function(userData, type, params) {
+    return AccountsPassword.resendEnrollmentEmail(userData, type, params);
   }
 });
 
@@ -95,6 +98,7 @@ if(Meteor.isServer) {
   @param {Object} [emailParams] Params that are passed through to setEnrollAccountEmail [see there for documentation]
 */
 AccountsPassword.signupUser =function(userData, type, params) {
+  var ret ={};
   if(Meteor.isServer) {
     if(params ===undefined) {
       params ={};
@@ -104,10 +108,35 @@ AccountsPassword.signupUser =function(userData, type, params) {
     // }
 
     var userId =Accounts.createUser(userData);
+    ret.userId =userId;
     //if no password, send email to have user set password
     if(userData.password ===undefined) {
       this.setEnrollAccountEmail(type, params.emailParams);
       Accounts.sendEnrollmentEmail(userId);
+      console.log("AccountsPassword.signupUser enrollment email sent to: "+userId+" "+userData.email);
     }
   }
+  return ret;
+};
+
+/**
+@param {Object} userData The data to create a new user with
+  @param {String} _id
+@param {String} [type ='default'] One of 'default', 'loanOfficer', 'borrower'
+@param {Object} [params]
+  @param {Object} [emailParams] Params that are passed through to setEnrollAccountEmail [see there for documentation]
+*/
+AccountsPassword.resendEnrollmentEmail =function(userData, type, params) {
+  var ret ={};
+  if(Meteor.isServer) {
+    if(params ===undefined) {
+      params ={};
+    }
+    
+    var userId =userData._id;
+    this.setEnrollAccountEmail(type, params.emailParams);
+    Accounts.sendEnrollmentEmail(userId);
+    console.log("AccountsPassword.resendEnrollmentEmail enrollment email sent to: "+userId);
+  }
+  return ret;
 };

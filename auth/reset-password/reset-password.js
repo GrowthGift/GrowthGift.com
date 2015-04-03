@@ -27,6 +27,16 @@ if(Meteor.isClient) {
     }
   });
 
+  Template.resetPassword.rendered =function() {
+    if(Meteor.userId()) {
+      Meteor.logout(function(err) {
+        if(err) {
+          alert(err);
+        }
+      });
+    }
+  };
+
   Template.resetPassword.helpers({
     passwordLabel: function() {
       if(!this.token) {
