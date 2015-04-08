@@ -1,4 +1,10 @@
 if(Meteor.isClient) {
+  Template.signup.rendered = function(){
+    if (Meteor.user()){
+      console.log("Already Logged In. Redirecting ...");
+      Router.go('home');
+    }
+  }
   AutoForm.hooks({
     signupForm: {
       onSubmit: function(insertDoc, updateDoc, currentDoc) {
