@@ -12,7 +12,7 @@ Config.email =function(params) {
         "email": "contact@"+emailDomain
       },
       "notify": {
-        "name": appName+" Notifcation",
+        "name": appName+" Notification",
         "email": "notify@"+emailDomain
       }
     },
