@@ -5,7 +5,7 @@ APPNAME appName
 APPNAMEDEV appNameDev
 
 1. Deploy to server:
-  - prod non meteor: `npm run prod`
+  - prod non meteor: `npm run prod` OR for Windows: `npm run prodWin`
     - NOTE: the FIRST time you'll have to do `chmod 400 1credentials/todoseed.pem` to set the permissions for ssh into the server
     - NOTE: apparently the `meteor build` tarball file name can not be set and it will just take the directory name so you MUST name your project folder `todoseed`
     - TODO: un-hardcoded meteor settings from METEOR_SETTINGS variable
