@@ -2,11 +2,15 @@
 
 This placeholder project has been made to quickly build new Meteor apps with some common functionality built in from the start. The list below is the custom stuff you'll still need to do (mostly app specific configuration stuff). Eventually we could turn this into a Yeoman generator with prompts that do this for you.
 
-- file / folder setup
-  - remove default Meteor created files/folders from `meteor create APPNAME`
-    - APPNAME.css, APPNAME.js, APPNAME.html
-  - copy & paste all the files & folders from this seed repo/project into your project EXCEPT:
-    - `.git` folder
+GIT_CLONE_URL   git@github.com:notorii/meteor-seed.git
+* note can also use HTTPS clone url
+
+APP_NAME todoseed
+
+
+- clone repo
+    - `git clone GIT_CLONE_URL --origin seed APP_NAME`
+
 - update packages:
   - uninstall (either manually edit/delete from `.meteor/packages` or use `meteor remove` from command line)
 
