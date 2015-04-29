@@ -28,3 +28,4 @@ http
 percolate:synced-cron
 
 notorii:autoform-datetimepicker
+notorii:array
