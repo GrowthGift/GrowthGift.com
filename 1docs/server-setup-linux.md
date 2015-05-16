@@ -2,15 +2,19 @@
 
 ## Ubuntu
 
+USERNAME lmadera
+
 - [as root user] add users and give sudo privileges
-  - `adduser lmadera`
-  - `adduser lmadera sudo`
+  - `adduser USERNAME`
+  - `adduser USERNAME sudo`
   - log out then re-login as this new user
 - `sudo apt-get update`
 - install git: `sudo apt-get install git-core`
 - install node.js
   - https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
     - scroll down to the 'Ubuntu' section and follow the instructions / commands there
+  - may need `make` command for npm install so install:
+    - `sudo apt-get install build-essential`
 - install global npm modules
   - `sudo npm install -g forever`
 - set password-less sudo

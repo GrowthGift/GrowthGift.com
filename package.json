@@ -1,7 +1,7 @@
 {
   "name": "todoseed",
   "scripts": {
-    "prod": "ENV=prod meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp -i 1credentials/todoseed.pem 1build/todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh -i 1credentials/todoseed.pem lmadera@todoseed"
-    "prodWin": "SET ENV=prod && meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp -i 1credentials\\todoseed.pem 1build\\todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh -i 1credentials\\todoseed.pem lmadera@todoseed && SET ENV="
+    "prod": "ENV=prod meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build/todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed"
+    "prodWin": "SET ENV=prod && meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build\\todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed && SET ENV="
   }
 }
