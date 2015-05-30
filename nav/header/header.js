@@ -124,7 +124,7 @@ if(Meteor.isClient){
     }
 
     //add any alerts / notifications
-    var index1 =nrArray.findArrayIndex(ret.curNav.buttons.right, 'id', 'menu', {});
+    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons.right, 'id', 'menu', {});
     if(index1 >-1) {
       var custom =false;
       if(Meteor.user()) {

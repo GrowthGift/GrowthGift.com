@@ -52,7 +52,7 @@ if (Meteor.isClient){
 
       var index1;
       //add any alerts / notifications
-      index1 =nrArray.findArrayIndex(menuItemsLocal, 'routeTo', 'notifications', {});
+      index1 =notoriiArray.findArrayIndex(menuItemsLocal, 'routeTo', 'notifications', {});
       var custom =false;
       if(Meteor.user()) {
         var notification =lmNotify.readNotifications(Meteor.userId(), {});

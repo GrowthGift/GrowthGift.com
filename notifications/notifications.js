@@ -23,7 +23,7 @@ if(Meteor.isClient) {
     }
 
     //sort by message created time
-    messages =nrArray.sort2D(messages, 'createdAt', {order:'desc'});
+    messages =notoriiArray.sort2D(messages, 'createdAt', {order:'desc'});
 
     return messages;
   }
