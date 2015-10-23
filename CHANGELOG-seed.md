@@ -1,5 +1,11 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 0.0.5 (2015-10-23)
+
+## Features
+- upgrade to meteor 1.2 and LESS 2.5
+- remove bower and instead use fontawesome meteor package and manually include pikaday, lesshat, and flexbox (since less 2.5 requires 'import' in the file or folder name to work)
+
 
 # 0.0.4 (2015-05-29)
 
