@@ -18,6 +18,6 @@ APP_NAME todoseed
 ### Adding to an existing app
 
 You can add the seed as a remote to an existing app as well. You'll have to manually handle any merge conflicts the first time but after that can pull down updates as before!
-`git add remote seed GIT_REMOTE_URL`
+`git remote add seed GIT_REMOTE_URL`
 `git checkout -b seed`
 `git pull seed master`
