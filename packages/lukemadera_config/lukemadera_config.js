@@ -27,11 +27,11 @@ Config.init({});
 
 Config.appInfo =function(params) {
   var ret ={
-    name: 'todoseedDev',
+    name: 'Growth Gift',
     version: '0.0.1'
   };
   if(Config.ENV ==='prod') {
-    ret.name ='todoseed';
+    ret.name ='Growth Gift';
   }
   return ret;
 };

@@ -1,9 +1,9 @@
 Config.email =function(params) {
-  var appName ='todoseedDev';
-  var emailDomain ='todoseeddev.meteor.com';
+  var appName ='GrowthGift';
+  var emailDomain ='growthgiftdev.meteor.com';
   if(Config.ENV ==='prod') {
-    appName ='todoseed';
-    emailDomain ='todoseed.meteor.com';
+    appName ='GrowthGift';
+    emailDomain ='growthgift.com';
   }
   var ret ={
     "addresses": {

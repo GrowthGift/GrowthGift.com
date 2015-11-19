@@ -73,8 +73,9 @@ App.setPreference('StatusBarBackgroundColor', '#8E9599');
 //meteor local is supposed to be auto included but was not?
 App.accessRule('http://meteor.local/*');
 //environment specific (dev, prod) domains
-App.accessRule('http://todoseeddev.meteor.com/*');
-App.accessRule('http://todoseed.meteor.com/*');
+App.accessRule('http://growthgift.meteor.com/*');
+App.accessRule('http://growthgift.com/*');
+App.accessRule('http://gr0.co/*');
 //google maps, places
 // App.accessRule('https://maps.googleapis.com/*');
 // App.accessRule('https://maps.gstatic.com/*');
