@@ -6,7 +6,7 @@ Meteor.startup(function() {
     // Config.stripe({});
 
     // Just redirect to the blog for now
-    window.location.href ='https://blog.growthgift.com';
+    // window.location.href ='https://blog.growthgift.com';
   }
 
   if(Meteor.isServer) {

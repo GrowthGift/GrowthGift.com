@@ -25,20 +25,29 @@ if(Meteor.isClient){
     buttons: {
       left: [
         {
-          icon: 'fa fa-chevron-left',
+          icon: 'fa fa-book',
+          html: 'Journal',
           click: function() {
-            history.back();
+            Router.go('journal')
           }
-        }
-      ],
-      right: [
+        },
         {
-          icon: 'fa fa-bars',
+          icon: 'fa fa-magic',
+          html: 'Gifts',
+          click: function() {
+            Router.go('gifts')
+          }
+        },
+        {
+          icon: 'fa fa-user',
+          html: 'Profile',
           id: 'menu',
           click: function() {
             Session.set('navMenuVisible', true);
           }
         }
+      ],
+      right: [
       ]
     },
     auth: {
@@ -187,6 +196,11 @@ if(Meteor.isClient){
   });
 
   Template.header.events({
+    'click .header-btn': function(evt, template) {
+      if(this.click !==undefined) {
+        this.click();
+      }
+    },
     'click .header-left-btn': function(evt, template) {
       if(this.click !==undefined) {
         this.click();
