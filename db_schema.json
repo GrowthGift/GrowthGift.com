@@ -76,5 +76,48 @@
       }
     ],
     "notificationCount": "{Number} Nearly derived field for number of messages above that are unread. BUT gets reset to 0 each time they view notifications, even if they still have unread messages. So basically, each time user gets a new unread message (in app notification), increment this counter and each time they view notifications, set it to 0."
+  },
+  "journalEntries": {
+    "_id": "{String}",
+    "userId": "{String}",
+    "type": "{String} one of 'giving', 'growth', 'gratitude'",
+    "title": "{String}",
+    "text": "{String}",
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "gifts": {
+    "_id": "{String}",
+    "name": "{String}",
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "userGifts": {
+    "_id": "{String}",
+    "userId": "{String}",
+    "giftId": "{String}",
+    "grow": {
+      "motivation": "{Number} 0 - 100",
+      "story": "{String}",
+      "nextSteps": [
+        {
+          "giftId": "{String}"
+        }
+      ]
+    },
+    "give": {
+      "motivation": "{Number} 0 - 100",
+      "story": "{String}",
+      "nextSteps": [
+        {
+          "giftId": "{String}"
+        }
+      ]
+    },
+    "level": {
+      "score": "{Number} 0 - 100",
+      "story": "{String}"
+    },
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
   }
 }
