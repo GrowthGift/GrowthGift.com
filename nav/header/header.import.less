@@ -6,10 +6,11 @@
   top: 0;
   width: 100%;
   z-index: 9999;
+  border-bottom: solid 1px @white;
 }
 .header.header-default {
-  //background-color: @gray;
-  .background-image(linear-gradient(to right, #7d9d9a 0%,#8e959b 100%));
+  background-color: @greenDark;
+  //.background-image(linear-gradient(to right, @greenDark 0%, @green 100%));
   color: @white;
 }
 .flexbox.header-iOS {
@@ -25,7 +26,7 @@
 .header-btn {
   text-align: center;
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
 }
 .header-btn:not(:first-child) {
   border-left: solid 1px @white;

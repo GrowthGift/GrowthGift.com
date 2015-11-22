@@ -1,11 +1,11 @@
 Template.devTestDesign.helpers({
   colors: [
     //{'class':'blue'},
-    {'class':'blueDark'},
+    {'class':'greenDark'},
     {'class':'green'},
-    //{'class':'red'},
+    {'class':'red'},
     //{'class':'yellow'},
-    //{'class':'orange'},
+    {'class':'orange'},
     //{'class':'pink'},
     //{'class':'purple'},
     {'class':'warningText'},
