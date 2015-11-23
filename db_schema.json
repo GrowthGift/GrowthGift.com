@@ -102,7 +102,8 @@
         {
           "giftId": "{String}"
         }
-      ]
+      ],
+      "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
     },
     "give": {
       "motivation": "{Number} 0 - 100",
@@ -111,13 +112,14 @@
         {
           "giftId": "{String}"
         }
-      ]
+      ],
+      "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
     },
     "level": {
       "score": "{Number} 0 - 100",
-      "story": "{String}"
+      "story": "{String}",
+      "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
     },
-    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
-    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
   }
 }
