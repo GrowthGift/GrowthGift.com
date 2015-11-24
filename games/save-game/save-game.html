@@ -1,0 +1,10 @@
+<template name="saveGame">
+
+  {{#autoForm collection="GamesCollection" doc=game id="saveGameForm" type=afMethod meteormethod="saveGame"}}
+    {{> afQuickField type="googleplace" name="addresses.0" label=false placeholder="Enter the Property Address" opts=optsGoogleplace }}
+    {{> afQuickField type="googleplace" name="addresses.1" label=false placeholder="Enter the Property Address" opts=optsGoogleplace2 }}
+    {{> afQuickField type="text" name="textOne" placeholder="Some text" }}
+    <div class='btn btn-info save-game-cancel'>Cancel</div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  {{/autoForm}}
+</template>
