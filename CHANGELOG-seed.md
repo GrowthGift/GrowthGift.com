@@ -1,5 +1,11 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.0.0 (2015-11-23)
+
+## Features
+- switch less-flexbox default to flex-basis 0 instead of auto (may be a stylistic breaking change)
+
+
 # 0.0.5 (2015-10-23)
 
 ## Features
