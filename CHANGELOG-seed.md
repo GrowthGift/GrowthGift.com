@@ -1,5 +1,11 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.0.1 (2015-11-24)
+
+## Features
+- move simple-schema collections to bottom of file so can attach schema
+
+
 # 1.0.0 (2015-11-23)
 
 ## Features
