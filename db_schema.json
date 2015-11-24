@@ -77,12 +77,67 @@
     ],
     "notificationCount": "{Number} Nearly derived field for number of messages above that are unread. BUT gets reset to 0 each time they view notifications, even if they still have unread messages. So basically, each time user gets a new unread message (in app notification), increment this counter and each time they view notifications, set it to 0."
   },
-  "journalEntries": {
+  "gameTemplates": {
     "_id": "{String}",
-    "userId": "{String}",
+    "creator": "{String} userId",
     "type": "{String} one of 'giving', 'growth', 'gratitude'",
     "title": "{String}",
-    "text": "{String}",
+    "description": "{String}",
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "games": {
+    "_id": "{String}",
+    "gameTemplateId": "{String} link to 'gameTemplates._id'",
+    "dailyTimeCommitment": "{Number} average minutes per day",
+    "frequency": "{Number} How often an action is due. 1 would be daily, 2 would be every other day, 3 would be every 3rd day, etc.",
+    "privacy": "{String} One of 'public', 'private'",
+    "start": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "end": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "users": [
+      {
+        "userId": "{String}",
+        "status": "{String} one of: 'invited', 'joined', 'declined', 'requested'",
+        "role": "{String} One of 'creator', 'admin'"
+      }
+    ],
+    "groups": [
+      {
+        "groupId": "{String} link to 'group._id'",
+        "status": "{String} one of: 'invited', 'joined', 'declined', 'requested'",
+        "__comment": "group score will be calculated by sum of all users' scores who are in this group. If a user happens to be in multiple groups, his score will count for both."
+      }
+    ],
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "userGames": {
+    "_id": "{String}",
+    "gameId": "{String} link to 'games._id'",
+    "actions": [
+      {
+        "status": "{String} One of 'completed', 'missed'",
+        "title": "{String} Similar to the journal, this is the entry title",
+        "text": "{String} This is the entry text / notes",
+        "privacy": "{String} One of 'public', 'private'",
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+      }
+    ],
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "groups": {
+    "_id": "{String}",
+    "name": "{String}",
+    "description": "{String}",
+    "privacy": "{String} One of 'public', 'private'",
+    "users": [
+      {
+        "userId": "{String}",
+        "status": "{String} one of: 'invited', 'joined', 'declined', 'requested'",
+        "role": "{String} One of 'creator', 'admin'"
+      }
+    ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
     "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
   },

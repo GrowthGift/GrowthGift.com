@@ -25,19 +25,33 @@ if(Meteor.isClient){
     buttons: {
       left: [
         {
-          icon: 'fa fa-book',
-          html: 'Journal',
+          icon: 'fa fa-cube',
+          html: 'My Games',
           click: function() {
-            Router.go('journal')
+            Router.go('my-games')
           }
         },
         {
-          icon: 'fa fa-magic',
-          html: 'Gifts',
+          icon: 'fa fa-cubes',
+          html: 'All Games',
           click: function() {
-            Router.go('gifts')
+            Router.go('games')
           }
         },
+        // {
+        //   icon: 'fa fa-magic',
+        //   html: 'My Gifts',
+        //   click: function() {
+        //     Router.go('my-gifts')
+        //   }
+        // },
+        // {
+        //   icon: 'fa fa-magic',
+        //   html: 'All Gifts',
+        //   click: function() {
+        //     Router.go('gifts')
+        //   }
+        // },
         {
           icon: 'fa fa-user',
           html: 'Profile',
