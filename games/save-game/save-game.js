@@ -41,12 +41,24 @@ if(Meteor.isClient) {
       else {
         return 'method';
       }
+    },
+    optsDatetimepicker: function() {
+      return {
+      }
     }
   });
 
   Template.saveGame.events({
     'click .save-game-cancel': function(evt, template) {
       history.back();
+    },
+    'blur .save-game-input-slug': function(evt, template) {
+      console.log(AutoForm.getFieldValue('title', 'saveGameForm'),
+        AutoForm.getFieldValue('slug', 'saveGameForm'))
+    },
+    'blur .save-game-input-title': function(evt, template) {
+      console.log(AutoForm.getFieldValue('title', 'saveGameForm'),
+        AutoForm.getFieldValue('slug', 'saveGameForm'))
     }
   });
 }

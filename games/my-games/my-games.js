@@ -19,6 +19,7 @@ if(Meteor.isClient) {
             icon: 'fa fa-plus',
             html: 'New Game',
             click: function() {
+              Router.go('saveGame');
             }
           }
         ]

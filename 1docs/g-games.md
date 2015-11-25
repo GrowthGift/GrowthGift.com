@@ -72,3 +72,10 @@ If everyone completes every single day for week, reward with something?
   - give OneRoom credits or something else more tangible?
   - game mechanics and tracking of all accomplishments?
 
+
+## Starting Out - KISS
+
+Keep It Simple, Stupid.
+In the beginning, ALL games will be 1 week long with one (SAME) challenge per day.
+ Keep flexibility in the database schema for adding variety later, but start
+ simple. Less user decisions and quicker time to playing an actual game.
