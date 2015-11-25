@@ -7,6 +7,6 @@ We want to make memorable, short URLs when possible. The "all G" theme is
 - Gifts: /gf/giftSlug
 - Users: /u/username
 - Groups: /gr/groupSlug
-- Game Templates: /gt/gameTemplateSlug
+- Game Rules: /gr/gameRuleSlug
 - User Games: /ug/gameSlug
 - UserGifts: /ugf/giftSlug

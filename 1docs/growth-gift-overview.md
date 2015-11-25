@@ -138,3 +138,11 @@ Each gift thus has 3 core attributes, which are a combination of your strengths
  passionate you are about 2. giving (teaching) it and about 3. growing
  (improving) it.
 
+
+## Starting Out - KISS
+
+Keep It Simple, Stupid.
+In the beginning, ALL games will be 1 week long with one (SAME) challenge per day.
+ Keep flexibility in the database schema for adding variety later, but start
+ simple. Less user decisions and quicker time to playing an actual game.
+
