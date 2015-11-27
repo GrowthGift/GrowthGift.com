@@ -114,13 +114,6 @@
         "role": "{String} One of 'creator', 'admin'"
       }
     ],
-    "groups": [
-      {
-        "groupId": "{String} link to 'group._id'",
-        "status": "{String} one of: 'invited', 'joined', 'declined', 'requested', 'blocked'",
-        "__comment": "group score will be calculated by sum of all users' scores who are in this group. If a user happens to be in multiple groups, his score will count for both."
-      }
-    ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
     "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
   },
@@ -152,6 +145,17 @@
     ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
     "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+  },
+  "friends": {
+    "_id": "{String}",
+    "userId": "{String}",
+    "users": [
+      {
+        "userId": "{String}",
+        "relation": "{String} one of 'following'",
+        "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+      }
+    ]
   },
   "gifts": {
     "_id": "{String}",

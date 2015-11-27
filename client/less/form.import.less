@@ -21,3 +21,8 @@ label {
   padding-top:4px;
 }
 
+// Skip select:read-only as select always is readonly for some reason??
+input:disabled, select:disabled, textarea:disabled, input:read-only, textarea:read-only {
+  background-color: #ddd;
+}
+
