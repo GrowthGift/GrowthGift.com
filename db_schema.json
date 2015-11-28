@@ -161,6 +161,7 @@
     "_id": "{String}",
     "slug": "{String}",
     "name": "{String}",
+    "description": "{String}",
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
   },
   "userGifts": {
@@ -170,21 +171,11 @@
     "grow": {
       "motivation": "{Number} 0 - 100",
       "story": "{String}",
-      "nextSteps": [
-        {
-          "giftId": "{String}"
-        }
-      ],
       "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
     },
     "give": {
       "motivation": "{Number} 0 - 100",
       "story": "{String}",
-      "nextSteps": [
-        {
-          "giftId": "{String}"
-        }
-      ],
       "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
     },
     "level": {
