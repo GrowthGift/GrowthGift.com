@@ -31,6 +31,7 @@ fastclick@1.0.7
 fortawesome:fontawesome@4.4.0_1
 geojson-utils@1.0.4
 growthgift:banner-alert@0.0.1
+growthgift:game-rule@0.0.1
 growthgift:may@0.0.1
 growthgift:nav-secondary@0.0.1
 growthgift:slug@0.0.1

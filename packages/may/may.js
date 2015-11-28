@@ -45,3 +45,14 @@ ggMay.deleteGame =function(game, userId) {
   }
   return _may.isUserCreator(game.users, userId);
 }
+
+ggMay.editGameRule =function(gameRule, userId) {
+  if(!userId) {
+    return false;
+  }
+  // Any user can create a new game
+  if(!gameRule || !gameRule._id) {
+    return true;
+  }
+  return _may.isUserAdmin(gameRule.users, userId);
+};
