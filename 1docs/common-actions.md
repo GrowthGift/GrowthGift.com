@@ -33,3 +33,9 @@ APPNAMEDEV appNameDev
 ## Add a new package
 - `meteor create --package [meteor_developer_username]:[package_name]`
 - `meteor add [meteor_developer_username]:[package_name]`
+
+
+## Rebuild (add or remove from) Lodash
+
+https://lodash.com/custom-builds
+`cd lib/lodash && lodash -p include=capitalize,extend`
