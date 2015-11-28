@@ -50,6 +50,21 @@ Meteor.methods({
       }
     }
 
+  },
+  deleteGame: function(docId) {
+    var game =GamesCollection.findOne({_id: docId});
+    if(!ggMay.deleteGame(game, Meteor.userId()) ) {
+      if(Meteor.isClient) {
+        nrAlert.alert("Only game creators may delete games.");
+      }
+    }
+    else {
+      GamesCollection.remove({_id: docId}, function(error, result) {
+        if(Meteor.isClient) {
+          Router.go('myGames');
+        }
+      });
+    }
   }
 });
 
@@ -60,15 +75,23 @@ if(Meteor.isServer) {
 }
 
 if(Meteor.isClient) {
+
+  Template.saveGame.created =function() {
+    this.inited =false;
+  };
+
   Template.saveGame.helpers({
     game: function() {
       if(!this.gameSlug) {
         return {};
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      
-      if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
-        Router.go('saveGame');
+      if(!Template.instance().inited) {
+        if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
+          nrAlert.alert("No game with slug "+this.gameSlug);
+          Router.go('myGames');
+        }
+        Template.instance().inited =true;
       }
       return game;
     },
@@ -80,7 +103,7 @@ if(Meteor.isClient) {
       if(this.gameSlug) {
         game =GamesCollection.findOne({slug: this.gameSlug});
       }
-      var edit =(game._id && true) || false;
+      var edit =(game && game._id && true) || false;
       var disabled =(edit && true) || false;
       // Form start date
       var start =(edit && game.start) || null;
@@ -113,6 +136,15 @@ if(Meteor.isClient) {
       };
 
       return opts;
+    },
+    privileges: function() {
+      if(!this.gameSlug) {
+        return {};
+      }
+      var game =GamesCollection.findOne({slug: this.gameSlug});
+      return {
+        delete: (game && ggMay.deleteGame(game, Meteor.userId())) ? true : false
+      };
     }
   });
 
@@ -136,6 +168,10 @@ if(Meteor.isClient) {
           AutoForm.removeStickyValidationError('saveGameForm', 'slug');
         }
       });
+    },
+    'click .save-game-delete': function(evt, template) {
+      var game =GamesCollection.findOne({slug: this.gameSlug});
+      Meteor.call("deleteGame", game._id);
     }
   });
 }

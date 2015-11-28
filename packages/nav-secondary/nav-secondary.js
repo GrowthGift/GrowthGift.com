@@ -15,7 +15,7 @@ var nav ={
       icon: 'fa fa-cube',
       html: 'My Games',
       click: function() {
-        Router.go('my-games')
+        Router.go('myGames')
       }
     }
   ]

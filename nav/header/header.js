@@ -28,7 +28,7 @@ if(Meteor.isClient){
           icon: 'fa fa-cube',
           html: 'My Games',
           click: function() {
-            Router.go('my-games')
+            Router.go('myGames')
           }
         },
         {

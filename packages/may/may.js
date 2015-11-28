@@ -11,8 +11,21 @@ _may.getUserAdminIds =function(users) {
   });
 }
 
+_may.getUserCreatorIds =function(users) {
+  if(!users) {
+    return [];
+  }
+  return userAdminIds =users.map(function(user) {
+    return (user.role && user.role ==='creator') ? user.userId : false;
+  });
+}
+
 _may.isUserAdmin =function(users, userId) {
   return (_may.getUserAdminIds(users).indexOf(userId) >-1) ? true : false;
+};
+
+_may.isUserCreator =function(users, userId) {
+  return (_may.getUserCreatorIds(users).indexOf(userId) >-1) ? true : false;
 };
 
 ggMay.editGame =function(game, userId) {
@@ -25,3 +38,10 @@ ggMay.editGame =function(game, userId) {
   }
   return _may.isUserAdmin(game.users, userId);
 };
+
+ggMay.deleteGame =function(game, userId) {
+  if(!userId || !game || !game._id) {
+    return false;
+  }
+  return _may.isUserCreator(game.users, userId);
+}
