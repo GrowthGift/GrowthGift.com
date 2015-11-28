@@ -149,9 +149,6 @@ if(Meteor.isClient) {
   });
 
   Template.saveGame.events({
-    'click .save-game-cancel': function(evt, template) {
-      history.back();
-    },
     'blur .save-game-input-title': function(evt, template) {
       ggSlug.setToAutogen(AutoForm.getFieldValue('title', 'saveGameForm'),
        AutoForm.getFieldValue('slug', 'saveGameForm'), 'save-game-input-slug');
