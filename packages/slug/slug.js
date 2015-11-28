@@ -45,7 +45,7 @@ ggSlug.autogen =function(name, slug) {
     return false;
   }
   return name.replace(/[^a-zA-Z0-9 ]/g, '')
-    .replace(/ /g, '-');
+    .replace(/ /g, '-').toLowerCase();
 };
 
 ggSlug.setToAutogen =function(name, slug, classname) {
