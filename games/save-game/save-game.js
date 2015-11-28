@@ -12,6 +12,10 @@ Meteor.methods({
     };
 
     var valid =true;
+    if(docId) {
+      var game =GamesCollection.findOne({_id: docId});
+      valid =ggMay.editGame(game, Meteor.userId());
+    }
     var slug =(doc.$set && doc.$set.slug) || doc.slug;
     if(slug) {
       var existingDoc =(docId && ({_id: docId})) || null;
@@ -21,13 +25,27 @@ Meteor.methods({
       }
     }
 
-    if(valid) {
+    if(!valid) {
+      if(Meteor.isClient) {
+        nrAlert.alert("Only game admins may edit games.");
+      }
+    }
+    else {
       if(docId) {
         var modifier =doc;
         GamesCollection.update({_id:docId}, modifier, onSuccess);
       }
       else {
         GameSchema.clean(doc);
+        if(Meteor.user()) {
+          doc.users =[
+            {
+              userId: Meteor.userId(),
+              role: 'creator',
+              status: 'joined'
+            }
+          ];
+        }
         GamesCollection.insert(doc, onSuccess);
       }
     }
@@ -48,7 +66,8 @@ if(Meteor.isClient) {
         return {};
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      if(!game || !game._id) {
+      
+      if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
         Router.go('saveGame');
       }
       return game;
@@ -111,7 +130,6 @@ if(Meteor.isClient) {
        GamesCollection.findOne({slug: template.data.gameSlug}) ) || null;
       Meteor.call('ggSlugValidate', slug, 'games', existingGame, function(err, exists) {
         if(exists) {
-          // GameSchema.namedContext('saveGameForm').addInvalidKeys([{name: 'slug', type: 'slugExists'}]);
           AutoForm.addStickyValidationError('saveGameForm', 'slug', 'slugExists', slug);
         }
         else {
