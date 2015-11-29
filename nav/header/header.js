@@ -31,13 +31,13 @@ if(Meteor.isClient){
             Router.go('myGames')
           }
         },
-        {
-          icon: 'fa fa-cubes',
-          html: 'All Games',
-          click: function() {
-            Router.go('games')
-          }
-        },
+        // {
+        //   icon: 'fa fa-cubes',
+        //   html: 'All Games',
+        //   click: function() {
+        //     Router.go('games')
+        //   }
+        // },
         // {
         //   icon: 'fa fa-magic',
         //   html: 'My Gifts',

@@ -12,7 +12,7 @@ It would be nice to have ALL urls short and pretty though sometimes short comes
   - Bob wants to play with you; join at /g/:gameSlug
 - Game Challenge Completion: /gc/:gameSlug
   - Ann completed her challenge; complete yours at /gc/:gameSlug
-- Game Rule: /gr/:gameRuleSlug
+- [x] Game Rule: /gr/:gameRuleSlug
 - User Games: /ug/:username
 - User: /u/:username
 - Group: /gp/:groupSlug
@@ -29,8 +29,8 @@ Semi short
 
 Long / normal
 
-- save-game/[?slug=:gameSlug]
-- save-game-rule/[?slug=:gameRuleSlug]
+- [x] save-game/[?slug=:gameSlug]
+- [x] save-game-rule/[?slug=:gameRuleSlug]
 
 - my-games
 
