@@ -33,6 +33,7 @@ geojson-utils@1.0.4
 growthgift:banner-alert@0.0.1
 growthgift:constants@0.0.1
 growthgift:dom@0.0.1
+growthgift:game@0.0.1
 growthgift:game-rule@0.0.1
 growthgift:may@0.0.1
 growthgift:nav-secondary@0.0.1

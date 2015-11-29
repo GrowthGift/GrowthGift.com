@@ -117,6 +117,14 @@ if(Meteor.isClient){
   navConfig.home.url ='';
   navConfig.home.auth ={};
 
+  navConfig.game =EJSON.clone(navDefault);
+  navConfig.game.urlRegEx ="g\/[.]*";
+  navConfig.game.auth ={};
+
+  navConfig.gameRule =EJSON.clone(navDefault);
+  navConfig.gameRule.urlRegEx ="gr\/[.]*";
+  navConfig.gameRule.auth ={};
+
   Session.set('navUpdated', false);
 
   //set default
@@ -131,7 +139,7 @@ if(Meteor.isClient){
     var curUrl =Iron.Location.get().pathname; //use pathname instead of path to remove the query string
     var xx, found =false;
     for(xx in navConfig) {
-      if('/'+navConfig[xx].url ===curUrl) {
+      if( (navConfig[xx].urlRegEx && (new RegExp(navConfig[xx].urlRegEx)).test(curUrl)) || (navConfig[xx].url && '/'+navConfig[xx].url ===curUrl) ) {
         ret.curNav =navConfig[xx];
         found =true;
         break;

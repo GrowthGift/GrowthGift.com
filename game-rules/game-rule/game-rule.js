@@ -30,12 +30,8 @@ if(Meteor.isClient) {
        '?slug='+this.gameSelect+'&gameRule='+gameRule.slug) || '?gameRule='+gameRule.slug;
       return {
         href: '/save-game'+hrefPart,
-        text: (hrefPart && 'Use this game') || 'Create game from this'
+        text: (this.gameSelect && 'Use this game') || 'Create game from this'
       };
     }
-  });
-
-  Template.gameRule.events({
-    
   });
 }

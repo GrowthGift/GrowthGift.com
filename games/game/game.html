@@ -1,0 +1,14 @@
+<template name="game">
+  <div class='padding max-600 center'>
+    <h2>{{ game.title }}</h2>
+    <div>Game Details: <a href='{{ game.xHref.gameRule }}'>{{ game.xHref.gameRuleText }}</a></div>
+    <div>Start: {{ game.xDisplay.start }}</div>
+    <div>
+      {{#if privileges.edit }}
+        <div>
+          <a class='' href='{{ privileges.editLink }}'>Edit</a>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</template>

@@ -6,7 +6,7 @@ _may.getUserAdminIds =function(users) {
   if(!users) {
     return [];
   }
-  return userAdminIds =users.map(function(user) {
+  return users.map(function(user) {
     return (user.role && user.role ==='creator' || user.role ==='admin') ? user.userId : false;
   });
 }
@@ -15,17 +15,35 @@ _may.getUserCreatorIds =function(users) {
   if(!users) {
     return [];
   }
-  return userAdminIds =users.map(function(user) {
+  return users.map(function(user) {
     return (user.role && user.role ==='creator') ? user.userId : false;
   });
 }
 
+_may.getUser =function(users, userId) {
+  if(!users || !userId) {
+    return {};
+  }
+  return users.filter(function(user) {
+    return (user.userId ===userId) ? true : false;
+  });
+};
+
+_may.getUserStatus =function(users, userId) {
+  if(!users || !userId) {
+    return null;
+  }
+  return _may.getUser(users, userId).map(function(user) {
+    return user.status;
+  });
+};
+
 _may.isUserAdmin =function(users, userId) {
-  return (_may.getUserAdminIds(users).indexOf(userId) >-1) ? true : false;
+  return (userId && _may.getUserAdminIds(users).indexOf(userId) >-1) ? true : false;
 };
 
 _may.isUserCreator =function(users, userId) {
-  return (_may.getUserCreatorIds(users).indexOf(userId) >-1) ? true : false;
+  return (userId && _may.getUserCreatorIds(users).indexOf(userId) >-1) ? true : false;
 };
 
 ggMay.editGame =function(game, userId) {
@@ -44,7 +62,13 @@ ggMay.deleteGame =function(game, userId) {
     return false;
   }
   return _may.isUserCreator(game.users, userId);
-}
+};
+
+ggMay.joinGame =function(game, userId) {
+  var status =_may.getUserStatus(game.users, userId);
+  return (status && status !=='joined' && status !=='blocked' &&
+   status !=='requested') ? true : false;
+};
 
 ggMay.editGameRule =function(gameRule, userId) {
   if(!userId) {

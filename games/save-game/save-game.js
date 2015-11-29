@@ -137,7 +137,7 @@ if(Meteor.isClient) {
         }
         // start at 1pm so add 13 hours from midnight
         start.add(13, 'hours');
-        start =start.format('YYYY-MM-DD HH:mm:ssZ');
+        start =start.format(ggConstants.dateTimeFormat);
       }
 
       var opts ={
@@ -152,7 +152,7 @@ if(Meteor.isClient) {
         start: start,
         optsDatetimepicker: {
           pikaday: {
-            format: 'ddd MMM DD, YYYY h:mma'
+            format: ggConstants.dateTimeDisplay
           }
         },
         gameRuleIdOpts: ggGameRule.allSelectOpts()
