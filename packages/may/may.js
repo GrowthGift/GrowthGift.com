@@ -35,7 +35,7 @@ _may.getUserStatus =function(users, userId) {
   }
   return _may.getUser(users, userId).map(function(user) {
     return user.status;
-  });
+  })[0];    //[0] because only want 1 user status, not an array
 };
 
 _may.isUserAdmin =function(users, userId) {
@@ -66,8 +66,15 @@ ggMay.deleteGame =function(game, userId) {
 
 ggMay.joinGame =function(game, userId) {
   var status =_may.getUserStatus(game.users, userId);
-  return (status && status !=='joined' && status !=='blocked' &&
-   status !=='requested') ? true : false;
+  return (!status || (status !=='joined' && status !=='blocked' &&
+   status !=='requested') ) ? true : false;
+};
+
+ggMay.leaveGame =function(game, userId) {
+  var status =_may.getUserStatus(game.users, userId);
+  // May leave if joined and not a creator
+  return (status && (status ==='joined') && !_may.isUserCreator(game.users, userId) )
+   ? true : false;
 };
 
 ggMay.editGameRule =function(gameRule, userId) {
