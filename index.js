@@ -5,8 +5,14 @@ Meteor.startup(function() {
     //set publishable key
     // Config.stripe({});
 
-    // Just redirect to the blog for now
-    // window.location.href ='https://blog.growthgift.com';
+    // Redirect short domain to regular domain
+    var appInfo =Config.appInfo({});
+    if(window.location.hostname ===appInfo.shortDomain) {
+      var regEx =new RegExp(appInfo.shortDomain);
+      var newLoc =window.location.href.replace(regEx, appInfo.domain);
+      console.info("Redirecting "+appInfo.shortDomain+" to "+appInfo.domain+" ...");
+      window.location.href =newLoc;
+    }
   }
 
   if(Meteor.isServer) {

@@ -28,7 +28,9 @@ Config.init({});
 Config.appInfo =function(params) {
   var ret ={
     name: 'Growth Gift',
-    version: '0.0.1'
+    version: '0.0.1',
+    domain: 'growthgift.com',
+    shortDomain: 'gr0.co'
   };
   if(Config.ENV ==='prod') {
     ret.name ='Growth Gift';
