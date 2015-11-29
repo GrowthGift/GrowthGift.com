@@ -1,7 +1,7 @@
 <template name="saveGame">
   <div class='padding max-600'>
     {{#autoForm collection="GamesCollection" doc=game id="saveGameForm" type=afMethod meteormethod="saveGame" validation="blur" }}
-      {{>afQuickField name="gameRuleId" type="select" options=inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
+      {{>afQuickField name="gameRuleId" label="Game" type="select" options=inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
       <div><a href='{{gameRuleSelectData.hrefLookup}}'>Lookup</a> or <a href='{{gameRuleSelectData.hrefCreate}}'>Create</a> a game, then search (by slug) and select it above.</div>
 
       {{> afQuickField name="title" class="save-game-input-title" }}
