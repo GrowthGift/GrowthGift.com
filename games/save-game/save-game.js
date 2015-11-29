@@ -72,6 +72,9 @@ if(Meteor.isServer) {
   Meteor.publish('current-game', function(gameSlug) {
     return GamesCollection.find({slug: gameSlug});
   });
+  Meteor.publish('gameRules', function() {
+    return GameRulesCollection.find({}, {fields: {title:1, type:1, description:1, slug:1} });
+  });
 }
 
 if(Meteor.isClient) {
@@ -132,7 +135,32 @@ if(Meteor.isClient) {
           pikaday: {
             format: 'ddd MMM DD, YYYY h:mma'
           }
-        }
+        },
+        // optsAutocomplete: {
+        //   instid: "saveGameAutocompleteGameRuleId",
+        //   getPredictions: function(name, params) {
+        //     var ret ={predictions:[]};
+        //     var query ={
+        //       slug: {
+        //         $regex: '^'+name,
+        //         $options: 'i'
+        //       }
+        //     };
+        //     var predictions1 =GameRulesCollection.find(query, {fields: {slug:1}}).fetch();
+        //     console.log('getPredictions', predictions1, query);
+        //     ret.predictions =predictions1.map(function(obj) {
+        //       return {
+        //         value: obj._id,
+        //         name: obj.slug
+        //       }
+        //     });
+        //     return ret;
+        //   },
+        //   onUpdateVals: function(instid, val, params) {
+        //     console.log(instid, val);
+        //   }
+        // }
+        gameRuleIdOpts: ggGameRule.allSelectOpts()
       };
 
       return opts;

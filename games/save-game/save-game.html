@@ -1,7 +1,8 @@
 <template name="saveGame">
   <div class='padding max-600'>
     {{#autoForm collection="GamesCollection" doc=game id="saveGameForm" type=afMethod meteormethod="saveGame" validation="blur" }}
-      <!-- TODO: game rule -->
+      <!-- {{> afQuickField name="gameRuleId" type="lmautocomplete" opts=inputOpts.optsAutocomplete }} -->
+      {{>afQuickField name="gameRuleId" type="select" options=inputOpts.gameRuleIdOpts }}
       {{> afQuickField name="title" class="save-game-input-title" }}
       {{> afQuickField name="slug" type="text" disabled=inputOpts.slugDisabled class="save-game-input-slug" }}
       {{> afQuickField name="privacy" type="select" disabled=inputOpts.privacyDisabled options=inputOpts.privacyOpts }}

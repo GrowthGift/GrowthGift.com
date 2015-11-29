@@ -72,3 +72,10 @@ ggGameRule.inputOpts =function() {
     ]
   };
 };
+
+ggGameRule.allSelectOpts =function() {
+  var gameRules =GameRulesCollection.find({}).fetch();
+  return _.sortBy(gameRules.map(function(gameRule) {
+    return { value: gameRule._id, label: gameRule.slug };
+  }), 'label');
+};
