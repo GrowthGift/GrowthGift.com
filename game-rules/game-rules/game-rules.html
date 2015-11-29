@@ -1,4 +1,29 @@
 <template name="gameRules">
-  <!-- {{> ggNavSecondary nav=nav }} -->
-  Game Rules
+  <div class='game-rules-filters max-750'>
+    {{#autoForm schema="GameRulesFiltersSchema" id='gameRulesForm' resetOnSuccess=false }}
+    <div class='flexbox'>
+      <div class='flex1 margin-lr'>
+        {{> afQuickField name="title" class="game-rules-input-title" }}
+      </div>
+      <div class='flex1 margin-r'>
+        {{> afQuickField name="type" type="select" options=inputOpts.typeOpts class="game-rules-input-type" }}
+      </div>
+    </div>
+    {{/autoForm}}
+  </div>
+
+  <div class='game-rules-results center margin-t'>
+    {{#each data.gameRules }}
+      <a class='game-rules-card a-div center margin padding inline-block pointer align-top {{type}}' href='/gr/{{slug}}'>
+        <h5 class='ellipsis margin-small-b'>{{ title }}</h5>
+        <div class='font-small game-rules-card-description'>{{ xDisplay.description }}</div>
+      </a>
+    {{/each}}
+    {{#if data.noResults}}
+      <div>No matches. Try broadening your search.</div>
+    {{/if}}
+  </div>
+  <div class='center margin-t'>
+    <a class='a-div btn btn-primary' href='/save-game-rule'>Create New Game</a>
+  </div>
 </template>

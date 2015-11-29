@@ -4,9 +4,10 @@ Meteor.methods({
     var onSuccess =function(error, result) {
       if(Meteor.isClient) {
         if(!error && result) {
-          if(slug) {
-            Router.go('/save-game-rule?slug='+slug);
-          }
+          // if(slug) {
+          //   Router.go('/save-game-rule?slug='+slug);
+          // }
+          Router.go('/game-rules');
         }
       }
     };
@@ -38,7 +39,6 @@ Meteor.methods({
           modifier.$set.challenges =ggGameRule.generateChallenges(modifier.$set.title,
            modifier.$set.description);
         }
-        console.log(modifier);
 
         GameRulesCollection.update({_id:docId}, modifier, onSuccess);
       }
@@ -47,7 +47,6 @@ Meteor.methods({
 
         // Generate challenges
         doc.challenges =ggGameRule.generateChallenges(doc.title, doc.description);
-        console.log(doc);
 
         if(Meteor.user()) {
           doc.users =[
