@@ -79,8 +79,33 @@ if(Meteor.isServer) {
 
 if(Meteor.isClient) {
 
+  function init(templateInst) {
+    if(!templateInst.inited) {
+      if(templateInst.data.gameSlug) {
+        var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
+        if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
+          nrAlert.alert("No game with slug "+templateInst.data.gameSlug);
+          Router.go('myGames');
+        }
+      }
+
+      if(templateInst.data.gameRule) {
+        var gameRule =ggGameRule.findBySlug(templateInst.data.gameRule);
+        if(gameRule && gameRule._id) {
+          ggDom.setInputVal(gameRule._id, 'save-game-input-game-rule-id');
+        }
+      }
+
+      templateInst.inited =true;
+    }
+  }
+
   Template.saveGame.created =function() {
     this.inited =false;
+  };
+
+  Template.saveGame.rendered =function() {
+    init(Template.instance());
   };
 
   Template.saveGame.helpers({
@@ -89,13 +114,6 @@ if(Meteor.isClient) {
         return {};
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      if(!Template.instance().inited) {
-        if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
-          nrAlert.alert("No game with slug "+this.gameSlug);
-          Router.go('myGames');
-        }
-        Template.instance().inited =true;
-      }
       return game;
     },
     afMethod: function() {
@@ -115,10 +133,10 @@ if(Meteor.isClient) {
         start =moment().startOf('week');
         // Allow same day, but if past the day, set to next week.
         if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
-          start =start.add('days', 7);
+          start =start.add(7, 'days');
         }
         // start at 1pm so add 13 hours from midnight
-        start.add('hours', 13);
+        start.add(13, 'hours');
         start =start.format('YYYY-MM-DD HH:mm:ssZ');
       }
 
@@ -149,6 +167,14 @@ if(Meteor.isClient) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       return {
         delete: (game && ggMay.deleteGame(game, Meteor.userId())) ? true : false
+      };
+    },
+    gameRuleSelectData: function() {
+      var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug})) || null;
+      var gameSelectHrefPart =(game && '?gameSelect='+game.slug) || '?gameSelect='+ggConstants.gameSelectNew;
+      return {
+        hrefLookup: '/game-rules'+gameSelectHrefPart,
+        hrefCreate: '/save-game-rule'+gameSelectHrefPart
       };
     }
   });

@@ -4,10 +4,18 @@ Meteor.methods({
     var onSuccess =function(error, result) {
       if(Meteor.isClient) {
         if(!error && result) {
-          // if(slug) {
-          //   Router.go('/save-game-rule?slug='+slug);
-          // }
-          Router.go('/game-rules');
+          var templateInst =ggTemplate.getMainTemplate("Template.saveGameRule");
+          slug =(slug || templateInst.data.gameRuleSlug);
+          if(templateInst.data.gameSelect) {
+            var gameSelect =templateInst.data.gameSelect;
+            var hrefPart =(gameSelect !==ggConstants.gameSelectNew &&
+             '?slug='+gameSelect+'&gameRule='+slug) || '?gameRule='+slug;
+            Router.go('/save-game'+hrefPart);
+          }
+          else {
+            // Router.go('/save-game-rule?slug='+slug);
+            Router.go('/game-rules');
+          }
         }
       }
     };

@@ -79,3 +79,7 @@ ggGameRule.allSelectOpts =function() {
     return { value: gameRule._id, label: gameRule.slug };
   }), 'label');
 };
+
+ggGameRule.findBySlug =function(slug) {
+  return GameRulesCollection.findOne({slug:slug});
+};

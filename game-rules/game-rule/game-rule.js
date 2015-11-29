@@ -21,6 +21,17 @@ if(Meteor.isClient) {
         type: _.capitalize(gameRule.type)
       };
       return gameRule;
+    },
+    gameSelectData: function() {
+      var gameRule =(this.gameRuleSlug &&
+       GameRulesCollection.findOne({slug: this.gameRuleSlug}, { fields: { slug:1 } }))
+       || null;
+      var hrefPart =(this.gameSelect && this.gameSelect !==ggConstants.gameSelectNew &&
+       '?slug='+this.gameSelect+'&gameRule='+gameRule.slug) || '?gameRule='+gameRule.slug;
+      return {
+        href: '/save-game'+hrefPart,
+        text: (hrefPart && 'Use this game') || 'Create game from this'
+      };
     }
   });
 

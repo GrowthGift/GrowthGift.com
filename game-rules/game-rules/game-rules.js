@@ -48,8 +48,15 @@ if(Meteor.isClient) {
   Template.gameRules.helpers({
     data: function() {
       var gameRules =Template.instance().gameRules.get();
+      var hrefPart =(this.gameSelect && '?gameSelect='+this.gameSelect) || '';
       return {
-        gameRules: gameRules,
+        gameRules: gameRules.map(function(gameRule) {
+          return _.extend({}, gameRule, {
+            xHref: {
+              cardLink: '/gr/'+gameRule.slug+hrefPart
+            }
+          });
+        }),
         noResults: (!gameRules.length) ? true : false
       };
     },

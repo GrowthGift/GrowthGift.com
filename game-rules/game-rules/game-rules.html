@@ -14,7 +14,7 @@
 
   <div class='game-rules-results center margin-t'>
     {{#each data.gameRules }}
-      <a class='game-rules-card a-div center margin padding inline-block pointer align-top {{type}}' href='/gr/{{slug}}'>
+      <a class='game-rules-card a-div center margin padding inline-block pointer align-top {{type}}' href='{{xHref.cardLink}}'>
         <h5 class='ellipsis margin-small-b'>{{ title }}</h5>
         <div class='font-small game-rules-card-description'>{{ xDisplay.description }}</div>
       </a>
