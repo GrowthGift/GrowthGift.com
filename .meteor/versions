@@ -57,7 +57,6 @@ localstorage@1.0.5
 logging@1.0.8
 lukemadera:accounts-password@0.0.1
 lukemadera:auth@0.0.1
-lukemadera:autoform-autocomplete@1.0.2
 lukemadera:config@0.0.1
 lukemadera:mocks@0.0.1
 lukemadera:notify@0.0.1

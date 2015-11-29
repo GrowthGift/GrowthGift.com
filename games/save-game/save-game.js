@@ -113,7 +113,8 @@ if(Meteor.isClient) {
       if(!edit) {
         var now =moment();
         start =moment().startOf('week');
-        if(start <now) {
+        // Allow same day, but if past the day, set to next week.
+        if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
           start =start.add('days', 7);
         }
         // start at 1pm so add 13 hours from midnight
@@ -136,30 +137,6 @@ if(Meteor.isClient) {
             format: 'ddd MMM DD, YYYY h:mma'
           }
         },
-        // optsAutocomplete: {
-        //   instid: "saveGameAutocompleteGameRuleId",
-        //   getPredictions: function(name, params) {
-        //     var ret ={predictions:[]};
-        //     var query ={
-        //       slug: {
-        //         $regex: '^'+name,
-        //         $options: 'i'
-        //       }
-        //     };
-        //     var predictions1 =GameRulesCollection.find(query, {fields: {slug:1}}).fetch();
-        //     console.log('getPredictions', predictions1, query);
-        //     ret.predictions =predictions1.map(function(obj) {
-        //       return {
-        //         value: obj._id,
-        //         name: obj.slug
-        //       }
-        //     });
-        //     return ret;
-        //   },
-        //   onUpdateVals: function(instid, val, params) {
-        //     console.log(instid, val);
-        //   }
-        // }
         gameRuleIdOpts: ggGameRule.allSelectOpts()
       };
 
