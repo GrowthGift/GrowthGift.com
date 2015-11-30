@@ -16,7 +16,9 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
 };
 
 ggGame.saveUserGameChallenge =function(game, userId, challenge) {
-  var valid =ggMay.addUserGameChallenge(game, userId, {});
+  var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:userId });
+  var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
+  var valid =ggMay.addUserGameChallenge(game, userId, userGame, gameRule);
   if(!valid) {
     if(Meteor.isClient) {
       nrAlert.alert("You may not add a challenge completion right now. Please try again once the next challenge starts!");
@@ -57,6 +59,66 @@ ggGame.saveUserGameChallenge =function(game, userId, challenge) {
   }
 };
 
-ggGame.getCurrentChallenge =function(gameId) {
-  var now =moment();
+/**
+@param {Object} nowTime moment()
+*/
+ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
+  nowTime =nowTime || moment();
+  var ret ={
+    gameStarted: false,
+    gameEnded: false,
+    possibleCompletions: 0,
+    currentChallenge: null,
+    nextChallengeStart: null
+  };
+  if(!game || !gameRule || !gameRule.challenges) {
+    return ret;
+  }
+
+  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  if(gameStart >nowTime) {
+    ret.nextChallengeStart =gameStart.format(ggConstants.dateTimeFormat);
+    return ret;
+  }
+  ret.gameStarted =true;
+  // Assumes challenges are in order by date (due from start)
+  var ii, challenge, curChallengeDue, found=false;
+  var lastChallengeDue =gameStart;
+  for(ii =0; ii<gameRule.challenges.length; ii++) {
+    challenge =gameRule.challenges[ii];
+    curChallengeDue =gameStart.clone().add(challenge.dueFromStart, 'minutes');
+    if(curChallengeDue >nowTime) {
+      ret.currentChallenge =_.extend({}, challenge, {
+        start: lastChallengeDue.format(ggConstants.dateTimeFormat),
+        end: curChallengeDue.format(ggConstants.dateTimeFormat)
+      });
+      ret.possibleCompletions =(ii+1);
+      if(ii <(gameRule.challenges.length-1) ) {
+        ret.nextChallengeStart =ret.currentChallenge.end;
+      }
+      found =true;
+      break;
+    }
+    lastChallengeDue =curChallengeDue;
+  }
+  if(!found) {
+    ret.possibleCompletions =gameRule.challenges.length;
+    ret.gameEnded =true;
+  }
+  return ret;
+};
+
+ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
+  var ret ={
+    numCompletions: 0,
+    mostRecentChallenge: null
+  };
+  if(!gameId || !userGame || !userGame.challenges || !userGame.challenges.length) {
+    return ret;
+  }
+
+  var challenges =_.sortByOrder(userGame.challenges, ['createdAt'], ['asc']);
+  ret.numCompletions =challenges.length;
+  ret.mostRecentChallenge =challenges[(challenges.length -1)];
+  return ret;
 };

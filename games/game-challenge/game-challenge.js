@@ -18,6 +18,16 @@ if(Meteor.isServer) {
       return false;
     }
   });
+  Meteor.publish('current-game-rule-game-slug', function(gameSlug) {
+    if(gameSlug) {
+      var game =GamesCollection.findOne({slug: gameSlug});
+      return GameRulesCollection.find({ _id:game.gameRuleId });
+    }
+    else {
+      this.ready();
+      return false;
+    }
+  });
 }
 
 if(Meteor.isClient) {
@@ -47,12 +57,44 @@ if(Meteor.isClient) {
         return {};
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      if(!ggMay.addUserGameChallenge(game, Meteor.userId(), {}) ) {
+      if(!ggMay.viewUserGameChallenge(game, Meteor.userId()) ) {
         nrAlert.alert("You are not in this game. Join the game first");
         Router.go('/g/'+this.gameSlug);
         return {};
       }
       return ggGame.getUserGameChallenges(game._id, Meteor.userId());
+    },
+    privileges: function() {
+      var ret ={
+        addChallenge: false,
+        addChallengeMessage: 'You may not add a challenge completion at this time.'
+      };
+      if(!this.gameSlug || !Meteor.userId()) {
+        return ret;
+      }
+      var game =GamesCollection.findOne({slug: this.gameSlug});
+      var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
+      var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
+      if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
+        ret.addChallenge =true;
+        return ret;
+      }
+      // Output why not
+      else {
+        var curChallenge =ggGame.getCurrentChallenge(game, gameRule);
+        if(!curChallenge.gameStarted) {
+          ret.addChallengeMessage ='Game has not started yet.';
+        }
+        else if(curChallenge.gameEnded || !curChallenge.nextChallengeStart) {
+          ret.addChallengeMessage ='Game has ended.';
+        }
+        else {
+          ret.addChallengeMessage ='Next challenge starts '
+           + moment(curChallenge.nextChallengeStart, ggConstants.dateTimeFormat).fromNow()
+           + '.';
+        }
+      }
+      return ret;
     }
   });
 }

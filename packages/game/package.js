@@ -13,6 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
+  api.use('momentjs:moment');
+  api.use('growthgift:constants');
   api.addFiles([
     'game-vars.js',
     'game.js',
@@ -23,7 +25,13 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('ecmascript');
+  api.use('momentjs:moment');
+  api.use('growthgift:constants');
   api.use('tinytest');
   api.use('growthgift:game');
-  api.addFiles('game-tests.js');
+  api.addFiles([
+    'lib/lodash.custom.min.js',
+    'game-challenge-tests.js',
+    'game-tests.js'
+  ]);
 });

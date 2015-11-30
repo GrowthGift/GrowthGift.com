@@ -7,7 +7,6 @@ Meteor.methods({
           var templateInst =ggTemplate.getMainTemplate("Template.saveGame");
           var slug =((doc.$set && doc.$set.slug) || doc.slug ||
            templateInst.data.gameSlug);
-          console.log('onSuccess', error, result, slug, doc, docId);
           if(slug) {
             Router.go('/g/'+slug);
           }

@@ -88,18 +88,37 @@ ggMay.editGameRule =function(gameRule, userId) {
   return _may.isUserAdmin(gameRule.users, userId);
 };
 
-ggMay.addUserGameChallenge =function(game, userId, userGame) {
+ggMay.viewUserGameChallenge =function(game, userId) {
   if(!game || !userId) {
     return false;
   }
   // User must be in game
   var status =_may.getUserStatus(game.users, userId);
-  console.log(status, game, userId);
   if(!status || status !=='joined') {
+    return false;
+  }
+  return true;
+};
+
+ggMay.addUserGameChallenge =function(game, userId, userGame, gameRule, nowTime) {
+  nowTime =nowTime || moment();
+  if(!game || !userId || !ggMay.viewUserGameChallenge(game, userId)) {
     return false;
   }
 
   // User can only add one challenge completion per challenge (time period)
-  // TODO
-  return true;
+  var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
+  // If game has not started or is already over, can not add a challenge
+  if(!curChallenge.gameStarted || curChallenge.gameEnded || !curChallenge.currentChallenge) {
+    return false;
+  }
+
+  var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
+  // Only may add if the user has NOT completed a challenge yet OR the user
+  // most recent challenge completion happened BEFORE the current challenge start
+  if(!userChallenge.mostRecentChallenge || userChallenge.mostRecentChallenge.createdAt
+   <curChallenge.currentChallenge.start) {
+    return true;
+  }
+  return false;
 };
