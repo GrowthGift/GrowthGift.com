@@ -1,0 +1,33 @@
+<template name="gameChallenge">
+  <div class='padding max-600'>
+    <div class='margin-xlarge-b'>
+      <h3 class='center'>Add a Challenge Completion</h3>
+      {{#autoForm schema="GameChallengeSchema" id='gameChallengeForm' validation="blur" }}
+        {{>afQuickField name="title" }}
+        {{>afQuickField name="description" type="textarea" }}
+
+        <!-- Hidden and auto set for now -->
+        {{>afQuickField name="privacy" type="hidden" value="private" }}
+        
+        <div class='margin-large-t flexbox'>
+          <div class='flex1'>&nbsp;</div>
+          <div>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      {{/autoForm}}
+    </div>
+
+    <div>
+      {{#each challenges}}
+        <div class='margin-b'>
+          <div class='flexbox'>
+            <div class='flex1 h4'>{{ title }}</div>
+            <div>{{ xDisplay.createdAt }}</div>
+          </div>
+          <div>{{ description }}</div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</template>

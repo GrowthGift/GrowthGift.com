@@ -13,7 +13,11 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.addFiles('game.js');
+  api.addFiles([
+    'game-vars.js',
+    'game.js',
+    'game-challenge.js'
+  ]);
   api.export('ggGame');
 });
 

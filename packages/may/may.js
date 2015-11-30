@@ -87,3 +87,19 @@ ggMay.editGameRule =function(gameRule, userId) {
   }
   return _may.isUserAdmin(gameRule.users, userId);
 };
+
+ggMay.addUserGameChallenge =function(game, userId, userGame) {
+  if(!game || !userId) {
+    return false;
+  }
+  // User must be in game
+  var status =_may.getUserStatus(game.users, userId);
+  console.log(status, game, userId);
+  if(!status || status !=='joined') {
+    return false;
+  }
+
+  // User can only add one challenge completion per challenge (time period)
+  // TODO
+  return true;
+};

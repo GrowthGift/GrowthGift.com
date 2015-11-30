@@ -14,6 +14,10 @@ if(Meteor.isServer) {
   Meteor.publish('gameRule', function(gameSlug) {
     if(gameSlug) {
       var game =GamesCollection.findOne({slug: gameSlug});
+      if(!game) {
+        this.ready();
+        return false;
+      }
       return GameRulesCollection.find({_id: game.gameRuleId});
     }
     else {
@@ -24,6 +28,10 @@ if(Meteor.isServer) {
   Meteor.publish('userGame', function(gameSlug) {
     if(gameSlug && this.userId) {
       var game =GamesCollection.findOne({slug: gameSlug});
+      if(!game) {
+        this.ready();
+        return false;
+      }
       return UserGamesCollection.find({ gameId:game._id, userId:this.userId });
     }
     else {
@@ -76,7 +84,7 @@ if(Meteor.isClient) {
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
       return {
         edit: edit,
-        editLink: (edit && '/save-game?'+game.slug),
+        editLink: (edit && '/save-game?slug='+game.slug),
         // Show join button if not logged in
         join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
         leave: (game && ggMay.leaveGame(game, userId) ) ? true : false

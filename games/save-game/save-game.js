@@ -4,51 +4,18 @@ Meteor.methods({
     var onSuccess =function(error, result) {
       if(Meteor.isClient) {
         if(!error && result) {
+          var templateInst =ggTemplate.getMainTemplate("Template.saveGame");
+          var slug =((doc.$set && doc.$set.slug) || doc.slug ||
+           templateInst.data.gameSlug);
+          console.log('onSuccess', error, result, slug, doc, docId);
           if(slug) {
-            Router.go('/save-game?slug='+slug);
+            Router.go('/g/'+slug);
           }
         }
       }
     };
 
-    var valid =true;
-    if(docId) {
-      var game =GamesCollection.findOne({_id: docId});
-      valid =ggMay.editGame(game, Meteor.userId());
-    }
-    var slug =(doc.$set && doc.$set.slug) || doc.slug;
-    if(slug) {
-      var existingDoc =(docId && ({_id: docId})) || null;
-      var slugExists =ggSlug.exists(slug, 'games', existingDoc);
-      if(slugExists) {
-        valid =false;
-      }
-    }
-
-    if(!valid) {
-      if(Meteor.isClient) {
-        nrAlert.alert("Only game admins may edit games.");
-      }
-    }
-    else {
-      if(docId) {
-        var modifier =doc;
-        GamesCollection.update({_id:docId}, modifier, onSuccess);
-      }
-      else {
-        GameSchema.clean(doc);
-        if(Meteor.user()) {
-          doc.users =[
-            {
-              userId: Meteor.userId(),
-              role: 'creator',
-              status: 'joined'
-            }
-          ];
-        }
-        GamesCollection.insert(doc, onSuccess);
-      }
-    }
+    ggGame.save(doc, docId, Meteor.userId(), onSuccess);
 
   },
   deleteGame: function(docId) {
@@ -84,7 +51,7 @@ if(Meteor.isClient) {
       if(templateInst.data.gameSlug) {
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
         if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
-          nrAlert.alert("No game with slug "+templateInst.data.gameSlug);
+          nrAlert.alert("No game you may edit with slug "+templateInst.data.gameSlug);
           Router.go('myGames');
         }
       }
