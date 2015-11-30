@@ -62,7 +62,8 @@ if(Meteor.isClient) {
         gameRuleText: gameRule.slug
       };
       game.xDisplay ={
-        start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay)
+        start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay),
+        shareLink: 'http://'+Config.appInfo().shortDomain+'/g/'+game.slug
       };
       return game;
     },
@@ -104,6 +105,9 @@ if(Meteor.isClient) {
     'click .game-leave': function(evt, template) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       Meteor.call('leaveGame', game);
+    },
+    'click .game-input-share-link': function(evt, template) {
+      ggDom.inputSelectAll('game-input-share-link');
     }
   });
 }

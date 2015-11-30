@@ -1,9 +1,16 @@
 <template name="game">
   <div class='padding max-600 center'>
-    <h2>{{ game.title }}</h2>
-    <div>Game Details: <a href='{{ game.xHref.gameRule }}'>{{ game.xHref.gameRuleText }}</a></div>
-    <div>Start: {{ game.xDisplay.start }}</div>
+    <div class='margin-b'>
+      <h2>{{ game.title }}</h2>
+      <div>Game Details: <a href='{{ game.xHref.gameRule }}'>{{ game.xHref.gameRuleText }}</a></div>
+      <div>Start: {{ game.xDisplay.start }}</div>
+    </div>
+    <div class='max-450 margin-b'>
+      <div>Invite Friends to Play:</div>
+      <input type='text' readonly=true value='{{ game.xDisplay.shareLink }}' class='game-input-share-link center' />
+    </div>
 
+    <div class='margin-b'>
     {{#if privileges.edit }}
       <div>
         <a class='' href='{{ privileges.editLink }}'>Edit</a>
@@ -15,5 +22,6 @@
     {{#if privileges.leave }}
       <div class='btn-underline text-warning game-leave'>Leave</div>
     {{/if}}
+    </div>
   </div>
 </template>
