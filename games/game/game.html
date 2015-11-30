@@ -11,17 +11,24 @@
     </div>
 
     <div class='margin-b'>
-    {{#if privileges.edit }}
-      <div>
-        <a class='' href='{{ privileges.editLink }}'>Edit</a>
-      </div>
-    {{/if}}
-    {{#if privileges.join }}
-      <div class='btn btn-primary game-join'>Join</div>
-    {{/if}}
-    {{#if privileges.leave }}
-      <div class='btn-underline text-warning game-leave'>Leave</div>
-    {{/if}}
+      {{#if data.privileges.edit }}
+        <div>
+          <a class='' href='{{ data.privileges.editLink }}'>Edit</a>
+        </div>
+      {{/if}}
+      {{#if data.privileges.join }}
+        <div class='btn btn-primary game-join'>Join</div>
+      {{/if}}
+      {{#if data.privileges.leave }}
+        <div class='btn-underline text-warning game-leave'>Leave</div>
+      {{/if}}
+    </div>
+
+    <div class='margin-b'>
+      {{#if data.privileges.viewChallenges }}
+        <div>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</div>
+        <a class='a-div btn btn-primary' href='{{ data.gameChallengeLink }}'>View / Complete Challenges</a>
+      {{/if}}
     </div>
   </div>
 </template>

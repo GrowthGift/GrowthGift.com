@@ -25,14 +25,14 @@ if(Meteor.isServer) {
       return false;
     }
   });
-  Meteor.publish('userGame', function(gameSlug) {
-    if(gameSlug && this.userId) {
+  Meteor.publish('userGames', function(gameSlug) {
+    if(gameSlug) {
       var game =GamesCollection.findOne({slug: gameSlug});
       if(!game) {
         this.ready();
         return false;
       }
-      return UserGamesCollection.find({ gameId:game._id, userId:this.userId });
+      return UserGamesCollection.find({ gameId:game._id });
     }
     else {
       this.ready();
@@ -75,20 +75,49 @@ if(Meteor.isClient) {
       };
       return game;
     },
-    privileges: function() {
+    data: function() {
+      var ret ={
+        privileges: {},
+        challenges: {
+          possibleCompletions: 0,
+          selfCompletions: 0
+        },
+        gameChallengeLink: ''
+      };
       if(!this.gameSlug) {
-        return {};
+        return ret;
       }
+
       var userId =Meteor.userId();
       var game =GamesCollection.findOne({slug: this.gameSlug});
+
+      // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
-      return {
+      ret.privileges ={
         edit: edit,
         editLink: (edit && '/save-game?slug='+game.slug),
         // Show join button if not logged in
         join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
-        leave: (game && ggMay.leaveGame(game, userId) ) ? true : false
+        leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
+        viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false
       };
+
+      // Challenge link
+      ret.gameChallengeLink ='/gc/'+this.gameSlug;
+
+      // Game users
+      var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
+      var curChallenge =ggGame.getCurrentChallenge(game, gameRule);
+      ret.challenges.possibleCompletions =curChallenge.possibleCompletions;
+
+      // Can only show challenges if user is in game
+      if(ret.privileges.leave) {
+        var userGameSelf =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
+        var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
+        ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
+      }
+
+      return ret;
     }
   });
 

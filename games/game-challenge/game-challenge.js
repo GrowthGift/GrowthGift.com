@@ -64,10 +64,14 @@ if(Meteor.isClient) {
       }
       return ggGame.getUserGameChallenges(game._id, Meteor.userId());
     },
-    privileges: function() {
+    data: function() {
       var ret ={
-        addChallenge: false,
-        addChallengeMessage: 'You may not add a challenge completion at this time.'
+        gameLink: '',
+        game: {},
+        privileges: {
+          addChallenge: false,
+          addChallengeMessage: 'You may not add a challenge completion at this time.'
+        }
       };
       if(!this.gameSlug || !Meteor.userId()) {
         return ret;
@@ -76,24 +80,28 @@ if(Meteor.isClient) {
       var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
       var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
-        ret.addChallenge =true;
+        ret.privileges.addChallenge =true;
         return ret;
       }
       // Output why not
       else {
         var curChallenge =ggGame.getCurrentChallenge(game, gameRule);
         if(!curChallenge.gameStarted) {
-          ret.addChallengeMessage ='Game has not started yet.';
+          ret.privileges.addChallengeMessage ='Game has not started yet.';
         }
         else if(curChallenge.gameEnded || !curChallenge.nextChallengeStart) {
-          ret.addChallengeMessage ='Game has ended.';
+          ret.privileges.addChallengeMessage ='Game has ended.';
         }
         else {
-          ret.addChallengeMessage ='Next challenge starts '
+          ret.privileges.addChallengeMessage ='Next challenge starts '
            + moment(curChallenge.nextChallengeStart, ggConstants.dateTimeFormat).fromNow()
            + '.';
         }
       }
+
+      ret.gameLink ='/g/'+this.gameSlug;
+      ret.game =game;
+
       return ret;
     }
   });
