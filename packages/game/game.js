@@ -124,3 +124,45 @@ ggGame.leave =function(game, userId, callback) {
     GamesCollection.update({ _id:game._id }, modifier, callback);
   }
 };
+
+ggGame.getUserGames =function(userId) {
+  if(!userId) {
+    return [];
+  }
+  var userGames =(userId && UserGamesCollection.find({ userId:userId }).fetch() ) || null;
+  var gameIds =[];
+  if(userGames) {
+    userGames.forEach(function(ug) {
+      gameIds.push(ug.gameId);
+    });
+  }
+  var games =( (gameIds.length >0) && GamesCollection.find({ _id: { $in: gameIds } }).fetch() ) || null;
+  var gameRuleIds =[];
+  if(games) {
+    games.forEach(function(game) {
+      gameRuleIds.push(game.gameRuleId)
+    });
+    var gameRules =GameRulesCollection.find({ _id: { $in: gameRuleIds } }).fetch();
+  }
+
+  if(!userGames) {
+    return [];
+  }
+  var game, gameRule, gameIndex, gameRuleIndex, gameEnd;
+  return _.sortByOrder(userGames.map(function(ug) {
+    gameIndex =_.findIndex(games, '_id', ug.gameId);
+    game =(gameIndex >-1) ? games[gameIndex] : null;
+    gameRuleIndex = game ? _.findIndex(gameRules, '_id', game.gameRuleId) : -1;
+    gameRule =(gameRuleIndex >-1) ? gameRules[gameRuleIndex] : null;
+    gameEnd = (game && gameRule) ? ggGame.getGameEnd(game, gameRule) : null;
+    return {
+      numChallenges: (ug.challenges && ug.challenges.length) || 0,
+      gameStart: game ? game.start : null,
+      gameEnd: gameEnd,
+      game: {
+        slug: game ? game.slug : null,
+        title: game ? game.title : null
+      }
+    };
+  }), ['gameStart'], ['asc']);
+};

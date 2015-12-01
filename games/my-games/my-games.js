@@ -7,12 +7,14 @@ if(Meteor.isClient) {
             icon: 'fa fa-cubes',
             html: 'Current',
             click: function() {
+              Router.go(ggUrls.myGames('now'));
             }
           },
           {
             icon: 'fa fa-cubes',
-            html: 'All',
+            html: 'Past',
             click: function() {
+              Router.go(ggUrls.myGames('past'));
             }
           },
           {
@@ -24,6 +26,39 @@ if(Meteor.isClient) {
           }
         ]
       };
+    },
+    data: function() {
+      var ret ={
+        userGames: []
+      };
+
+      var view =(this.view && this.view ==='past') ? 'past' : 'now';
+      var endedText =(view ==='past') ? "Ended" : "Ends";
+
+      var nowTimeFormat =moment().format(ggConstants.dateTimeFormat);
+      var userGames =ggGame.getUserGames(Meteor.userId()).filter(function(ug) {
+        if(view ==='past') {
+          // Filter out any games that are not over
+          return (ug.gameEnd <= nowTimeFormat) ? true : false;
+        }
+        else {
+          // Filter out any games that are over
+          return (ug.gameEnd > nowTimeFormat) ? true : false;
+        }
+      });
+
+      ret.userGames =userGames.map(function(ug) {
+        return _.extend({}, ug, {
+          xDisplay: {
+            gameTime: (ug.gameStart > nowTimeFormat) ? ( "Starts " +
+             moment(ug.gameStart, ggConstants.dateTimeFormat).fromNow() ) :
+             ( endedText+ " " + moment(ug.gameEnd, ggConstants.dateTimeFormat).fromNow() ),
+            gameLink: ggUrls.game(ug.game.slug)
+          }
+        });
+      });
+
+      return ret;
     }
   });
 }

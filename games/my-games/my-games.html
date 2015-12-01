@@ -1,4 +1,14 @@
 <template name="myGames">
   {{> ggNavSecondary nav=nav }}
-  My Games
+  
+  <div class='max-600 padding'>
+    {{#each data.userGames }}
+      <div>
+        <div class='flexbox'>
+          <div class='flex1'><a href='{{ xDisplay.gameLink }}'>{{ game.title }}</a></div>
+          <div>{{ xDisplay.gameTime }}</div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 </template>

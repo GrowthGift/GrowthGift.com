@@ -108,6 +108,18 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
   return ret;
 };
 
+ggGame.getGameEnd =function(game, gameRule) {
+  if(!game || !gameRule || !gameRule.challenges) {
+    return null;
+  }
+
+  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  // Assume in order with the last due date as the last item in the array
+  var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
+  return gameStart.clone().add(lastChallenge.dueFromStart,
+   'minutes').format(ggConstants.dateTimeFormat);
+}
+
 ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   var ret ={
     numCompletions: 0,
