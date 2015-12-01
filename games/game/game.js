@@ -116,7 +116,7 @@ if(Meteor.isClient) {
       ret.challenges.possibleCompletions =curChallenge.possibleCompletions;
 
       // Can only show challenges if user is in game
-      if(ret.privileges.leave) {
+      if(ret.privileges.viewChallenges) {
         var userGameSelf =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
         var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
         ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
