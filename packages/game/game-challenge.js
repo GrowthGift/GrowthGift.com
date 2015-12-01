@@ -123,6 +123,30 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   return ret;
 };
 
+ggGame.getUserGamesChallenges =function(gameId, userGames) {
+  // Get users
+  var userIds =[];
+  userGames.forEach(function(user) {
+    userIds.push(user.userId);
+  });
+  var users =Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1 } }).fetch();
+
+  var user ={};
+  var userIndex;
+  return _.sortByOrder(userGames.map(function(ug) {
+    userIndex =_.findIndex(users, '_id', ug.userId);
+    user =((userIndex >-1) && users[userIndex]) || {
+      profile: {
+        name: 'First Last'
+      }
+    };
+    return {
+      userName: user.profile.name,
+      numChallenges: ((ug.challenges && ug.challenges.length) || 0)
+    };
+  }), ['userName'], ['asc']);
+};
+
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
   nowTime =nowTime || moment();
   var ret ={

@@ -1,0 +1,20 @@
+<template name="gameUsers">
+  <div class='padding max-600'>
+    <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
+
+    <div class='margin-b'>
+      <h4 class='margin-b center'>Total possible challenges to date: {{ data.gameChallenge.possibleCompletions }}</h4>
+
+      <div class='max-450'>
+      {{ #each data.users }}
+        <div class='flexbox'>
+          <div class='flex1'>{{ userName }}</div>
+          <div>{{ numChallenges }}</div>
+        </div>
+      {{/each}}
+      </div>
+
+    </div>
+
+  </div>
+</template>
