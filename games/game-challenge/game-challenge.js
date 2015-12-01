@@ -18,16 +18,6 @@ if(Meteor.isServer) {
       return false;
     }
   });
-  Meteor.publish('current-game-rule-game-slug', function(gameSlug) {
-    if(gameSlug) {
-      var game =GamesCollection.findOne({slug: gameSlug});
-      return GameRulesCollection.find({ _id:game.gameRuleId });
-    }
-    else {
-      this.ready();
-      return false;
-    }
-  });
 }
 
 if(Meteor.isClient) {
