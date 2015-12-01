@@ -5,30 +5,36 @@
       <div>Game Details: <a href='{{ game.xHref.gameRule }}'>{{ game.xHref.gameRuleText }}</a></div>
       <div>Start: {{ game.xDisplay.start }}</div>
     </div>
-    <div class='max-450 margin-b'>
-      <div>Invite Friends to Play:</div>
-      <input type='text' readonly=true value='{{ game.xDisplay.shareLink }}' class='game-input-share-link center' />
+
+    <div class='margin-b'>
+      <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}. {{ data.userChallengeTotals.userCompletions }} / {{ data.userChallengeTotals.possibleAllUsers }} challenge completions.</a>
     </div>
 
     <div class='margin-b'>
       {{#if data.privileges.edit }}
         <div>
-          <a class='' href='{{ data.privileges.editLink }}'>Edit</a>
+          <a class='' href='{{ data.privileges.editLink }}'>Edit Game</a>
         </div>
       {{/if}}
       {{#if data.privileges.join }}
-        <div class='btn btn-primary game-join'>Join</div>
+        <div class='btn btn-primary game-join'>Join Game</div>
       {{/if}}
       {{#if data.privileges.leave }}
-        <div class='btn-underline text-warning game-leave'>Leave</div>
+        <div class='btn-underline text-warning game-leave'>Leave Game</div>
       {{/if}}
     </div>
 
-    <div class='margin-b'>
-      {{#if data.privileges.viewChallenges }}
+    {{#if data.privileges.viewChallenges }}
+      <div class='margin-b'>
         <div>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</div>
         <a class='a-div btn btn-primary' href='{{ data.gameChallengeLink }}'>View / Complete Challenges</a>
-      {{/if}}
+      </div>
+    {{/if}}
+
+    <div class='max-450 margin-b'>
+      <div>Invite Friends to Play:</div>
+      <input type='text' readonly=true value='{{ game.xDisplay.shareLink }}' class='game-input-share-link center' />
     </div>
+
   </div>
 </template>

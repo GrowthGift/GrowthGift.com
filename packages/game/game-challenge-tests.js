@@ -121,7 +121,7 @@ Tinytest.add('get current challenge that is on last challenge', function (test) 
 
 
 Tinytest.add('get current user challenge', function (test) {
-  var time1 =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
   var gameId ='game1';
   var userId ='user1';
   var userGame ={
@@ -129,21 +129,81 @@ Tinytest.add('get current user challenge', function (test) {
     userId: userId,
     challenges: [
       {
-        createdAt: time1.format(dateTimeFormat)
+        createdAt: nowTime.format(dateTimeFormat)
       },
       {
-        createdAt: time1.clone().add((1*24), 'hours').format(dateTimeFormat)
+        createdAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
       },
       // This one out of order
       {
-        createdAt: time1.clone().add((3*24), 'hours').format(dateTimeFormat)
+        createdAt: nowTime.clone().add((3*24), 'hours').format(dateTimeFormat)
       },
       {
-        createdAt: time1.clone().add((1*24), 'hours').format(dateTimeFormat)
+        createdAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
       }
     ]
   }
   var userChallenge =ggGame.getCurrentUserChallenge(gameId, userId, userGame);
   test.equal(userChallenge.numCompletions, userGame.challenges.length);
   test.equal(userChallenge.mostRecentChallenge, userGame.challenges[2]);
+});
+
+Tinytest.add('get challenge totals', function (test) {
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var gameRule ={
+    _id: 'gameRule1',
+    challenges: [
+      {
+        dueFromStart: 1*24*60
+      },
+      {
+        dueFromStart: 2*24*60
+      },
+      {
+        dueFromStart: 3*24*60
+      },
+      {
+        dueFromStart: 4*24*60
+      }
+    ]
+  };
+  var game ={
+    _id: 'game1',
+    gameRuleId: gameRule._id,
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dateTimeFormat)
+  };
+  var userGames =[
+    {
+      gameId: game._id,
+      userId: 'user1',
+      challenges: [
+        {
+          createdAt: nowTime.clone().subtract((2.4*24), 'hours').format(dateTimeFormat)
+        },
+        {
+          createdAt: nowTime.clone().subtract((1.4*24), 'hours').format(dateTimeFormat)
+        },
+        {
+          createdAt: nowTime.clone().subtract((0.4*24), 'hours').format(dateTimeFormat)
+        }
+      ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user2',
+      challenges: [
+        {
+          createdAt: nowTime.clone().subtract((0.8*24), 'hours').format(dateTimeFormat)
+        }
+      ]
+    }
+  ]
+  var challengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule, nowTime);
+  var numUsers =userGames.length;
+  // Game start is 2.5 days back so on the 3rd challenge, so 3 possible
+  test.equal(challengeTotals.possible, 3);
+  test.equal(challengeTotals.possibleAllUsers, 3*numUsers);
+  // User1 3 completions, User2 1 completion = 4 total
+  test.equal(challengeTotals.userCompletions, 4);
+  test.equal(challengeTotals.numUsers, numUsers);
 });

@@ -60,7 +60,7 @@ ggGame.saveUserGameChallenge =function(game, userId, challenge) {
 };
 
 /**
-@param {Object} nowTime moment()
+@param {Object} [nowTime] moment()
 */
 ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
   nowTime =nowTime || moment();
@@ -120,5 +120,26 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   var challenges =_.sortByOrder(userGame.challenges, ['createdAt'], ['asc']);
   ret.numCompletions =challenges.length;
   ret.mostRecentChallenge =challenges[(challenges.length -1)];
+  return ret;
+};
+
+ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
+  nowTime =nowTime || moment();
+  var ret ={
+    possible: 0,
+    possibleAllUsers: 0,
+    userCompletions: 0,
+    numUsers: userGames.length
+  };
+  var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
+  if(curChallenge.possibleCompletions) {
+    ret.possible =curChallenge.possibleCompletions;
+    ret.possibleAllUsers =curChallenge.possibleCompletions *ret.numUsers;
+    userGames.forEach(function(ug) {
+      if(ug.challenges && ug.challenges.length) {
+        ret.userCompletions +=ug.challenges.length;
+      }
+    });
+  }
   return ret;
 };

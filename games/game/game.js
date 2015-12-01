@@ -82,7 +82,9 @@ if(Meteor.isClient) {
           possibleCompletions: 0,
           selfCompletions: 0
         },
-        gameChallengeLink: ''
+        gameChallengeLink: '',
+        userChallengeTotals: {},
+        gameUsersLink: ''
       };
       if(!this.gameSlug) {
         return ret;
@@ -116,6 +118,13 @@ if(Meteor.isClient) {
         var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
         ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
       }
+
+      var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
+      ret.userChallengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule);
+      ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
+       "1 player" : ret.userChallengeTotals.numUsers + " players";
+
+      ret.gameUsersLink =ggUrls.gameUsers(game.slug);
 
       return ret;
     }
