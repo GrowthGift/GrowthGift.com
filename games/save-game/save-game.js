@@ -99,7 +99,7 @@ if(Meteor.isClient) {
         start =moment().startOf('week');
         // Allow same day, but if past the day, set to next week.
         if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
-          // start =start.add(7, 'days');   // TESTING
+          start =start.add(7, 'days');
         }
         // start at 1pm so add 13 hours from midnight
         start.add(13, 'hours');
