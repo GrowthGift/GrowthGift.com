@@ -17,8 +17,8 @@ Config.email =function(params) {
       }
     },
     "mandrill": {
-      "apiKey": "todoseed",
-      "username": "todoseed"
+      "apiKey": "vwgK43vyRBQYFjXGPXn6_A",
+      "username": "luke@growthgift.com"
     }
   };
   return ret;

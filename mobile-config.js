@@ -1,16 +1,16 @@
 if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.process.env.ENV ==='prod') {
   App.info({
-    name: 'todoseed',
-    // description: 'A recipe sharing app made in Meteor.',
+    name: 'GrowthGift',
+    description: 'Grow togther.',
     // author: 'Percolate Studio Team',
     // email: 'us@percolatestudio.com',
-    // website: '',
+    website: 'growthgift.com',
     version: '0.0.1'
   });
 }
 else {
   App.info({
-    name: 'todoseeddev',
+    name: 'GrowthGiftDev',
     version: '0.0.1'
   });
 }
