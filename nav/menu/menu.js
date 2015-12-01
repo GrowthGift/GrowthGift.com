@@ -38,6 +38,11 @@ if (Meteor.isClient){
       title: "Alerts",
       routeTo: "notifications"
     },
+    {
+      icon: "fa fa-info-circle",
+      title: "About",
+      routeTo: "about"
+    },
     // {
     //   icon: "fa fa-home",
     //   title: "Dev Test Test",
