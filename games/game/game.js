@@ -92,6 +92,9 @@ if(Meteor.isClient) {
 
       var userId =Meteor.userId();
       var game =GamesCollection.findOne({slug: this.gameSlug});
+      if(!game) {
+        return ret;
+      }
 
       // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
