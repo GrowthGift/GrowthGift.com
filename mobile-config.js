@@ -71,11 +71,12 @@ App.setPreference('StatusBarBackgroundColor', '#8E9599');
 // App.setPreference('deployment-target', '7.0'); // not sure if this works, according to phonegap, it should...
 
 //meteor local is supposed to be auto included but was not?
-App.accessRule('http://meteor.local/*');
+App.accessRule('*://meteor.local/*');
+App.accessRule('*://10.0.2.2/*');
 //environment specific (dev, prod) domains
-App.accessRule('http://growthgift.meteor.com/*');
-App.accessRule('http://growthgift.com/*');
-App.accessRule('http://gr0.co/*');
+App.accessRule('*://growthgift.meteor.com/*');
+App.accessRule('*://growthgift.com/*');
+App.accessRule('*://gr0.co/*');
 //google maps, places
 // App.accessRule('https://maps.googleapis.com/*');
 // App.accessRule('https://maps.gstatic.com/*');
