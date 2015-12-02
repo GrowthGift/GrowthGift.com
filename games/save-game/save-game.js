@@ -34,15 +34,6 @@ Meteor.methods({
   }
 });
 
-if(Meteor.isServer) {
-  Meteor.publish('current-game', function(gameSlug) {
-    return GamesCollection.find({slug: gameSlug});
-  });
-  Meteor.publish('gameRules', function() {
-    return GameRulesCollection.find({}, {fields: {title:1, type:1, description:1, slug:1} });
-  });
-}
-
 if(Meteor.isClient) {
 
   function init(templateInst) {

@@ -4,22 +4,6 @@ Meteor.methods({
   }
 });
 
-if(Meteor.isServer) {
-  Meteor.publish('current-game', function(gameSlug) {
-    return GamesCollection.find({slug: gameSlug});
-  });
-  Meteor.publish('userGame', function(gameSlug) {
-    if(gameSlug && this.userId) {
-      var game =GamesCollection.findOne({slug: gameSlug});
-      return UserGamesCollection.find({ gameId:game._id, userId:this.userId });
-    }
-    else {
-      this.ready();
-      return false;
-    }
-  });
-}
-
 if(Meteor.isClient) {
   AutoForm.hooks({
     gameChallengeForm: {
@@ -71,7 +55,6 @@ if(Meteor.isClient) {
       var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
         ret.privileges.addChallenge =true;
-        return ret;
       }
       // Output why not
       else {

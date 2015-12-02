@@ -9,12 +9,6 @@ GameRulesFiltersSchema = new SimpleSchema({
   }
 });
 
-if(Meteor.isServer) {
-  Meteor.publish('gameRules', function() {
-    return GameRulesCollection.find({}, {fields: {title:1, type:1, description:1, slug:1} });
-  });
-}
-
 if(Meteor.isClient) {
   var getFormValues =function(template) {
     var filters =template.filters.get();

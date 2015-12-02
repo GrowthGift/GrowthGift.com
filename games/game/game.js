@@ -7,40 +7,6 @@ Meteor.methods({
   }
 });
 
-if(Meteor.isServer) {
-  Meteor.publish('current-game', function(gameSlug) {
-    return GamesCollection.find({slug: gameSlug});
-  });
-  Meteor.publish('gameRule', function(gameSlug) {
-    if(gameSlug) {
-      var game =GamesCollection.findOne({slug: gameSlug});
-      if(!game) {
-        this.ready();
-        return false;
-      }
-      return GameRulesCollection.find({_id: game.gameRuleId});
-    }
-    else {
-      this.ready();
-      return false;
-    }
-  });
-  Meteor.publish('userGames', function(gameSlug) {
-    if(gameSlug) {
-      var game =GamesCollection.findOne({slug: gameSlug});
-      if(!game) {
-        this.ready();
-        return false;
-      }
-      return UserGamesCollection.find({ gameId:game._id });
-    }
-    else {
-      this.ready();
-      return false;
-    }
-  });
-}
-
 if(Meteor.isClient) {
   Template.game.rendered =function() {
     var signInCallback =Session.get('signInCallback');

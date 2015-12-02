@@ -71,12 +71,6 @@ Meteor.methods({
   }
 });
 
-if(Meteor.isServer) {
-  Meteor.publish('current-game-rule', function(gameRuleSlug) {
-    return GameRulesCollection.find({slug: gameRuleSlug});
-  });
-}
-
 if(Meteor.isClient) {
   Template.saveGameRule.created =function() {
     this.inited =false;
