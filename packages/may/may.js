@@ -116,8 +116,9 @@ ggMay.addUserGameChallenge =function(game, userId, userGame, gameRule, nowTime) 
   var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
   // Only may add if the user has NOT completed a challenge yet OR the user
   // most recent challenge completion happened BEFORE the current challenge start
-  if(!userChallenge.mostRecentChallenge || userChallenge.mostRecentChallenge.createdAt
-   <curChallenge.currentChallenge.start) {
+  console.log('ggMay.addUserGameChallenge: ', userChallenge.mostRecentChallenge, curChallenge.currentChallenge, userChallenge, curChallenge);
+  if(!userChallenge.mostRecentChallenge || moment(userChallenge.mostRecentChallenge.createdAt, ggConstants.dateTimeFormat)
+   < moment(curChallenge.currentChallenge.start, ggConstants.dateTimeFormat) ) {
     return true;
   }
   return false;
