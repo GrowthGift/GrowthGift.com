@@ -1,21 +1,24 @@
 <template name="saveGame">
+  {{#if data._xNotFound }}
+  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  {{else}}
   <div class='padding max-600'>
-    {{#autoForm collection="GamesCollection" doc=game id="saveGameForm" type=afMethod meteormethod="saveGame" validation="blur" }}
-      {{>afQuickField name="gameRuleId" label="Game" type="select" options=inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
-      <div><a href='{{gameRuleSelectData.hrefLookup}}'>Lookup</a> or <a href='{{gameRuleSelectData.hrefCreate}}'>Create</a> a game, then search (by slug) and select it above.</div>
+    {{#autoForm collection="GamesCollection" doc=data.game id="saveGameForm" type=afMethod meteormethod="saveGame" validation="blur" }}
+      {{>afQuickField name="gameRuleId" label="Game" type="select" options=data.inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
+      <div><a href='{{ data.gameRuleSelectData.hrefLookup }}'>Lookup</a> or <a href='{{ data.gameRuleSelectData.hrefCreate }}'>Create</a> a game, then search (by slug) and select it above.</div>
 
       {{> afQuickField name="title" class="save-game-input-title" }}
-      {{> afQuickField name="slug" type="text" disabled=inputOpts.slugDisabled class="save-game-input-slug" }}
+      {{> afQuickField name="slug" type="text" disabled=data.inputOpts.slugDisabled class="save-game-input-slug" }}
 
-      <!-- {{> afQuickField name="privacy" type="select" disabled=inputOpts.privacyDisabled options=inputOpts.privacyOpts }} -->
+      <!-- {{> afQuickField name="privacy" type="select" disabled=data.inputOpts.privacyDisabled options=data.inputOpts.privacyOpts }} -->
       <!-- To start, all games are public -->
       {{> afQuickField name="privacy" type="hidden" value="public" }}
       
-      {{> afQuickField name="start" type="datetimepicker" readonly=inputOpts.startReadonly disabled=inputOpts.startDisabled opts=inputOpts.optsDatetimepicker value=inputOpts.start }}
+      {{> afQuickField name="start" type="datetimepicker" readonly=data.inputOpts.startReadonly disabled=data.inputOpts.startDisabled opts=data.inputOpts.optsDatetimepicker value=data.inputOpts.start }}
       <div class='margin-large-t flexbox'>
         <div class='flex1'>&nbsp;</div>
         <div>
-          {{#if privileges.delete }}
+          {{#if data.privileges.delete }}
           <div class='btn btn-danger save-game-delete margin-r'>Delete</div>
           {{/if}}
           <button type="submit" class="btn btn-primary">Save</button>
@@ -23,4 +26,5 @@
       </div>
     {{/autoForm}}
   </div>
+  {{/if}}
 </template>

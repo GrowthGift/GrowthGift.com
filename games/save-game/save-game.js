@@ -35,56 +35,53 @@ Meteor.methods({
 });
 
 if(Meteor.isClient) {
+  Template.saveGame.created =function() {
+    Meteor.subscribe('save-game', Template.instance().data.gameSlug);
+  };
 
-  function init(templateInst) {
-    if(!templateInst.inited) {
-      if(templateInst.data.gameSlug) {
-        var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
-        if(!game || !game._id || !ggMay.editGame(game, Meteor.userId()) ) {
-          nrAlert.alert("No game you may edit with slug "+templateInst.data.gameSlug);
-          Router.go('myGames');
-        }
+  Template.saveGame.helpers({
+    data: function() {
+      if(!Meteor.user()) {
+        Router.go('myGames');
+        return false;
       }
-
-      if(templateInst.data.gameRule) {
-        var gameRule =ggGameRule.findBySlug(templateInst.data.gameRule);
+      var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug}) ) || null;
+      if(this.gameSlug && (!game || !game._id) ) {
+        return {
+          _xNotFound: true,
+          _xHref: ggUrls.myGames()
+        };
+      }
+      if(game && !ggMay.editGame(game, Meteor.userId()) ) {
+        nrAlert.alert("No game you may edit with slug "+this.gameSlug);
+        Router.go('myGames');
+      }
+      if(this.gameRule) {
+        var gameRule =ggGameRule.findBySlug(this.gameRule);
         if(gameRule && gameRule._id) {
           ggDom.setInputVal(gameRule._id, 'save-game-input-game-rule-id');
         }
       }
 
-      templateInst.inited =true;
-    }
-  }
+      var ret ={
+        game: game,
+        privileges: {
+          delete: (game && ggMay.deleteGame(game, Meteor.userId()) ) ? true : false
+        }
+      };
 
-  Template.saveGame.created =function() {
-    this.inited =false;
-  };
+      var gameSelectHrefPart =(game && '?gameSelect='+game.slug) ||
+       '?gameSelect='+ggConstants.gameSelectNew;
+      ret.gameRuleSelectData ={
+        hrefLookup: '/game-rules'+gameSelectHrefPart,
+        hrefCreate: '/save-game-rule'+gameSelectHrefPart
+      };
 
-  Template.saveGame.rendered =function() {
-    init(Template.instance());
-  };
-
-  Template.saveGame.helpers({
-    game: function() {
-      if(!this.gameSlug) {
-        return {};
-      }
-      var game =GamesCollection.findOne({slug: this.gameSlug});
-      return game;
-    },
-    afMethod: function() {
-      return (this.gameSlug && 'method-update') || 'method';
-    },
-    inputOpts: function() {
-      var game ={};
-      if(this.gameSlug) {
-        game =GamesCollection.findOne({slug: this.gameSlug});
-      }
-      var edit =(game && game._id && true) || false;
-      var disabled =(edit && true) || false;
+      // input opts
+      var edit =(game && game._id) ? true : false;
+      var disabled =edit ? true : false;
       // Form start date
-      var start =(edit && game.start) || null;
+      var start =(edit && game.start) ? game.start : null;
       if(!edit) {
         var now =moment();
         start =moment().startOf('week');
@@ -97,7 +94,7 @@ if(Meteor.isClient) {
         start =start.format(ggConstants.dateTimeFormat);
       }
 
-      var opts ={
+      ret.inputOpts ={
         slugDisabled: disabled,
         privacyDisabled: disabled,
         privacyOpts: [
@@ -115,24 +112,10 @@ if(Meteor.isClient) {
         gameRuleIdOpts: ggGameRule.allSelectOpts()
       };
 
-      return opts;
+      return ret;
     },
-    privileges: function() {
-      if(!this.gameSlug) {
-        return {};
-      }
-      var game =GamesCollection.findOne({slug: this.gameSlug});
-      return {
-        delete: (game && ggMay.deleteGame(game, Meteor.userId())) ? true : false
-      };
-    },
-    gameRuleSelectData: function() {
-      var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug})) || null;
-      var gameSelectHrefPart =(game && '?gameSelect='+game.slug) || '?gameSelect='+ggConstants.gameSelectNew;
-      return {
-        hrefLookup: '/game-rules'+gameSelectHrefPart,
-        hrefCreate: '/save-game-rule'+gameSelectHrefPart
-      };
+    afMethod: function() {
+      return (this.gameSlug && 'method-update') || 'method';
     }
   });
 
