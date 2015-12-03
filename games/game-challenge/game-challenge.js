@@ -62,8 +62,11 @@ if(Meteor.isClient) {
         if(!curChallenge.gameStarted) {
           ret.privileges.addChallengeMessage ='Game has not started yet.';
         }
-        else if(curChallenge.gameEnded || !curChallenge.nextChallengeStart) {
+        else if(curChallenge.gameEnded) {
           ret.privileges.addChallengeMessage ='Game has ended.';
+        }
+        else if(!curChallenge.nextChallengeStart) {
+          ret.privileges.addChallengeMessage ='You have already added your last challenge completion for this game.';
         }
         else {
           ret.privileges.addChallengeMessage ='Next challenge starts '

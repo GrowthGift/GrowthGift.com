@@ -1,4 +1,8 @@
 if(Meteor.isClient) {
+  Template.myGames.created =function() {
+    Meteor.subscribe('my-games');
+  };
+
   Template.myGames.helpers({
     nav: function() {
       return {
