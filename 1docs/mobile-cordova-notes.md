@@ -43,12 +43,13 @@ In addition, you need the following for each app to test on testFlight/release:
 variables (replace accordingly)
 APPNAME appName
 
-1. Run "meteor build <bundle path> --server <host>:<port>"
-2. Open Xcode project file
-3. manually change the bundleId to your app's bundleId in {{APPNAME-info.plist}}
-4.manually change the (incorrectly sized) icon-72.png and icon_72@2x.png with the correctly sized versions. keep the names as "icon-72.png" and "icon_72@2x.png"
-5. Change iOS deployment target to 7.0+
-6. Change version or build number
+- Run "meteor build <bundle path> --server <host>:<port>"
+- Open Xcode project file
+- manually change the bundleId to your app's bundleId in {{APPNAME-info.plist}}
+- manually change the (incorrectly sized) icon-72.png and icon_72@2x.png with the correctly sized versions. keep the names as "icon-72.png" and "icon_72@2x.png"
+- check all device orientations you want to support
+- Change iOS deployment target to 7.0+
+- Change version or build number
 
 
 ### Test Flight Internal Testers

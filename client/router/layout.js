@@ -52,6 +52,10 @@ if(Meteor.isClient) {
     classes: function() {
       return Session.get('layoutClasses');
     },
+    classesDevice: function() {
+      return ( Meteor.isCordova && navigator.userAgent.match(/(iPad|iPhone|iPod)/g) )
+       ? 'layout-iOS' : '';
+    },
     minHeight: function() {
       return Session.get('layoutContentMinHeight');
     }
