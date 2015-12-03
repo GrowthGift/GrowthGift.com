@@ -1,31 +1,36 @@
 if(Meteor.isClient) {
+  Template.gameRule.created =function() {
+    Meteor.subscribe('gameRule-gameRuleSlug', Template.instance().data.gameRuleSlug);
+  };
+
   Template.gameRule.helpers({
-    gameRule: function() {
+    data: function() {
       if(!this.gameRuleSlug) {
         Router.go('myGames');
         return {};
       }
       var gameRule =GameRulesCollection.findOne({slug: this.gameRuleSlug});
       if(!gameRule) {
-        nrAlert.alert("No game rule with slug "+this.gameRuleSlug);
-        Router.go('myGames');
-        return {};
+        return {
+          _xNotFound: true,
+          _xHref: ggUrls.myGames()
+        };
       }
-      gameRule.xDisplay ={
+      var ret ={
+        gameRule: gameRule
+      };
+      ret.gameRule.xDisplay ={
         type: _.capitalize(gameRule.type)
       };
-      return gameRule;
-    },
-    gameSelectData: function() {
-      var gameRule =(this.gameRuleSlug &&
-       GameRulesCollection.findOne({slug: this.gameRuleSlug}, { fields: { slug:1 } }))
-       || null;
+
       var hrefPart =(this.gameSelect && this.gameSelect !==ggConstants.gameSelectNew &&
        '?slug='+this.gameSelect+'&gameRule='+gameRule.slug) || '?gameRule='+gameRule.slug;
-      return {
+      ret.gameSelectData ={
         href: '/save-game'+hrefPart,
         text: (this.gameSelect && 'Use this game') || 'Create game from this'
       };
+
+      return ret;
     }
   });
 }
