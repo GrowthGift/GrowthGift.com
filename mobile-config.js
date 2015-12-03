@@ -5,13 +5,15 @@ if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.pr
     // author: 'Percolate Studio Team',
     // email: 'us@percolatestudio.com',
     website: 'growthgift.com',
-    version: '0.0.1'
+    version: '1.0.0'
   });
 }
 else {
   App.info({
-    name: 'GrowthGiftDev',
-    version: '0.0.1'
+    name: 'GrowthGift',
+    description: 'Grow togther.',
+    website: 'growthgift.com',
+    version: '1.0.0'
   });
 }
 
