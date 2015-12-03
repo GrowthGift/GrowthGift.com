@@ -23,23 +23,33 @@ if(Meteor.isClient) {
     }
   });
 
+  Template.gameChallenge.created =function() {
+    Meteor.subscribe('game', Template.instance().data.gameSlug);
+  };
+
   Template.gameChallenge.helpers({
-    challenges: function() {
-      if(!this.gameSlug) {
-        nrAlert.alert("No game with slug "+this.gameSlug);
+    data: function() {
+      if(!this.gameSlug || !Meteor.user()) {
         Router.go('myGames');
-        return {};
+        return false;
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
+      var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;
+      var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) ) || null;
+      if(!game || !userGame || !gameRule) {
+        return {
+          _xNotFound: true,
+          _xHref: ggUrls.myGames()
+        };
+      }
       if(!ggMay.viewUserGameChallenge(game, Meteor.userId()) ) {
         nrAlert.alert("You are not in this game. Join the game first");
         Router.go('/g/'+this.gameSlug);
-        return {};
+        return false;
       }
-      return ggGame.getUserGameChallenges(game._id, Meteor.userId());
-    },
-    data: function() {
+
       var ret ={
+        challenges: [],
         gameLink: '',
         game: {},
         privileges: {
@@ -47,12 +57,8 @@ if(Meteor.isClient) {
           addChallengeMessage: 'You may not add a challenge completion at this time.'
         }
       };
-      if(!this.gameSlug || !Meteor.userId()) {
-        return ret;
-      }
-      var game =GamesCollection.findOne({slug: this.gameSlug});
-      var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
-      var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
+      ret.challenges =ggGame.getUserGameChallenges(game._id, Meteor.userId());
+
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
         ret.privileges.addChallenge =true;
       }
