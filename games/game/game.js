@@ -8,6 +8,10 @@ Meteor.methods({
 });
 
 if(Meteor.isClient) {
+  Template.game.created =function() {
+    Meteor.subscribe('game', Template.instance().data.gameSlug);
+  };
+
   Template.game.rendered =function() {
     var signInCallback =Session.get('signInCallback');
     if(signInCallback && signInCallback.action) {
@@ -23,14 +27,19 @@ if(Meteor.isClient) {
     game: function() {
       var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug}))
        || null;
-      if(!game) {
+      var gameRule =(game && GameRulesCollection.findOne({_id: game.gameRuleId}) )
+       || null;
+      if(!game || !gameRule) {
         if(this.gameSlug) {
-          nrAlert.alert("No game rule with slug "+this.gameSlug);
+          // Game does not exist (or has not loaded yet).
+          return {
+            _xNotFound: true,
+            _xHref: ggUrls.myGames()
+          };
         }
         Router.go('myGames');
-        return {};
+        return false;
       }
-      var gameRule =GameRulesCollection.findOne({_id: game.gameRuleId});
       game.xHref ={
         gameRule: '/gr/'+gameRule.slug,
         gameRuleText: gameRule.slug
