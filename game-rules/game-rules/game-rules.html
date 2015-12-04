@@ -6,7 +6,7 @@
         {{> afQuickField name="title" class="game-rules-input-title" }}
       </div>
       <div class='flex1 margin-r'>
-        {{> afQuickField name="type" type="select" options=inputOpts.typeOpts class="game-rules-input-type" }}
+        {{> afQuickField name="type" type="select" options=data.inputOpts.typeOpts class="game-rules-input-type" }}
       </div>
     </div>
     {{/autoForm}}
@@ -16,7 +16,8 @@
     {{#each data.gameRules }}
       <a class='game-rules-card a-div center margin padding inline-block pointer align-top {{type}}' href='{{xHref.cardLink}}'>
         <h5 class='ellipsis margin-small-b'>{{ title }}</h5>
-        <div class='font-small game-rules-card-description'>{{ xDisplay.description }}</div>
+        <!-- <div class='font-small game-rules-card-description'>{{ xDisplay.description }}</div> -->
+        <div class='font-small game-rules-card-description'>{{ challenges.[0].xDisplay.description }}</div>
       </a>
     {{/each}}
     {{#if data.noResults}}

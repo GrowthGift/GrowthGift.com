@@ -4,8 +4,11 @@
   {{else}}
   <div class='padding max-600 center'>
     <h2>{{ data.gameRule.title }}</h2>
-    <h4>{{ data.gameRule.xDisplay.type }} Game</h4>
-    <div>{{ data.gameRule.description }}</div>
+    <div>{{ data.gameRule.xDisplay.type }} Game</div>
+    <!-- <div>{{ data.gameRule.description }}</div> -->
+    <!-- <h4>Instructions:</h4> -->
+    <h4>{{ data.gameRule.challenges.[0].title }}</h4>
+    <div>{{ data.gameRule.challenges.[0].description }}</div>
     <div class='margin-t'>
       <a href='{{data.gameSelectData.href}}' class='a-div btn btn-primary'>{{data.gameSelectData.text}}</a>
     </div>

@@ -43,9 +43,9 @@ Meteor.methods({
       if(docId) {
         var modifier =doc;
         // If BOTH title and description have changed, re-generate challenges
-        if(modifier.$set.title && modifier.$set.description) {
-          modifier.$set.challenges =ggGameRule.generateChallenges(modifier.$set.title,
-           modifier.$set.description);
+        if(modifier.$set.challenges[0].title && modifier.$set.challenges[0].description) {
+          modifier.$set.challenges =ggGameRule.generateChallenges(modifier.$set.challenges[0].title,
+           modifier.$set.challenges[0].description);
         }
 
         GameRulesCollection.update({_id:docId}, modifier, onSuccess);
@@ -54,7 +54,8 @@ Meteor.methods({
         GameRuleSchema.clean(doc);
 
         // Generate challenges
-        doc.challenges =ggGameRule.generateChallenges(doc.title, doc.description);
+        doc.challenges =ggGameRule.generateChallenges(doc.challenges[0].title,
+         doc.challenges[0].description);
 
         if(Meteor.user()) {
           doc.users =[

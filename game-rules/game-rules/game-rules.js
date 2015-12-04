@@ -32,16 +32,19 @@ if(Meteor.isClient) {
   });
 
   Template.gameRules.created =function() {
+    Meteor.subscribe('gameRules');
+
     var filters =ggGameRule.initFilters({});
     this.filters =new ReactiveVar(filters);
 
-    var gameRules =ggGameRule.search(filters);
-    this.gameRules =new ReactiveVar(gameRules);
+    this.gameRules =new ReactiveVar([]);
   };
 
   Template.gameRules.helpers({
     data: function() {
-      var gameRules =Template.instance().gameRules.get();
+      var filters =Template.instance().filters.get();
+      var gameRules =ggGameRule.search(filters);
+      Template.instance().gameRules.set(gameRules);
       var hrefPart =(this.gameSelect && '?gameSelect='+this.gameSelect) || '';
       return {
         gameRules: gameRules.map(function(gameRule) {
@@ -51,11 +54,9 @@ if(Meteor.isClient) {
             }
           });
         }),
-        noResults: (!gameRules.length) ? true : false
+        noResults: (!gameRules.length) ? true : false,
+        inputOpts: ggGameRule.inputOpts()
       };
-    },
-    inputOpts: function() {
-      return ggGameRule.inputOpts();
     }
   });
 

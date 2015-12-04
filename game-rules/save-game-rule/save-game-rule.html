@@ -3,7 +3,8 @@
     {{#autoForm collection="GameRulesCollection" doc=gameRule id="saveGameRuleForm" type=afMethod meteormethod="saveGameRule" validation="blur" }}
       {{> afQuickField name="title" class="save-game-rule-input-title" }}
       {{> afQuickField name="slug" type="text" disabled=inputOpts.slugDisabled class="save-game-rule-input-slug" }}
-      {{> afQuickField name="description" type="textarea" }}
+      {{> afQuickField name="challenges.0.title" label="Instructions title" placeholder="Do 5 more pushups." }}
+      {{> afQuickField name="challenges.0.description" type="textarea" label="Instructions details" placeholder="On Day 1, do 1 set of pushups to failure (no breaks). Then on Day 2, do 5 more pushups than you did on Day 1, in as few sets as possible (do them all in one set, if you can!). On Day 3, do 5 more than you did on Day 2. Continue to repeat, doing 5 more each day than you did the day before." }}
       {{> afQuickField name="type" type="select" options=inputOpts.typeOpts }}
       <div class='margin-large-t flexbox'>
         <div class='flex1'>&nbsp;</div>

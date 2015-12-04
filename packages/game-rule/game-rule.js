@@ -39,6 +39,15 @@ _gameRule.getGameRules =function(query) {
 
 ggGameRule.formatGameRules =function(gameRules) {
   return gameRules.map(function(gameRule) {
+    if(gameRule.challenges) {
+      gameRule.challenges =gameRule.challenges.map(function(challenge) {
+        return _.extend({}, challenge, {
+          xDisplay: {
+            description: _.trunc(challenge.description, {length: 100})
+          }
+        });
+      });
+    }
     return _.extend({}, gameRule, {
       xDisplay: {
         description: _.trunc(gameRule.description, {length: 100})
