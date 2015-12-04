@@ -28,7 +28,7 @@ Config.init({});
 Config.appInfo =function(params) {
   var ret ={
     name: 'Growth Gift Dev',
-    version: '0.0.1',
+    version: '1.0.0',
     domain: 'growthgift.com',
     shortDomain: 'gr0.co'
   };
