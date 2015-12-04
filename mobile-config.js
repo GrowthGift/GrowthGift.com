@@ -79,6 +79,7 @@ App.accessRule('*://10.0.2.2/*');
 App.accessRule('*://growthgift.meteor.com/*');
 App.accessRule('*://growthgift.com/*');
 App.accessRule('*://gr0.co/*');
+App.accessRule('*://107.170.212.162/*');
 //google maps, places
 // App.accessRule('https://maps.googleapis.com/*');
 // App.accessRule('https://maps.gstatic.com/*');
