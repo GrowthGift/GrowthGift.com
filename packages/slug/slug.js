@@ -10,6 +10,7 @@ Meteor.methods({
 ggSlug.getCollection =function(key) {
   return key ==='games' ? GamesCollection :
    key ==='gameRules' ? GameRulesCollection :
+   key ==='users' ? Meteor.users :
    null;
 };
 
@@ -48,6 +49,22 @@ ggSlug.autogen =function(name, slug) {
     .replace(/ /g, '-').toLowerCase();
 };
 
+// Generates a slug that IS valid / unique
+ggSlug.autogenValid =function(name, slug, collectionKey) {
+  slug =slug ? slug :
+   name ? ggSlug.autogen(name, false) :
+   (Math.random() + 1).toString(36).substring(7);
+  console.log(slug);
+  var counter =1;
+  while(ggSlug.exists(slug, collectionKey, false) ) {
+    // increment
+    slug +=counter.toString();
+    console.log(slug);
+  }
+  return slug;
+};
+
+// Generates a slug, but does NOT validate it (it may not be unique)
 ggSlug.setToAutogen =function(name, slug, classname) {
   var val =ggSlug.autogen(name, slug);
   if(val) {

@@ -13,16 +13,16 @@ It would be nice to have ALL urls short and pretty though sometimes short comes
 - Game Challenge Completion: /gc/:gameSlug
   - Ann completed her challenge; complete yours at /gc/:gameSlug
 - [x] Game Rule: /gr/:gameRuleSlug
-- User Games: /ug/:username
-- User: /u/:username
+- User Games: /ug/:userSlug
+- User: /u/:userSlug
 - Group: /gp/:groupSlug
 - Gift: /gf/:giftSlug
-- User Gifts: /ugf/:username
+- User Gifts: /ugf/:userSlug
 
 
 Semi short
 
-- Friends: /friends/:username
+- Friends: /friends/:userSlug
 - Game Users: /game-users/:gameSlug
   - shows all users in a game (with completion totals)
 
