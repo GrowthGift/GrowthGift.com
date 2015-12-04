@@ -69,7 +69,7 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
     gameEnded: false,
     possibleCompletions: 0,
     currentChallenge: null,
-    nextChallengeStart: null
+    nextChallenge: null
   };
   if(!game || !gameRule || !gameRule.challenges) {
     return ret;
@@ -77,7 +77,10 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
 
   var gameStart =moment(game.start, ggConstants.dateTimeFormat);
   if(gameStart >nowTime) {
-    ret.nextChallengeStart =gameStart.format(ggConstants.dateTimeFormat);
+    ret.nextChallenge =_.extend({}, gameRule.challenges[0], {
+      start: gameStart.format(ggConstants.dateTimeFormat),
+      end: gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(ggConstants.dateTimeFormat)
+    });
     return ret;
   }
   ret.gameStarted =true;
@@ -94,7 +97,10 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
       });
       ret.possibleCompletions =(ii+1);
       if(ii <(gameRule.challenges.length-1) ) {
-        ret.nextChallengeStart =ret.currentChallenge.end;
+        ret.nextChallenge =_.extend({}, gameRule.challenges[(ii+1)], {
+          start: ret.currentChallenge.end,
+          end: gameStart.clone().add(gameRule.challenges[(ii+1)].dueFromStart, 'minutes').format(ggConstants.dateTimeFormat)
+        });
       }
       found =true;
       break;
@@ -156,7 +162,8 @@ ggGame.getUserGamesChallenges =function(gameId, userGames) {
       userName: user.profile.name,
       numChallenges: ((ug.challenges && ug.challenges.length) || 0)
     };
-  }), ['userName'], ['asc']);
+  // }), ['userName'], ['asc']);
+}), ['numChallenges'], ['desc']);
 };
 
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {

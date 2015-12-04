@@ -1,6 +1,10 @@
 ggUrls ={
 };
 
+ggUrls.img =function(type) {
+  return type ? '/img/'+type+'/' : '/img/';
+}
+
 ggUrls.game =function(gameSlug) {
   return '/g/'+gameSlug;
 };

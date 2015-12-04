@@ -1,45 +1,101 @@
 <template name="game">
-  {{#if game._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ game._xHref }}'>Return to My Games.</a></div>
+  {{#if data._xNotFound }}
+  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
   {{else}}
-  <div class='padding max-600 center'>
-    <div class='margin-b'>
-      <h2>{{ game.title }}</h2>
-      <div>Game Details: <a href='{{ game.xHref.gameRule }}'>{{ game.xHref.gameRuleText }}</a></div>
-      <div>Start: {{ game.xDisplay.start }}</div>
-    </div>
+  <div class='max-600'>
 
-    <div class='margin-b'>
-      <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}. {{ data.userChallengeTotals.userCompletions }} / {{ data.userChallengeTotals.possibleAllUsers }} challenge completions.</a>
-    </div>
-
-    <div class='margin-b'>
-      {{#if data.privileges.edit }}
-        <div>
-          <a class='' href='{{ data.privileges.editLink }}'>Edit Game</a>
-        </div>
-      {{/if}}
-      {{#if data.privileges.join }}
-        <div class='btn btn-primary game-join'>Join Game</div>
-      {{/if}}
-      {{#if data.privileges.leave }}
+    {{#if data.privileges.edit }}
+      <div class='flexbox'>
+        <div class='flex1'>&nbsp;</div>
+        <div><a class='' href='{{ data.privileges.editLink }}'>Edit Game</a></div>
+      </div>
+    {{/if}}
+    {{#if data.privileges.leave }}
+      <div class='flexbox'>
+        <div class='flex1'>&nbsp;</div>
         <div class='btn-underline text-warning game-leave'>Leave Game</div>
-      {{/if}}
-    </div>
-
-    {{#if data.privileges.viewChallenges }}
-      <div class='margin-b'>
-        <div>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</div>
-        <a class='a-div btn btn-primary' href='{{ data.gameChallengeLink }}'>View / Complete Challenges</a>
       </div>
     {{/if}}
 
-    <div class='max-450 margin-b'>
-      <div>Invite Friends to Play:</div>
-      <input type='text' readonly=true value='{{ game.xDisplay.shareLink }}' class='game-input-share-link center' />
+    <div><img class='game-img' src='{{ data.game.xDisplay.img }}' /></div>
+    <div class='center margin-lr'>
+      <h2>{{ data.game.title }}</h2>
+      <div>
+        <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
+        {{#if data.privileges.viewChallenges }}
+        <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userCompletions }} total challenge completions</a>
+        {{else}}
+        {{ data.userChallengeTotals.userCompletions }} challenge completions
+        {{/if}}
+      </div>
     </div>
 
-    <div class='margin-b margin-xlarge-t'>
+    <!-- <div>Game Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
+      <div>Start: {{ data.game.xDisplay.start }}</div> -->
+
+    {{#if data.privileges.join }}
+    <div class='center margin-b'>
+      <div class='btn btn-primary margin-tb game-join'>Join Game</div>
+    </div>
+    {{else}}
+    <div class='margin-tb margin-lr'>
+      <div>Invite Friends:</div>
+      <div>
+        <input type='text' readonly=true value='{{ data.game.xDisplay.shareLink }}' class='game-input-share-link center' />
+      </div>
+    </div>
+    {{/if}}
+
+    <!-- current challenge -->
+    {{#if data.curChallenge.currentChallenge }}
+      <div class='game-wrapper margin-large-tb margin-lr'>
+        <div class='game-subheader-wrapper flexbox'>
+          <div class='game-subheader flex1'>Current challenge:</div>
+          <div>Ends {{ data.curChallenge.currentChallenge.xDisplay.end }}</div>
+        </div>
+        <div>
+          <span class='h5'>{{ data.curChallenge.currentChallenge.title }}:</span>
+          <span> {{ data.curChallenge.currentChallenge.description }}</span>
+        </div>
+
+        {{#if data.privileges.addChallenge }}
+        <div class='margin-tb center'>
+          <a class='a-div btn btn-primary' href='{{ data.gameChallengeLink }}'>Do the Challenge</a>
+        </div>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    <!-- next challenge (includes if game has not started) -->
+    {{#if data.curChallenge.nextChallenge }}
+      <div class='game-wrapper margin-large-tb margin-lr'>
+        <div class='game-subheader-wrapper flexbox'>
+          <div class='game-subheader flex1'>Next challenge:</div>
+          <div>Starts {{ data.curChallenge.nextChallenge.xDisplay.start }}</div>
+        </div>
+        <div>
+          <span class='h5'>{{ data.curChallenge.nextChallenge.title }}:</span>
+          <span> {{ data.curChallenge.nextChallenge.description }}</span>
+        </div>
+      </div>
+    {{/if}}
+
+    <!-- game is over (or user has already added his last challenge so it is over for him) -->
+    {{#if data.curChallenge.gameStarted }}
+      {{#if data.gameEndedForUser }}
+        <div class='game-wrapper margin-large-tb margin-lr'>
+          <div class='game-subheader-wrapper'><div class='game-subheader'>Game Stats</div></div>
+          {{#if data.privileges.viewChallenges }}
+            <a href='{{ data.gameChallengeLink }}'>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</a>
+          {{else}}
+            <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> | 
+            {{ data.userChallengeTotals.userCompletions }} challenge completions
+          {{/if}}
+        </div>
+      {{/if}}
+    {{/if}}
+
+    <div class='margin-b margin-xlarge-t center'>
       <a href='/about'>What is Growth Gift?</a>
     </div>
   </div>

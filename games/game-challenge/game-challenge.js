@@ -71,12 +71,12 @@ if(Meteor.isClient) {
         else if(curChallenge.gameEnded) {
           ret.privileges.addChallengeMessage ='Game has ended.';
         }
-        else if(!curChallenge.nextChallengeStart) {
+        else if(!curChallenge.nextChallenge) {
           ret.privileges.addChallengeMessage ='You have already added your last challenge completion for this game.';
         }
         else {
           ret.privileges.addChallengeMessage ='Next challenge starts '
-           + moment(curChallenge.nextChallengeStart, ggConstants.dateTimeFormat).fromNow()
+           + moment(curChallenge.nextChallenge.start, ggConstants.dateTimeFormat).fromNow()
            + '.';
         }
       }

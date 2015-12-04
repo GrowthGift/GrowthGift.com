@@ -23,7 +23,7 @@ Tinytest.add('get current challenge that has not started', function (test) {
   test.equal(curChallenge.gameEnded, false);
   test.equal(curChallenge.currentChallenge, null);
   test.equal(curChallenge.possibleCompletions, 0);
-  test.equal(curChallenge.nextChallengeStart, game.start);
+  test.equal(curChallenge.nextChallenge.start, game.start);
 });
 
 Tinytest.add('get current challenge that has ended', function (test) {
@@ -46,7 +46,7 @@ Tinytest.add('get current challenge that has ended', function (test) {
   test.equal(curChallenge.gameStarted, true);
   test.equal(curChallenge.currentChallenge, null);
   test.equal(curChallenge.possibleCompletions, gameRule.challenges.length);
-  test.equal(curChallenge.nextChallengeStart, null);
+  test.equal(curChallenge.nextChallenge, null);
 });
 
 Tinytest.add('get current challenge that is running', function (test) {
@@ -81,7 +81,7 @@ Tinytest.add('get current challenge that is running', function (test) {
   test.equal(curChallenge.currentChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dateTimeFormat) );
   test.equal(curChallenge.currentChallenge.end, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat) );
   test.equal(curChallenge.possibleCompletions, 2);
-  test.equal(curChallenge.nextChallengeStart, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat));
+  test.equal(curChallenge.nextChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat));
 });
 
 Tinytest.add('get current challenge that is on last challenge', function (test) {
@@ -116,7 +116,7 @@ Tinytest.add('get current challenge that is on last challenge', function (test) 
   test.equal(curChallenge.currentChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dateTimeFormat) );
   test.equal(curChallenge.currentChallenge.end, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat) );
   test.equal(curChallenge.possibleCompletions, gameRule.challenges.length);
-  test.equal(curChallenge.nextChallengeStart, null);
+  test.equal(curChallenge.nextChallenge, null);
 });
 
 
