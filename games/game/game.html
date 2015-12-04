@@ -38,12 +38,14 @@
       <div class='btn btn-primary margin-tb game-join'>Join Game</div>
     </div>
     {{else}}
-    <div class='margin-tb margin-lr'>
-      <div>Invite Friends:</div>
-      <div>
-        <input type='text' readonly=true value='{{ data.game.xDisplay.shareLink }}' class='game-input-share-link center' />
+      {{#unless data.curChallenge.gameEnded}}
+      <div class='margin-tb margin-lr'>
+        <div>Invite Friends:</div>
+        <div>
+          <input type='text' readonly=true value='{{ data.game.xDisplay.shareLink }}' class='game-input-share-link center' />
+        </div>
       </div>
-    </div>
+      {{/unless}}
     {{/if}}
 
     <!-- current challenge -->
