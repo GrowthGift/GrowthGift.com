@@ -22,9 +22,9 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
   };
   var ii, nofificationUserFound;
   var goTrig;
-  var users =Meteor.users.find({_id: {$in: params.userIds} }, {profile:1, emails:1})
+  var users =Meteor.users.find({_id: {$in: params.userIds} }, { fields: { profile:1, emails:1 } })
   var usersCount =users.fetch().length;
-  var notifications =NotificationsCollection.find({userId: {$in: params.userIds } }, {userId:1, settings:1, notificationCount:1}).fetch();
+  var notifications =NotificationsCollection.find({userId: {$in: params.userIds } }, { fields: { userId:1, settings:1, notificationCount:1 } }).fetch();
   users.forEach(function(user, index, cursor) {
     
     //append in a notification key (match up this user id with the notifications user id)
