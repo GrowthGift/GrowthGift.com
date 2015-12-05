@@ -13,9 +13,9 @@ var nav ={
   buttons: [
     {
       icon: 'fa fa-cube',
-      html: 'My Games',
+      html: 'Button 1',
       click: function() {
-        Router.go('myGames')
+        Router.go('location1')
       }
     }
   ]
@@ -23,14 +23,14 @@ var nav ={
 
 */
 
-// Template.ggNavSecondary.helpers({
+// Template.msNavSecondary.helpers({
 //   curNav: function() {
 //     return headerCurNav.get();
 //   }
 // });
 
-Template.ggNavSecondary.events({
-  'click .gg-nav-secondary-btn': function(evt, template) {
+Template.msNavSecondary.events({
+  'click .ms-nav-secondary-btn': function(evt, template) {
     if(this.click !==undefined) {
       this.click();
     }
