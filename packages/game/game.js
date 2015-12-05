@@ -7,7 +7,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   var slug =(gameDoc.$set && gameDoc.$set.slug) || gameDoc.slug;
   if(slug) {
     var existingDoc =(gameDocId && ({_id: gameDocId})) || null;
-    var slugExists =ggSlug.exists(slug, 'games', existingDoc);
+    var slugExists =ggSlug.exists(slug, 'games', existingDoc, null);
     if(slugExists) {
       valid =false;
     }

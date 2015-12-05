@@ -13,28 +13,31 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        var signupOpts ={
-          email: insertDoc.email.toLowerCase(),
-          password: insertDoc.password,
-          profile: {
-            name: insertDoc.name
-          }
-        };
-        Accounts.createUser(signupOpts, function(err) {
-          if(err) {
-            alert(err);
-          }
-          else {
-            self.resetForm();
-            //see if want to auto do anything after signup / login
-            var signInCallback =Session.get('signInCallback');
-            if(signInCallback && signInCallback.url) {
-              Router.go('/'+signInCallback.url);
+        Meteor.call('ggSlugAutogenValid', insertDoc.name, null, 'users', { slugField:'username'}, function(err, slug) {
+          var signupOpts ={
+            email: insertDoc.email.toLowerCase(),
+            password: insertDoc.password,
+            profile: {
+              name: insertDoc.name
+            },
+            username: slug
+          };
+          Accounts.createUser(signupOpts, function(err) {
+            if(err) {
+              alert(err);
             }
             else {
-              Router.go('home');
+              self.resetForm();
+              //see if want to auto do anything after signup / login
+              var signInCallback =Session.get('signInCallback');
+              if(signInCallback && signInCallback.url) {
+                Router.go('/'+signInCallback.url);
+              }
+              else {
+                Router.go('home');
+              }
             }
-          }
+          });
         });
 
         this.done();

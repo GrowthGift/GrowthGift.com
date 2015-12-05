@@ -1,8 +1,12 @@
 Meteor.methods({
-  ggSlugValidate: function(slug, collectionKey, existingDoc, callback) {
+  ggSlugValidate: function(slug, collectionKey, existingDoc, params, callback) {
     if(Meteor.isServer) {
-      temp =ggSlug.exists(slug, collectionKey, existingDoc);
-      return temp;
+      return ggSlug.exists(slug, collectionKey, existingDoc, params);
+    }
+  },
+  ggSlugAutogenValid: function(name, slug, collectionKey, params, callback) {
+    if(Meteor.isServer) {
+      return ggSlug.autogenValid(name, slug, collectionKey, params);
     }
   }
 });
@@ -21,12 +25,15 @@ Do not allow an existing slug UNLESS it is the existing slug for this same
   @param {String} _id
   @param {String} slug
 */
-ggSlug.exists =function(slug, collectionKey, existingDoc) {
+ggSlug.exists =function(slug, collectionKey, existingDoc, params) {
   var collection =ggSlug.getCollection(collectionKey);
   if(!collection) {
     return;
   }
-  var records =collection.find({slug: slug}).fetch();
+  var slugField =(params && params.slugField) ? params.slugField : 'slug';
+  var query ={};
+  query[slugField] =slug;
+  var records =collection.find(query).fetch();
   if(records && records.length) {
     if(records.length ===1 && existingDoc &&
      ( (existingDoc._id && existingDoc._id ===records[0]._id) ||
@@ -50,16 +57,16 @@ ggSlug.autogen =function(name, slug) {
 };
 
 // Generates a slug that IS valid / unique
-ggSlug.autogenValid =function(name, slug, collectionKey) {
+ggSlug.autogenValid =function(name, slug, collectionKey, params) {
   slug =slug ? slug :
    name ? ggSlug.autogen(name, false) :
    (Math.random() + 1).toString(36).substring(7);
-  console.log(slug);
   var counter =1;
-  while(ggSlug.exists(slug, collectionKey, false) ) {
+  var slugBase =slug;
+  while(ggSlug.exists(slug, collectionKey, false, params) ) {
     // increment
-    slug +=counter.toString();
-    console.log(slug);
+    slug = slugBase + counter.toString();
+    counter++;
   }
   return slug;
 };

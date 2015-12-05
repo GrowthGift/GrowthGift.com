@@ -128,7 +128,7 @@ if(Meteor.isClient) {
       var slug =AutoForm.getFieldValue('slug', 'saveGameForm');
       var existingGame =(template.data.gameSlug &&
        GamesCollection.findOne({slug: template.data.gameSlug}) ) || null;
-      Meteor.call('ggSlugValidate', slug, 'games', existingGame, function(err, exists) {
+      Meteor.call('ggSlugValidate', slug, 'games', existingGame, null, function(err, exists) {
         if(exists) {
           AutoForm.addStickyValidationError('saveGameForm', 'slug', 'slugExists', slug);
         }

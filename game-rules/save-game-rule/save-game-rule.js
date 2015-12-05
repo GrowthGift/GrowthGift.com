@@ -28,7 +28,7 @@ Meteor.methods({
     var slug =(doc.$set && doc.$set.slug) || doc.slug;
     if(slug) {
       var existingDoc =(docId && ({_id: docId})) || null;
-      var slugExists =ggSlug.exists(slug, 'gameRules', existingDoc);
+      var slugExists =ggSlug.exists(slug, 'gameRules', existingDoc, null);
       if(slugExists) {
         valid =false;
       }
@@ -125,7 +125,7 @@ if(Meteor.isClient) {
       var slug =AutoForm.getFieldValue('slug', 'saveGameRuleForm');
       var existingGameRule =(template.data.gameRuleSlug &&
        GameRulesCollection.findOne({slug: template.data.gameRuleSlug}) ) || null;
-      Meteor.call('ggSlugValidate', slug, 'gameRules', existingGameRule, function(err, exists) {
+      Meteor.call('ggSlugValidate', slug, 'gameRules', existingGameRule, null, function(err, exists) {
         if(exists) {
           AutoForm.addStickyValidationError('saveGameRuleForm', 'slug', 'slugExists', slug);
         }

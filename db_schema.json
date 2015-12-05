@@ -3,7 +3,7 @@
   "__comment2": "keep the 'users' collection as slim as possible - all apps should have similar 'users' collections and then add NEW collections with 'users' or 'userId' (if singular) as fields within that collection to link the user to the new collection, rather than the other way around.",
   "users": {
     "_id": "{String} bbca5d6a-2156-41c4-89da-0329e8c99a4f",
-    "slug": "{String} cool-kid-13",
+    "username": "{String} cool-kid-13",
     "emails": [
       {
         "address": "{String} cool@example.com",
