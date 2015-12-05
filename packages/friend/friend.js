@@ -47,7 +47,7 @@ ggFriend.follow =function(userId, followUserId, callback) {
         modifier.$set['users.'+followIndex+'.updatedAt'] =updatedAt;
       }
       else {
-        modifer ={
+        modifier ={
           $push: {
             users: {
               $each: [ followUser ]
