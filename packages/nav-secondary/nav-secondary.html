@@ -1,0 +1,13 @@
+<template name="ggNavSecondary">
+  <div class='gg-nav-secondary {{nav.classes.cont}}'>
+    <div class='flexbox'>
+      {{#each nav.buttons}}
+      <div class='pointer padding-lr gg-nav-secondary-btn flex1'>
+          <i class='gg-nav-secondary-btn-icon {{icon}}'></i>
+          <div class='gg-nav-secondary-btn-html'>{{{html}}}</div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class='gg-nav-secondary-spacer'>&nbsp;</div>
+</template>
