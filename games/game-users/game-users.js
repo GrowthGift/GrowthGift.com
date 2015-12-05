@@ -20,12 +20,18 @@ if(Meteor.isClient) {
         };
       }
 
+      var users =ggGame.getUserGamesChallenges(game._id, userGames);
+      users.forEach(function(user) {
+        user.info.xDisplay ={
+          href: ggUrls.user(user.info.username)
+        };
+      })
       return {
         game: game,
         gameLink: ggUrls.game(this.gameSlug),
         // Get game challenge completions possible
         gameChallenge: ggGame.getCurrentChallenge(game, gameRule),
-        users: ggGame.getUserGamesChallenges(game._id, userGames)
+        users: users
       };
     }
   });

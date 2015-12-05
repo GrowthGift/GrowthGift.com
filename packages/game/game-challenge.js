@@ -147,7 +147,7 @@ ggGame.getUserGamesChallenges =function(gameId, userGames) {
   userGames.forEach(function(user) {
     userIds.push(user.userId);
   });
-  var users =Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1 } }).fetch();
+  var users =Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1, username:1 } }).fetch();
 
   var user ={};
   var userIndex;
@@ -159,7 +159,7 @@ ggGame.getUserGamesChallenges =function(gameId, userGames) {
       }
     };
     return {
-      userName: user.profile.name,
+      info: user,
       numChallenges: ((ug.challenges && ug.challenges.length) || 0)
     };
   // }), ['userName'], ['asc']);

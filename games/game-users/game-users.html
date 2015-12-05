@@ -11,7 +11,7 @@
       <div class='max-450'>
       {{ #each data.users }}
         <div class='flexbox'>
-          <div class='flex1'>{{ userName }}</div>
+          <div class='flex1'><a href='{{ info.xDisplay.href }}'>{{ info.profile.name }}</a></div>
           <div>{{ numChallenges }}</div>
         </div>
       {{/each}}
