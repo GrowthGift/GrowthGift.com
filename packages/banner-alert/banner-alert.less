@@ -1,0 +1,32 @@
+.nr-banner-alert {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  z-index: 10005;
+  opacity: 0.9;
+  position: fixed;
+  top: @header-height;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+}
+.layout-iOS .nr-banner-alert {
+  top: @header-height + @iOS-status-height;
+}
+
+
+.nr-banner-error {
+  background-color: @errorText;
+  color: #fff;
+}
+.nr-banner-success {
+  background-color: @successText;
+  color: #fff;
+}
+
+.nr-banner-close {
+  padding:8px 12px;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}

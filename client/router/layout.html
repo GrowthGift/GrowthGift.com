@@ -1,7 +1,8 @@
 <template name="layout">
-  <div class='layout-body {{classes.contBody}}'>
+  <div class='layout-body {{classes.contBody}} {{classesDevice}}'>
     {{> header}}
     <div class='layout-content {{classes.cont}}' style='min-height:{{minHeight}}px;'>
+      {{> bannerAlert}}
       {{> yield}}
     </div>
   </div>

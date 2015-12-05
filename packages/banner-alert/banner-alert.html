@@ -1,0 +1,14 @@
+<template name="bannerAlert">
+  {{#if bannerText}}
+    <div class='nr-banner-alert {{#if bannerTypeError}} nr-banner-error {{else}} nr-banner-success {{/if}}'>
+      {{bannerText}}
+      <div class='nr-banner-close'>
+        {{#if customClose}}
+          {{> UI.dynamic template=customClose}}
+        {{else}}
+          x
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+</template>

@@ -12,6 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0.4.2');
+  api.use('accounts-password');
   api.use('lukemadera:config');
   api.addFiles('accounts-password.js');
 });

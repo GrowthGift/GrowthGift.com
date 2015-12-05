@@ -6,6 +6,19 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 - changes nav header to have icon plus html and removes center title
   - potential breaking change: removes header right buttons and header title (and subtitle)
 - adds nav-secondary package
+- adds home route and page
+- adds lodash
+- adds max-width LESS
+- adds banner-alert package
+- style
+  - sets select and textare area height
+  - adds align-top and img-100 classes
+  - sets .font-small line-height
+- adds layout classesDevice so any element (not just header) can be styled for device specifics (i.e. iOS header height)
+- updates mobile config access rules to handle both http and https
+
+## Bug Fixes
+- comments out duplicate tests so tinytest will run properly
 
 
 # 1.0.1 (2015-11-24)
