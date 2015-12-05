@@ -155,7 +155,9 @@ if(Meteor.isClient){
     }
 
     //add any alerts / notifications
-    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons.right, 'id', 'menu', {});
+    // var menuButtonSide ='right';
+    var menuButtonSide ='left';
+    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons[menuButtonSide], 'id', 'menu', {});
     if(index1 >-1) {
       var custom =false;
       if(Meteor.user()) {
@@ -163,16 +165,14 @@ if(Meteor.isClient){
         if(notification !==undefined) {
           var notificationCount =notification.notificationCount;
           if(notificationCount >0) {
-            ret.curNav.buttons.right[index1].html ="<span class='relative'><span class='header-btn-alert'><i class='fa fa-bolt'></i></span><i class='fa fa-bars'></i></span>";
-            ret.curNav.buttons.right[index1].icon =false;
+            ret.curNav.buttons[menuButtonSide][index1].alert =true;
             custom =true;
           }
         }
       }
       //reset
       if(!custom) {
-        ret.curNav.buttons.right[index1].icon ="fa fa-bars";
-        ret.curNav.buttons.right[index1].html =false;
+        ret.curNav.buttons[menuButtonSide][index1].alert =false;
       }
     }
 

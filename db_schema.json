@@ -54,7 +54,7 @@
         "push": "{Number} 1 to receive push notifications"
       },
       "type": {
-        "todoseed": {
+        "gameChallengeComplete": {
           "inApp": "{Number} 1 to recieve in app notifications",
           "email": "{Number} 1 to receive email notifications",
           "sms": "{Number} 1 to receive sms (text) notifications",

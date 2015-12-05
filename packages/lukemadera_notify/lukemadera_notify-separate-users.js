@@ -114,12 +114,12 @@ lmNotifyHelpers.checkNotificationSettings =function(user, params) {
   //hardcoded must match what the defaults are set for notifications settings
   var emailDefaults = {
     //@todoseed
-    // "notifType1": 1,
+    "gameChallengeComplete": 1,
     // "notifType2": 1,
   };
   var pushDefaults ={
     //@todoseed
-    // "notifType1": 1,
+    "gameChallengeComplete": 1,
     // "notifType2": 1,
   };
   
@@ -266,7 +266,8 @@ lmNotifyHelpers.checkNotificationSettings =function(user, params) {
   }
 
   //app wide overrides
-  // ret.email =false;   //do NOT send ANY emails right now    //@todo - change this to send emails again
+  ret.email =false;   //do NOT send ANY emails right now    //@todo - change this to send emails again
+  ret.push =false;    // TESTING - TODO
   
   //TESTING
   // console.log('checkNotificationSettings: ret: '+JSON.stringify(ret)+' type: '+params.type+' user: '+user.first_name+' '+user.last_name+' user.notifications.settings: '+JSON.stringify(user.notifications.settings));

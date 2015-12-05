@@ -4,9 +4,12 @@
       <div class='flexbox {{deviceType}}'>
 
         {{#each curNav.buttons.left}}
-        <div class='pointer padding-lr header-btn flex1'>
-            <i class='header-btn-icon {{icon}}'></i>
-            <div class='header-btn-html'>{{{html}}}</div>
+        <div class='pointer padding-lr header-btn flex1 relative'>
+          <i class='header-btn-icon {{icon}}'></i>
+          <div class='header-btn-html'>{{{html}}}</div>
+          {{#if alert}}
+            <span class='header-btn-alert'><i class='fa fa-bolt'></i></span>
+          {{/if}}
         </div>
         {{/each}}
         

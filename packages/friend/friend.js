@@ -94,3 +94,16 @@ ggFriend.isFollowing =function(userId, followUserId, friend) {
   }
   return false;
 };
+
+// Return all users who are following userId
+ggFriend.getFollowing =function(userId) {
+  var query ={
+    users: {
+      $elemMatch: {
+        userId: userId,
+        relation: 'following'
+      }
+    }
+  };
+  return FriendsCollection.find(query, { fields: { userId:1 } }).fetch();
+};
