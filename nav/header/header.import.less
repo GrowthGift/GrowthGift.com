@@ -24,35 +24,28 @@
   padding-top: @iOS-status-height;
 }
 .header-spacer {
-  height: @header-height;   //hardcoded
+  height: @header-height;
 }
 .header-spacer.header-iOS {
-  height: @header-height + @iOS-status-height;   //hardcoded
+  height: @header-height + @iOS-status-height;
 }
 
-.header-logo {
-  width: 129px;
-  height: 20px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+.header-btn {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-.header-left-btn, .header-right-btn {
+.header-btn.selected {
+  background-color: @grayDark;
+}
+
+.header-btn-icon {
   font-size: 25px;
 }
-.header-left-btn, .header-right-btn {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-.header-title {
-}
-.header-title-without-subtitle {
-  .font-large();
-  padding-top: 12px;
-  padding-bottom: 13px;
-}
-.header-title-with-subtitle {
-  padding-top: 2px;
-  padding-bottom: 1px;
+.header-btn-html {
+  font-size: 12px;
+  line-height: 15px;
+  margin-top: -3px;
 }
 
 .header-btn-alert {
@@ -62,16 +55,7 @@
   background-color: @green;
   color: @white;
   .font-small;
-  left: -7px;
-  top: 0px;
+  margin-left: -15px;
+  top: 2px;
   line-height: 18px;
-}
-
-@media (min-width: 600px) {
-  .header-logo {
-    width: 161px;
-    height: 25px;
-    padding-top: 12px;
-    padding-bottom: 13px;
-  }
 }

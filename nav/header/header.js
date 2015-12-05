@@ -26,19 +26,21 @@ if(Meteor.isClient){
       left: [
         {
           icon: 'fa fa-chevron-left',
+          html: 'Back',
           click: function() {
             history.back();
           }
-        }
-      ],
-      right: [
+        },
         {
           icon: 'fa fa-bars',
+          html: 'Menu',
           id: 'menu',
           click: function() {
             Session.set('navMenuVisible', true);
           }
         }
+      ],
+      right: [
       ]
     },
     auth: {
@@ -108,7 +110,7 @@ if(Meteor.isClient){
     var curUrl =Iron.Location.get().pathname; //use pathname instead of path to remove the query string
     var xx, found =false;
     for(xx in navConfig) {
-      if('/'+navConfig[xx].url ===curUrl) {
+      if( (navConfig[xx].urlRegEx && (new RegExp(navConfig[xx].urlRegEx)).test(curUrl)) || (navConfig[xx].url && '/'+navConfig[xx].url ===curUrl) ) {
         ret.curNav =navConfig[xx];
         found =true;
         break;
@@ -124,7 +126,9 @@ if(Meteor.isClient){
     }
 
     //add any alerts / notifications
-    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons.right, 'id', 'menu', {});
+    // var menuButtonSide ='right';
+    var menuButtonSide ='left';
+    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons[menuButtonSide], 'id', 'menu', {});
     if(index1 >-1) {
       var custom =false;
       if(Meteor.user()) {
@@ -132,16 +136,14 @@ if(Meteor.isClient){
         if(notification !==undefined) {
           var notificationCount =notification.notificationCount;
           if(notificationCount >0) {
-            ret.curNav.buttons.right[index1].html ="<span class='relative'><span class='header-btn-alert'><i class='fa fa-bolt'></i></span><i class='fa fa-bars'></i></span>";
-            ret.curNav.buttons.right[index1].icon =false;
+            ret.curNav.buttons[menuButtonSide][index1].alert =true;
             custom =true;
           }
         }
       }
       //reset
       if(!custom) {
-        ret.curNav.buttons.right[index1].icon ="fa fa-bars";
-        ret.curNav.buttons.right[index1].html =false;
+        ret.curNav.buttons[menuButtonSide][index1].alert =false;
       }
     }
 
@@ -187,6 +189,11 @@ if(Meteor.isClient){
   });
 
   Template.header.events({
+    'click .header-btn': function(evt, template) {
+      if(this.click !==undefined) {
+        this.click();
+      }
+    },
     'click .header-left-btn': function(evt, template) {
       if(this.click !==undefined) {
         this.click();
