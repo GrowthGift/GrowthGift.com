@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'growthgift:banner-alert',
+  name: 'meteorseed:banner-alert',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: '',
@@ -36,6 +36,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('growthgift:banner-alert');
+  api.use('meteorseed:banner-alert');
   api.addFiles('banner-alert-tests.js');
 });

@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'growthgift:nav-secondary',
+  name: 'meteorseed:nav-secondary',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: '',
@@ -28,6 +28,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('growthgift:nav-secondary');
+  api.use('meteorseed:nav-secondary');
   api.addFiles('nav-secondary-tests.js');
 });
