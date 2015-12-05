@@ -1,0 +1,23 @@
+<template name="user">
+  {{#if data._xNotFound }}
+  <div class='padding center'>User either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  {{else}}
+  <div class='max-600'>
+
+    <div class='max-300'><img class='img-100' src='{{ data.user.xDisplay.img }}' /></div>
+    <div class='center margin-lr'>
+      <h2>{{ data.user.profile.name }}</h2>
+      {{#unless data.isSelf}}
+      <div class='center margin-tb'>
+        {{#if data.isFollowing}}
+        <div class='btn btn-warning user-unfollow'>Unfollow</div>
+        {{else}}
+        <div class='btn btn-primary user-follow'>Follow</div>
+        {{/if}}
+      </div>
+      {{/unless}}
+    </div>
+
+  </div>
+  {{/if}}
+</template>

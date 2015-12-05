@@ -5,5 +5,7 @@ ggConstants ={
 };
 
 ggConstants.curDateTime =function() {
-  return moment().format(ggConstants.dateTimeFormat);
+  // Important to use UTC so all timezones are stored in the SAME timezone
+  // for easy comparisons.
+  return moment().utc().format(ggConstants.dateTimeFormat);
 };
