@@ -1,3 +1,18 @@
+Meteor.methods({
+  saveNotificationSettings: function(doc, docId) {
+
+    var onSuccess =function(error, result) {
+      if(Meteor.isClient) {
+        if(!error && result) {
+        }
+      }
+    };
+
+    lmNotify.saveSettings(doc, docId, Meteor.userId(), onSuccess);
+
+  }
+});
+
 if(Meteor.isClient) {
   function formatMessages(messages, params) {
     var iconMap ={
@@ -34,6 +49,35 @@ if(Meteor.isClient) {
   };
 
   Template.notifications.helpers({
+    nav: function() {
+      return {
+        buttons: [
+          {
+            icon: 'fa fa-bell',
+            html: 'Alerts',
+            click: function() {
+              Router.go('/notifications');
+            }
+          },
+          {
+            icon: 'fa fa-cog',
+            html: 'Settings',
+            click: function() {
+              Router.go('/notifications?nav=settings');
+            }
+          }
+        ]
+      };
+    },
+    data: function() {
+      return {
+        template: (this.nav && this.nav ==='settings') ?
+       'notificationsSettings' : 'notificationsAlerts'
+      };
+    }
+  });
+
+  Template.notificationsAlerts.helpers({
     notifications: function() {
       var notifications =lmNotify.readNotifications(Meteor.userId(), {});
       notifications.messages =formatMessages(notifications.messages, {});
@@ -52,7 +96,7 @@ if(Meteor.isClient) {
     }
   });
 
-  Template.notifications.events({
+  Template.notificationsAlerts.events({
     'click .notifications-item': function(evt, template) {
       //mark as read
       Meteor.call("lmNotifyMarkRead", Meteor.userId(), this._id, {});
@@ -61,6 +105,45 @@ if(Meteor.isClient) {
       if(this.linkUrlPart) {
         Router.go('/'+this.linkUrlPart);
       }
+    }
+  });
+
+  Template.notificationsSettings.helpers({
+    data: function() {
+      var inputOpts ={
+        emailOpts: [
+          { value: 0, label: 'Immediate'},
+          { value: (12 * 60), label: '12 hours'},
+          { value: (1 * 24 * 60), label: '1 day'},
+          { value: (2 * 24 * 60), label: '2 days'},
+          { value: (4 * 24 * 60), label: '4 days'},
+          { value: (7 * 24 * 60), label: '7 days'}
+        ],
+        // smsOpts: [
+        //   { value: 0, label: 'Immediate'},
+        //   { value: (6 * 60), label: '6 hours'},
+        //   { value: (12 * 60), label: '12 hours'},
+        //   { value: (1 * 24 * 60), label: '1 day'},
+        //   { value: (2 * 24 * 60), label: '2 days'},
+        //   { value: (4 * 24 * 60), label: '4 days'}
+        // ],
+        pushOpts: [
+          { value: 0, label: 'Immediate'},
+          { value: (1 * 60), label: '1 hour'},
+          { value: (3 * 60), label: '3 hours'},
+          { value: (6 * 60), label: '6 hours'},
+          { value: (12 * 60), label: '12 hours'},
+          { value: (1 * 24 * 60), label: '1 day'},
+          { value: (2 * 24 * 60), label: '2 days'}
+        ]
+      };
+      var notifications =lmNotify.readNotifications(Meteor.userId(), {});
+
+      return {
+        notifications: notifications,
+        inputOpts: inputOpts,
+        afMethod: notifications ? 'method-update' : 'method'
+      };
     }
   });
 }

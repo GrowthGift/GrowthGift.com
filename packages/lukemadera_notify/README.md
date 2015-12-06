@@ -32,7 +32,7 @@ Push, email and SMS notifications can (and probably should) be bulked to avoid
 This works by checking the "bulk.[protocolType].wait" and, UNLESS it is `0`,
  storing the message in the "bulk.[protocolType].messages" array rather than
  actually sending it. Then a cron job (that runs every minute) will go through
- and send the messages when the current time minus "bulk.[protocolType].lastSend"
+ and send the messages when the current time minus "bulk.[protocolType].lastSendAt"
  is >= the wait time AND there's at least one message to send.
 However, whenever notifications are viewed (in app), it clears out the bulk
  messages that are pending. No point in sending notifications if the user has

@@ -105,3 +105,14 @@ lmNotify.readNotifications =function(userId, params) {
   // return NotificationsCollection.find({userId: userId});
   return NotificationsCollection.findOne({userId: userId});
 };
+
+lmNotify.saveSettings =function(doc, docId, userId, callback) {
+  if(docId) {
+    var modifier =doc;
+    NotificationsCollection.update({_id:docId}, modifier, callback);
+  }
+  else {
+    NotificationSchema.clean(doc);
+    var notificationId =NotificationsCollection.insert(doc, callback);
+  }
+};

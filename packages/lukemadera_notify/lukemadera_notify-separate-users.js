@@ -65,7 +65,7 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
             messages: []
           },
           push: {
-            wait: 4 * 60,    // 4 hours
+            wait: 3 * 60,    // 3 hours
             messages: []
           }
         },
@@ -110,18 +110,25 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
 
 lmNotifyHelpers.separateBulk =function(ret1, user, type) {
   var modifier ={
-    $push: {}
+    $push: {},
+    $set: {}
   };
-  var atLeastOne =false, pushKey;
+  var atLeastOne =false, pushKey, pushObj;
   // Do NOT bulk in app notifications.
   var keys =['email', 'sms', 'push'];
   keys.forEach(function(key) {
     if(ret1[key] && user.notifications.bulk[key].wait !==0) {
       pushKey ="bulk."+key+".messages";
-      modifier.$push[pushKey] ={
+      pushObj ={
         type: type,
         createdAt: moment().utc().format('YYYY-MM-DD HH:mm:ssZ')
       };
+      if(user.notifications.bulk[key].messages ===undefined) {
+        modifier.$set[pushKey] =[ pushObj ];
+      }
+      else {
+        modifier.$push[pushKey] =pushObj;
+      }
       // No longer want to send a notification since we stored it instead.
       ret1[key] =false;
       atLeastOne =true;

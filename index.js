@@ -12,17 +12,6 @@ Meteor.startup(function() {
       username: cfgEmail.sendgrid.username,
       password: cfgEmail.sendgrid.password
     });
-
-    Meteor.publish('user-notifications', function() {
-      if(this.userId) {
-        // return lmNotify.readNotifications(this.userId, {});
-        return NotificationsCollection.find({userId: this.userId});
-      }
-      else {
-        this.ready();
-        return false;
-      }
-    });
     
   }
 });
