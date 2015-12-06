@@ -16,9 +16,9 @@ Config.email =function(params) {
         "email": "notify@"+emailDomain
       }
     },
-    "mandrill": {
-      "apiKey": "todoseed",
-      "username": "todoseed"
+    "sendgrid": {
+      "username": "todoseed",
+      "password": "todoseed"
     }
   };
   return ret;

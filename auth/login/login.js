@@ -15,7 +15,7 @@ if(Meteor.isClient) {
 
         Meteor.loginWithPassword(insertDoc.email.toLowerCase(), insertDoc.password, function(err) {
           if(err) {
-            alert(err);
+            nrAlert.alert(err);
           }
           else {
             self.resetForm();
@@ -41,10 +41,10 @@ if(Meteor.isClient) {
       var email =document.getElementById('loginForm').elements['email'].value;    //hardcoded
       if(email && email.length >1) {
         Accounts.forgotPassword({email:email});
-        alert('Check your email at '+email+' to reset your password');
+        nrAlert.success('Check your email at '+email+' to reset your password');
       }
       else {
-        alert('Please enter a valid email');
+        nrAlert.alert('Please enter a valid email');
       }
     }
   });

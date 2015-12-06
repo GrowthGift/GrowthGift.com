@@ -13,7 +13,7 @@ if(Meteor.isClient) {
 
         Accounts.resetPassword(token, insertDoc.password, function(err) {
           if(err) {
-            alert("Oops there was an error: "+err);
+            nrAlert.alert("Oops there was an error: "+err);
           }
           else {
             //successful password (re)set - go to login (or could auto login the user here now)
@@ -31,7 +31,7 @@ if(Meteor.isClient) {
     if(Meteor.userId()) {
       Meteor.logout(function(err) {
         if(err) {
-          alert(err);
+          nrAlert.alert(err);
         }
       });
     }
@@ -40,7 +40,7 @@ if(Meteor.isClient) {
   Template.resetPassword.helpers({
     passwordLabel: function() {
       if(!this.token) {
-        alert("Invalid url - must have a token");
+        nrAlert.alert("Invalid url - must have a token");
         Router.go('login');
       }
       

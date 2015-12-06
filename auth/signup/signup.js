@@ -22,7 +22,7 @@ if(Meteor.isClient) {
         };
         Accounts.createUser(signupOpts, function(err) {
           if(err) {
-            alert(err);
+            nrAlert.alert(err);
           }
           else {
             self.resetForm();

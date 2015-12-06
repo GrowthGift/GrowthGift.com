@@ -12,7 +12,6 @@ accounts-password
 aldeed:autoform
 aldeed:collection2
 momentjs:moment
-wylio:mandrill
 raix:push
 fortawesome:fontawesome
 
@@ -43,3 +42,4 @@ spacebars
 check
 meteorseed:nav-secondary
 meteorseed:banner-alert
+cunneen:sendgrid

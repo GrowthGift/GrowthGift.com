@@ -13,7 +13,7 @@ if (Meteor.isClient){
       console.log('logging out');   //TESTING
       Meteor.logout(function(err) {
         if(err) {
-          alert(err);
+          nrAlert.alert(err);
         }
         else {
           Router.go('home');
