@@ -61,7 +61,7 @@ lmNotify.sendInAppMessage =function(inAppData, userNotifications, params) {
   var defaultInAppObj ={
     _id: new Mongo.ObjectID().toHexString(),
     status: 'unread',
-    createdAt: moment().format('YYYY-MM-DD HH:mm:ssZ')
+    createdAt: moment().utc().format('YYYY-MM-DD HH:mm:ssZ')
   };
   var inAppObj =_.extend(defaultInAppObj, inAppData);
 

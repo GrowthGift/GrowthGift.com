@@ -24,7 +24,7 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
   var goTrig;
   var users =Meteor.users.find({_id: {$in: params.userIds} }, { fields: { profile:1, emails:1 } })
   var usersCount =users.fetch().length;
-  var notifications =NotificationsCollection.find({userId: {$in: params.userIds } }, { fields: { userId:1, settings:1, notificationCount:1 } }).fetch();
+  var notifications =NotificationsCollection.find({userId: {$in: params.userIds } }, { fields: { userId:1, settings:1, notificationCount:1, bulk:1 } }).fetch();
   users.forEach(function(user, index, cursor) {
     
     //append in a notification key (match up this user id with the notifications user id)
@@ -55,6 +55,20 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
           },
           type: {}
         },
+        bulk: {
+          email: {
+            wait: 2 * 24 * 60,    // 2 days
+            messages: []
+          },
+          sms: {
+            wait: 24 * 60,    // 24 hours
+            messages: []
+          },
+          push: {
+            wait: 4 * 60,    // 4 hours
+            messages: []
+          }
+        },
         messages: [],
         notificationCount: 0
       };
@@ -64,6 +78,8 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
 
     if (!testing) {
       var ret1 =self.checkNotificationSettings(user, {type: params.type, notifId:params.notifId});
+      // Remove any bulk ones (store them instead)
+      ret1 =self.separateBulk(ret1, user, params.type);
       if(ret1.inApp) {
         ret.users.inAppUsers.push(user);
       }
@@ -83,13 +99,40 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
       // ret.users.pushUsers.push(user);    //don't do push if testing
     }
 
-    console.log('users.forEach: index: '+index+' usersCount-1: '+(usersCount-1));    //TESTING
+    // console.log('users.forEach: index: '+index+' usersCount-1: '+(usersCount-1));    //TESTING
     //if on the last one, done
     if(index ===(usersCount-1)) {
-      console.log('users.forEach callback: index: '+index);   //TESTING
+      // console.log('users.forEach callback: index: '+index);   //TESTING
       callback(ret);
     }
   });
+};
+
+lmNotifyHelpers.separateBulk =function(ret1, user, type) {
+  var modifier ={
+    $push: {}
+  };
+  var atLeastOne =false, pushKey;
+  // Do NOT bulk in app notifications.
+  var keys =['email', 'sms', 'push'];
+  keys.forEach(function(key) {
+    if(ret1[key] && user.notifications.bulk[key].wait !==0) {
+      pushKey ="bulk."+key+".messages";
+      modifier.$push[pushKey] ={
+        type: type,
+        createdAt: moment().utc().format('YYYY-MM-DD HH:mm:ssZ')
+      };
+      // No longer want to send a notification since we stored it instead.
+      ret1[key] =false;
+      atLeastOne =true;
+    }
+  });
+
+  if(atLeastOne) {
+    NotificationsCollection.update({ userId: user.notifications.userId }, modifier, function(err, result) { });
+  }
+
+  return ret1;
 };
 
 /**
