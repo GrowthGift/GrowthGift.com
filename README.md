@@ -3,7 +3,7 @@
 Serves as a starting point for meteor projects that has some common out of the box functionality added on top of the bare `meteor create` command. Including, but not limited to:
 
 - notifications (in app, email, sms, push)
-  - email defaults to using Mandrill but can be configured
+  - email defaults to using Sendgrid (used to be Mandrill before they removed their free tier) but can be configured
 - mobile optimized and cross platform ready
   - IE >=9 redirect (only IE 10 and 11 are supported but all other browsers / platforms are supported)
 - configuration files and deploy scripts for production and development

@@ -96,7 +96,7 @@ Meteor.methods({
 //testing
 Push.addListener('token', function(token) {
   console.log('Token: ' + JSON.stringify(token));
-  // alert('Token: ' + JSON.stringify(token));
+  // nrAlert.alert('Token: ' + JSON.stringify(token));
 });
 // if(Meteor.isClient) {
 //   Push.id(); // Unified application id - not a token

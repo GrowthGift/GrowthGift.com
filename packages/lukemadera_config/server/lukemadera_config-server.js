@@ -16,10 +16,16 @@ Config.email =function(params) {
         "email": "notify@"+emailDomain
       }
     },
-    "mandrill": {
-      "apiKey": "vwgK43vyRBQYFjXGPXn6_A",
-      "username": "luke@growthgift.com"
+    "sendgrid": {
+      "username": "growthgiftdev1",
+      "password": "nQsmm73nG5kcRFZ"
     }
   };
+  if(Config.ENV ==='prod') {
+    ret.sendgrid ={
+      "username": "growthgift1",
+      "password": "J69W29k5997snGn"
+    };
+  }
   return ret;
 };

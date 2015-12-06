@@ -17,9 +17,9 @@ Meteor.startup(function() {
 
   if(Meteor.isServer) {
     var cfgEmail =Config.email({});
-    Meteor.Mandrill.config({
-      username: cfgEmail.mandrill.username,
-      key: cfgEmail.mandrill.apiKey
+    Meteor.Sendgrid.config({
+      username: cfgEmail.sendgrid.username,
+      password: cfgEmail.sendgrid.password
     });
 
     Meteor.publish('user-notifications', function() {

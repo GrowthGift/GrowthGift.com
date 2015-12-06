@@ -43,7 +43,7 @@ lmNotify.sendEmail =function(emailData, params) {
   };
   var emailObj =_.extend(defaultEmailObj, emailData);
 
-  Meteor.Mandrill.send(emailObj);
+  Meteor.Sendgrid.send(emailObj);
   console.log('email sent: SUBJECT: '+emailObj.subject+' TO: '+JSON.stringify(emailObj.to));
 };
 
