@@ -99,10 +99,8 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
       // ret.users.pushUsers.push(user);    //don't do push if testing
     }
 
-    // console.log('users.forEach: index: '+index+' usersCount-1: '+(usersCount-1));    //TESTING
     //if on the last one, done
     if(index ===(usersCount-1)) {
-      // console.log('users.forEach callback: index: '+index);   //TESTING
       callback(ret);
     }
   });
@@ -317,17 +315,7 @@ lmNotifyHelpers.checkNotificationSettings =function(user, params) {
 
   //app wide overrides
   // ret.email =false;   //do NOT send ANY emails right now    //@todo - change this to send emails again
-  
-  //TESTING
-  // console.log('checkNotificationSettings: ret: '+JSON.stringify(ret)+' type: '+params.type+' user: '+user.first_name+' '+user.last_name+' user.notifications.settings: '+JSON.stringify(user.notifications.settings));
-  // var userInfo =" user: "+user.first_name+" "+user.last_name+" "+user._id+" ";
-  // if(user.email !==undefined) {
-  //   userInfo+=user.email+" ";
-  // }
-  // if(user.phone !==undefined && user.phone.number !==undefined) {
-  //   userInfo+=user.phone.number+" ";
-  // }
-  // console.log('checkNotificationSettings: ret: '+JSON.stringify(ret)+' type: '+params.type+' notifId: '+params.notifId +userInfo);    //TESTING
-  
+  ret.sms =false;   // do NOT send ANY sms text messages right now
+
   return ret;
 };

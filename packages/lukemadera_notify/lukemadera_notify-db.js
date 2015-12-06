@@ -27,7 +27,7 @@ lmNotify.markMessageRead =function(userId, messageId, params) {
     modifier.$set['messages.$.status'] ='read';
     NotificationsCollection.update(query, modifier, function(error, valid) {
       if(error) {
-        console.log(error);
+        console.error(error);
       }
     });
   }

@@ -18,7 +18,8 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 - updates mobile config access rules to handle both http and https
 - switch email from Mandrill to Sendgrid as Mandrill no longer has a free tier
 - switch alert() calls to nrAlert()
-
+- add notification bulking support and frontend settings
+  - add cron job that runs every minute to send any queued bulk messages
 
 ## Bug Fixes
 - comments out duplicate tests so tinytest will run properly

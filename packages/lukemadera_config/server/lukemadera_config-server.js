@@ -17,8 +17,10 @@ Config.email =function(params) {
       }
     },
     "sendgrid": {
-      "username": "todoseed",
-      "password": "todoseed"
+      // "username": "todoseed",
+      // "password": "todoseed"
+      "username": "growthgiftdev1",
+      "password": "nQsmm73nG5kcRFZ"
     }
   };
   return ret;

@@ -112,7 +112,9 @@ if(Meteor.isClient) {
     data: function() {
       var inputOpts ={
         emailOpts: [
-          { value: 0, label: 'Immediate'},
+          // { value: 0, label: 'Immediate'},
+          { value: (3 * 60), label: '3 hours'},
+          { value: (6 * 60), label: '6 hours'},
           { value: (12 * 60), label: '12 hours'},
           { value: (1 * 24 * 60), label: '1 day'},
           { value: (2 * 24 * 60), label: '2 days'},
@@ -128,7 +130,9 @@ if(Meteor.isClient) {
         //   { value: (4 * 24 * 60), label: '4 days'}
         // ],
         pushOpts: [
-          { value: 0, label: 'Immediate'},
+          // { value: 0, label: 'Immediate'},
+          { value: 10, label: '10 minutes'},
+          { value: 30, label: '30 minutes'},
           { value: (1 * 60), label: '1 hour'},
           { value: (3 * 60), label: '3 hours'},
           { value: (6 * 60), label: '6 hours'},
