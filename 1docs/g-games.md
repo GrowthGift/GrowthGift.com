@@ -9,6 +9,105 @@ Weekly challenges (games) with others. Join or create a game, maybe invite
  Games.
 
 
+## Inherently Social
+
+"Inward out" is key so it starts by "doing yourself first." But the goal is
+ to make the biggest possible positive difference. People scale in ways no
+ single individual can. And people make things more fun, so the focus is on
+ the group as a whole achieving the greatest total score. "1000 pushups" or
+ "100,000" smiles is what is about, more than an individual achievement.
+
+That said, it can be easy to get lost among a large group of people. One is
+ the most powerful number since it is personal and manageable. The whole point
+ of these games is to be decidedly focused on ONE thing and the smallest next
+ step, knowing that a large series of small steps builds habits and creates a
+ big difference over time. Additionally, "accountabilibuddies" work.
+
+Impact is achieved two ways: the more you do individually, and the more
+ total people doing it. So each person's charge for each game is 3 parts
+ (each a different sphere / level of outward reach).
+
+1. do as much as you can individually
+2. help your champion (accountability buddy) - your ONE personal connection.
+ You are welcome to encourage and communicate with ALL game players during
+ the game, but just focus on yourself and your ONE buddy. Communicate with
+ and encourage them each and every day. You two are making it together.
+3. recruit as many people to join the game and play with you as possible.
+ This will almost ALWAYS be the way to have the most impact, effectively
+ allowing you to multiply your score and that of the group many times over.
+
+The flow will thus be:
+
+1. choose and join a game for the week.
+2. choose your own personal (individual) goal for the week and optionally a
+ "reach" goal too.
+3. Invite other people and request ONE of them to be your champion. Only ONE
+ champion request may be active at a time. But at any time (i.e. if your
+ requested champion does not join), you can cancel a pending request and
+ request someone else OR you can auto match up with another player in the
+ game (who does not yet have a buddy). A buddy is not required but is
+ highly encouraged. We suggest a DIFFERENT champion each week. Again while
+ not required, we'll prompt requesting someone else if the user has already
+ paired with this person in the past 2 weeks.
+  1. Each person who you invited who joins the game then counts toward your
+   total "reach" score.
+  2. 3 scores will be displayed for you:
+    1. Your score 
+    2. Your champion's score
+    3. Your reach score (sum of all scores of people you invited)
+4. once the game starts, do as much as you can each day and check in with
+ your champion to help them do as much as they can. Together see how much you
+ two can accomplish!
+
+The game goal is to achieve the biggest total score for the entire group (all
+ game players).
+
+Each game will have ONE main "action" to do. This will be the "score". An
+ action could be "pushups", "smiles", or any number of things.
+
+
+### Business Value
+
+This also helps business goals (virality, user growth). Hustle (inorganic
+ growth throuh direct sales and outreach) is vital in the beginning to
+ seed the user base, but retention and user sharing rapidly become far more
+ important. So focusing on these two things - how many users play a game the
+ next week (are retained every week) and how many users invite a new user to
+ play with them (and how many they invite and what percent convert).
+
+
+### Human Connection, Limited App Communication
+
+Originally, app triggered notifications were seen as a key for engagement.
+ For example, a user could follow other users and then would be automatically
+ notified each time someone they were following completed a challenge. This
+ would help keep users coming back and engaged with other game players and
+ friends. The goal is the same (keep people engaged) BUT we want to focus
+ (exclusively) on personal, human interaction. Meaning face to face is
+ better than video calls, is better than phone, is better than SMS text, is
+ better than email, is better than in app communication. We want people to
+ connect, OUTSIDE the app, not within it. So we actually want to try to limit,
+ or avoid all together, app notifications and messages. The whole point is
+ to make an impact, in the REAL world, not online within the application.
+ And we want it to be highly targeted and personal - JUST with their buddy,
+ ONE other person to focus on that week. No decision paralysis or feeling
+ overwhelmed with too many people to check in on and encourage. It's clear,
+ there's ONE person for you to focus on this week, that's it. One action,
+ one person, one day at a time. Just 5 minutes a day, you and your buddy.
+
+So users are still heavily encouraged to communicate, daily. But they're
+ encouraged to do it the old fashioned way. Call or text their champion.
+ If they were paired with a new person they do not yet have contact info
+ for (phone number, email, etc.), exchange it (via a button in the app,
+ no custom message), then start and continue the conversation outside the app.
+
+Likewise, no following (friends) or groups in the app. Your "group" is your
+ fellow players in the game. And you're "following" your champion (buddy) for
+ the week. And you're inviting NEW people to join and be buddies with each
+ week, not existing ones. Stay focused. No need to maintain a list of friends
+ or groups; this may actually be counter productive to the point.
+
+
 ## Starting Out - KISS
 
 Keep It Simple, Stupid.
@@ -71,11 +170,12 @@ Start with public games all being "worldwide" but later add in a game location
 Then a way to accept or reject the request.
 If accept, then each day, notify the other person / people when you complete
  yours.
- - For private games, notify everyone
-  - Though perhaps be "smart" about it to prevent overload to make it depend
-   on the number of game players
- - For public games, notify of friend or group member actions and key
-  milestones. Again be smart and selective to prevent notification overload.
+
+  - For private games, notify everyone
+    - Though perhaps be "smart" about it to prevent overload to make it depend
+     on the number of game players
+  - For public games, notify of friend or group member actions and key
+   milestones. Again be smart and selective to prevent notification overload.
 
 
 ## Games
@@ -97,6 +197,7 @@ Individual "Grower / Giver of the Week" and "Your Happiness" for gratitude
  for each Game Group. Show these on All Games home page as well as individual
  champs.
 If everyone completes every single day for week, reward with something?
+
   - "perfect score" social media share?
   - feature one or all the winner's "giving story / top giving goal" and / or
    top growth goal on the All Gifts page to help them build quorum.
