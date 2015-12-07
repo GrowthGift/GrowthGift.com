@@ -1,10 +1,10 @@
 Meteor.methods({
-  userFollow: function(followUserId) {
-    ggFriend.follow(Meteor.userId(), followUserId, function(err, result) { });
-  },
-  userUnfollow: function(unfollowUserId) {
-    ggFriend.unfollow(Meteor.userId(), unfollowUserId, function(err, result) { });
-  }
+  // userFollow: function(followUserId) {
+  //   ggFriend.follow(Meteor.userId(), followUserId, function(err, result) { });
+  // },
+  // userUnfollow: function(unfollowUserId) {
+  //   ggFriend.unfollow(Meteor.userId(), unfollowUserId, function(err, result) { });
+  // }
 });
 
 if(Meteor.isClient) {
@@ -30,23 +30,23 @@ if(Meteor.isClient) {
         img: ggUrls.img('users')+'user-silhouette.jpg'
       };
       var ret ={
-        user: user,
-        isFollowing: ( Meteor.userId() &&
-         ggFriend.isFollowing(Meteor.userId(), user._id, null) ) || false,
-        isSelf: ( Meteor.userId() && Meteor.userId() ===user._id ) ? true : false
+        user: user
+        // isFollowing: ( Meteor.userId() &&
+        //  ggFriend.isFollowing(Meteor.userId(), user._id, null) ) || false,
+        // isSelf: ( Meteor.userId() && Meteor.userId() ===user._id ) ? true : false
       };
       return ret;
     }
   });
 
-  Template.user.events({
-    'click .user-follow': function(evt, template) {
-      var user =Meteor.users.findOne({ username: this.username });
-      Meteor.call('userFollow', user._id);
-    },
-    'click .user-unfollow': function(evt, template) {
-      var user =Meteor.users.findOne({ username: this.username });
-      Meteor.call('userUnfollow', user._id);
-    }
-  });
+  // Template.user.events({
+  //   'click .user-follow': function(evt, template) {
+  //     var user =Meteor.users.findOne({ username: this.username });
+  //     Meteor.call('userFollow', user._id);
+  //   },
+  //   'click .user-unfollow': function(evt, template) {
+  //     var user =Meteor.users.findOne({ username: this.username });
+  //     Meteor.call('userUnfollow', user._id);
+  //   }
+  // });
 }

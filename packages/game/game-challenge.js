@@ -54,31 +54,34 @@ ggGame.saveUserGameChallenge =function(game, userId, challenge) {
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
        function (err, result) {
         // console.info('ggGame.saveUserGameChallenge UserGamesCollection.update', challenge, modifier, userId, game._id);
-        // Send notifications
-        if(Meteor.isServer) {
-          var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1} });
 
-          var gameUsers =UserGamesCollection.find({ gameId: game._id, userId: { $ne: userId } }).fetch();
-          var notifyUserIds =gameUsers.map(function(gu) {
-            return gu.userId;
-          });
-          // If public, only send to users who are following this user
-          if(game.privacy ==='public') {
-            var following =ggFriend.getFollowing(userId);
-            if(!following || !following.length) {
-              notifyUserIds =[];
-            }
-            else {
-              notifyUserIds =notifyUserIds.filter(function(nu) {
-                return ( _.findIndex(following, 'userId', nu) > -1 ) ? true : false;
-              });
-            }
-          }
-          if(notifyUserIds.length) {
-            lmNotify.send('gameChallengeComplete', { game: game, user: user, notifyUserIds: notifyUserIds }, {});
-          }
+        // Not using notifications any more, focus on human connection instead.
+        // // Send notifications
+        // if(Meteor.isServer) {
+        //   var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1} });
 
-        }
+        //   var gameUsers =UserGamesCollection.find({ gameId: game._id, userId: { $ne: userId } }).fetch();
+        //   var notifyUserIds =gameUsers.map(function(gu) {
+        //     return gu.userId;
+        //   });
+        //   // If public, only send to users who are following this user
+        //   if(game.privacy ==='public') {
+        //     var following =ggFriend.getFollowing(userId);
+        //     if(!following || !following.length) {
+        //       notifyUserIds =[];
+        //     }
+        //     else {
+        //       notifyUserIds =notifyUserIds.filter(function(nu) {
+        //         return ( _.findIndex(following, 'userId', nu) > -1 ) ? true : false;
+        //       });
+        //     }
+        //   }
+        //   if(notifyUserIds.length) {
+        //     lmNotify.send('gameChallengeComplete', { game: game, user: user, notifyUserIds: notifyUserIds }, {});
+        //   }
+
+        // }
+
       });
     }
   }
