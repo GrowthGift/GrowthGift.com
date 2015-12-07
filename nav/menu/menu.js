@@ -64,20 +64,22 @@ if (Meteor.isClient){
       var index1;
       //add any alerts / notifications
       index1 =notoriiArray.findArrayIndex(menuItemsLocal, 'routeTo', 'notifications', {});
-      var custom =false;
-      if(Meteor.user()) {
-        var notification =lmNotify.readNotifications(Meteor.userId(), {});
-        if(notification !==undefined) {
-          var notificationCount =notification.notificationCount;
-          if(notificationCount >0) {
-            menuItemsLocal[index1].title ="<span class='relative'><span class='nav-menu-alert'>"+notificationCount+"</span>Alerts</span>";
-            custom =true;
+      if(index1 >-1) {
+        var custom =false;
+        if(Meteor.user()) {
+          var notification =lmNotify.readNotifications(Meteor.userId(), {});
+          if(notification !==undefined) {
+            var notificationCount =notification.notificationCount;
+            if(notificationCount >0) {
+              menuItemsLocal[index1].title ="<span class='relative'><span class='nav-menu-alert'>"+notificationCount+"</span>Alerts</span>";
+              custom =true;
+            }
           }
         }
-      }
-      //reset
-      if(!custom) {
-        menuItemsLocal[index1].title ="Alerts";
+        //reset
+        if(!custom) {
+          menuItemsLocal[index1].title ="Alerts";
+        }
       }
       
       return menuItemsLocal;
