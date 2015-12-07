@@ -71,6 +71,7 @@ lmNotifyHelpers.bulkSendOne =function(notification, nowTime) {
 */
 lmNotifyHelpers.bulkSendMessages =function(messages, type, user, params) {
   var numMessages =messages.length;
+  var pluralS = ( (numMessages === 1) ? '' : 's' );
   if(type ==='email') {
     var email =(user.emails && user.emails[0] && user.emails[0].address) || null;
     if(email) {
@@ -86,19 +87,21 @@ lmNotifyHelpers.bulkSendMessages =function(messages, type, user, params) {
       });
       var typeKey;
       for(typeKey in countByType) {
-        html += countByType[typeKey] + " " + typeKey + " updates.<br />";
+        html += countByType[typeKey] + " " + typeKey + " update" + pluralS + ".<br />";
       }
+      var appInfo =Config.appInfo();
+      html += "<br />Go to " + appInfo.rootUrl + "/notifications to see them.<br />";
       lmNotify.sendEmail({
         to: [ email ],
-        subject: numMessages + ' new notifications',
+        subject: numMessages + ' new notification' + pluralS,
         html: html
       });
     }
   }
   else if(type ==='push') {
     lmNotify.sendPush({
-      title: numMessages + ' new notifications',
-      text: 'Go to the app to see your ' + numMessages + ' new notifications.',
+      title: numMessages + ' new notification' + pluralS,
+      text: 'Go to the app to see your ' + numMessages + ' new notification' + pluralS + '.',
       badge: params.badge
     }, user._id, {});
   }

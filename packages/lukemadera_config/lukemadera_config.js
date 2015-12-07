@@ -28,11 +28,25 @@ Config.init({});
 Config.appInfo =function(params) {
   var ret ={
     name: 'todoseedDev',
-    version: '0.0.1'
+    version: '0.0.1',
+    domain: 'localhost',
+    shortDomain: 'localhost',
+    scheme: 'http',
+    port: '3000'
   };
   if(Config.ENV ==='prod') {
     ret.name ='todoseed';
+    ret.domain ='domain.com';
+    ret.shortDomain ='short.co';
+    ret.scheme ='https';
+    ret.port =null;
   }
+
+  // http://localhost:3000
+  ret.rootUrl =ret.scheme + '://' + ret.domain + ( ret.port ? (':' + ret.port) : '');
+  // https://short.co
+  ret.shortRootUrl =ret.scheme + '://' + ret.shortDomain + ( ret.port ? (':' + ret.port) : '');
+
   return ret;
 };
 
