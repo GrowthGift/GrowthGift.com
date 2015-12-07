@@ -17,6 +17,6 @@ lmNotify.send =function(type, data, params) {
     lmNotifyTypes[type](type, data, params);
   }
   else {
-    console.log('lmNotify.send error - invalid type: '+type);
+    console.error('lmNotify.send error - invalid type: '+type);
   }
 };

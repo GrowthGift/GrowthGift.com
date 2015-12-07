@@ -27,7 +27,7 @@ lmNotify.markMessageRead =function(userId, messageId, params) {
     modifier.$set['messages.$.status'] ='read';
     NotificationsCollection.update(query, modifier, function(error, valid) {
       if(error) {
-        console.log(error);
+        console.error(error);
       }
     });
   }
@@ -60,8 +60,8 @@ lmNotify.markMessageRead =function(userId, messageId, params) {
 @param {Object} params
 */
 lmNotify.updateNotificationCount =function(userId, count, params) {
+  var notification =NotificationsCollection.findOne({userId: userId}, {notificationCount:1, bulk:1});
   if(count ==='increment' || count ==='decrement') {
-    var notification =NotificationsCollection.findOne({userId: userId}, {notificationCount:1}).fetch();
     var newCount =notification.notificationCount;
     if(count ==='increment') {
       newCount++;
@@ -74,7 +74,24 @@ lmNotify.updateNotificationCount =function(userId, count, params) {
     Push.setBadge(newCount);
   }
   else {
-    NotificationsCollection.update({userId: userId}, {$set: {notificationCount: count} });
+    var modifier ={
+      $set: {
+        notificationCount: count
+      }
+    };
+    if(count ===0 && notification.bulk !==undefined) {
+      // Clear out any bulked messages too
+      var keys =['email', 'sms', 'push'];
+      var setKey;
+      keys.forEach(function(key) {
+        if(notification.bulk[key] !==undefined && notification.bulk[key].messages
+         !==undefined && notification.bulk[key].messages.length) {
+          setKey ="bulk."+key+".messages";
+          modifier.$set[setKey] =[];
+        }
+      });
+    }
+    NotificationsCollection.update({userId: userId}, modifier, function(err, result) { });
     //update push notifications
     Push.setBadge(count);
   }
@@ -87,4 +104,15 @@ lmNotify.updateNotificationCount =function(userId, count, params) {
 lmNotify.readNotifications =function(userId, params) {
   // return NotificationsCollection.find({userId: userId});
   return NotificationsCollection.findOne({userId: userId});
+};
+
+lmNotify.saveSettings =function(doc, docId, userId, callback) {
+  if(docId) {
+    var modifier =doc;
+    NotificationsCollection.update({_id:docId}, modifier, callback);
+  }
+  else {
+    NotificationSchema.clean(doc);
+    var notificationId =NotificationsCollection.insert(doc, callback);
+  }
 };

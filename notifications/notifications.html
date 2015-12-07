@@ -1,4 +1,10 @@
 <template name="notifications">
+  {{> msNavSecondary nav=nav }}
+  {{> UI.dynamic template=data.template}}
+</template>
+
+
+<template name="notificationsAlerts">
   {{#if hasNotifications}}
   {{#each notifications.messages}}
     <div class='notifications-item list padding pointer {{status}}'>
@@ -14,6 +20,28 @@
     </div>
   {{/each}}
   {{else}}
-  <div class='h3 center'>No alerts yet!</div>
+  <div class='h3 center padding'>No alerts yet!</div>
   {{/if}}
+</template>
+
+
+<template name="notificationsSettings">
+  <div class='padding max-600'>
+    <div class='margin-tb'>
+      <div>Choose how often you receive alerts via the channels below.</div>
+      <div class='font-small'>You will always receive alerts immediately here in the application. And viewing here (in app) will cancel any pending alerts to the below channels.</div>
+    </div>
+    {{#autoForm collection="NotificationsCollection" doc=data.notifications id="saveNotificationsForm" type=data.afMethod meteormethod="saveNotificationSettings" }}
+      {{> afQuickField name="bulk.email.wait" type="select" label="How long between emails?" options=data.inputOpts.emailOpts firstOption=false }}
+      <!-- {{> afQuickField name="bulk.sms.wait" type="select" label="How long between SMS text messages?" options=data.inputOpts.smsOpts firstOption=false }} -->
+      {{> afQuickField name="bulk.push.wait" type="select" label="How long between push notifications?" options=data.inputOpts.pushOpts firstOption=false }}
+      <div class='font-small'>Only applies to Android & iOS phone apps</div>
+      <div class='margin-large-t flexbox'>
+        <div class='flex1'>&nbsp;</div>
+        <div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    {{/autoForm}}
+  </div>
 </template>

@@ -7,7 +7,7 @@ Meteor.startup(function() {
 
     // Redirect short domain to regular domain
     var appInfo =Config.appInfo({});
-    if(window.location.hostname ===appInfo.shortDomain) {
+    if( (appInfo.shortDomain !== appInfo.domain ) && window.location.hostname ===appInfo.shortDomain) {
       var regEx =new RegExp(appInfo.shortDomain);
       var newLoc =window.location.href.replace(regEx, appInfo.domain);
       console.info("Redirecting "+appInfo.shortDomain+" to "+appInfo.domain+" ...");
@@ -20,17 +20,6 @@ Meteor.startup(function() {
     Meteor.Sendgrid.config({
       username: cfgEmail.sendgrid.username,
       password: cfgEmail.sendgrid.password
-    });
-
-    Meteor.publish('user-notifications', function() {
-      if(this.userId) {
-        // return lmNotify.readNotifications(this.userId, {});
-        return NotificationsCollection.find({userId: this.userId});
-      }
-      else {
-        this.ready();
-        return false;
-      }
     });
     
   }

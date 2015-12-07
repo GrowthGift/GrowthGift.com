@@ -80,7 +80,7 @@ Meteor.methods({
   },
   devTestTestNotify: function(params) {
     var ret ={};
-    if(Meteor.userId) {
+    if(Meteor.userId()) {
       this.unblock();   // Let other method calls from the same client start running
 
       if(Meteor.isServer) {

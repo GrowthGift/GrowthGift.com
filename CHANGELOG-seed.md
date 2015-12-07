@@ -1,6 +1,12 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
-# 1.1 (2015-12-05)
+# 1.1.1 (2015-12-06)
+
+## Features
+- add app config domain and root url
+
+
+# 1.1.0 (2015-12-05)
 
 ## Features
 - changes nav header to have icon plus html and removes center title
@@ -18,7 +24,8 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 - updates mobile config access rules to handle both http and https
 - switch email from Mandrill to Sendgrid as Mandrill no longer has a free tier
 - switch alert() calls to nrAlert()
-
+- add notification bulking support and frontend settings
+  - add cron job that runs every minute to send any queued bulk messages
 
 ## Bug Fixes
 - comments out duplicate tests so tinytest will run properly

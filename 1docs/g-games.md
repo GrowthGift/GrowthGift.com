@@ -52,7 +52,7 @@ The flow will thus be:
   1. Each person who you invited who joins the game then counts toward your
    total "reach" score.
   2. 3 scores will be displayed for you:
-    1. Your score 
+    1. Your score
     2. Your champion's score
     3. Your reach score (sum of all scores of people you invited)
 4. once the game starts, do as much as you can each day and check in with

@@ -4,10 +4,10 @@ if(Meteor.isClient) {
       return {
         buttons: [
           {
-            icon: 'fa fa-cubes',
-            html: 'Button 1',
+            icon: 'fa fa-cube',
+            html: 'Test',
             click: function() {
-              // TODO
+              Router.go('/dev-test-test');
             }
           },
           {

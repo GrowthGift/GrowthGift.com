@@ -29,12 +29,24 @@ Config.appInfo =function(params) {
   var ret ={
     name: 'Growth Gift Dev',
     version: '1.0.0',
-    domain: 'growthgift.com',
-    shortDomain: 'gr0.co'
+    domain: 'localhost',
+    shortDomain: 'localhost',
+    scheme: 'http',
+    port: '3000'
   };
   if(Config.ENV ==='prod') {
     ret.name ='Growth Gift';
+    ret.domain ='growthgift.com';
+    ret.shortDomain ='gr0.co';
+    ret.scheme ='http';
+    ret.port =null;
   }
+
+  // http://localhost:3000
+  ret.rootUrl =ret.scheme + '://' + ret.domain + ( ret.port ? (':' + ret.port) : '');
+  // https://short.co
+  ret.shortRootUrl =ret.scheme + '://' + ret.shortDomain + ( ret.port ? (':' + ret.port) : '');
+
   return ret;
 };
 

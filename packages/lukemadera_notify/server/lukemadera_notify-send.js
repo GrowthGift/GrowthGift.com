@@ -24,7 +24,7 @@ lmNotify.sendPush =function(pushData, userId, params) {
   };
 
   Push.send(pushObj);
-  console.log('push sent: '+JSON.stringify(pushObj));
+  console.info('push sent: '+JSON.stringify(pushObj));
 };
 
 /**
@@ -44,7 +44,7 @@ lmNotify.sendEmail =function(emailData, params) {
   var emailObj =_.extend(defaultEmailObj, emailData);
 
   Meteor.Sendgrid.send(emailObj);
-  console.log('email sent: SUBJECT: '+emailObj.subject+' TO: '+JSON.stringify(emailObj.to));
+  console.info('email sent: SUBJECT: '+emailObj.subject+' TO: '+JSON.stringify(emailObj.to));
 };
 
 /**
@@ -61,7 +61,7 @@ lmNotify.sendInAppMessage =function(inAppData, userNotifications, params) {
   var defaultInAppObj ={
     _id: new Mongo.ObjectID().toHexString(),
     status: 'unread',
-    createdAt: moment().format('YYYY-MM-DD HH:mm:ssZ')
+    createdAt: moment().utc().format('YYYY-MM-DD HH:mm:ssZ')
   };
   var inAppObj =_.extend(defaultInAppObj, inAppData);
 
@@ -75,10 +75,10 @@ lmNotify.sendInAppMessage =function(inAppData, userNotifications, params) {
   };
   NotificationsCollection.update({userId: userNotifications.userId}, modifier, function(error, result) {
     if(error) {
-      console.log('sendInAppMessage update error: '+error);
+      console.error('sendInAppMessage update error: '+error);
     }
   });
-  console.log('in app notification message added: SUBJECT: '+inAppObj.subject+' USERID: '+userNotifications.userId+' NOTIFICATIONCOUNT: '+(userNotifications.notificationCount+1));
+  console.info('in app notification message added: SUBJECT: '+inAppObj.subject+' USERID: '+userNotifications.userId+' NOTIFICATIONCOUNT: '+(userNotifications.notificationCount+1));
 };
 
 /**

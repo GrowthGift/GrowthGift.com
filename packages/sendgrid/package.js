@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'lukemadera:notify',
+  name: 'lukemadera:sendgrid',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: '',
@@ -11,23 +11,15 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.0.3.2');
-  api.addFiles([
-    'lukemadera_notify.js',
-    'lukemadera_notify-separate-users.js',
-    'lukemadera_notify-db.js'
-  ]);
-  api.addFiles([
-    'server/lukemadera_notify-send.js',
-    'server/lukemadera_notify-types.js',
-    'server/lukemadera_notify-bulk.js'
-  ], 'server');
-
-  api.export('lmNotify');
+  api.versionsFrom('1.2.1');
+  api.use('ecmascript');
+  api.use('email');
+  api.addFiles('sendgrid.js');
 });
 
 Package.onTest(function(api) {
+  api.use('ecmascript');
   api.use('tinytest');
-  api.use('lukemadera:notify');
-  api.addFiles('lukemadera_notify-tests.js');
+  api.use('lukemadera:sendgrid');
+  api.addFiles('sendgrid-tests.js');
 });

@@ -23,3 +23,17 @@ Sends notifications (push, email, sms, in app) to one or more users.
 
 Which protocols / notifications go out depends on the user settings as well as app wide settings, which is handled in the `lukemadera_notify-separate-users.js` file.
 If no user settings are set yet, defaults will be used. The `lmNotifyHelpers.checkNotificationSettings` function (at the bottom) also can app wide override ALL settings so make sure to check there if you think you should be getting notifications are you are not. For example, email may be turned off currently, meaning NO ONE will get email notifications, no matter what! If you want to test email for debugging, just turn it back on and make sure to reset it when you're done testing!
+
+
+## Bulking
+
+Push, email and SMS notifications can (and probably should) be bulked to avoid
+ spamming the user. In app notifications are always devliered immediately.
+This works by checking the "bulk.[protocolType].wait" and, UNLESS it is `0`,
+ storing the message in the "bulk.[protocolType].messages" array rather than
+ actually sending it. Then a cron job (that runs every minute) will go through
+ and send the messages when the current time minus "bulk.[protocolType].lastSendAt"
+ is >= the wait time AND there's at least one message to send.
+However, whenever notifications are viewed (in app), it clears out the bulk
+ messages that are pending. No point in sending notifications if the user has
+ already seen them.

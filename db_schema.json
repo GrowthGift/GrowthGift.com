@@ -64,6 +64,38 @@
         "todoseed2": {}
       }
     },
+    "bulk": {
+      "email": {
+        "wait": "{Number} Number of minutes to wait between sends",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "messages": [
+          {
+            "type": "{String} todoseed - should match a notification type key",
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+          }
+        ]
+      },
+      "sms": {
+        "wait": "{Number} Number of minutes to wait between sends",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "messages": [
+          {
+            "type": "{String} todoseed - should match a notification type key",
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+          }
+        ]
+      },
+      "push": {
+        "wait": "{Number} Number of minutes to wait between sends",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "messages": [
+          {
+            "type": "{String} todoseed - should match a notification type key",
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+          }
+        ]
+      }
+    },
     "messages": [
       {
         "_id":"{String} 123l4k234l",

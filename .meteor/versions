@@ -16,7 +16,6 @@ caching-compiler@1.0.0
 caching-html-compiler@1.0.2
 callback-hook@1.0.4
 check@1.1.0
-cunneen:sendgrid@0.9.0
 ddp@1.2.2
 ddp-client@1.2.1
 ddp-common@1.2.2
@@ -64,6 +63,7 @@ lukemadera:auth@0.0.1
 lukemadera:config@0.0.1
 lukemadera:mocks@0.0.1
 lukemadera:notify@0.0.1
+lukemadera:sendgrid@0.0.1
 meteor@1.1.10
 meteor-base@1.0.1
 meteorseed:banner-alert@0.0.1
