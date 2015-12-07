@@ -35,8 +35,41 @@ Meteor.methods({
 });
 
 if(Meteor.isClient) {
+  function init(templateInst) {
+    var initTimeout =250;
+    var maxAttempts =(5000 / initTimeout);
+    if(!templateInst.inited) {
+
+      if(templateInst.data.gameRule) {
+        var gameRule =ggGameRule.findBySlug(templateInst.data.gameRule);
+        if(gameRule && gameRule._id) {
+          ggDom.setInputVal(gameRule._id, 'save-game-input-game-rule-id');
+          templateInst.inited =true;
+        }
+        // Not loaded yet..
+        else if(templateInst.initAttempts < maxAttempts) {
+          // TODO - figure out better way to detect gameRule is loaded
+          setTimeout(function() {
+            init(templateInst);
+          }, initTimeout);
+          templateInst.initAttempts++;
+        }
+      }
+      else {
+        templateInst.inited =true;
+      }
+
+    }
+  }
+
   Template.saveGame.created =function() {
     Meteor.subscribe('save-game', Template.instance().data.gameSlug);
+    this.inited =false;
+    this.initAttempts =0;
+  };
+
+  Template.saveGame.rendered =function() {
+    init(Template.instance());
   };
 
   Template.saveGame.helpers({
@@ -55,12 +88,6 @@ if(Meteor.isClient) {
       if(game && !ggMay.editGame(game, Meteor.userId()) ) {
         nrAlert.alert("No game you may edit with slug "+this.gameSlug);
         Router.go('myGames');
-      }
-      if(this.gameRule) {
-        var gameRule =ggGameRule.findBySlug(this.gameRule);
-        if(gameRule && gameRule._id) {
-          ggDom.setInputVal(gameRule._id, 'save-game-input-game-rule-id');
-        }
       }
 
       var ret ={

@@ -10,8 +10,8 @@
       <h4 class='center'>Add a Challenge Completion</h4>
       {{#if data.privileges.addChallenge }}
         {{#autoForm schema="GameChallengeSchema" id='gameChallengeForm' validation="blur" }}
-          {{>afQuickField name="title" }}
-          {{>afQuickField name="description" type="textarea" }}
+          {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
+          {{>afQuickField name="description" type="textarea" label="Details" }}
 
           <!-- Hidden and auto set for now -->
           {{>afQuickField name="privacy" type="hidden" value="private" }}
@@ -33,7 +33,7 @@
       {{#each data.challenges}}
         <div class='margin-b'>
           <div class='flexbox'>
-            <div class='flex1 h4'>{{ title }}</div>
+            <div class='flex1 h4'>{{ actionCount }} {{ data.gameRule.mainAction }}</div>
             <div>{{ xDisplay.createdAt }}</div>
           </div>
           <div>{{ description }}</div>

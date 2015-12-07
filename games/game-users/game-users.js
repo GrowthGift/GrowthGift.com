@@ -20,11 +20,13 @@ if(Meteor.isClient) {
         };
       }
 
-      var users =ggGame.getUserGamesChallenges(game._id, userGames);
+      var users =ggGame.getUserGamesChallenges(userGames, game);
       users.forEach(function(user) {
-        user.info.xDisplay ={
-          href: ggUrls.user(user.info.username)
-        };
+        if(user && user.info) {
+          user.info.xDisplay ={
+            href: user.info.username ? ggUrls.user(user.info.username) : ''
+          };
+        }
       })
       return {
         game: game,

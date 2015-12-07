@@ -6,13 +6,21 @@
     <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
 
     <div class='margin-b'>
-      <h4 class='margin-b center'>Total possible challenges to date: {{ data.gameChallenge.possibleCompletions }}</h4>
+      <!-- <h4 class='margin-b center'>Total possible challenges to date: {{ data.gameChallenge.possibleCompletions }}</h4> -->
+      <h4 class='margin-b center'>Team total: {{ data.gameChallenge.userActions }}</h4>
 
       <div class='max-450'>
+        <div class='flexbox'>
+          <h5 class='flex1'>User</h5>
+          <h5 class='game-users-col'>You</h5>
+          <h5 class='game-users-col'>Buddy</h5>
+        </div>
       {{ #each data.users }}
         <div class='flexbox'>
           <div class='flex1'><a href='{{ info.xDisplay.href }}'>{{ info.profile.name }}</a></div>
-          <div>{{ numChallenges }}</div>
+          <!-- <div>{{ numChallenges }}</div> -->
+          <div class='game-users-col'>{{ numActions }}</div>
+          <div class='game-users-col'>{{ buddyNumActions }}</div>
         </div>
       {{/each}}
       </div>

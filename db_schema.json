@@ -113,12 +113,14 @@
     "_id": "{String}",
     "slug": "{String}",
     "type": "{String} one of 'giving', 'growth', 'gratitude'",
+    "mainAction": "{String} e.g. 'pushups', 'smiles given'. Should be plural.",
     "title": "{String}",
     "description": "{String}",
     "challenges": [
       {
         "id": "{String}",
-        "title": "{String}",
+        "__comment": "These should be short, simple instructions that clarify the 'mainAction'",
+        "title": "{String} How many pushups did you do today?",
         "description": "{String}",
         "dueFromStart": "{Number} minutes from start of game when this is due"
       }
@@ -138,14 +140,24 @@
     "gameRuleId": "{String} link to 'gameRules._id'",
     "slug": "{String}",
     "title": "{String}",
-    "privacy": "{String} One of 'public', 'private'",
+    "privacy": "{String} [One of 'public', 'private' for if the description / notes are shared too.]",
     "start": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
     "users": [
       {
         "userId": "{String}",
         "status": "{String} one of: 'invited', 'joined', 'declined', 'requested', 'blocked'",
         "role": "{String} One of 'creator', 'admin'",
-        "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+        "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "buddyId": "{String} [The user id of this user's champion / partner]",
+        "buddyRequestKey": "{String} [unique key used to validate someone becoming this user's buddy for this game.]",
+        "__commentReachTeam": "A list of users who joined because of this user and thus will count toward this user's score",
+        "reachTeam": [
+          {
+            "userId": "{String}"
+          }
+        ],
+        "selfGoal": "{Number} 25 [The user's total (for entire game, not per day - so 5 per day for 5 days would be 25 total) self set number of main actions she wants to complete.]",
+        "reachGoal": "{Number} 100 [The user's reach team summed total (entire game) number of main actions. So if aiming to invite 4 people and thinks each person can do 25 total actions each, that would be 100 total actions.]"
       }
     ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
@@ -157,8 +169,8 @@
     "gameId": "{String} link to 'games._id'",
     "challenges": [
       {
-        "title": "{String} Similar to the journal, this is the entry title",
-        "description": "{String} This is the entry text / notes",
+        "actionCount": "{Number} [The number of the 'mainAction' completed]",
+        "description": "{String} [Any notes to document / track the (these) action(s)]",
         "privacy": "{String} One of 'public', 'private'",
         "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
       }

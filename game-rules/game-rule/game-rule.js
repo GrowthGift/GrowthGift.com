@@ -17,10 +17,15 @@ if(Meteor.isClient) {
         };
       }
       var ret ={
-        gameRule: gameRule
+        gameRule: gameRule,
+        privileges: {
+          edit: ggMay.editGameRule(gameRule, Meteor.userId()),
+          editHref: ggUrls.saveGameRule(gameRule.slug)
+        }
       };
       ret.gameRule.xDisplay ={
-        type: _.capitalize(gameRule.type)
+        type: _.capitalize(gameRule.type),
+        mainAction: _.capitalize(gameRule.mainAction)
       };
 
       var hrefPart =(this.gameSelect && this.gameSelect !==ggConstants.gameSelectNew &&

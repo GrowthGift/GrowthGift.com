@@ -169,7 +169,13 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   return ret;
 };
 
-ggGame.getUserGamesChallenges =function(gameId, userGames) {
+/**
+We return the buddy actions too but this requires a 2nd iteraction through
+ the users so is worse for performance. If we do not need the buddy info
+ we could make an option or a separate function that is more performant.
+ In this case we would not need the `game` paramater at all either.
+*/
+ggGame.getUserGamesChallenges =function(userGames, game) {
   // Get users
   var userIds =[];
   userGames.forEach(function(user) {
@@ -177,21 +183,63 @@ ggGame.getUserGamesChallenges =function(gameId, userGames) {
   });
   var users =Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1, username:1 } }).fetch();
 
-  var user ={};
-  var userIndex;
-  return _.sortByOrder(userGames.map(function(ug) {
-    userIndex =_.findIndex(users, '_id', ug.userId);
-    user =((userIndex >-1) && users[userIndex]) || {
-      profile: {
-        name: 'First Last'
+  var userIndex, curUser, gameUserIndex, buddyId, buddyIndex;
+
+  // The first time we won't know all the buddy action totals so we
+  // just save the buddy id for a second pass through.
+  var users1 =[];
+  userGames.forEach(function(ug) {
+    curUser ={
+      numActions: 0,
+      numChallenges: 0
+    };
+
+    // Get buddy info (either id or num actions directly if already have it)
+    gameUserIndex =(game.users && _.findIndex(game.users, 'userId', ug.userId))
+     || -1;
+    buddyId =( gameUserIndex >-1 && game.users[gameUserIndex].buddyId) || null;
+    if(buddyId) {
+      // See if already have the buddy's actions
+      buddyIndex =_.findIndex(users1, 'info._id', buddyId);
+      if(buddyIndex >-1) {
+        curUser.buddyNumActions =users1[buddyIndex].numActions;
       }
-    };
-    return {
-      info: user,
-      numChallenges: ((ug.challenges && ug.challenges.length) || 0)
-    };
-  // }), ['userName'], ['asc']);
-}), ['numChallenges'], ['desc']);
+      else {
+        curUser.buddyId =buddyId;
+      }
+    }
+
+    userIndex =_.findIndex(users, '_id', ug.userId);
+    curUser.info =((userIndex >-1) && users[userIndex]) || null;
+
+    if(ug.challenges && ug.challenges.length) {
+      curUser.numChallenges =ug.challenges.length;
+      ug.challenges.forEach(function(c) {
+        if(c.actionCount) {
+          curUser.numActions += c.actionCount;
+        }
+      });
+    }
+
+    users1.push(curUser);
+  });
+
+  // Fill any remaining buddy actions
+  var buddyActions;
+  return _.sortByOrder(users1.map(function(u) {
+    // See if already have the buddy's actions
+    if(u.buddyNumActions ===undefined) {
+      buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
+      if(buddyIndex >-1) {
+        u.buddyNumActions =users1[buddyIndex].numActions;
+      }
+      else {
+        // Set default as 0 if not found
+        u.buddyNumActions =0;
+      }
+    }
+    return u;
+  }), ['numChallenges'], ['desc']);
 };
 
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
@@ -200,6 +248,7 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
     possible: 0,
     possibleAllUsers: 0,
     userCompletions: 0,
+    userActions: 0,
     numUsers: userGames.length
   };
   var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
@@ -209,6 +258,9 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
     userGames.forEach(function(ug) {
       if(ug.challenges && ug.challenges.length) {
         ret.userCompletions +=ug.challenges.length;
+        ug.challenges.forEach(function(c) {
+          ret.userActions +=c.actionCount;
+        });
       }
     });
   }

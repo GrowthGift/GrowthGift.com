@@ -29,9 +29,15 @@ if(Meteor.isClient) {
 
   Template.gameChallenge.helpers({
     data: function() {
-      if(!this.gameSlug || !Meteor.user()) {
+      if(!Meteor.user()) {
         Router.go('myGames');
         return false;
+      }
+      if(!this.gameSlug) {
+        return {
+          _xNotFound: true,
+          _xHref: ggUrls.myGames()
+        };
       }
       var game =GamesCollection.findOne({slug: this.gameSlug});
       var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;
@@ -49,15 +55,20 @@ if(Meteor.isClient) {
       }
 
       var ret ={
-        challenges: [],
-        gameLink: '',
-        game: {},
+        challenges: ggGame.getUserGameChallenges(game._id, Meteor.userId()),
+        gameLink: ggUrls.game(this.gameSlug),
+        game: game,
+        gameRule: {
+          mainAction: gameRule.mainAction
+        },
         privileges: {
           addChallenge: false,
           addChallengeMessage: 'You may not add a challenge completion at this time.'
+        },
+        inputOpts: {
+          actionCountLabel: "Number of " + gameRule.mainAction + ":"
         }
       };
-      ret.challenges =ggGame.getUserGameChallenges(game._id, Meteor.userId());
 
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
         ret.privileges.addChallenge =true;
@@ -80,9 +91,6 @@ if(Meteor.isClient) {
            + '.';
         }
       }
-
-      ret.gameLink ='/g/'+this.gameSlug;
-      ret.game =game;
 
       return ret;
     }

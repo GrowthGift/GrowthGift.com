@@ -9,6 +9,28 @@ Weekly challenges (games) with others. Join or create a game, maybe invite
  Games.
 
 
+## Quality over Quantity, Mission Driven
+
+The "biggest possible positive difference" and gamifying things (see below)
+ is great for many reasons. However, ultimately it's more important how
+ people FEEL, not whether as a group we did 1000 pushups or 1010. So just
+ be wary of different types of motivations and never sacrifice the REAL
+ reason this app exists - to help people grow and give, and to help foster
+ human connection (add and strengthen relationships). It's more about
+ emotional, qualitative measures than qunatitative. So do not get lost
+ in (optimizing) the numbers. We're talking about real people here, not
+ just a statistic.
+
+So focus on everything being mission driven. The "games" may be more sticky
+ and encouraging people to share social and recruit people to games may seem
+ great. But focus on the user himself first. Retention and user happiness
+ before adding new users. Most of all, it's about helping people. Answering
+ the question that spawned this app - "If you had an hour to give, how would
+ you help another human grow?" It's about breaking down big (growth and
+ giving) goals into small next steps. Empowering ANYONE to give (share their
+ gifts) and to build habits giving and growing, with other humans, daily.
+
+
 ## Inherently Social
 
 "Inward out" is key so it starts by "doing yourself first." But the goal is
@@ -106,6 +128,11 @@ Likewise, no following (friends) or groups in the app. Your "group" is your
  the week. And you're inviting NEW people to join and be buddies with each
  week, not existing ones. Stay focused. No need to maintain a list of friends
  or groups; this may actually be counter productive to the point.
+
+### Reminder: Quality over Quantity
+
+After reading all that quantitative and business talk, re-read the real
+ focus at the top! Helping people connect, give, and grow.
 
 
 ## Starting Out - KISS
