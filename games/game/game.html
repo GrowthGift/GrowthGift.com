@@ -23,9 +23,13 @@
       <div>
         <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
         {{#if data.privileges.viewChallenges }}
-        <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userCompletions }} total challenge completions</a>
+        <a href='{{ data.gameChallengeLink }}'>
+          <!-- {{ data.userChallengeTotals.userCompletions }} total challenge completions -->
+          {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
+        </a>
         {{else}}
-        {{ data.userChallengeTotals.userCompletions }} challenge completions
+        <!-- {{ data.userChallengeTotals.userCompletions }} challenge completions -->
+        {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
         {{/if}}
       </div>
     </div>
@@ -91,7 +95,8 @@
             <a href='{{ data.gameChallengeLink }}'>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</a>
           {{else}}
             <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> | 
-            {{ data.userChallengeTotals.userCompletions }} challenge completions
+            <!-- {{ data.userChallengeTotals.userCompletions }} challenge completions -->
+            {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
           {{/if}}
         </div>
       {{/if}}

@@ -30,10 +30,12 @@ if(Meteor.isClient) {
       })
       return {
         game: game,
+        gameRule: gameRule,
         gameLink: ggUrls.game(this.gameSlug),
         // Get game challenge completions possible
         gameChallenge: ggGame.getCurrentChallenge(game, gameRule),
-        users: users
+        users: users,
+        challengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule, null)
       };
     }
   });

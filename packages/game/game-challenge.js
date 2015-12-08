@@ -259,7 +259,9 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
       if(ug.challenges && ug.challenges.length) {
         ret.userCompletions +=ug.challenges.length;
         ug.challenges.forEach(function(c) {
-          ret.userActions +=c.actionCount;
+          if(c.actionCount) {
+            ret.userActions +=c.actionCount;
+          }
         });
       }
     });

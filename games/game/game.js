@@ -67,6 +67,7 @@ if(Meteor.isClient) {
 
       var ret ={
         game: game,
+        gameRule: gameRule,
         privileges: {},
         challenges: {
           possibleCompletions: 0,
