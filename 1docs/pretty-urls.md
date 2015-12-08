@@ -12,7 +12,8 @@ It would be nice to have ALL urls short and pretty though sometimes short comes
   - Bob wants to play with you; join at /g/:gameSlug
 - Game Challenge Completion: /gc/:gameSlug
   - Ann completed her challenge; complete yours at /gc/:gameSlug
-- [x] Game Rule: /gr/:gameRuleSlug
+- Game Invite: /gi/:gameSlug
+- Game Rule: /gr/:gameRuleSlug
 - User Games: /ug/:username
 - User: /u/:username
 - Group: /gp/:groupSlug
@@ -25,6 +26,7 @@ Semi short
 - Friends: /friends/:username
 - Game Users: /game-users/:gameSlug
   - shows all users in a game (with completion totals)
+- Game Join: /game-join/:gameSlug
 
 
 Long / normal

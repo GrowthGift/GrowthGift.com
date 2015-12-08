@@ -7,6 +7,7 @@
       {{>afQuickField name="gameRuleId" label="Game" type="select" options=data.inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
       <div><a href='{{ data.gameRuleSelectData.hrefLookup }}'>Lookup</a> or <a href='{{ data.gameRuleSelectData.hrefCreate }}'>Create</a> a game, then search (by slug) and select it above.</div>
 
+      {{> afQuickField name="actionGoal" }}
       {{> afQuickField name="title" class="save-game-input-title" }}
       {{> afQuickField name="slug" type="text" disabled=data.inputOpts.slugDisabled class="save-game-input-slug" }}
 

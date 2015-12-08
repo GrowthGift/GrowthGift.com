@@ -5,8 +5,14 @@ ggUrls.img =function(type) {
   return type ? '/img/'+type+'/' : '/img/';
 };
 
-ggUrls.game =function(gameSlug) {
-  return '/g/'+gameSlug;
+ggUrls.game =function(gameSlug, params) {
+  return '/g/'+gameSlug +
+   ( (params && params.buddyRequestKey) ? '?buddy='+params.buddyRequestKey :
+   '' );
+};
+
+ggUrls.gameInvite =function(gameSlug) {
+  return '/gi/'+gameSlug;
 };
 
 ggUrls.gameRule =function(gameRuleSlug) {

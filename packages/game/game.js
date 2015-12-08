@@ -31,6 +31,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
             userId: userId,
             role: 'creator',
             status: 'joined',
+            buddyRequestKey: (Math.random() + 1).toString(36).substring(7),
             updatedAt: ggConstants.curDateTime()
           }
         ];
@@ -80,6 +81,7 @@ ggGame.join =function(game, userId, callback) {
         var userObj ={
           userId: userId,
           status: 'joined',
+          buddyRequestKey: (Math.random() + 1).toString(36).substring(7),
           updatedAt: ggConstants.curDateTime()
         };
         var modifier ={
@@ -124,6 +126,35 @@ ggGame.leave =function(game, userId, callback) {
     GamesCollection.update({ _id:game._id }, modifier, callback);
   }
 };
+
+/**
+@param {Object} gameUserData All data to $set in the games.users[userIndex] object
+  @param {String} selfGoal
+*/
+ggGame.saveGameInvite =function(game, userId, gameUserData, callback) {
+  var gameUserIndex =(game && game.users && userId ) ?
+   _.findIndex(game.users, 'userId', userId) : -1;
+  if(gameUserIndex <0) {
+    callback(true);
+    return;
+  }
+  var gameUser =game.users[gameUserIndex];
+
+  var modifier ={
+    $set: {}
+  };
+  var key;
+  for(key in gameUserData) {
+    modifier.$set['users.'+gameUserIndex+'.'+key] =gameUserData[key];
+  }
+  GamesCollection.update({ _id: game._id }, modifier, callback);
+};
+
+ggGame.getGameUser =function(game, userId) {
+  var gameUserIndex =(game && game.users && userId ) ?
+   _.findIndex(game.users, 'userId', userId) : -1;
+  return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
+}
 
 ggGame.getUserGames =function(userId) {
   if(!userId) {

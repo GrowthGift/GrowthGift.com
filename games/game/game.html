@@ -20,6 +20,7 @@
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
     <div class='center margin-lr'>
       <h2>{{ data.game.title }}</h2>
+      <h4>Goal: {{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h4>
       <div>
         <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
         {{#if data.privileges.viewChallenges }}
@@ -43,11 +44,8 @@
     </div>
     {{else}}
       {{#unless data.curChallenge.gameEnded}}
-      <div class='margin-tb margin-lr'>
-        <div>Invite Friends:</div>
-        <div>
-          <input type='text' readonly=true value='{{ data.game.xDisplay.shareLink }}' class='game-input-share-link center' />
-        </div>
+      <div class='center margin-b margin-large-t'>
+        <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>Invite Friends</a>
       </div>
       {{/unless}}
     {{/if}}

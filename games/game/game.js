@@ -1,6 +1,16 @@
 Meteor.methods({
   joinGame: function(game) {
-    ggGame.join(game, Meteor.userId(), function(err, result) { });
+    ggGame.join(game, Meteor.userId(), function(err, result) {
+      if(Meteor.isClient) {
+        if(!err && result) {
+          var templateInst =ggTemplate.getMainTemplate("Template.game");
+          var slug =templateInst.data.gameSlug;
+          if(slug) {
+            Router.go(ggUrls.gameInvite(slug));
+          }
+        }
+      }
+    });
   },
   leaveGame: function(game) {
     ggGame.leave(game, Meteor.userId(), function(err, result) { });
@@ -45,8 +55,7 @@ if(Meteor.isClient) {
         gameRuleText: gameRule.slug
       };
       game.xDisplay ={
-        start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay),
-        shareLink: 'http://'+Config.appInfo().shortDomain+'/g/'+game.slug
+        start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay)
       };
 
       var images =[
@@ -77,7 +86,8 @@ if(Meteor.isClient) {
         gameEndedForUser: false,
         gameChallengeLink: '',
         userChallengeTotals: {},
-        gameUsersLink: ''
+        gameUsersLink: '',
+        gameInviteLink: ggUrls.gameInvite(game.slug)
       };
 
       var userId =Meteor.userId();
@@ -155,9 +165,6 @@ if(Meteor.isClient) {
     'click .game-leave': function(evt, template) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       Meteor.call('leaveGame', game);
-    },
-    'click .game-input-share-link': function(evt, template) {
-      ggDom.inputSelectAll('game-input-share-link');
     }
   });
 }
