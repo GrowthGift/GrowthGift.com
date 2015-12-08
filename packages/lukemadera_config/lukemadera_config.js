@@ -28,7 +28,7 @@ Config.init({});
 Config.appInfo =function(params) {
   var ret ={
     name: 'Growth Gift Dev',
-    version: '1.0.0',
+    version: '1.2.0',
     domain: 'localhost',
     shortDomain: 'localhost',
     scheme: 'http',

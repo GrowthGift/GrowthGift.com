@@ -3,7 +3,10 @@
     {{#autoForm collection="GameRulesCollection" doc=gameRule id="saveGameRuleForm" type=afMethod meteormethod="saveGameRule" validation="blur" }}
       {{> afQuickField name="mainAction" label="What is the main action to measure?" placeholder="E.g. pushups, smiles, meditation minutes"}}
       {{> afQuickField name="title" class="save-game-rule-input-title" }}
-      {{> afQuickField name="slug" type="text" disabled=inputOpts.slugDisabled class="save-game-rule-input-slug" }}
+
+      <!-- {{> afQuickField name="slug" type="text" disabled=inputOpts.slugDisabled class="save-game-rule-input-slug" }} -->
+      <!-- Allow editing game rule slug for now -->
+      {{> afQuickField name="slug" type="text" class="save-game-rule-input-slug" }}
 
       {{> afQuickField name="challenges.0.title" label="Instructions title" placeholder="How many pushups did you do?" }}
       <div class='font-small'>This is what each person will see when they are completing their challenge each day</div>
