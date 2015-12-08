@@ -24,10 +24,16 @@ if(Meteor.isClient) {
       users.forEach(function(user) {
         if(user && user.info) {
           user.info.xDisplay ={
-            href: user.info.username ? ggUrls.user(user.info.username) : ''
+            href: user.info.username ? ggUrls.user(user.info.username) : '',
+            classes: {
+              row: ''
+            }
           };
+          if(user.info._id ===Meteor.userId()) {
+            user.info.xDisplay.classes.row ='self';
+          }
         }
-      })
+      });
       return {
         game: game,
         gameRule: gameRule,

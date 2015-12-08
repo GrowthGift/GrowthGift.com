@@ -50,7 +50,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   }
 };
 
-ggGame.join =function(game, userId, callback) {
+ggGame.join =function(game, userId, buddyRequestKey, callback) {
   var valid =ggMay.joinGame(game, userId);
   if(!valid) {
     if(Meteor.isClient) {
@@ -75,7 +75,12 @@ ggGame.join =function(game, userId, callback) {
       var game =GamesCollection.findOne({ _id:game._id }, { fields: { users:1 } });
       var userIndex =_.findIndex(game.users, 'userId', userId);
       if(userIndex >=0) {
-        callback(null, {});
+        if(buddyRequestKey) {
+          ggGame.saveBuddy(game, userId, buddyRequestKey, callback);
+        }
+        else {
+          callback(null, {});
+        }
       }
       else {
         var userObj ={
@@ -91,7 +96,17 @@ ggGame.join =function(game, userId, callback) {
             }
           }
         };
-        GamesCollection.update({ _id:game._id }, modifier, callback);
+        GamesCollection.update({ _id:game._id }, modifier, function(err, result) {
+          if(buddyRequestKey) {
+            // Need to update the local copy of the game with the changes we
+            // made so the new user is in the game.
+            game.users.push(userObj);
+            ggGame.saveBuddy(game, userId, buddyRequestKey, callback);
+          }
+          else {
+            callback(null, result);
+          }
+        });
       }
     }
   }
@@ -123,6 +138,9 @@ ggGame.leave =function(game, userId, callback) {
         }
       }
     };
+
+    // TODO - IF had a buddy, unbuddy so the buddy can rebuddy?
+
     GamesCollection.update({ _id:game._id }, modifier, callback);
   }
 };
@@ -150,9 +168,43 @@ ggGame.saveGameInvite =function(game, userId, gameUserData, callback) {
   GamesCollection.update({ _id: game._id }, modifier, callback);
 };
 
-ggGame.getGameUser =function(game, userId) {
-  var gameUserIndex =(game && game.users && userId ) ?
-   _.findIndex(game.users, 'userId', userId) : -1;
+ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
+  if(!ggMay.beGameBuddy(game, null, buddyRequestKey)) {
+    if(Meteor.isClient) {
+      nrAlert.alert("You may buddy with this person for this game.");
+    }
+    callback(true);
+    return;
+  }
+  var gameUserSelfIndex =_.findIndex(game.users, 'userId', selfUserId);
+  var gameUserBuddyIndex =_.findIndex(game.users, 'buddyRequestKey', buddyRequestKey);
+  var buddyUserId =game.users[gameUserBuddyIndex].userId;
+  if(gameUserSelfIndex <0 || gameUserBuddyIndex <0) {
+    callback(true);
+    return;
+  }
+  var modifier ={
+    $set: {}
+  };
+  // Set buddy id to each other (self to buddy and buddy to self).
+  modifier.$set['users.'+gameUserSelfIndex+'.buddyId'] =buddyUserId;
+  modifier.$set['users.'+gameUserBuddyIndex+'.buddyId'] =selfUserId;
+  GamesCollection.update({ _id: game._id }, modifier, callback);
+};
+
+/**
+Gets a game user by user id OR buddy request key.
+*/
+ggGame.getGameUser =function(game, userId, params) {
+  var gameUserIndex;
+  if(!userId && params.buddyRequestKey) {
+    gameUserIndex =(game && game.users ) ?
+     _.findIndex(game.users, 'buddyRequestKey', params.buddyRequestKey) : -1;
+  }
+  else {
+    gameUserIndex =(game && game.users && userId ) ?
+     _.findIndex(game.users, 'userId', userId) : -1;
+  }
   return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
 }
 

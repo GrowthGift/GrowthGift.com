@@ -12,14 +12,14 @@
       <div class='max-450'>
         <div class='flexbox'>
           <h5 class='flex1'>User</h5>
-          <h5 class='game-users-col'>You</h5>
+          <h5 class='game-users-col'>Self</h5>
           <h5 class='game-users-col'>Buddy</h5>
         </div>
       {{ #each data.users }}
-        <div class='flexbox'>
+        <div class='flexbox game-users-row {{info.xDisplay.classes.row}}'>
           <div class='flex1'><a href='{{ info.xDisplay.href }}'>{{ info.profile.name }}</a></div>
           <!-- <div>{{ numChallenges }}</div> -->
-          <div class='game-users-col'>{{ numActions }}</div>
+          <div class='game-users-col bold'>{{ numActions }}</div>
           <div class='game-users-col'>{{ buddyNumActions }}</div>
         </div>
       {{/each}}

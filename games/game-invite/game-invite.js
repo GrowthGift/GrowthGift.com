@@ -61,6 +61,7 @@ if(Meteor.isClient) {
       return {
         game: game,
         gameRule: gameRule,
+        gameUser: gameUser,
         gameLink: ggUrls.game(this.gameSlug),
         shareLinks: {
           buddy: shortRootUrl+ggUrls.game(game.slug, { buddyRequestKey: gameUser.buddyRequestKey }),

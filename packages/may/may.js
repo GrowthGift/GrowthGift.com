@@ -77,6 +77,20 @@ ggMay.leaveGame =function(game, userId) {
    ? true : false;
 };
 
+ggMay.beGameBuddy =function(game, buddyUserId, buddyRequestKey) {
+  if(!game || ( !buddyUserId && !buddyRequestKey ) ) {
+    return false;
+  }
+  var gameUser =ggGame.getGameUser(game, buddyUserId, { buddyRequestKey: buddyRequestKey });
+  // If potential buddy does NOT already have a buddy and the request keys
+  // match, then can be a buddy.
+  if(gameUser && !gameUser.buddyId && gameUser.buddyRequestKey &&
+   gameUser.buddyRequestKey === buddyRequestKey) {
+    return true;
+  }
+  return false;
+};
+
 ggMay.editGameRule =function(gameRule, userId) {
   if(!userId) {
     return false;

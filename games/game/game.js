@@ -1,6 +1,6 @@
 Meteor.methods({
-  joinGame: function(game) {
-    ggGame.join(game, Meteor.userId(), function(err, result) {
+  joinGame: function(game, buddyRequestKey) {
+    ggGame.join(game, Meteor.userId(), buddyRequestKey, function(err, result) {
       if(Meteor.isClient) {
         if(!err && result) {
           var templateInst =ggTemplate.getMainTemplate("Template.game");
@@ -26,7 +26,7 @@ if(Meteor.isClient) {
     var signInCallback =Session.get('signInCallback');
     if(signInCallback && signInCallback.action) {
       if(signInCallback.action ==='joinGame') {
-        Meteor.call("joinGame", signInCallback.data.game);
+        Meteor.call("joinGame", signInCallback.data.game, signInCallback.data.buddy);
       }
       //unset for future
       Session.set('signInCallback', false);
@@ -87,7 +87,9 @@ if(Meteor.isClient) {
         gameChallengeLink: '',
         userChallengeTotals: {},
         gameUsersLink: '',
-        gameInviteLink: ggUrls.gameInvite(game.slug)
+        gameInviteLink: ggUrls.gameInvite(game.slug),
+        buddyName: null,
+        buddyErrorMessage: null
       };
 
       var userId =Meteor.userId();
@@ -101,8 +103,28 @@ if(Meteor.isClient) {
         join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
         leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
         viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
-        addChallenge: false
+        addChallenge: false,
+        buddy: ( this.buddy ? ggMay.beGameBuddy(game, null, this.buddy) : false )
       };
+
+      if(this.buddy) {
+        // Look up buddy name
+        var buddyUser =ggGame.getGameUser(game, null, { buddyRequestKey: this.buddy });
+        if(buddyUser) {
+          var user =Meteor.users.findOne({ _id: buddyUser.userId }, { fields: { profile:1, username:1 } });
+          if(user) {
+            ret.buddyName =user.profile.name;
+          }
+          // If were trying to buddy but cannot, output why
+          if(!ret.privileges.buddy) {
+            ret.buddyErrorMessage ="Buddy taken. Join to invite another one!";
+          }
+        }
+        // If were trying to buddy but cannot, output why
+        else {
+          ret.buddyErrorMessage ="No buddy found. Please check your link.";
+        }
+      }
 
       // Challenge link
       ret.gameChallengeLink ='/gc/'+this.gameSlug;
@@ -153,13 +175,14 @@ if(Meteor.isClient) {
           url: 'g/'+game.slug,
           action: 'joinGame',
           data: {
-            game: game
+            game: game,
+            buddy: this.buddy
           }
         });
         Router.go('signup');
       }
       else {
-        Meteor.call('joinGame', game);
+        Meteor.call('joinGame', game, this.buddy);
       }
     },
     'click .game-leave': function(evt, template) {

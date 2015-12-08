@@ -239,7 +239,7 @@ ggGame.getUserGamesChallenges =function(userGames, game) {
       }
     }
     return u;
-  }), ['numChallenges'], ['desc']);
+  }), ['numActions'], ['desc']);
 };
 
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {

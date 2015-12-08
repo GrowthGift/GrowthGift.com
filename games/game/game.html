@@ -40,7 +40,19 @@
 
     {{#if data.privileges.join }}
     <div class='center margin-b'>
-      <div class='btn btn-primary margin-tb game-join'>Join Game</div>
+      <div class='btn btn-primary margin-tb game-join'>
+        {{#if data.privileges.buddy }}
+          Join with {{ data.buddyName }}
+        {{else}}
+          Join Game
+        {{/if}}
+      </div>
+      {{#if data.privileges.buddy }}
+        <div class='red'>Join to become buddies with {{ data.buddyName }}.</div>
+      {{/if}}
+      {{#if data.buddyErrorMessage }}
+        <div class='text-warning'>{{ data.buddyErrorMessage }}</div>
+      {{/if}}
     </div>
     {{else}}
       {{#unless data.curChallenge.gameEnded}}
