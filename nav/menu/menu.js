@@ -27,7 +27,7 @@ if (Meteor.isClient){
     // routeTo: "home"
     // TEMPOARARY hardcoded current (promoted) game
     // Home should work but was going to login page..
-    routeTo: '/g/group-gratitude'
+    routeTo: '/g/pushups'
   };
   var menuItemLanding ={
     icon: "fa fa-home",
@@ -35,7 +35,7 @@ if (Meteor.isClient){
     // routeTo: "home"
     // TEMPOARARY hardcoded current (promoted) game
     // Home should work but was going to login page..
-    routeTo: '/g/group-gratitude'
+    routeTo: '/g/pushups'
   };
   var menuItems = [
     menuItemHome,
