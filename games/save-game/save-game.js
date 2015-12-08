@@ -111,15 +111,14 @@ if(Meteor.isClient) {
       var start =(edit && game.start) ? game.start : null;
       if(!edit) {
         var now =moment();
-        // start =moment().startOf('week');
-        // // Allow same day, but if past the day, set to next week.
-        // if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
-        //   start =start.add(7, 'days');
-        //   // start =start.add(4, 'days'); // TESTING
-        // }
-        // // start at 5pm so add 17 hours from midnight
-        // start.add(17, 'hours');
-        start =now.clone();    // TODO - temporary for Apple app review and testing
+        start =moment().startOf('week');
+        // Allow same day, but if past the day, set to next week.
+        if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
+          start =start.add(7, 'days');
+        }
+        // start at 5pm so add 17 hours from midnight
+        start.add(17, 'hours');
+        // start =now.clone();    // TODO - temporary for Apple app review and testing
         start =start.format(ggConstants.dateTimeFormat);
       }
 
