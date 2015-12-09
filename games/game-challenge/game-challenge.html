@@ -28,18 +28,21 @@
       {{/if}}
     </div>
 
+    {{#if data.hasChallenges }}
     <div>
       <h4 class='center'>Completed Challenges</h4>
-      {{#each data.challenges}}
-        <div class='margin-b'>
-          <div class='flexbox'>
-            <div class='flex1 h4'>{{ actionCount }} {{ data.gameRule.mainAction }}</div>
-            <div>{{ xDisplay.createdAt }}</div>
+        {{#each data.challenges}}
+          <div class='margin-b'>
+            <div class='flexbox'>
+              <div class='flex1 h4'>{{ actionCount }} {{ data.gameRule.mainAction }}</div>
+              <div>{{ xDisplay.createdAt }}</div>
+            </div>
+            <div>{{ description }}</div>
           </div>
-          <div>{{ description }}</div>
-        </div>
-      {{/each}}
+        {{/each}}
     </div>
+    {{/if}}
+    
   </div>
   {{/if}}
 </template>

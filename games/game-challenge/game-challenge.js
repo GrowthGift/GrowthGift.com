@@ -69,6 +69,7 @@ if(Meteor.isClient) {
           actionCountLabel: "Number of " + gameRule.mainAction + ":"
         }
       };
+      ret.hasChallenges =ret.challenges.length ? true : false;
 
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
         ret.privileges.addChallenge =true;
