@@ -136,3 +136,21 @@ ggMay.addUserGameChallenge =function(game, userId, userGame, gameRule, nowTime) 
   }
   return false;
 };
+
+/**
+May edit an individual challenge up until the due date
+*/
+ggMay.editUserGameChallenge =function(gameCurrentChallenge, challenge) {
+  if(!gameCurrentChallenge || !challenge) {
+    return false;
+  }
+
+  // Only may edit if the challenge was added after the game current challenge
+  // start but before the game current challenge end.
+  var challengeCreatedMoment =moment(challenge.createdAt, ggConstants.dateTimeFormat);
+  if(challengeCreatedMoment > moment(gameCurrentChallenge.start, ggConstants.dateTimeFormat)
+   && challengeCreatedMoment < moment(gameCurrentChallenge.end, ggConstants.dateTimeFormat) ) {
+    return true;
+  }
+  return false;
+};

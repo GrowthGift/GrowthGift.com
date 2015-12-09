@@ -1,6 +1,9 @@
 Meteor.methods({
-  saveGameChallenge: function(game, challenge) {
-    ggGame.saveUserGameChallenge(game, Meteor.userId(), challenge);
+  saveGameChallengeNew: function(game, challenge) {
+    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge);
+  },
+  saveGameChallenge: function(doc, docId) {
+    ggGame.saveUserGameChallenge(doc, docId, function(err, result) { });
   }
 });
 
@@ -15,7 +18,7 @@ if(Meteor.isClient) {
 
         var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
-        Meteor.call("saveGameChallenge", game, insertDoc);
+        Meteor.call("saveGameChallengeNew", game, insertDoc);
 
         this.done();
         return false;
@@ -61,6 +64,7 @@ if(Meteor.isClient) {
         gameRule: {
           mainAction: gameRule.mainAction
         },
+        userGame: userGame,
         privileges: {
           addChallenge: false,
           addChallengeMessage: 'You may not add a challenge completion at this time.'
@@ -70,6 +74,24 @@ if(Meteor.isClient) {
         }
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
+
+      if(ret.hasChallenges) {
+        // Check challenge edit privileges
+        var gameCurrentChallenge =ggGame.getCurrentChallenge(game, gameRule, null).currentChallenge;
+        ret.challenges.forEach(function(challenge, index) {
+          ret.challenges[index]._xPrivileges ={
+            edit: ggMay.editUserGameChallenge(gameCurrentChallenge, challenge)
+          };
+          ret.challenges[index]._xFormData ={
+            id: "GameChallengeEditForm"+(Math.random() + 1).toString(36).substring(7),
+            fieldNames: {
+              actionCount: "challenges."+index+".actionCount",
+              description: "challenges."+index+".description",
+              privacy: "challenges."+index+".privacy"
+            }
+          };
+        });
+      }
 
       if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
         ret.privileges.addChallenge =true;
@@ -94,6 +116,22 @@ if(Meteor.isClient) {
       }
 
       return ret;
+    }
+  });
+
+  Template.gameChallengeCompleted.helpers({
+    data: function() {
+      // TODO - DRY this up; it's all copied from the main gameChallenge template.
+      var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug}) ) || null;
+      var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;
+      var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) ) || null;
+      return {
+        userGame: userGame,
+        gameRule: gameRule,
+        inputOpts: {
+          actionCountLabel: "Number of " + gameRule.mainAction + ":"
+        }
+      };
     }
   });
 }

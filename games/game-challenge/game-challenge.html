@@ -32,17 +32,40 @@
     <div>
       <h4 class='center'>Completed Challenges</h4>
         {{#each data.challenges}}
-          <div class='margin-b'>
-            <div class='flexbox'>
-              <div class='flex1 h4'>{{ actionCount }} {{ data.gameRule.mainAction }}</div>
-              <div>{{ xDisplay.createdAt }}</div>
-            </div>
-            <div>{{ description }}</div>
-          </div>
+          <!-- #each creates new data context so do not have access to parent scope easily
+          any more. So use a template and deliberately reset data context values. -->
+          {{> gameChallengeCompleted challenge=this gameSlug=../gameSlug }}
         {{/each}}
     </div>
     {{/if}}
 
   </div>
   {{/if}}
+</template>
+
+<template name="gameChallengeCompleted">
+  <div class='margin-b'>
+    {{#if challenge._xPrivileges.edit }}
+      {{#autoForm collection="UserGamesCollection" doc=data.userGame id=challenge._xFormData.id type="method-update" meteormethod="saveGameChallenge" validation="blur" }}
+        {{>afQuickField name=challenge._xFormData.fieldNames.actionCount label=data.inputOpts.actionCountLabel }}
+        {{>afQuickField name=challenge._xFormData.fieldNames.description type="textarea" label="Details" }}
+
+        <!-- Hidden and auto set for now -->
+        {{>afQuickField name=challenge._xFormData.fieldNames.privacy type="hidden" value="private" }}
+
+        <div class='margin-large-t flexbox'>
+          <div class='flex1'>&nbsp;</div>
+          <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </div>
+      {{/autoForm}}
+    {{else}}
+      <div class='flexbox'>
+        <div class='flex1 h4'>{{ challenge.actionCount }} {{ data.gameRule.mainAction }}</div>
+        <div>{{ challenge.xDisplay.createdAt }}</div>
+      </div>
+      <div>{{ challenge.description }}</div>
+    {{/if}}
+  </div>
 </template>

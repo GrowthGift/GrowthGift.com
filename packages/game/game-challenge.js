@@ -15,7 +15,19 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
   }), ['createdAt'], ['desc']);
 };
 
-ggGame.saveUserGameChallenge =function(game, userId, challenge) {
+ggGame.saveUserGameChallenge =function(doc, docId, callback) {
+  if(docId) {
+    var modifier =doc;
+    UserGamesCollection.update({ _id: docId }, modifier, callback);
+  }
+  else {
+    UserGameSchema.clean(doc);
+    doc.createdAt =ggConstants.curDateTime();
+    UserGamesCollection.insert(doc, callback);
+  }
+};
+
+ggGame.saveUserGameChallengeNew =function(game, userId, challenge) {
   var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:userId });
   var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
   var valid =ggMay.addUserGameChallenge(game, userId, userGame, gameRule);
@@ -53,7 +65,7 @@ ggGame.saveUserGameChallenge =function(game, userId, challenge) {
 
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
        function (err, result) {
-        // console.info('ggGame.saveUserGameChallenge UserGamesCollection.update', challenge, modifier, userId, game._id);
+        // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);
 
         // Not using notifications any more, focus on human connection instead.
         // // Send notifications
