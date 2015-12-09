@@ -13,7 +13,7 @@ if(Meteor.isClient) {
         },
         {
           q: "Why 3 categories?",
-          a: "The 'relationships' piece is inherent in the group aspect of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle. And we think 'gratitude' is so powerful that we added it too."
+          a: "The 'relationships' piece is inherent in the group and buddy aspects of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle. And we think 'gratitude' is so powerful that we added it too."
         },
         {
           q: "Is there a mobile app?",
@@ -35,7 +35,11 @@ if(Meteor.isClient) {
         },
         {
           q: "What is a game buddy?",
-          a: "An 'accountabilty buddy' is your partner for the game. You two help each other complete your challenge each day."
+          a: "An 'accountabilty buddy' is your partner for the game. You two help each other complete your challenge each day. The idea is to build deeper human connection with and focus on ONE (different) person for each game."
+        },
+        {
+          q: "Who should I choose for my game buddy?",
+          a: "We recommend trying a broad range of different buddies to see what is most fulfilling and effective for you. Try pursuing a goal together with a close friend. Try reconnecting with an old friend or new acquaintance. Try building a new connection with a complete stranger. The one piece of guidance we can offer is that evenly matched buddies for the particular game tend to do the best together."
         },
         {
           q: "Who can create a game?",
