@@ -37,6 +37,13 @@ if (Meteor.isClient){
     // Home should work but was going to login page..
     routeTo: '/g/pushups'
   };
+
+  var menuItemAbout ={
+    icon: "fa fa-info-circle",
+    title: "About",
+    routeTo: "about"
+  };
+
   var menuItems = [
     menuItemHome,
     // {
@@ -44,11 +51,7 @@ if (Meteor.isClient){
     //   title: "Alerts",
     //   routeTo: "notifications"
     // },
-    {
-      icon: "fa fa-info-circle",
-      title: "About",
-      routeTo: "about"
-    },
+    menuItemAbout,
     // {
     //   icon: "fa fa-home",
     //   title: "Dev Test Test",
@@ -87,6 +90,7 @@ if (Meteor.isClient){
     menuLoggedOut: function() {
       return [
         menuItemLanding,
+        menuItemAbout,
         menuItemLogin
       ];
     },
