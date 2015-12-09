@@ -195,8 +195,8 @@ ggGame.getUserGamesChallenges =function(userGames, game) {
     };
 
     // Get buddy id for later
-    gameUserIndex =(game.users && _.findIndex(game.users, 'userId', ug.userId))
-     || -1;
+    gameUserIndex =game.users ? _.findIndex(game.users, 'userId', ug.userId)
+     : -1;
     buddyId =( gameUserIndex >-1 && game.users[gameUserIndex].buddyId) || null;
     if(buddyId) {
       curUser.buddyId =buddyId;
@@ -217,13 +217,10 @@ ggGame.getUserGamesChallenges =function(userGames, game) {
     users1.push(curUser);
   });
 
-  console.log('users1: ', JSON.stringify(users1));
-
   // Fill buddy actions
   var buddyActions;
   return _.sortByOrder(users1.map(function(u) {
     buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
-    console.log(u, buddyIndex);
     if(buddyIndex >-1) {
       u.buddyNumActions =users1[buddyIndex].numActions;
     }
