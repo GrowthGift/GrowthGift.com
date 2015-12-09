@@ -17,7 +17,17 @@ APPNAMEDEV appNameDev
     - prod: `ENV=prod meteor run android-device --mobile-server http://APPNAME.meteor.com`
     - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com`
   - build
-    - prod: `ENV=prod meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAME.meteor.com`
+    - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server 107.170.212.162`
+      - open xcode project and fix things then build .ipa file
+        - run dev version first (NOTE: can not figure out how to run the SAME project on device and for distribution release..)
+        - delete project after confirm working, then rebuild it
+        - manage schemes to rename to proper one (was showing 'dev' but should be prod)
+        - edit scheme build target (remove bad missing one and re-add proper one)
+        - update build settings code signing to use distribution certificate & provisioning profile
+        - update general bundle identifier (com.growthgift)
+        - set device orientations to all
+        - set build to generic device
+        - run then archive
     - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com`
 3. upload the .apk/.ipa and do android/ios specific app store stuff
   1. Android: https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store

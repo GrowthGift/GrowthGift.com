@@ -10,9 +10,9 @@ if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.pr
 }
 else {
   App.info({
-    name: 'GrowthGift',
+    name: 'GrowthGiftDev',
     description: 'Grow togther.',
-    website: 'growthgift.com',
+    website: 'growthgift.meteor.com',
     version: '1.2.0'
   });
 }
