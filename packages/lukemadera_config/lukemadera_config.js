@@ -32,7 +32,15 @@ Config.appInfo =function(params) {
     domain: 'localhost',
     shortDomain: 'localhost',
     scheme: 'http',
-    port: '3000'
+    port: '3000',
+    mobileApps: {
+      android: {
+        link: 'https://play.google.com/store/apps/details?id=com.idmhuhu81ewth241q5f8l3'
+      },
+      ios: {
+        link: ''
+      }
+    }
   };
   if(Config.ENV ==='prod') {
     ret.name ='Growth Gift';

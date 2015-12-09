@@ -1,19 +1,4 @@
 <template name="about">
-  <div class='max-750 padding'>
-    <p class='margin-b'>
-      Growth Gift helps people grow and give together. The "G Games" are weekly (5 day) group challenges comprised of simple, small challenges, broken up into 3 categories of games: Gratitude, Growth and Giving. Games start each week on Sunday and end on Friday and typically take just 5 to 10 minutes a day. A gratitude game example is keeping a gratitude journal. Each day write down 1 thing you are grateful for to complete that day's challenge. Each time you complete a challenge, your friends are notified as encouragement to complete theirs too and you contribute to the game's total score.
-    </p>
-
-    <p class='margin-b'>
-      A growth game example would be daily pushups - each day do 5 more pushups than you did the day before. The power is in the consistent progression. Whether you start with 5 pushups or 50 on day 1, by the end of the week you'll be a bit more healthy and fit.
-    </p>
-
-    <p class='margin-b'>
-      A giving game example would be random acts of kindness - each day do something kind for either a stranger or a loved one. Little gestures go a long way. Invite your friends to join in too and see how big a positive difference you can make together. It may seem lofty to think we can change ourselves and the world through simple 5 minute daily actions, but that's the power of habit and compounding.
-    </p>
-
-    <p class='margin-b'>
-      Get started by joining your first game, and let's see what we can achieve together.
-    </p>
-  </div>
+  {{> msNavSecondary nav=nav }}
+  {{> UI.dynamic template=data.template}}
 </template>

@@ -1,0 +1,25 @@
+<template name="faq">
+  <div class='max-900 padding'>
+
+    <div class='center margin-large-b'>If you had an hour to give, how would you help someone grow?</div>
+
+    {{ >faqItems items=faq.general header="General"}}
+
+    {{ >faqItems items=faq.games header="Games"}}
+
+    <div class='center margin-b'>Get started by joining your first game, and let's see what we can achieve together.</div>
+
+  </div>
+</template>
+
+<template name="faqItems">
+  <div class='margin-large-b'>
+    <h3 class='margin-b'>{{ header }}</h3>
+    {{#each items}}
+      <div class='margin-xlarge-b'> 
+        <h5 class='red faq-header pointer'>{{ q }}</h5>
+        <div class='{{ classes.visible }}'>{{{ a }}}</div>
+      </div>
+    {{/each}}
+  </div>
+</template>
