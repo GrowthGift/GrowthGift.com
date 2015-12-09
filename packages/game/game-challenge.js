@@ -194,19 +194,12 @@ ggGame.getUserGamesChallenges =function(userGames, game) {
       numChallenges: 0
     };
 
-    // Get buddy info (either id or num actions directly if already have it)
+    // Get buddy id for later
     gameUserIndex =(game.users && _.findIndex(game.users, 'userId', ug.userId))
      || -1;
     buddyId =( gameUserIndex >-1 && game.users[gameUserIndex].buddyId) || null;
     if(buddyId) {
-      // See if already have the buddy's actions
-      buddyIndex =_.findIndex(users1, 'info._id', buddyId);
-      if(buddyIndex >-1) {
-        curUser.buddyNumActions =users1[buddyIndex].numActions;
-      }
-      else {
-        curUser.buddyId =buddyId;
-      }
+      curUser.buddyId =buddyId;
     }
 
     userIndex =_.findIndex(users, '_id', ug.userId);
@@ -224,19 +217,16 @@ ggGame.getUserGamesChallenges =function(userGames, game) {
     users1.push(curUser);
   });
 
-  // Fill any remaining buddy actions
+  // Fill buddy actions
   var buddyActions;
   return _.sortByOrder(users1.map(function(u) {
-    // See if already have the buddy's actions
-    if(u.buddyNumActions ===undefined) {
-      buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
-      if(buddyIndex >-1) {
-        u.buddyNumActions =users1[buddyIndex].numActions;
-      }
-      else {
-        // Set default as 0 if not found
-        u.buddyNumActions =0;
-      }
+    buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
+    if(buddyIndex >-1) {
+      u.buddyNumActions =users1[buddyIndex].numActions;
+    }
+    else {
+      // Set default as 0 if not found
+      u.buddyNumActions =0;
     }
     return u;
   }), ['numActions'], ['desc']);
