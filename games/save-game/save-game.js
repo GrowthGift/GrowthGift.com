@@ -118,7 +118,7 @@ if(Meteor.isClient) {
         }
         // start at 5pm so add 17 hours from midnight
         start.add(17, 'hours');
-        start =now.clone();    // TODO - temporary for Apple app review and testing
+        // start =now.clone();    // TODO - temporary for Apple app review and testing
         start =start.format(ggConstants.dateTimeFormat);
       }
 
