@@ -9,25 +9,36 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
   return _.sortByOrder(userGame.challenges.map(function(challenge) {
     return _.extend({}, challenge, {
       xDisplay: {
-        createdAt: moment(challenge.createdAt, ggConstants.dateTimeFormat).fromNow()
+        updatedAt: moment(challenge.updatedAt, ggConstants.dateTimeFormat).fromNow()
       }
     });
-  }), ['createdAt'], ['desc']);
+  }), ['updatedAt'], ['desc']);
 };
 
 ggGame.saveUserGameChallenge =function(doc, docId, callback) {
   if(docId) {
+    // Update updatedAt time
+    if(doc.$set.challenges && doc.$set.challenges.length) {
+      doc.$set.challenges.forEach(function(challenge, index) {
+        doc.$set.challenges[index].updatedAt =ggConstants.curDateTime();
+      });
+    }
     var modifier =doc;
     UserGamesCollection.update({ _id: docId }, modifier, callback);
   }
   else {
     UserGameSchema.clean(doc);
-    doc.createdAt =ggConstants.curDateTime();
+    // Update updatedAt time
+    if(doc.challenges && doc.challenges.length) {
+      doc.challenges.forEach(function(challenge, index) {
+        doc.challenges[index].updatedAt =ggConstants.curDateTime();
+      });
+    }
     UserGamesCollection.insert(doc, callback);
   }
 };
 
-ggGame.saveUserGameChallengeNew =function(game, userId, challenge) {
+ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
   var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:userId });
   var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
   var valid =ggMay.addUserGameChallenge(game, userId, userGame, gameRule);
@@ -45,7 +56,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge) {
     }
     else {
       var modifier ={};
-      challenge.createdAt =ggConstants.curDateTime();
+      challenge.updatedAt =ggConstants.curDateTime();
       if(!userGame.challenges) {
         modifier ={
           $set: {
@@ -199,7 +210,7 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
     return ret;
   }
 
-  var challenges =_.sortByOrder(userGame.challenges, ['createdAt'], ['asc']);
+  var challenges =_.sortByOrder(userGame.challenges, ['updatedAt'], ['asc']);
   ret.numCompletions =challenges.length;
   ret.mostRecentChallenge =challenges[(challenges.length -1)];
   return ret;

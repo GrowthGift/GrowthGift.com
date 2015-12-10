@@ -1,6 +1,6 @@
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
-    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge);
+    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) { });
   },
   saveGameChallenge: function(doc, docId) {
     ggGame.saveUserGameChallenge(doc, docId, function(err, result) { });

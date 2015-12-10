@@ -130,20 +130,20 @@ Tinytest.add('get current user challenge', function (test) {
     challenges: [
       {
         actionCount: 1,
-        createdAt: nowTime.format(dateTimeFormat)
+        updatedAt: nowTime.format(dateTimeFormat)
       },
       {
         actionCount: 1,
-        createdAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
       },
       // This one out of order
       {
         actionCount: 1,
-        createdAt: nowTime.clone().add((3*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((3*24), 'hours').format(dateTimeFormat)
       },
       {
         actionCount: 1,
-        createdAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
       }
     ]
   }
@@ -183,15 +183,15 @@ Tinytest.add('get challenge totals', function (test) {
       challenges: [
         {
           actionCount: 1,
-          createdAt: nowTime.clone().subtract((2.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dateTimeFormat)
         },
         {
           actionCount: 2,
-          createdAt: nowTime.clone().subtract((1.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dateTimeFormat)
         },
         {
           actionCount: 3,
-          createdAt: nowTime.clone().subtract((0.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dateTimeFormat)
         }
       ]
     },
@@ -201,7 +201,7 @@ Tinytest.add('get challenge totals', function (test) {
       challenges: [
         {
           actionCount: 5,
-          createdAt: nowTime.clone().subtract((0.8*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((0.8*24), 'hours').format(dateTimeFormat)
         }
       ]
     }

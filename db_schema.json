@@ -173,7 +173,7 @@
         "actionCount": "{Number} [The number of the 'mainAction' completed]",
         "description": "{String} [Any notes to document / track the (these) action(s)]",
         "privacy": "{String} One of 'public', 'private'",
-        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+        "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
       }
     ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
