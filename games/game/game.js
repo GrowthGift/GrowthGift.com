@@ -73,11 +73,25 @@ if(Meteor.isClient) {
       ];
       game.xDisplay.img =ggUrls.img('games')+images[Math.floor(Math.random() * images.length)];
 
+      var userId =Meteor.userId();
+      // Privileges
+      var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
       var ret ={
         game: game,
         gameRule: gameRule,
-        privileges: {},
+        gameUsersLink: ggUrls.gameUsers(game.slug),
+        gameChallengeLink: ggUrls.gameChallenge(game.slug),
+        privileges: {
+          edit: edit,
+          editLink: (edit && '/save-game?slug='+game.slug),
+          // Show join button if not logged in
+          join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
+          leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
+          viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
+          addChallenge: false,
+          buddy: ( this.buddy ? ggMay.beGameBuddy(game, null, this.buddy) : false )
+        },
         challenges: {
           possibleCompletions: 0,
           selfCompletions: 0
@@ -90,21 +104,6 @@ if(Meteor.isClient) {
         gameInviteLink: ggUrls.gameInvite(game.slug),
         buddyName: null,
         buddyErrorMessage: null
-      };
-
-      var userId =Meteor.userId();
-
-      // Privileges
-      var edit =(game && ggMay.editGame(game, userId)) ? true : false;
-      ret.privileges ={
-        edit: edit,
-        editLink: (edit && '/save-game?slug='+game.slug),
-        // Show join button if not logged in
-        join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
-        leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
-        viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
-        addChallenge: false,
-        buddy: ( this.buddy ? ggMay.beGameBuddy(game, null, this.buddy) : false )
       };
 
       if(this.buddy) {
@@ -125,9 +124,6 @@ if(Meteor.isClient) {
           ret.buddyErrorMessage ="No buddy found. Please check your link.";
         }
       }
-
-      // Challenge link
-      ret.gameChallengeLink ='/gc/'+this.gameSlug;
 
       // Game users
       ret.curChallenge =ggGame.getCurrentChallenge(game, gameRule);
@@ -159,8 +155,6 @@ if(Meteor.isClient) {
       ret.userChallengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule);
       ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
        "1 player" : ret.userChallengeTotals.numUsers + " players";
-
-      ret.gameUsersLink =ggUrls.gameUsers(game.slug);
 
       return ret;
     }

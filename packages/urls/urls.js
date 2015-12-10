@@ -19,6 +19,10 @@ ggUrls.game =function(gameSlug, params) {
    '' );
 };
 
+ggUrls.gameChallenge =function(gameSlug) {
+  return '/gc/'+gameSlug;
+};
+
 ggUrls.gameInvite =function(gameSlug) {
   return '/gi/'+gameSlug;
 };
