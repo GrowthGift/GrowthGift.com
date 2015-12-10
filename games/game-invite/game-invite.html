@@ -5,33 +5,49 @@
   <div class='padding max-600'>
     <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
 
-    {{#autoForm schema="GameInviteSchema" doc=data.formData id='gameInviteForm' validation="blur" }}
-      {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel }}
+    {{#if data.gameEnded }}
+    <div class='center'>
+      <div>Game over.</div>
+      <div>Time to join (or create) a new game!</div>
+    </div>
+    {{else}}
 
-      <div class='margin-large-t'>
-        {{#unless data.gameUser.buddyId }}
-        <div class='margin-b'>
-          <h5>Who is your buddy?</h5>
-          <div>Share this link with someone to ask them to be your buddy for this game.</div>
-          <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' />
-          <div class='font-small'>Tip: Someone who is at a similar level to you and may have a similar goal is usually best.</div>
-          <div class='font-small'>Note: If you request more than one buddy, it will be whomever accepts first.</div>
-        </div>
-        {{/unless}}
+      {{#autoForm schema="GameInviteSchema" doc=data.formData id='gameInviteForm' validation="blur" }}
+        {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel class="game-invite-input-self-goal"}}
+        <div class='font-small'>{{ data.inputOpts.selfGoalHelp }}</div>
 
-        <div class='margin-b'>
-          <h5>Invite Friends</h5>
-          <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
-        </div>
-      </div>
+        <div class='margin-large-t'>
+          {{#unless data.gameUser.buddyId }}
+          <div class='margin-b'>
+            <h5>Who is your buddy?</h5>
+            <div>Share this link with someone to ask them to be your partner for this game.</div>
+            <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' />
+            <div class='font-small'>Tip: Someone who is at a similar level to you and may have a similar goal is usually best.</div>
+            <div class='font-small'>Note: If you request more than one buddy, it will be whomever accepts first.</div>
+          </div>
+          {{/unless}}
 
-      <div class='margin-large-t flexbox'>
-        <div class='flex1'>&nbsp;</div>
-        <div>
-          <button type="submit" class="btn btn-primary">Done</button>
+          <div class='margin-b'>
+            <h5>Invite Friends</h5>
+            <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
+          </div>
         </div>
-      </div>
-    {{/autoForm}}
+
+        <div class='margin-large-t'>
+          {{ #if data.selfGoal }}
+          <div class='margin-b center red'>
+            Ready to do {{ data.selfGoal }} {{ data.gameRule.mainAction }}, and help your buddy achieve their pledge too?
+          </div>
+          {{ /if }}
+          <div class='flexbox'>
+            <div class='flex1'>&nbsp;</div>
+            <div>
+              <button type="submit" class="btn btn-primary">Let's do this</button>
+            </div>
+          </div>
+        </div>
+      {{/autoForm}}
+    {{/if}}
 
   </div>
   {{/if}}

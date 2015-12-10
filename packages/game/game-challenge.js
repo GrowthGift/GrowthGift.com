@@ -166,6 +166,30 @@ ggGame.getGameEnd =function(game, gameRule) {
    'minutes').format(ggConstants.dateTimeFormat);
 }
 
+ggGame.getGameTimeLeft =function(game, gameRule) {
+  if(!game || !gameRule || !gameRule.challenges) {
+    return null;
+  }
+  var ret ={
+    amount: -1,
+    unit: 'days'
+  };
+
+  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  // Assume in order with the last due date as the last item in the array
+  var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
+  var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
+  var now =moment();
+  // If game already over, stop
+  if(now >gameEnd) {
+    return ret;
+  }
+  // If game has not started yet, compute from game start rather than from now
+  var startTime =(now > gameStart) ? now : gameStart;
+  ret.amount =gameEnd.clone().diff(now.clone(), ret.unit);
+  return ret;
+};
+
 ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   var ret ={
     numCompletions: 0,

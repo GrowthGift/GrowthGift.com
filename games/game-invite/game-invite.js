@@ -38,6 +38,9 @@ if(Meteor.isClient) {
 
   Template.gameInvite.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
+    this.reactiveData = new ReactiveVar({
+      selfGoal: 0
+    });
   };
 
   Template.gameInvite.helpers({
@@ -58,21 +61,27 @@ if(Meteor.isClient) {
       }
 
       var shortRootUrl =Config.appInfo().shortRootUrl;
+      var gameLeft =ggGame.getGameTimeLeft(game, gameRule);
+
       return {
         game: game,
         gameRule: gameRule,
         gameUser: gameUser,
+        gameEnded: (gameLeft.amount <0) ? true : false,
         gameLink: ggUrls.game(this.gameSlug),
         shareLinks: {
           buddy: shortRootUrl+ggUrls.game(game.slug, { buddyRequestKey: gameUser.buddyRequestKey }),
           reach: shortRootUrl+ggUrls.game(game.slug)
         },
         inputOpts: {
-          selfGoalLabel: "Your number of " + gameRule.mainAction + " pledge:"
+          selfGoalLabel: "Your number of " + gameRule.mainAction + " pledge:",
+          selfGoalHelp: ( ( (gameLeft.amount +1) ===1) ? "There is 1 day"
+           : ( "There are " + (gameLeft.amount +1) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount +1) * 5 ) + " total."
         },
         formData: {
           selfGoal: gameUser.selfGoal
-        }
+        },
+        selfGoal: Template.instance().reactiveData.get().selfGoal
       };
     }
   });
@@ -83,6 +92,13 @@ if(Meteor.isClient) {
     },
     'click .game-invite-reach-input-share-link': function(evt, template) {
       ggDom.inputSelectAll('game-invite-reach-input-share-link');
+    },
+    'blur .game-invite-input-self-goal': function(evt, template) {
+      var selfGoal =AutoForm.getFieldValue('selfGoal', 'gameInviteForm');
+      var reactiveData =template.reactiveData.get();
+      reactiveData.selfGoal =( selfGoal ===undefined || selfGoal <=0 ) ?
+       null : selfGoal;
+      template.reactiveData.set(reactiveData);
     }
   });
 }
