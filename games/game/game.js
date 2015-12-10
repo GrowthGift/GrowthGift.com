@@ -80,8 +80,6 @@ if(Meteor.isClient) {
       var ret ={
         game: game,
         gameRule: gameRule,
-        gameUsersLink: ggUrls.gameUsers(game.slug),
-        gameChallengeLink: ggUrls.gameChallenge(game.slug),
         privileges: {
           edit: edit,
           editLink: (edit && '/save-game?slug='+game.slug),
@@ -98,9 +96,9 @@ if(Meteor.isClient) {
         },
         curChallenge: null,
         gameEndedForUser: false,
-        gameChallengeLink: '',
         userChallengeTotals: {},
-        gameUsersLink: '',
+        gameUsersLink: ggUrls.gameUsers(game.slug),
+        gameChallengeLink: ggUrls.gameChallenge(game.slug),
         gameInviteLink: ggUrls.gameInvite(game.slug),
         buddyName: null,
         buddyErrorMessage: null
