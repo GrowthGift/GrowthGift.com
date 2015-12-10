@@ -39,7 +39,8 @@ if(Meteor.isClient) {
   Template.gameInvite.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
     this.reactiveData = new ReactiveVar({
-      selfGoal: 0
+      selfGoal: 0,
+      buddyTipVisible: false
     });
   };
 
@@ -62,6 +63,7 @@ if(Meteor.isClient) {
 
       var shortRootUrl =Config.appInfo().shortRootUrl;
       var gameLeft =ggGame.getGameTimeLeft(game, gameRule);
+      var reactiveData =Template.instance().reactiveData.get();
 
       return {
         game: game,
@@ -74,14 +76,16 @@ if(Meteor.isClient) {
           reach: shortRootUrl+ggUrls.game(game.slug)
         },
         inputOpts: {
-          selfGoalLabel: "Your number of " + gameRule.mainAction + " pledge:",
-          selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
-           : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total."
+          selfGoalLabel: "How many " + gameRule.mainAction + " will you pledge?",
+          // selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
+          //  : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total.",
+          selfGoalHelp: "That is a goal of " + Math.ceil( ( (reactiveData.selfGoal || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) / gameLeft.amount ) + " per day.",
+          buddyTipVisible: reactiveData.buddyTipVisible
         },
         formData: {
           selfGoal: gameUser.selfGoal
         },
-        selfGoal: Template.instance().reactiveData.get().selfGoal
+        selfGoal: reactiveData.selfGoal
       };
     }
   });
@@ -93,11 +97,16 @@ if(Meteor.isClient) {
     'click .game-invite-reach-input-share-link': function(evt, template) {
       ggDom.inputSelectAll('game-invite-reach-input-share-link');
     },
-    'blur .game-invite-input-self-goal': function(evt, template) {
+    'keyup .game-invite-input-self-goal, blur .game-invite-input-self-goal': function(evt, template) {
       var selfGoal =AutoForm.getFieldValue('selfGoal', 'gameInviteForm');
       var reactiveData =template.reactiveData.get();
       reactiveData.selfGoal =( selfGoal ===undefined || selfGoal <=0 ) ?
        null : selfGoal;
+      template.reactiveData.set(reactiveData);
+    },
+    'click .game-invite-buddy-tip-btn': function(evt, template) {
+      var reactiveData =template.reactiveData.get();
+      reactiveData.buddyTipVisible =!reactiveData.buddyTipVisible;
       template.reactiveData.set(reactiveData);
     }
   });
