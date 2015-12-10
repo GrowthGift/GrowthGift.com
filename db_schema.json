@@ -140,6 +140,7 @@
     "gameRuleId": "{String} link to 'gameRules._id'",
     "slug": "{String}",
     "title": "{String}",
+    "image": "{String} http://google.com/image.jpg [url of image]",
     "actionGoal": "{Number} 1000 [Total actions desired for all players]",
     "privacy": "{String} [One of 'public', 'private' for if the description / notes are shared too.]",
     "start": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",

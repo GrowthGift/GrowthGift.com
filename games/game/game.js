@@ -58,20 +58,7 @@ if(Meteor.isClient) {
         start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay)
       };
 
-      var images =[
-        'blue-marbles.jpg',
-        'bubbles.jpg',
-        'chess-white-table.jpg',
-        'cube-dice.jpg',
-        'darts-blue.jpg',
-        'figures-pieces.jpg',
-        'hopscotch.jpg',
-        'play-kids.jpg',
-        'playful-beach.jpg',
-        'poker-chips-dice.jpg',
-        'table-tennis-paddle.jpg'
-      ];
-      game.xDisplay.img =ggUrls.img('games')+images[Math.floor(Math.random() * images.length)];
+      game.xDisplay.img =game.image || ggUrls.img('games')+'playful-beach.jpg';
 
       var userId =Meteor.userId();
       // Privileges
