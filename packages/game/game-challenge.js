@@ -186,7 +186,7 @@ ggGame.getGameTimeLeft =function(game, gameRule) {
   }
   // If game has not started yet, compute from game start rather than from now
   var startTime =(now > gameStart) ? now : gameStart;
-  ret.amount =gameEnd.clone().diff(now.clone(), ret.unit);
+  ret.amount =gameEnd.clone().diff(startTime.clone(), ret.unit);
   return ret;
 };
 
