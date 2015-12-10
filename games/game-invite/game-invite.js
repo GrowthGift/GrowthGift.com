@@ -75,8 +75,8 @@ if(Meteor.isClient) {
         },
         inputOpts: {
           selfGoalLabel: "Your number of " + gameRule.mainAction + " pledge:",
-          selfGoalHelp: ( ( (gameLeft.amount +1) ===1) ? "There is 1 day"
-           : ( "There are " + (gameLeft.amount +1) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount +1) * 5 ) + " total."
+          selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
+           : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total."
         },
         formData: {
           selfGoal: gameUser.selfGoal
