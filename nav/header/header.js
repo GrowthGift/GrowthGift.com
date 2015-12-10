@@ -167,6 +167,9 @@ if(Meteor.isClient){
     
     //update layout
     Session.set('layoutClasses', ret1.curNav.layoutClasses);
+
+    // Scroll to top of page
+    window.scrollTo(0, 0);
   });
 
   Template.header.helpers({
