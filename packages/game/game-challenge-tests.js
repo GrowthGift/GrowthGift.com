@@ -205,7 +205,7 @@ Tinytest.add('get challenge totals', function (test) {
         }
       ]
     }
-  ]
+  ];
   var challengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule, nowTime);
   var numUsers =userGames.length;
   // Game start is 2.5 days back so on the 3rd challenge, so 3 possible
@@ -216,4 +216,102 @@ Tinytest.add('get challenge totals', function (test) {
   test.equal(challengeTotals.numUsers, numUsers);
   // User1 1 + 2 + 3 actions, User2 5 completions = 11 total
   test.equal(challengeTotals.userActions, 11);
+});
+
+Tinytest.add('get game users actions and buddy actions', function (test) {
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var users =[
+    {
+      _id: 'user1',
+      username: 'user1',
+      profile: {
+        name: 'User One'
+      }
+    },
+    {
+      _id: 'user2',
+      username: 'user2',
+      profile: {
+        name: 'User Two'
+      }
+    },
+    {
+      _id: 'user3',
+      username: 'user3',
+      profile: {
+        name: 'User Three'
+      }
+    }
+  ];
+  var game ={
+    _id: 'game1',
+    users: [
+      {
+        userId: 'user1',
+        buddyId: 'user2'
+      },
+      {
+        userId: 'user2',
+        buddyId: 'user1'
+      },
+      {
+        userId: 'user3',
+        buddyId: null
+      }
+    ]
+  };
+  var userGames =[
+    {
+      gameId: game._id,
+      userId: 'user1',
+      challenges: [
+        {
+          actionCount: 1
+        },
+        {
+          actionCount: 2
+        },
+        {
+          actionCount: 3
+        }
+      ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user2',
+      challenges: [
+        {
+          actionCount: 5
+        }
+      ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user3',
+      challenges: [
+        {
+          actionCount: 7
+        },
+        {
+          actionCount: 1
+        }
+      ]
+    }
+  ];
+  var gameUsers =ggGame.getUserGamesChallenges(userGames, game, users);
+  // Should be sorted by num actions, most first: user3 > user1 > user2
+  test.equal(gameUsers[0].numActions, 8);
+  test.equal(gameUsers[0].numChallenges, 2);
+  test.equal(gameUsers[0].info.profile.name, 'User Three');
+  test.equal(gameUsers[0].buddyNumActions, 0);
+
+  test.equal(gameUsers[1].numActions, 6);
+  test.equal(gameUsers[1].numChallenges, 3);
+  test.equal(gameUsers[1].info.profile.name, 'User One');
+  test.equal(gameUsers[1].buddyNumActions, 5);
+
+  test.equal(gameUsers[2].numActions, 5);
+  test.equal(gameUsers[2].numChallenges, 1);
+  test.equal(gameUsers[2].info.profile.name, 'User Two');
+  test.equal(gameUsers[2].buddyNumActions, 6);
 });

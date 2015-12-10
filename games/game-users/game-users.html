@@ -17,7 +17,9 @@
         </div>
       {{ #each data.users }}
         <div class='flexbox game-users-row {{info.xDisplay.classes.row}}'>
-          <div class='flex1'><a href='{{ info.xDisplay.href }}'>{{ info.profile.name }}</a></div>
+          <!-- Disabling link until have real user profiles (with images) -->
+          <!-- <div class='flex1'><a href='{{ info.xDisplay.href }}'>{{ info.profile.name }}</a></div> -->
+          <div class='flex1'>{{ info.profile.name }}</div>
           <!-- <div>{{ numChallenges }}</div> -->
           <div class='game-users-col bold'>{{ numActions }}</div>
           <div class='game-users-col'>{{ buddyNumActions }}</div>

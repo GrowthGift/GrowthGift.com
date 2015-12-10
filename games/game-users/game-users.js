@@ -20,7 +20,8 @@ if(Meteor.isClient) {
         };
       }
 
-      var users =ggGame.getUserGamesChallenges(userGames, game);
+      var gameUsers =ggGame.getGameUsersInfo(userGames);
+      var users =ggGame.getUserGamesChallenges(userGames, game, gameUsers);
       users.forEach(function(user) {
         if(user && user.info) {
           user.info.xDisplay ={

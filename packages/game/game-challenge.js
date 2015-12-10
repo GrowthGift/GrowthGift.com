@@ -223,23 +223,19 @@ We return the buddy actions too but this requires a 2nd iteraction through
  we could make an option or a separate function that is more performant.
  In this case we would not need the `game` paramater at all either.
 */
-ggGame.getUserGamesChallenges =function(userGames, game) {
-  // Get users
-  var userIds =[];
-  userGames.forEach(function(user) {
-    userIds.push(user.userId);
-  });
-  var users =Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1, username:1 } }).fetch();
-
+ggGame.getUserGamesChallenges =function(userGames, game, users) {
   var userIndex, curUser, gameUserIndex, buddyId, buddyIndex;
 
   // The first time we won't know all the buddy action totals so we
   // just save the buddy id for a second pass through.
   var users1 =[];
   userGames.forEach(function(ug) {
+    // Reset
     curUser ={
       numActions: 0,
-      numChallenges: 0
+      numChallenges: 0,
+      buddyId: null,
+      info: {}
     };
 
     // Get buddy id for later

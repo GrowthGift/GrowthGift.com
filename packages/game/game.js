@@ -208,6 +208,15 @@ ggGame.getGameUser =function(game, userId, params) {
   return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
 }
 
+ggGame.getGameUsersInfo =function(userGames) {
+  // Get users
+  var userIds =[];
+  userGames.forEach(function(user) {
+    userIds.push(user.userId);
+  });
+  return Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1, username:1 } }).fetch();
+};
+
 ggGame.getUserGames =function(userId) {
   if(!userId) {
     return [];
