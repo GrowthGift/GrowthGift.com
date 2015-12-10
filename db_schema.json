@@ -170,6 +170,7 @@
     "gameId": "{String} link to 'games._id'",
     "challenges": [
       {
+        "id": "{String}",
         "actionCount": "{Number} [The number of the 'mainAction' completed]",
         "description": "{String} [Any notes to document / track the (these) action(s)]",
         "privacy": "{String} One of 'public', 'private'",

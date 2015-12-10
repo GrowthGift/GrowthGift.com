@@ -6,34 +6,34 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
   if(!userGame || !userGame.challenges) {
     return [];
   }
-  return _.sortByOrder(userGame.challenges.map(function(challenge) {
+  return _.sortByOrder(userGame.challenges.map(function(challenge, index) {
     return _.extend({}, challenge, {
       xDisplay: {
         updatedAt: moment(challenge.updatedAt, ggConstants.dateTimeFormat).fromNow()
-      }
+      },
+      // VERY IMPORTANT to preserve the database index for updates since we are sorting
+      // TODO - should update by id instead so order does not matter
+      _xIndex: index
     });
   }), ['updatedAt'], ['desc']);
 };
 
 ggGame.saveUserGameChallenge =function(doc, docId, callback) {
   if(docId) {
-    // Update updatedAt time
-    if(doc.$set.challenges && doc.$set.challenges.length) {
-      doc.$set.challenges.forEach(function(challenge, index) {
-        doc.$set.challenges[index].updatedAt =ggConstants.curDateTime();
-      });
-    }
     var modifier =doc;
     UserGamesCollection.update({ _id: docId }, modifier, callback);
   }
   else {
-    UserGameSchema.clean(doc);
-    // Update updatedAt time
+    // Set challenges id and update updated time
     if(doc.challenges && doc.challenges.length) {
       doc.challenges.forEach(function(challenge, index) {
+        if(doc.challenges[index].id ===undefined) {
+          doc.challenges[index].id =(Math.random() + 1).toString(36).substring(7);
+        }
         doc.challenges[index].updatedAt =ggConstants.curDateTime();
       });
     }
+    UserGameSchema.clean(doc);
     UserGamesCollection.insert(doc, callback);
   }
 };
@@ -56,6 +56,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
     }
     else {
       var modifier ={};
+      challenge.id =(Math.random() + 1).toString(36).substring(7);
       challenge.updatedAt =ggConstants.curDateTime();
       if(!userGame.challenges) {
         modifier ={

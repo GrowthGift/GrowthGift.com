@@ -3,6 +3,28 @@ Meteor.methods({
     ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) { });
   },
   saveGameChallenge: function(doc, docId) {
+    // The $set modifier is odd for this.. it is passing the whole array and
+    // overwriting rather than setting specific fields.. So have to fix
+    // here manually.
+    // TODO fix this..
+    if(docId && doc.$set) {
+      var modifier ={
+        $set: {}
+      };
+      var field;
+      if(doc.$set.challenges && doc.$set.challenges.length) {
+        doc.$set.challenges.forEach(function(challenge, index) {
+          if(challenge) {
+            for(field in challenge) {
+              modifier.$set["challenges."+index+"."+field] =challenge[field];
+            }
+            modifier.$set["challenges."+index+".updatedAt"] =ggConstants.curDateTime();
+          }
+        });
+      }
+      // overwrite with proper one
+      doc =modifier;
+    }
     ggGame.saveUserGameChallenge(doc, docId, function(err, result) { });
   }
 });
@@ -85,9 +107,9 @@ if(Meteor.isClient) {
           ret.challenges[index]._xFormData ={
             id: "GameChallengeEditForm"+(Math.random() + 1).toString(36).substring(7),
             fieldNames: {
-              actionCount: "challenges."+index+".actionCount",
-              description: "challenges."+index+".description",
-              privacy: "challenges."+index+".privacy"
+              actionCount: "challenges."+challenge._xIndex+".actionCount",
+              description: "challenges."+challenge._xIndex+".description",
+              privacy: "challenges."+challenge._xIndex+".privacy"
             }
           };
         });
