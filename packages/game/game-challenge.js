@@ -295,7 +295,9 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
   if(curChallenge.possibleCompletions) {
     ret.possible =curChallenge.possibleCompletions;
     ret.possibleAllUsers =curChallenge.possibleCompletions * ret.numUsers;
-    userGames.forEach(function(ug) {
+  }
+  userGames.forEach(function(ug) {
+    if(curChallenge.possibleCompletions) {
       if(ug.challenges && ug.challenges.length) {
         ret.userCompletions +=ug.challenges.length;
         ug.challenges.forEach(function(c) {
@@ -304,12 +306,12 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
           }
         });
       }
-      // get user goal
-      userGameIndex =_.findIndex(game.users, 'userId', ug.userId);
-      if(userGameIndex >-1 && game.users[userGameIndex].selfGoal) {
-        ret.userGoals +=game.users[userGameIndex].selfGoal;
-      }
-    });
-  }
+    }
+    // get user goal
+    userGameIndex =_.findIndex(game.users, 'userId', ug.userId);
+    if(userGameIndex >-1 && game.users[userGameIndex].selfGoal) {
+      ret.userGoals +=game.users[userGameIndex].selfGoal;
+    }
+  });
   return ret;
 };
