@@ -157,6 +157,22 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
   return ret;
 };
 
+ggGame.getGameState =function(game, gameRule, nowTime) {
+  if(!game || !gameRule || !gameRule.challenges) {
+    return null;
+  }
+
+  nowTime =nowTime || moment();
+  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  // Assume in order with the last due date as the last item in the array
+  var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
+  var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
+  return {
+    gameStarted: ( gameStart <= nowTime ) ? true : false,
+    gameEnded: ( gameEnd < nowTime ) ? true : false
+  };
+};
+
 ggGame.getGameEnd =function(game, gameRule) {
   if(!game || !gameRule || !gameRule.challenges) {
     return null;

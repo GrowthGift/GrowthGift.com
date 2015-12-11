@@ -18,11 +18,13 @@
     {{/if}}
 
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
-    <div class='game-section-gray padding-large-tb'>
+    <div class='game-section-gray padding-large-t'>
       <div class='center margin-lr'>
         <!-- <h2>{{ data.game.title }}</h2> -->
         <h3>{{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
-        <h4 class='red'>Team Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
+        {{ #unless data.gameState.gameEnded }}
+          <h4 class='red'>Team Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
+        {{ /unless }}
         <div>
           {{#if data.privileges.viewPlayers }}
             <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
@@ -42,51 +44,61 @@
       <!-- <div>Game Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
         <div>Start: {{ data.game.xDisplay.start }}</div> -->
 
-      {{#if data.privileges.join }}
-        <div class='center margin-t'>
-          <div class='btn btn-primary margin-tb game-join'>
-            {{#if data.privileges.buddy }}
-              Join with {{ data.buddyName }}
-            {{else}}
-              Join Game
-            {{/if}}
-          </div>
-          {{#if data.privileges.buddy }}
-            <div class='red'>Join to become buddies with {{ data.buddyName }}.</div>
+      {{ #unless data.gameState.gameEnded }}
+        <div class='padding-large-b'>
+          {{#if data.privileges.join }}
+            <div class='center margin-t'>
+              <div class='btn btn-primary margin-tb game-join'>
+                {{#if data.privileges.buddy }}
+                  Join with {{ data.buddyName }}
+                {{else}}
+                  Join Game
+                {{/if}}
+              </div>
+              {{#if data.privileges.buddy }}
+                <div class='red'>Join to become buddies with {{ data.buddyName }}.</div>
+              {{/if}}
+              {{#if data.buddyErrorMessage }}
+                <div class='text-warning'>{{ data.buddyErrorMessage }}</div>
+              {{/if}}
+            </div>
+          {{else}}
+            <div class='center margin-b margin-large-t'>
+              <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>Invite Friends</a>
+            </div>
           {{/if}}
-          {{#if data.buddyErrorMessage }}
-            <div class='text-warning'>{{ data.buddyErrorMessage }}</div>
-          {{/if}}
+          <div class='font-small center'>Games are just 5 minutes a day for 5 days</div>
         </div>
-      {{else}}
-        {{#unless data.curChallenge.gameEnded}}
-        <div class='center margin-b margin-large-t'>
-          <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>Invite Friends</a>
-        </div>
-        {{/unless}}
-      {{/if}}
-      <div class='font-small center'>Games are just 5 minutes a day for 5 days</div>
+      {{ else }}
+      <div class='margin-large-t padding-large-tb center game-section-dark'>
+        <h2>Game Over</h2>
+        <div>Go to <a class='red' href='{{ data.myGamesLink }}'>My Games</a> to see your current games. Or join a new one!</div>
+      </div>
+
+      {{ /unless }}
     </div>
 
     <div class='game-wrapper margin-large-tb'>
-      <div class='game-subheader-wrapper margin-large-lr'>
-        <div class='game-subheader'>How to Play</div>
-      </div>
-      <div class='margin-large-lr'>
-        <!-- <div>{{ data.gameRule.challenges.[0].description }}</div> -->
-        <div>1.
-          {{#if data.privileges.viewPlayers }}
-            <a href='{{ data.gameInviteLink }}'>Make a pledge and choose a buddy.</a>
-          {{ else }}
-            Make a pledge and choose a buddy.
-          {{ /if }}
+      {{ #unless data.gameState.gameEnded }}
+        <div class='game-subheader-wrapper margin-large-lr'>
+          <div class='game-subheader'>How to Play</div>
         </div>
-        <!-- <div>2. Invite friends</div> -->
-        <div>2. Once the game starts, each day of the game:</div>
-        <div class='margin-l'>a. Complete your pledge for the day.</div>
-        <div class='margin-l'>b. Log it here.</div>
-        <div class='margin-l'>c. Help your buddy achieve his/her pledge.</div>
-      </div>
+        <div class='margin-large-lr'>
+          <!-- <div>{{ data.gameRule.challenges.[0].description }}</div> -->
+          <div>1.
+            {{#if data.privileges.viewPlayers }}
+              <a href='{{ data.gameInviteLink }}'>Make a pledge and choose a buddy.</a>
+            {{ else }}
+              Make a pledge and choose a buddy.
+            {{ /if }}
+          </div>
+          <!-- <div>2. Invite friends</div> -->
+          <div>2. Once the game starts, each day of the game:</div>
+          <div class='margin-l'>a. Complete your pledge for the day.</div>
+          <div class='margin-l'>b. Log it here.</div>
+          <div class='margin-l'>c. Help your buddy achieve his/her pledge.</div>
+        </div>
+      {{ /unless }}
 
       <div class='game-subheader-wrapper margin-large-t margin-large-lr'>
         <div class='game-subheader'>Your Daily Breakdown</div>

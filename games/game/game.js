@@ -89,10 +89,12 @@ if(Meteor.isClient) {
         // curChallenge: null,
         // gameEndedForUser: false,
         challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null),
+        gameState: ggGame.getGameState(game, gameRule, null),
         userChallengeTotals: {},
         gameUsersLink: ggUrls.gameUsers(game.slug),
         gameChallengeLink: ggUrls.gameChallenge(game.slug),
         gameInviteLink: ggUrls.gameInvite(game.slug),
+        myGamesLink: ggUrls.myGames(),
         buddyName: null,
         buddyErrorMessage: null
       };
