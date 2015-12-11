@@ -6,32 +6,32 @@
 
     <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
 
+    {{#if data.privileges.addChallenge }}
     <div class='margin-xlarge-b'>
-      <h4 class='center'>Add a Challenge Completion</h4>
-      {{#if data.privileges.addChallenge }}
-        {{#autoForm schema="GameChallengeSchema" id='gameChallengeForm' validation="blur" }}
-          {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
-          {{>afQuickField name="description" type="textarea" label="Details" }}
+      <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
+      {{#autoForm schema="GameChallengeSchema" id='gameChallengeForm' validation="blur" }}
+        {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
+        {{>afQuickField name="description" type="textarea" label="Details" }}
 
-          <!-- Hidden and auto set for now -->
-          {{>afQuickField name="privacy" type="hidden" value="private" }}
-          
-          <div class='margin-large-t flexbox'>
-            <div class='flex1'>&nbsp;</div>
-            <div>
-              <button type="submit" class="btn btn-primary">Mark Complete</button>
-            </div>
+        <!-- Hidden and auto set for now -->
+        {{>afQuickField name="privacy" type="hidden" value="private" }}
+
+        <div class='margin-large-t flexbox'>
+          <div class='flex1'>&nbsp;</div>
+          <div>
+            <button type="submit" class="btn btn-primary">Mark Complete</button>
           </div>
-        {{/autoForm}}
-      {{else}}
-        <div class='center'>{{ data.privileges.addChallengeMessage }}</div>
-      {{/if}}
+        </div>
+      {{/autoForm}}
+
+      <!-- <div class='center'>{{ data.privileges.addChallengeMessage }}</div> -->
     </div>
+    {{ /if }}
 
     <div>
-      <h4 class='center'>Completed Challenges History</h4>
+      <h4 class='center'>{{ data.gameRule._xDisplay.mainAction }} History</h4>
         {{#unless data.hasChallenges }}
-          <div class='center'>Each challenge you complete will show up here.</div>
+          <div class='center'>Your daily history will show up here.</div>
         {{else}}
           {{#each data.challenges}}
             <!-- #each creates new data context so do not have access to parent scope easily

@@ -21,7 +21,7 @@
     <div class='game-section-gray padding-large-tb'>
       <div class='center margin-lr'>
         <!-- <h2>{{ data.game.title }}</h2> -->
-        <h3>Team Goal: {{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
+        <h3>{{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
         <h4 class='red'>Team Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
         <div>
           {{#if data.privileges.viewPlayers }}
@@ -146,11 +146,12 @@
       {{/if}}
     {{/if}} -->
 
+    <div class='padding-xlarge-tb center game-section-gray'>
+      <a href='/about'>What is Growth Gift?</a>
+    </div>
+
   </div>
   {{/if}}
-  <div class='margin-xlarge-tb center'>
-    <a href='/about'>What is Growth Gift?</a>
-  </div>
 </template>
 
 <template name="gameChallengesUser">

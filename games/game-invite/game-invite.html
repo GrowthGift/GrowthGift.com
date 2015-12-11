@@ -13,7 +13,7 @@
     {{else}}
 
       {{#autoForm schema="GameInviteSchema" doc=data.formData id='gameInviteForm' validation="blur" }}
-        {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel placeholder="E.g. 25 (as your total goal for all days in the game)" class="game-invite-input-self-goal"}}
+        {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel placeholder="E.g. 25 (as your total pledge for all days in the game)" class="game-invite-input-self-goal"}}
         <div class='font-small'>{{ data.inputOpts.selfGoalHelp }}</div>
 
         <div class='margin-large-t'>
@@ -22,7 +22,7 @@
             <h5>Who is your buddy?</h5>
             <div>Share this link with someone to ask them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
             {{ #if data.inputOpts.buddyTipVisible }}
-            <div class='font-small'>Someone who is at a similar level to you and may have a similar goal is usually best.</div>
+            <div class='font-small'>Someone who is at a similar level to you and may have a similar pledge is usually best.</div>
             <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
             <div class='font-small red'>Copy the link below. Then paste it in an email or on social media to send it to your buddy.</div>
             {{ /if }}
@@ -32,7 +32,7 @@
 
           <div class='margin-b'>
             <h5>Invite Friends</h5>
-            <div>Share this link (email, social media) to invite more people to contribute to the goal!</div>
+            <div>Share this link (email, social media) to invite more people to contribute to the pledge!</div>
             <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
           </div>
         </div>
@@ -40,7 +40,7 @@
         <div class='margin-large-t'>
           {{ #if data.selfGoal }}
           <div class='margin-b center red'>
-            Ready to do {{ data.selfGoal }} {{ data.gameRule.mainAction }}, and help your buddy achieve their pledge goal too?
+            Ready to do {{ data.selfGoal }} {{ data.gameRule.mainAction }}, and help your buddy achieve their pledge too?
           </div>
           {{ /if }}
           <div class='flexbox'>

@@ -84,7 +84,10 @@ if(Meteor.isClient) {
         gameLink: ggUrls.game(this.gameSlug),
         game: game,
         gameRule: {
-          mainAction: gameRule.mainAction
+          mainAction: gameRule.mainAction,
+          _xDisplay: {
+            mainAction: _.capitalize(gameRule.mainAction)
+          }
         },
         userGame: userGame,
         privileges: {
