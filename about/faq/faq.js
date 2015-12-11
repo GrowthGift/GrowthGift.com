@@ -42,9 +42,13 @@ if(Meteor.isClient) {
           a: "We recommend trying a broad range of different buddies to see what is most fulfilling and effective for you. Try pursuing a goal together with a close friend. Try reconnecting with an old friend or new acquaintance. Try building a new connection with a complete stranger. The one piece of guidance we can offer is that evenly matched buddies for the particular game tend to do the best together."
         },
         {
-          q: "Who can create a game?",
-          a: "Anyone!"
+          q: "Are these competitive?",
+          a: "Not really - these are 'collaborative games'. While you're welcome to personally challenge friends or your buddy to see who can make the biggest impact among yourselves, these games do NOT have winners or losers. We're all working on the same team to see how big a positive difference we can make together."
         },
+        // {
+        //   q: "Who can create a game?",
+        //   a: "Anyone!"
+        // },
 
       ]
     };
