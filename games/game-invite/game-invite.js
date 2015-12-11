@@ -54,7 +54,8 @@ if(Meteor.isClient) {
       var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) )
        || null;
       var gameUser =ggGame.getGameUser(game, Meteor.userId());
-      if(!game || !gameRule || !gameUser) {
+      var userGame =(game && ggGame.getUserGame(game._id, Meteor.userId()) ) || null;
+      if(!game || !gameRule || !gameUser || !userGame) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -64,11 +65,13 @@ if(Meteor.isClient) {
       var shortRootUrl =Config.appInfo().shortRootUrl;
       var gameLeft =ggGame.getGameTimeLeft(game, gameRule);
       var reactiveData =Template.instance().reactiveData.get();
+      var userTotalActions =ggGame.getUserGameTotalActions(userGame);
 
       return {
         game: game,
         gameRule: gameRule,
         gameUser: gameUser,
+        userTotalActions: userTotalActions,
         gameEnded: (gameLeft.amount <0) ? true : false,
         gameLink: ggUrls.game(this.gameSlug),
         shareLinks: {
@@ -79,8 +82,8 @@ if(Meteor.isClient) {
           selfGoalLabel: "How many " + gameRule.mainAction + " will you pledge?",
           // selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
           //  : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total.",
-          selfGoalHelp: "That's " + Math.ceil( ( (reactiveData.selfGoal
-           || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) /
+          selfGoalHelp: "That's " + Math.ceil( ( ( (reactiveData.selfGoal
+           || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) - userTotalActions ) /
            ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) ) + " per day.",
           buddyTipVisible: reactiveData.buddyTipVisible
         },

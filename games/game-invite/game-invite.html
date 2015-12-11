@@ -14,7 +14,12 @@
 
       {{#autoForm schema="GameInviteSchema" doc=data.formData id='gameInviteForm' validation="blur" }}
         {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel placeholder="E.g. 25 (as your total pledge for all days in the game)" class="game-invite-input-self-goal"}}
-        <div class='font-small'>{{ data.inputOpts.selfGoalHelp }}</div>
+        <div class='font-small'>
+          {{ data.inputOpts.selfGoalHelp }}
+          {{ #if data.userTotalActions }}
+           You've already done {{ data.userTotalActions }}.
+          {{ /if }}
+        </div>
 
         <div class='margin-large-t'>
           {{#unless data.gameUser.buddyId }}

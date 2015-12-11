@@ -2,6 +2,19 @@ ggGame.getUserGame =function(gameId, userId) {
   return UserGamesCollection.findOne({gameId: gameId, userId: userId});
 };
 
+ggGame.getUserGameTotalActions =function(userGame) {
+  var numActions =0;
+  if(!userGame || !userGame.challenges) {
+    return numActions;
+  }
+  userGame.challenges.forEach(function(c) {
+    if(c.actionCount) {
+      numActions += c.actionCount;
+    }
+  });
+  return numActions;
+};
+
 /**
 Gets a game user by user id OR buddy request key.
 */
