@@ -112,12 +112,14 @@ if(Meteor.isClient) {
       if(!edit) {
         var now =moment();
         start =moment().startOf('week');
+        start =start.add(1, 'days');    // Start on Monday
         // Allow same day, but if past the day, set to next week.
         if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
           start =start.add(7, 'days');
         }
-        // start at 5pm so add 17 hours from midnight
-        start.add(17, 'hours');
+        // Just start at midnight to make it easier to explain.
+        // // start at 5pm so add 17 hours from midnight
+        // start.add(17, 'hours');
         // start =now.clone();    // TODO - temporary for Apple app review and testing
         start =start.format(ggConstants.dateTimeFormat);
       }

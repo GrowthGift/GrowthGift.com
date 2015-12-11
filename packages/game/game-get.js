@@ -169,7 +169,9 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
   return {
     gameStarted: ( gameStart <= nowTime ) ? true : false,
-    gameEnded: ( gameEnd < nowTime ) ? true : false
+    gameEnded: ( gameEnd < nowTime ) ? true : false,
+    starts: gameStart.format(ggConstants.dateTimeDisplay),
+    ends: gameEnd.format(ggConstants.dateTimeDisplay)
   };
 };
 

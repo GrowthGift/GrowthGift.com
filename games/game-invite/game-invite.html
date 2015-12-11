@@ -5,7 +5,7 @@
   <div class='padding max-600'>
     <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
 
-    {{#if data.gameEnded }}
+    {{#if data.gameState.gameEnded }}
     <div class='center'>
       <div>Game over.</div>
       <div>Time to join (or create) a new game!</div>
@@ -18,6 +18,18 @@
           {{ data.inputOpts.selfGoalHelp }}
           {{ #if data.userTotalActions }}
            You've already done {{ data.userTotalActions }}.
+          {{ /if }}
+        </div>
+        <div class='font-small'>
+          {{ #if data.gameState.gameStarted }}
+            {{ #if data.userTotalActions }}
+              Keep going!
+            {{ else }}
+              Today is your first day!
+            {{ /if }}
+            Game ends: {{ data.gameState.ends }}.
+          {{ else }}
+          Your first day will be: {{ data.gameState.starts }}.
           {{ /if }}
         </div>
 

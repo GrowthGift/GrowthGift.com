@@ -36,12 +36,23 @@ if(Meteor.isClient) {
     }
   });
 
+  function init(templateInst, gameUserSelfGoal, reactiveData) {
+    if(!templateInst.inited) {
+      if(gameUserSelfGoal) {
+        reactiveData.selfGoal =gameUserSelfGoal;
+        templateInst.reactiveData.set(reactiveData);
+      }
+      templateInst.inited =true;
+    }
+  }
+
   Template.gameInvite.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
     this.reactiveData = new ReactiveVar({
       selfGoal: 0,
       buddyTipVisible: false
     });
+    this.inited =false;
   };
 
   Template.gameInvite.helpers({
@@ -66,13 +77,17 @@ if(Meteor.isClient) {
       var gameLeft =ggGame.getGameTimeLeft(game, gameRule);
       var reactiveData =Template.instance().reactiveData.get();
       var userTotalActions =ggGame.getUserGameTotalActions(userGame);
+      // have to initialize to the existing self goal, if set
+      init(Template.instance(), gameUser.selfGoal, reactiveData);
+      var perDay =Math.ceil( ( reactiveData.selfGoal - userTotalActions ) /
+           ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) );
 
       return {
         game: game,
         gameRule: gameRule,
         gameUser: gameUser,
         userTotalActions: userTotalActions,
-        gameEnded: (gameLeft.amount <0) ? true : false,
+        gameState: ggGame.getGameState(game, gameRule),
         gameLink: ggUrls.game(this.gameSlug),
         shareLinks: {
           buddy: shortRootUrl+ggUrls.game(game.slug, { buddyRequestKey: gameUser.buddyRequestKey }),
@@ -82,9 +97,7 @@ if(Meteor.isClient) {
           selfGoalLabel: "How many " + gameRule.mainAction + " will you pledge?",
           // selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
           //  : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total.",
-          selfGoalHelp: "That's " + Math.ceil( ( ( (reactiveData.selfGoal
-           || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) - userTotalActions ) /
-           ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) ) + " per day.",
+          selfGoalHelp: "That's " + ( ( perDay >=0 ) ? perDay : 0 ) + " per day.",
           buddyTipVisible: reactiveData.buddyTipVisible
         },
         formData: {
