@@ -58,7 +58,9 @@ if(Meteor.isClient) {
         start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay)
       };
 
-      game.xDisplay.img =game.image || ggUrls.img('games')+'playful-beach.jpg';
+      // TODO - fix this to allow access rules on cordova apps..
+      game.xDisplay.img =(game.image && !Meteor.isCordova) ? game.image
+       : ggUrls.img('games')+'playful-beach.jpg';
 
       var userId =Meteor.userId();
       var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
