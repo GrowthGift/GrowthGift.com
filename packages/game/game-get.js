@@ -64,7 +64,7 @@ ggGame.getUserGames =function(userId) {
     return [];
   }
   var game, gameRule, gameIndex, gameRuleIndex, gameEnd;
-  return _.sortByOrder(userGames.map(function(ug) {
+  return userGames.map(function(ug) {
     gameIndex =_.findIndex(games, '_id', ug.gameId);
     game =(gameIndex >-1) ? games[gameIndex] : null;
     gameRuleIndex = game ? _.findIndex(gameRules, '_id', game.gameRuleId) : -1;
@@ -79,7 +79,7 @@ ggGame.getUserGames =function(userId) {
         title: game ? game.title : null
       }
     };
-  }), ['gameStart'], ['asc']);
+  });
 };
 
 ggGame.getUserGameChallenges =function(gameId, userId) {

@@ -21,13 +21,13 @@ if(Meteor.isClient) {
               Router.go(ggUrls.myGames('past'));
             }
           },
-          {
-            icon: 'fa fa-plus',
-            html: 'New Game',
-            click: function() {
-              Router.go('saveGame');
-            }
-          }
+          // {
+          //   icon: 'fa fa-plus',
+          //   html: 'New Game',
+          //   click: function() {
+          //     Router.go('saveGame');
+          //   }
+          // }
         ]
       };
     },
@@ -51,7 +51,8 @@ if(Meteor.isClient) {
         }
       });
 
-      ret.userGames =userGames.map(function(ug) {
+      var sortOrder =( view ==='past' ) ? 'desc' : 'asc';
+      ret.userGames =_.sortByOrder(userGames.map(function(ug) {
         return _.extend({}, ug, {
           xDisplay: {
             gameTime: (ug.gameStart > nowTimeFormat) ? ( "Starts " +
@@ -60,7 +61,7 @@ if(Meteor.isClient) {
             gameLink: ggUrls.game(ug.game.slug)
           }
         });
-      });
+      }), ['gameStart'], [sortOrder]);
 
       return ret;
     }
