@@ -332,6 +332,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
       // If challenge has not started, show when it does. If it has started
       // but has NOT ended, show when it ends. If it's already over, show
       // when it ended.
+      timePeriod: ( !challengeStarted ) ? 'future'
+       : ( challengeStarted && !challengeEnded ) ? 'present' : 'past',
       timeDisplay: ( !challengeStarted) ? ( "Starts " + lastChallengeEnd.from(nowTime) )
        : ( challengeStarted && !challengeEnded) ? ( "Ends " + curChallengeEnd.from(nowTime) )
        : ( "Ended " + curChallengeEnd.from(nowTime) ),

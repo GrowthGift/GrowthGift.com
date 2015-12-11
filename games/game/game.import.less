@@ -1,8 +1,16 @@
+.game-cont {
+  background-color: @white;
+}
+.game-section-gray {
+  background-color: @grayLighter;
+}
+/*
 .game-wrapper {
   background-color: @white;
   border-radius: 10px;
   padding: 10px;
 }
+*/
 .game-subheader-wrapper {
   padding: 5px 0;
   margin-bottom: 10px;
@@ -13,9 +21,14 @@
   color: @red;
 }
 
-.game-challenges-user-time {
-  width: 150px;
+//.game-challenges-user-cont:nth-child(odd) {
+//  background-color: @grayLighter;
+.game-challenges-user-cont {
+  border-bottom: dashed 1px @grayLighter;
 }
-.game-challenges-user-update-btn {
-  width: 75px;
+.game-challenges-user-cont.past {
+  opacity: 0.5;
+}
+.game-challenges-user-cont.present {
+  background-color: lighten(@gratitude, 20%);
 }
