@@ -112,10 +112,6 @@ ggGame.join =function(game, userId, buddyRequestKey, callback) {
   }
 };
 
-ggGame.getUserGame =function(gameId, userId) {
-  return UserGamesCollection.findOne({gameId: gameId, userId: userId});
-};
-
 ggGame.leave =function(game, userId, callback) {
   var valid =ggMay.leaveGame(game, userId);
   if(!valid) {
@@ -190,71 +186,4 @@ ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
   modifier.$set['users.'+gameUserSelfIndex+'.buddyId'] =buddyUserId;
   modifier.$set['users.'+gameUserBuddyIndex+'.buddyId'] =selfUserId;
   GamesCollection.update({ _id: game._id }, modifier, callback);
-};
-
-/**
-Gets a game user by user id OR buddy request key.
-*/
-ggGame.getGameUser =function(game, userId, params) {
-  var gameUserIndex;
-  if(!userId && params.buddyRequestKey) {
-    gameUserIndex =(game && game.users ) ?
-     _.findIndex(game.users, 'buddyRequestKey', params.buddyRequestKey) : -1;
-  }
-  else {
-    gameUserIndex =(game && game.users && userId ) ?
-     _.findIndex(game.users, 'userId', userId) : -1;
-  }
-  return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
-}
-
-ggGame.getGameUsersInfo =function(userGames) {
-  // Get users
-  var userIds =[];
-  userGames.forEach(function(user) {
-    userIds.push(user.userId);
-  });
-  return Meteor.users.find({ _id: { $in:userIds } }, { fields: { profile:1, username:1 } }).fetch();
-};
-
-ggGame.getUserGames =function(userId) {
-  if(!userId) {
-    return [];
-  }
-  var userGames =(userId && UserGamesCollection.find({ userId:userId }).fetch() ) || null;
-  var gameIds =[];
-  if(userGames) {
-    userGames.forEach(function(ug) {
-      gameIds.push(ug.gameId);
-    });
-  }
-  var games =( (gameIds.length >0) && GamesCollection.find({ _id: { $in: gameIds } }).fetch() ) || null;
-  var gameRuleIds =[];
-  if(games) {
-    games.forEach(function(game) {
-      gameRuleIds.push(game.gameRuleId)
-    });
-    var gameRules =GameRulesCollection.find({ _id: { $in: gameRuleIds } }).fetch();
-  }
-
-  if(!userGames) {
-    return [];
-  }
-  var game, gameRule, gameIndex, gameRuleIndex, gameEnd;
-  return _.sortByOrder(userGames.map(function(ug) {
-    gameIndex =_.findIndex(games, '_id', ug.gameId);
-    game =(gameIndex >-1) ? games[gameIndex] : null;
-    gameRuleIndex = game ? _.findIndex(gameRules, '_id', game.gameRuleId) : -1;
-    gameRule =(gameRuleIndex >-1) ? gameRules[gameRuleIndex] : null;
-    gameEnd = (game && gameRule) ? ggGame.getGameEnd(game, gameRule) : null;
-    return {
-      numChallenges: (ug.challenges && ug.challenges.length) || 0,
-      gameStart: game ? game.start : null,
-      gameEnd: gameEnd,
-      game: {
-        slug: game ? game.slug : null,
-        title: game ? game.title : null
-      }
-    };
-  }), ['gameStart'], ['asc']);
 };

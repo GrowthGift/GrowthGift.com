@@ -79,7 +79,9 @@ if(Meteor.isClient) {
           selfGoalLabel: "How many " + gameRule.mainAction + " will you pledge?",
           // selfGoalHelp: ( ( (gameLeft.amount) ===1) ? "There is 1 day"
           //  : ( "There are " + (gameLeft.amount) + " days" ) ) + " left. So (for example) 5 per day would be " + ( (gameLeft.amount) * 5 ) + " total.",
-          selfGoalHelp: "That is a goal of " + Math.ceil( ( (reactiveData.selfGoal || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) / gameLeft.amount ) + " per day.",
+          selfGoalHelp: "That is a goal of " + Math.ceil( ( (reactiveData.selfGoal
+           || !gameUser.selfGoal) ? reactiveData.selfGoal : gameUser.selfGoal ) /
+           ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) ) + " per day.",
           buddyTipVisible: reactiveData.buddyTipVisible
         },
         formData: {

@@ -61,6 +61,8 @@ if(Meteor.isClient) {
       game.xDisplay.img =game.image || ggUrls.img('games')+'playful-beach.jpg';
 
       var userId =Meteor.userId();
+      var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
+       || null;
       // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
@@ -73,16 +75,18 @@ if(Meteor.isClient) {
           // Show join button if not logged in
           join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
           leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
+          viewPlayers: (game && userId) ? true : false,
           viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
           addChallenge: false,
           buddy: ( this.buddy ? ggMay.beGameBuddy(game, null, this.buddy) : false )
         },
-        challenges: {
-          possibleCompletions: 0,
-          selfCompletions: 0
-        },
-        curChallenge: null,
-        gameEndedForUser: false,
+        // challenges: {
+        //   possibleCompletions: 0,
+        //   selfCompletions: 0
+        // },
+        // curChallenge: null,
+        // gameEndedForUser: false,
+        challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null),
         userChallengeTotals: {},
         gameUsersLink: ggUrls.gameUsers(game.slug),
         gameChallengeLink: ggUrls.gameChallenge(game.slug),
@@ -110,31 +114,31 @@ if(Meteor.isClient) {
         }
       }
 
-      // Game users
-      ret.curChallenge =ggGame.getCurrentChallenge(game, gameRule);
-      if(ret.curChallenge.nextChallenge) {
-        ret.curChallenge.nextChallenge.xDisplay ={
-          start: moment(ret.curChallenge.nextChallenge.start, ggConstants.dateTimeFormat).fromNow()
-        }
-      }
-      if(ret.curChallenge.currentChallenge) {
-        ret.curChallenge.currentChallenge.xDisplay ={
-          end: moment(ret.curChallenge.currentChallenge.end, ggConstants.dateTimeFormat).fromNow()
-        };
-      }
-      ret.challenges.possibleCompletions =ret.curChallenge.possibleCompletions;
+      // // Game users
+      // ret.curChallenge =ggGame.getCurrentChallenge(game, gameRule);
+      // if(ret.curChallenge.nextChallenge) {
+      //   ret.curChallenge.nextChallenge.xDisplay ={
+      //     start: moment(ret.curChallenge.nextChallenge.start, ggConstants.dateTimeFormat).fromNow()
+      //   }
+      // }
+      // if(ret.curChallenge.currentChallenge) {
+      //   ret.curChallenge.currentChallenge.xDisplay ={
+      //     end: moment(ret.curChallenge.currentChallenge.end, ggConstants.dateTimeFormat).fromNow()
+      //   };
+      // }
+      // ret.challenges.possibleCompletions =ret.curChallenge.possibleCompletions;
 
-      // Can only show challenges if user is in game
-      if(ret.privileges.viewChallenges) {
-        var userGameSelf =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
-        var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
-        ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
-        ret.privileges.addChallenge =(ggMay.addUserGameChallenge(game, Meteor.userId(), userGameSelf, gameRule) )
-         ? true : false;
-      }
+      // // Can only show challenges if user is in game
+      // if(ret.privileges.viewChallenges) {
+      //   var userGameSelf =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
+      //   var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
+      //   ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
+      //   ret.privileges.addChallenge =(ggMay.addUserGameChallenge(game, Meteor.userId(), userGameSelf, gameRule) )
+      //    ? true : false;
+      // }
 
-      ret.gameEndedForUser =( ret.curChallenge.gameEnded || (ret.privileges.viewChallenges && !ret.privileges.addChallenge) )
-       ? true : false;
+      // ret.gameEndedForUser =( ret.curChallenge.gameEnded || (ret.privileges.viewChallenges && !ret.privileges.addChallenge) )
+      //  ? true : false;
 
       var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
       ret.userChallengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule);
@@ -167,6 +171,14 @@ if(Meteor.isClient) {
     'click .game-leave': function(evt, template) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       Meteor.call('leaveGame', game);
+    }
+  });
+
+  Template.gameChallengesUser.helpers({
+    data: function() {
+      return {
+        gameChallengeLink: ggUrls.gameChallenge(this.gameSlug),
+      }
     }
   });
 }

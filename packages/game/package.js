@@ -15,8 +15,10 @@ Package.onUse(function(api) {
   api.use('ecmascript');
   api.use('momentjs:moment');
   api.use('growthgift:constants');
+  api.use('growthgift:may');
   api.addFiles([
     'game-vars.js',
+    'game-get.js',
     'game.js',
     'game-challenge.js'
   ]);
@@ -32,6 +34,7 @@ Package.onTest(function(api) {
   api.addFiles([
     'lib/lodash.custom.min.js',
     'game-challenge-tests.js',
+    'game-get-tests.js',
     'game-tests.js'
   ]);
 });

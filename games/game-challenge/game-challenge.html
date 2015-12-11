@@ -28,16 +28,18 @@
       {{/if}}
     </div>
 
-    {{#if data.hasChallenges }}
     <div>
-      <h4 class='center'>Completed Challenges</h4>
-        {{#each data.challenges}}
-          <!-- #each creates new data context so do not have access to parent scope easily
-          any more. So use a template and deliberately reset data context values. -->
-          {{> gameChallengeCompleted challenge=this gameSlug=../gameSlug }}
-        {{/each}}
+      <h4 class='center'>Completed Challenges History</h4>
+        {{#unless data.hasChallenges }}
+          <div class='center'>Each challenge you complete will show up here.</div>
+        {{else}}
+          {{#each data.challenges}}
+            <!-- #each creates new data context so do not have access to parent scope easily
+            any more. So use a template and deliberately reset data context values. -->
+            {{> gameChallengeCompleted challenge=this gameSlug=../gameSlug }}
+          {{/each}}
+        {{/unless}}
     </div>
-    {{/if}}
 
   </div>
   {{/if}}

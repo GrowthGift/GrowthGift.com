@@ -20,15 +20,20 @@
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
     <div class='center margin-lr'>
       <!-- <h2>{{ data.game.title }}</h2> -->
-      <h3>Goal: {{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
-      <h4 class='red'>Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
+      <h3>Team Goal: {{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
+      <h4 class='red'>Team Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
       <div>
-        <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
+        {{#if data.privileges.viewPlayers }}
+          <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
+        {{else}}
+          {{ data.userChallengeTotals.numUsersText }} |
+        {{/if}}
+
         <!-- {{ data.userChallengeTotals.userCompletions }} total challenge completions -->
         {{#if data.privileges.viewChallenges }}
-          <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}</a>
+          <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}</a>
         {{else}}
-          {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
+          {{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}
         {{/if}}
       </div>
     </div>
@@ -60,11 +65,39 @@
       {{/unless}}
     {{/if}}
 
+    <div class='game-wrapper margin-large-tb margin-lr'>
+      <div class='game-subheader-wrapper'>
+        <div class='game-subheader'>How to Play</div>
+      </div>
+      <!-- <div>{{ data.gameRule.challenges.[0].description }}</div> -->
+      <div>1.
+        {{#if data.privileges.viewPlayers }}
+          <a href='{{ data.gameInviteLink }}'>Make a pledge and choose a buddy.</a>
+        {{ else }}
+          Make a pledge and choose a buddy.
+        {{ /if }}
+      </div>
+      <!-- <div>2. Invite friends</div> -->
+      <div>2. Once the game starts, each day of the game:</div>
+      <div class='margin-l'>a. Complete your pledge for the day.</div>
+      <div class='margin-l'>b. Log it here.</div>
+      <div class='margin-l'>c. Help your buddy achieve his/her pledge.</div>
+
+      <div class='game-subheader-wrapper margin-large-t'>
+        <div class='game-subheader'>Your Daily Breakdown</div>
+      </div>
+      <!-- show EACH challenge with button next to it if user can update / log it -->
+      {{ #each data.challenges.challenges }}
+        {{ >gameChallengesUser challenge=this gameSlug=../gameSlug }}
+      {{ /each }}
+    </div>
+
+
     <!-- current challenge -->
-    {{#if data.curChallenge.currentChallenge }}
+    <!-- {{#if data.curChallenge.currentChallenge }}
       <div class='game-wrapper margin-large-tb margin-lr'>
         <div class='game-subheader-wrapper flexbox'>
-          <div class='game-subheader flex1'>Current challenge:</div>
+          <div class='game-subheader flex1'>Today's Current challenge:</div>
           <div>Ends {{ data.curChallenge.currentChallenge.xDisplay.end }}</div>
         </div>
         <div>
@@ -78,10 +111,10 @@
         </div>
         {{/if}}
       </div>
-    {{/if}}
+    {{/if}} -->
 
     <!-- next challenge (includes if game has not started) -->
-    {{#if data.curChallenge.nextChallenge }}
+    <!-- {{#if data.curChallenge.nextChallenge }}
       <div class='game-wrapper margin-large-tb margin-lr'>
         <div class='game-subheader-wrapper flexbox'>
           <div class='game-subheader flex1'>Next challenge:</div>
@@ -92,10 +125,10 @@
           <span> {{ data.curChallenge.nextChallenge.description }}</span>
         </div>
       </div>
-    {{/if}}
+    {{/if}} -->
 
     <!-- game is over (or user has already added his last challenge so it is over for him) -->
-    {{#if data.curChallenge.gameStarted }}
+    <!-- {{#if data.curChallenge.gameStarted }}
       {{#if data.gameEndedForUser }}
         <div class='game-wrapper margin-large-tb margin-lr'>
           <div class='game-subheader-wrapper'><div class='game-subheader'>Game Stats</div></div>
@@ -103,16 +136,35 @@
             <a href='{{ data.gameChallengeLink }}'>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</a>
           {{else}}
             <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> | 
-            <!-- {{ data.userChallengeTotals.userCompletions }} challenge completions -->
             {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
           {{/if}}
         </div>
       {{/if}}
-    {{/if}}
+    {{/if}} -->
 
     <div class='margin-b margin-xlarge-t center'>
       <a href='/about'>What is Growth Gift?</a>
     </div>
   </div>
   {{/if}}
+</template>
+
+<template name="gameChallengesUser">
+  <div class='flexbox'>
+    <div class='flex1'>{{ challenge.instruction }}</div>
+    <div class='game-challenges-user-time'>{{ challenge.timeDisplay }}</div>
+    <div class='game-challenges-user-update-btn'>
+      {{ #if challenge.mayUpdate }}
+        <a class='a-div btn btn-primary btn-small' href='{{ data.gameChallengeLink }}'>
+          {{ #unless challenge.userActionCount }}
+            Log It
+          {{ else }}
+            Update
+          {{ /unless }}
+        </a>
+      {{ else }}
+        &nbsp;
+      {{ /if }}
+    </div>
+  </div>
 </template>
