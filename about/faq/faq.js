@@ -30,8 +30,8 @@ if(Meteor.isClient) {
           a: "Each game typically takes just 5 minutes a day. The focus is on building habits, so the shorter it is, the easier it is to do it each day."
         },
         {
-          q: "What is a game example?",
-          a: "A Gratitude Journal game could be writing down 1 thing you are grateful for each day."
+          q: "What are some game examples?",
+          a: "A Gratitude Journal game could be writing down 1 thing you are grateful for each day. A pushups game could be doing as many pushups as you can each day."
         },
         {
           q: "What is a game buddy?",
