@@ -14,8 +14,9 @@ ggUrls.howItWorks =function() {
 };
 
 ggUrls.game =function(gameSlug, params) {
-  return '/g/'+gameSlug +
-   ( (params && params.buddyRequestKey) ? '?buddy='+params.buddyRequestKey :
+  return '/g/'+gameSlug + (
+   ( params && params.buddyRequestKey ) ? '?buddy='+params.buddyRequestKey :
+   ( params && params.username ) ? '?user='+params.username :
    '' );
 };
 

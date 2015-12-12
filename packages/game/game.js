@@ -32,6 +32,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
             role: 'creator',
             status: 'joined',
             buddyRequestKey: (Math.random() + 1).toString(36).substring(7),
+            reachTeam: [],
             updatedAt: ggConstants.curDateTime()
           }
         ];
@@ -50,7 +51,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   }
 };
 
-ggGame.join =function(game, userId, buddyRequestKey, callback) {
+ggGame.join =function(game, userId, buddyRequestKey, inviteUsername, callback) {
   var valid =ggMay.joinGame(game, userId);
   if(!valid) {
     if(Meteor.isClient) {
@@ -78,6 +79,9 @@ ggGame.join =function(game, userId, buddyRequestKey, callback) {
         if(buddyRequestKey) {
           ggGame.saveBuddy(game, userId, buddyRequestKey, callback);
         }
+        else if(inviteUsername) {
+          ggGame.saveReachUser(game, userId, inviteUsername, callback);
+        }
         else {
           callback(null, {});
         }
@@ -102,6 +106,9 @@ ggGame.join =function(game, userId, buddyRequestKey, callback) {
             // made so the new user is in the game.
             game.users.push(userObj);
             ggGame.saveBuddy(game, userId, buddyRequestKey, callback);
+          }
+          else if(inviteUsername) {
+            ggGame.saveReachUser(game, userId, inviteUsername, callback);
           }
           else {
             callback(null, result);
@@ -185,5 +192,49 @@ ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
   // Set buddy id to each other (self to buddy and buddy to self).
   modifier.$set['users.'+gameUserSelfIndex+'.buddyId'] =buddyUserId;
   modifier.$set['users.'+gameUserBuddyIndex+'.buddyId'] =selfUserId;
+  GamesCollection.update({ _id: game._id }, modifier, callback);
+};
+
+ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
+  var inviteUserObj =ggUser.getByUsername(inviteUsername);
+  if(!inviteUserObj) {
+    callback(null);
+    return;
+  }
+  var inviteUserId =inviteUserObj._id;
+  // Want to add the userId user to the invite user's reach team
+  var userIndex =_.findIndex(game.users, 'userId', inviteUserId);
+  if(userIndex <0) {
+    callback(true, { msg: 'Invite user is not in game'});
+    return;
+  }
+  var reachTeam =game.users[userIndex].reachTeam;
+  var modifier =null;
+  if(!reachTeam || !reachTeam.length) {
+    modifier ={
+      $set: { }
+    };
+    modifier.$set['users.'+userIndex+'.reachTeam'] =[
+      {
+        userId: userId
+      }
+    ];
+  }
+  else {
+    var reachUserIndex =_.findIndex(reachTeam, 'userId', userId);
+    if(reachUserIndex >=0) {
+      // User already on reach team, nothing to do
+      callback(null);
+      return;
+    }
+    if(reachUserIndex <0) {
+      modifier ={
+        $push: { }
+      };
+      modifier.$push['users.'+userIndex+'.reachTeam'] ={
+        userId: userId
+      };
+    }
+  }
   GamesCollection.update({ _id: game._id }, modifier, callback);
 };

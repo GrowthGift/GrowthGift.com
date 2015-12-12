@@ -158,8 +158,7 @@
             "userId": "{String}"
           }
         ],
-        "selfGoal": "{Number} 25 [The user's total (for entire game, not per day - so 5 per day for 5 days would be 25 total) self set number of main actions she wants to complete.]",
-        "reachGoal": "{Number} 100 [The user's reach team summed total (entire game) number of main actions. So if aiming to invite 4 people and thinks each person can do 25 total actions each, that would be 100 total actions.]"
+        "selfGoal": "{Number} 25 [The user's total (for entire game, not per day - so 5 per day for 5 days would be 25 total) self set number of main actions she wants to complete.]"
       }
     ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",

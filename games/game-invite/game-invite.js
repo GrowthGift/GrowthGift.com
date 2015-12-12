@@ -66,7 +66,8 @@ if(Meteor.isClient) {
        || null;
       var gameUser =ggGame.getGameUser(game, Meteor.userId());
       var userGame =(game && ggGame.getUserGame(game._id, Meteor.userId()) ) || null;
-      if(!game || !gameRule || !gameUser || !userGame) {
+      var user =Meteor.users.findOne({ _id: Meteor.userId() }, { fields: { username: 1} });
+      if(!game || !gameRule || !gameUser || !userGame || !user) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -91,7 +92,7 @@ if(Meteor.isClient) {
         gameLink: ggUrls.game(this.gameSlug),
         shareLinks: {
           buddy: shortRootUrl+ggUrls.game(game.slug, { buddyRequestKey: gameUser.buddyRequestKey }),
-          reach: shortRootUrl+ggUrls.game(game.slug)
+          reach: shortRootUrl+ggUrls.game(game.slug, { username: user.username })
         },
         inputOpts: {
           selfGoalLabel: "How many " + gameRule.mainAction + " will you pledge?",

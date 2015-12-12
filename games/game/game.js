@@ -1,6 +1,6 @@
 Meteor.methods({
-  joinGame: function(game, buddyRequestKey) {
-    ggGame.join(game, Meteor.userId(), buddyRequestKey, function(err, result) {
+  joinGame: function(game, buddyRequestKey, inviteUsername) {
+    ggGame.join(game, Meteor.userId(), buddyRequestKey, inviteUsername, function(err, result) {
       if(Meteor.isClient) {
         if(!err && result) {
           var templateInst =ggTemplate.getMainTemplate("Template.game");
@@ -26,7 +26,7 @@ if(Meteor.isClient) {
     var signInCallback =Session.get('signInCallback');
     if(signInCallback && signInCallback.action) {
       if(signInCallback.action ==='joinGame') {
-        Meteor.call("joinGame", signInCallback.data.game, signInCallback.data.buddy);
+        Meteor.call("joinGame", signInCallback.data.game, signInCallback.data.buddy, signInCallback.data.inviteUsername);
       }
       //unset for future
       Session.set('signInCallback', false);
@@ -163,13 +163,14 @@ if(Meteor.isClient) {
           action: 'joinGame',
           data: {
             game: game,
-            buddy: this.buddy
+            buddy: this.buddy,
+            inviteUsername: this.inviteUsername
           }
         });
         Router.go('signup');
       }
       else {
-        Meteor.call('joinGame', game, this.buddy);
+        Meteor.call('joinGame', game, this.buddy, this.inviteUsername);
       }
     },
     'click .game-leave': function(evt, template) {
