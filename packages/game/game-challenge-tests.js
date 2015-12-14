@@ -225,38 +225,81 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
       _id: 'user1',
       username: 'user1',
       profile: {
-        name: 'User One'
+        name: 'User1 One'
       }
     },
     {
       _id: 'user2',
       username: 'user2',
       profile: {
-        name: 'User Two'
+        name: 'User2 Two'
       }
     },
     {
       _id: 'user3',
       username: 'user3',
       profile: {
-        name: 'User Three'
+        name: 'User3 Three'
+      }
+    },
+    {
+      _id: 'user4',
+      username: 'user4',
+      profile: {
+        name: 'User4 Four'
+      }
+    },
+    {
+      _id: 'user5',
+      username: 'user5',
+      profile: {
+        name: 'User5 Five'
       }
     }
   ];
+  var gameRule =ggMockData.getChallenge();
   var game ={
     _id: 'game1',
+    gameRuleId: gameRule._id,
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dateTimeFormat),
     users: [
       {
         userId: 'user1',
-        buddyId: 'user2'
+        buddyId: 'user2',
+        selfGoal: 10,
+        reachTeam: [
+          {
+            userId: 'user3'
+          },
+          {
+            userId: 'user4'
+          }
+        ]
       },
       {
         userId: 'user2',
-        buddyId: 'user1'
+        buddyId: 'user1',
+        selfGoal: 20,
+        reachTeam: [
+          {
+            userId: 'user5'
+          }
+        ]
       },
       {
         userId: 'user3',
-        buddyId: null
+        buddyId: null,
+        selfGoal: 30
+      },
+      {
+        userId: 'user4',
+        buddyId: null,
+        selfGoal: 15
+      },
+      {
+        userId: 'user5',
+        buddyId: null,
+        selfGoal: 15
       }
     ]
   };
@@ -296,22 +339,110 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
           actionCount: 1
         }
       ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user4',
+      challenges: [
+        {
+          actionCount: 2
+        },
+        {
+          actionCount: 2
+        }
+      ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user5',
+      challenges: [
+        {
+          actionCount: 2
+        }
+      ]
     }
   ];
-  var gameUsers =ggGame.getUserGamesChallenges(userGames, game, users);
-  // Should be sorted by num actions, most first: user3 > user1 > user2
-  test.equal(gameUsers[0].numActions, 8);
-  test.equal(gameUsers[0].numChallenges, 2);
-  test.equal(gameUsers[0].info.profile.name, 'User Three');
-  test.equal(gameUsers[0].buddyNumActions, 0);
+  var buddyUsers =ggGame.getGameUsersStats(userGames, game, users, gameRule, nowTime);
+  // buddyUsers =_.sortByOrder(buddyUsers, ['reachTeamNumActions'], ['desc']);
+  // Game is on 3rd challenge out of 5
+  var completionRatio =(3 / 5);
+  var retIndex, selfPledgePercent, buddyPledgePercent;
 
-  test.equal(gameUsers[1].numActions, 6);
-  test.equal(gameUsers[1].numChallenges, 3);
-  test.equal(gameUsers[1].info.profile.name, 'User One');
-  test.equal(gameUsers[1].buddyNumActions, 5);
+  // user 1 and user 2 should be joined as buddies.
+  test.equal(buddyUsers.length, 4);
 
-  test.equal(gameUsers[2].numActions, 5);
-  test.equal(gameUsers[2].numChallenges, 1);
-  test.equal(gameUsers[2].info.profile.name, 'User Two');
-  test.equal(gameUsers[2].buddyNumActions, 6);
+  // Should be ordered by passed in order, with first buddy user being the one used
+  // buddy users 1 & 2
+  retIndex =0;
+  // 6 / (3/5 * 10) * 100 = 100
+  selfPledgePercent =Math.round( 6 / ( completionRatio * game.users[0].selfGoal ) * 100);
+  // 5 / (3/5 * 20) * 100 = 41
+  buddyPledgePercent =Math.round( 5 / ( completionRatio * game.users[1].selfGoal ) * 100);
+  test.equal(buddyUsers[retIndex].user1.profile.name, 'User1 One');
+  test.equal(buddyUsers[retIndex].user2.profile.name, 'User2 Two');
+  test.equal(buddyUsers[retIndex].buddiedPledgePercent, ( Math.round (
+   ( selfPledgePercent + buddyPledgePercent ) / 2 ) ) );
+  // 6 (user 1) + 5 (user 2) + (8 + 4) (user 1's reach team user 3 & 4)
+  // + 2 (user 2's reach team user 5) = 25
+  test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 25);
+
+  // solo user 3
+  retIndex =1;
+  // 8 / (3/5 * 30) * 100 = 44
+  selfPledgePercent =Math.round( 8 / ( completionRatio * game.users[2].selfGoal ) * 100);
+  test.equal(buddyUsers[retIndex].user1.profile.name, 'User3 Three');
+  test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
+  // self only
+  test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 8);
+
+  // solo user 4
+  retIndex =2;
+  // 4 / (3/5 * 15) * 100 = 44
+  selfPledgePercent =Math.round( 4 / ( completionRatio * game.users[3].selfGoal ) * 100);
+  test.equal(buddyUsers[retIndex].user1.profile.name, 'User4 Four');
+  test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
+  // self only
+  test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 4);
+
+  // solo user 5
+  retIndex =3;
+  // 2 / (3/5 * 15) * 100 = 22
+  selfPledgePercent =Math.round( 2 / ( completionRatio * game.users[4].selfGoal ) * 100);
+  test.equal(buddyUsers[retIndex].user1.profile.name, 'User5 Five');
+  test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
+  // self only
+  test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 2);
+
+
+  // do single user version too
+  var gameUser =ggGame.getGameUserStats(userGames, game, users, gameRule, nowTime, 'user1');
+  selfPledgePercent =Math.round( 6 / ( completionRatio * game.users[0].selfGoal ) * 100);
+  // buddy is user2
+  buddyPledgePercent =Math.round( 5 / ( completionRatio * game.users[1].selfGoal ) * 100);
+  test.equal(gameUser.numActionsTotals.selfReach, 12);
+  test.equal(gameUser.numActionsTotals.buddyReach, 2);
+  test.equal(gameUser.selfUser.info.profile.name, 'User1 One');
+  test.equal(gameUser.selfUser.pledgePercent, selfPledgePercent);
+  test.equal(gameUser.selfUser.numActions, 6);
+  test.equal(gameUser.buddyUser.info.profile.name, 'User2 Two');
+  test.equal(gameUser.buddyUser.pledgePercent, buddyPledgePercent);
+  test.equal(gameUser.buddyUser.numActions, 5);
+  test.equal(gameUser.buddiedPledgePercent, ( Math.round (
+   ( selfPledgePercent + buddyPledgePercent ) / 2 ) ) );
+  // 6 (user 1) + 5 (user 2) + (8 + 4) (user 1's reach team user 3 & 4)
+  // + 2 (user 2's reach team user 5) = 25
+  test.equal(gameUser.buddiedReachTeamsNumActions, 25);
+
+  test.equal(gameUser.selfReachUsers.length, 2);
+  test.equal(gameUser.selfReachUsers[0].numActions, 8);
+  test.equal(gameUser.selfReachUsers[0].info.profile.name, 'User3 Three');
+  test.equal(gameUser.selfReachUsers[1].numActions, 4);
+  test.equal(gameUser.selfReachUsers[1].info.profile.name, 'User4 Four');
+  test.equal(gameUser.buddyReachUsers.length, 1);
+  test.equal(gameUser.buddyReachUsers[0].numActions, 2);
+  test.equal(gameUser.buddyReachUsers[0].info.profile.name, 'User5 Five');
+
 });

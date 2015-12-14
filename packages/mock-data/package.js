@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'growthgift:game',
+  name: 'growthgift:mock-data',
   version: '0.0.1',
   // Brief, one-line summary of the package.
   summary: '',
@@ -13,30 +13,17 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.use('momentjs:moment');
-  api.use('growthgift:constants');
-  api.use('growthgift:may');
-  api.use('growthgift:user');
   api.addFiles([
-    'game-vars.js',
-    'game-get.js',
-    'game.js',
-    'game-challenge.js'
+    'mock-data-vars.js',
+    'mock-data-game-rules.js'
   ]);
-  api.export('ggGame');
+
+  api.export('ggMockData');
 });
 
 Package.onTest(function(api) {
   api.use('ecmascript');
-  api.use('momentjs:moment');
-  api.use('growthgift:constants');
   api.use('tinytest');
-  api.use('growthgift:game');
   api.use('growthgift:mock-data');
-  api.addFiles([
-    'lib/lodash.custom.min.js',
-    'game-challenge-tests.js',
-    'game-get-tests.js',
-    'game-tests.js'
-  ]);
+  api.addFiles('mock-data-tests.js');
 });

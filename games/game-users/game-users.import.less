@@ -1,5 +1,12 @@
 .game-users-col {
-  width: 50px;
+  width: 60px;
+  text-align: right;
+}
+.game-users-row, .game-users-row-header {
+  padding: 0 10px;
+}
+.game-users-row:nth-child(even) {
+  background-color: lighten(@green, 20%);
 }
 .game-users-row.self {
   color: @red;

@@ -226,14 +226,14 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   return ret;
 };
 
-/**
-We return the buddy actions too but this requires a 2nd iteraction through
- the users so is worse for performance. If we do not need the buddy info
- we could make an option or a separate function that is more performant.
- In this case we would not need the `game` paramater at all either.
-*/
-ggGame.getUserGamesChallenges =function(userGames, game, users) {
-  var userIndex, curUser, gameUserIndex, buddyId, buddyIndex;
+_ggGame.getGameUsersStatsData =function(userGames, game, users, gameRule, nowTime) {
+  nowTime =nowTime || moment();
+  var userIndex, curUser, gameUserIndex, gameUser, buddyId, buddyIndex;
+
+  // Figure out total possible completions for calculating pledge percent.
+  var possibleCompletions =
+   ggGame.getCurrentChallenge(game, gameRule, nowTime).possibleCompletions;
+  var completionRatio = ( possibleCompletions / gameRule.challenges.length );
 
   // The first time we won't know all the buddy action totals so we
   // just save the buddy id for a second pass through.
@@ -242,15 +242,18 @@ ggGame.getUserGamesChallenges =function(userGames, game, users) {
     // Reset
     curUser ={
       numActions: 0,
+      pledgePercent: 0,
       numChallenges: 0,
+      info: {},
       buddyId: null,
-      info: {}
+      reachTeamUserIds: []
     };
 
     // Get buddy id for later
     gameUserIndex =game.users ? _.findIndex(game.users, 'userId', ug.userId)
      : -1;
-    buddyId =( gameUserIndex >-1 && game.users[gameUserIndex].buddyId) || null;
+    gameUser =( gameUserIndex >-1 ) ? game.users[gameUserIndex] : null;
+    buddyId =( gameUser ) ? gameUser.buddyId : null;
     if(buddyId) {
       curUser.buddyId =buddyId;
     }
@@ -266,23 +269,171 @@ ggGame.getUserGamesChallenges =function(userGames, game, users) {
         }
       });
     }
+    if(gameUser && gameUser.selfGoal) {
+      curUser.pledgePercent = Math.round( curUser.numActions /
+       ( completionRatio * gameUser.selfGoal ) * 100);
+    }
+
+    if(gameUser && gameUser.reachTeam && gameUser.reachTeam.length) {
+      curUser.reachTeamUserIds =gameUser.reachTeam.map(function(rt) {
+        return rt.userId;
+      });
+    }
 
     users1.push(curUser);
   });
+  return users1;
+};
 
-  // Fill buddy actions
-  var buddyActions;
-  return _.sortByOrder(users1.map(function(u) {
-    buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
-    if(buddyIndex >-1) {
-      u.buddyNumActions =users1[buddyIndex].numActions;
+/**
+This joins buddies together for their total pledge percent and total reach
+ score, which is the sum of theirs, their buddy's, their reach team, and
+ their buddy's reach team. This thus returns LESS (down to only 1/2 if all
+ users are buddied) user teams than the original `userGames` input.
+The pledge percentage is the number of actions divided by possible
+ completions. This and reach team actions require the `game` and `gameRule`
+ parameters.
+
+Performance note: This requires a LOT of loops through the same data. First
+ we get all actions and pledge percents for each user, then have to go back
+ through to find and add in both buddy and reach team amounts (for both self
+ and buddy) too.
+*/
+ggGame.getGameUsersStats =function(userGames, game, users, gameRule, nowTime) {
+  var users1 =_ggGame.getGameUsersStatsData(userGames, game, users, gameRule, nowTime);
+
+  // Fill buddy and reach team actions.
+  // And group buddies together as one return item.
+  var buddyUsers =[], alreadyBuddied, curBuddyUser;
+  var buddyUser, reachIndex, buddyIndex;
+  users1.forEach(function(u) {
+    // Only need to check user2 since will always put user1 as self. So the
+    // only way to already have been buddied is if this user is user2.
+    alreadyBuddied =( _.findIndex(buddyUsers, 'user2._id', u.info._id) >-1 )
+     ? true : false;
+    // Only add if buddy has not already been added for them
+    if(!alreadyBuddied) {
+      curBuddyUser ={
+        buddiedPledgePercent: 0,
+        buddiedReachTeamsNumActions: 0,
+        user1: u.info,
+        user2: {}
+      };
+
+      buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
+      if(buddyIndex >-1) {
+        buddyUser =users1[buddyIndex];
+        // u.buddyNumActions =buddyUser.numActions;
+        curBuddyUser.buddiedPledgePercent =Math.round ( ( u.pledgePercent +
+         buddyUser.pledgePercent ) / 2 );
+        curBuddyUser.user2 =buddyUser.info;
+      }
+      else {
+        // For now we will just get the user the full solo percent, but should
+        // probably denote (asterisk) it in the display.
+        curBuddyUser.buddiedPledgePercent =u.pledgePercent;
+      }
+
+      // Do reach team
+      // Add self actions.
+      curBuddyUser.buddiedReachTeamsNumActions +=u.numActions;
+      u.reachTeamUserIds.forEach(function(id) {
+        reachIndex =_.findIndex(users1, 'info._id', id);
+        if(reachIndex >-1) {
+          curBuddyUser.buddiedReachTeamsNumActions += users1[reachIndex].numActions;
+        }
+      });
+      // Add buddy's reach teach too
+      if(buddyIndex >-1) {
+        // Add buddy actions.
+        curBuddyUser.buddiedReachTeamsNumActions +=buddyUser.numActions;
+        buddyUser.reachTeamUserIds.forEach(function(id) {
+          reachIndex =_.findIndex(users1, 'info._id', id);
+          if(reachIndex >-1) {
+            curBuddyUser.buddiedReachTeamsNumActions += users1[reachIndex].numActions;
+          }
+        });
+      }
+
+      buddyUsers.push(curBuddyUser);
     }
-    else {
-      // Set default as 0 if not found
-      u.buddyNumActions =0;
+  });
+  return buddyUsers;
+};
+
+/**
+This is just like the plural (multiple users) version but for just one user.
+Basically it just breaks out the reach team actions into 4 categories and
+ shows the details (the reach user, pledge percent, and number of actions).
+For performance reasons, you should pass in ONLY the userGames (and users)
+ relevant to this one user (that user, the user's buddy, and the user's reach
+ team).
+*/
+ggGame.getGameUserStats =function(userGames, game, users, gameRule, nowTime, userId) {
+  var users1 =_ggGame.getGameUsersStatsData(userGames, game, users, gameRule, nowTime);
+
+  var retUser ={
+    buddiedPledgePercent: 0,
+    buddiedReachTeamsNumActions: 0,
+    numActionsTotals: {
+      selfReach: 0,
+      buddyReach: 0
+    },
+    selfUser: {},
+    buddyUser: {},
+    selfReachUsers: [],
+    buddyReachUsers: []
+  };
+  // Fill buddy and reach team actions
+  var userIndex =_.findIndex(users1, 'info._id', userId);
+  if(userIndex <0) {
+    return retUser;
+  }
+  var user =users1[userIndex];
+  retUser.selfUser =user;
+  var buddyIndex =_.findIndex(users1, 'info._id', user.buddyId);
+  if(buddyIndex >-1) {
+    var buddyUser =users1[buddyIndex];
+    retUser.buddiedPledgePercent =Math.round ( ( user.pledgePercent +
+     buddyUser.pledgePercent ) / 2 );
+    retUser.buddyUser =buddyUser;
+  }
+  else {
+    // For now we will just get the user the full solo percent, but should
+    // probably denote (asterisk) it in the display.
+    retUser.buddiedPledgePercent =user.pledgePercent;
+  }
+
+  // Do reach team
+  var reachIndex, reachUser;
+  // Add self actions.
+  retUser.buddiedReachTeamsNumActions +=user.numActions;
+  user.reachTeamUserIds.forEach(function(id) {
+    reachIndex =_.findIndex(users1, 'info._id', id);
+    if(reachIndex >-1) {
+      reachUser =users1[reachIndex];
+      retUser.buddiedReachTeamsNumActions += reachUser.numActions;
+      retUser.numActionsTotals.selfReach += reachUser.numActions;
+      retUser.selfReachUsers.push(reachUser);
     }
-    return u;
-  }), ['numActions'], ['desc']);
+  });
+
+  // Add buddy's reach teach too
+  if(buddyIndex >-1) {
+    // Add buddy actions.
+    retUser.buddiedReachTeamsNumActions +=buddyUser.numActions;
+    buddyUser.reachTeamUserIds.forEach(function(id) {
+      reachIndex =_.findIndex(users1, 'info._id', id);
+      if(reachIndex >-1) {
+        reachUser =users1[reachIndex];
+        retUser.buddiedReachTeamsNumActions += reachUser.numActions;
+        retUser.numActionsTotals.buddyReach += reachUser.numActions;
+        retUser.buddyReachUsers.push(reachUser);
+      }
+    });
+  }
+
+  return retUser;
 };
 
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
