@@ -20,8 +20,8 @@ if(Meteor.isClient) {
           pledgeStars: ( user.buddiedPledgePercent >=100 ) ? [1,1,1,1,1] :
            ( user.buddiedPledgePercent >=90 ) ? [1,1,1,1] :
            ( user.buddiedPledgePercent >=75 ) ? [1,1,1] :
-           ( user.buddiedPledgePercent >=55 ) ? [1,1] :
-           ( user.buddiedPledgePercent >=30 ) ? [1] : []
+           ( user.buddiedPledgePercent >=50 ) ? [1,1] :
+           ( user.buddiedPledgePercent >=20 ) ? [1] : []
         };
         if(user.user1._id && user.user2._id) {
           // user.xDisplay.displayHtml ='<a href=' + user.xDisplay.user1.href +
@@ -55,7 +55,11 @@ if(Meteor.isClient) {
     });
     // We will track when to get updates in the reactive var by when the
     // game users array length changes
-    this.numGameUsers =0;
+    this.dataLoaded ={
+      gameUsersLength: 0,
+      gameUsersInfoLength: 0,
+      userGamesLength: 0
+    };
   };
 
   Template.gameUsers.helpers({
@@ -71,9 +75,8 @@ if(Meteor.isClient) {
       var gameUsers =ggGame.getGameUsersInfo(userGames);
       // Have to wait until all users are loaded, which is when the game.users
       // array length matches the the userGames length.
-      if(!game || !gameRule || !userGames || !userGames.length ||
-       (game && userGames && gameUsers && (game.users.length !==userGames.length
-       || userGames.length !==gameUsers.length ) ) ) {
+      if(!game || !gameRule || !userGames || !userGames.length || !gameUsers
+       || !gameUsers.length) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -82,13 +85,17 @@ if(Meteor.isClient) {
 
       var users;
       var reactiveUsers =Template.instance().users.get();
-      var userGamesLength =userGames.length;
-      if(Template.instance().numGameUsers !==userGames.length) {
+      var dataLoaded =Template.instance().dataLoaded;
+      if(dataLoaded.gameUsersLength !==game.users.length ||
+       dataLoaded.gameUsersInfoLength !==gameUsers.length ||
+       dataLoaded.userGamesLength !==userGames.length) {
         users =ggGame.getGameUsersStats(userGames, game, gameUsers, gameRule, null);
         users =formatUsers(users, ['buddiedPledgePercent'], ['desc']);
         Template.instance().users.set(users);
         // update for next time
-        Template.instance().numGameUsers =userGamesLength;
+        Template.instance().dataLoaded.gameUsersLength =game.users.length;
+        Template.instance().dataLoaded.gameUsersInfoLength =gameUsers.length;
+        Template.instance().dataLoaded.userGamesLength =userGames.length;
       }
       else {
         users =Template.instance().users.get();

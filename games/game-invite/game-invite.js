@@ -80,7 +80,7 @@ if(Meteor.isClient) {
       var userTotalActions =ggGame.getUserGameTotalActions(userGame);
       // have to initialize to the existing self goal, if set
       init(Template.instance(), gameUser.selfGoal, reactiveData);
-      var perDay =Math.ceil( ( reactiveData.selfGoal - userTotalActions ) /
+      var perDay =Math.round( ( reactiveData.selfGoal - userTotalActions ) /
            ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) );
 
       return {
