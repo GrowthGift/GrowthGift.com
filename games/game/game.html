@@ -130,8 +130,14 @@
           <!-- <div>2. Invite friends</div> -->
           <div>2. Once the game starts, each day of the game:</div>
           <div class='margin-l'>a. Complete your pledge for the day.</div>
-          <div class='margin-l'>b. Log it here.</div>
-          <div class='margin-l'>c. Help your buddy achieve his/her pledge.</div>
+          <div class='margin-l'>
+            {{#if data.privileges.viewChallenges }}
+              b. <a href='{{ data.gameChallengeLink }}'>Log it here.</a>
+            {{ else }}
+              b. Log it here.
+            {{ /if }}
+          </div>
+          <div class='margin-l'>c. Call or text your buddy to let them know & to help them achieve their pledge.</div>
         </div>
       {{ /unless }}
 
