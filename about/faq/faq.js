@@ -26,6 +26,10 @@ if(Meteor.isClient) {
           a: "The 'G Games' are weekly (5 day) group challenges comprised of simple, small actions."
         },
         {
+          q: "What does 'G Games' stand for?",
+          a: "The 'G' represents both the 3 categories of games and the group aspect of them all. So it can be used for any of 'Growth Games', 'Giving Games', 'Gratitude Games' and / or 'Group Games'."
+        },
+        {
           q: "What is the time commitment?",
           a: "Each game typically takes just 5 minutes a day. The focus is on building habits, so the shorter it is, the easier it is to do it each day."
         },
