@@ -80,6 +80,13 @@ if(Meteor.isClient) {
       var userTotalActions =ggGame.getUserGameTotalActions(userGame);
       // have to initialize to the existing self goal, if set
       init(Template.instance(), gameUser.selfGoal, reactiveData);
+      // Note this will NOT exactly match the per day amount on the game page
+      // because we are taking into account how many have been done thus far
+      // and how many days are left. So a pledge of 10 over 5 days will ALWAYS
+      // show "2 per day" on the game page but if it is already day 4, it will
+      // show "5 per day" here since there's only 2 days left to do it in.
+      // Additionally, we do not know if they will be starting today or
+      // tomorrow. So it's really just an estimate.
       var perDay =Math.round( ( reactiveData.selfGoal - userTotalActions ) /
            ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) );
 
