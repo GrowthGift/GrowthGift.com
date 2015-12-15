@@ -28,6 +28,9 @@
             {{ #each xDisplay.pledgeStars }}
               <i class='fa fa-star'></i>
             {{ /each }}
+            {{ #if xDisplay.pledgeHalfStar }}
+              <i class='fa fa-star-half'></i>
+            {{ /if }}
           </div>
           <div class='game-users-col'>{{ buddiedTeamSize }}</div>
         </div>

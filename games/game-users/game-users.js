@@ -21,7 +21,9 @@ if(Meteor.isClient) {
            ( user.buddiedPledgePercent >=90 ) ? [1,1,1,1] :
            ( user.buddiedPledgePercent >=75 ) ? [1,1,1] :
            ( user.buddiedPledgePercent >=50 ) ? [1,1] :
-           ( user.buddiedPledgePercent >=20 ) ? [1] : []
+           ( user.buddiedPledgePercent >=20 ) ? [1] : [],
+          pledgeHalfStar: ( user.buddiedPledgePercent > 0 &&
+           user.buddiedPledgePercent <20 ) ? true : false
         };
         if(user.user1._id && user.user2._id) {
           // user.xDisplay.displayHtml ='<a href=' + user.xDisplay.user1.href +

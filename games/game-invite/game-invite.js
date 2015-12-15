@@ -87,8 +87,11 @@ if(Meteor.isClient) {
       // show "5 per day" here since there's only 2 days left to do it in.
       // Additionally, we do not know if they will be starting today or
       // tomorrow. So it's really just an estimate.
+      // Add one to the days left to assume they start today. This should thus
+      // very closely match the game page per day amount.
+      var daysLeft =( gameLeft.amount > 0 ? ( gameLeft.amount +1 ) : 1 );
       var perDay =Math.round( ( reactiveData.selfGoal - userTotalActions ) /
-           ( gameLeft.amount > 0 ? gameLeft.amount : 1 ) );
+       daysLeft);
 
       return {
         game: game,
