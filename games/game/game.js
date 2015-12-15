@@ -20,6 +20,10 @@ Meteor.methods({
 if(Meteor.isClient) {
   Template.game.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
+    this.display =new ReactiveVar({
+      impactDetails: false,
+      impactDetailsInfo: false
+    });
   };
 
   Template.game.rendered =function() {
@@ -68,6 +72,9 @@ if(Meteor.isClient) {
       // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
+      var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
+      var gameUsers =ggGame.getGameUsersInfo(userGames);
+
       var ret ={
         game: game,
         gameRule: gameRule,
@@ -90,14 +97,19 @@ if(Meteor.isClient) {
         // gameEndedForUser: false,
         challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null),
         gameState: ggGame.getGameState(game, gameRule, null),
-        userChallengeTotals: {},
+        userChallengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule),
+        gameUserStats: ggGame.getGameUserStats(userGames, game, gameUsers, gameRule, userId, null),
         gameUsersLink: ggUrls.gameUsers(game.slug),
         gameChallengeLink: ggUrls.gameChallenge(game.slug),
         gameInviteLink: ggUrls.gameInvite(game.slug),
         myGamesLink: ggUrls.myGames(),
         buddyName: null,
-        buddyErrorMessage: null
+        buddyErrorMessage: null,
+        display: Template.instance().display.get()
       };
+
+      ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
+       "1 player" : ret.userChallengeTotals.numUsers + " players";
 
       if(this.buddy) {
         // Look up buddy name
@@ -144,11 +156,6 @@ if(Meteor.isClient) {
       // ret.gameEndedForUser =( ret.curChallenge.gameEnded || (ret.privileges.viewChallenges && !ret.privileges.addChallenge) )
       //  ? true : false;
 
-      var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
-      ret.userChallengeTotals =ggGame.getChallengeTotals(game, userGames, gameRule);
-      ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
-       "1 player" : ret.userChallengeTotals.numUsers + " players";
-
       return ret;
     }
   });
@@ -176,6 +183,16 @@ if(Meteor.isClient) {
     'click .game-leave': function(evt, template) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       Meteor.call('leaveGame', game);
+    },
+    'click .game-impact-details-btn': function(evt, template) {
+      var display =template.display.get();
+      display.impactDetails =!display.impactDetails;
+      template.display.set(display);
+    },
+    'click .game-impact-details-info-btn': function(evt, template) {
+      var display =template.display.get();
+      display.impactDetailsInfo =!display.impactDetailsInfo;
+      template.display.set(display);
     }
   });
 

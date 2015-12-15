@@ -110,6 +110,50 @@
         </div>
       {{ /unless }}
 
+      {{ #if data.gameState.gameStarted }}
+        <div class='game-subheader-wrapper margin-large-lr margin-large-t'>
+          <div class='game-subheader'>Your Impact</div>
+        </div>
+        <div class='margin-large-lr'>
+          <div class='flexbox center'>
+            <div class='flex1'>
+              <h1>{{ data.gameUserStats.buddiedPledgePercent }}%</h1>
+              <div class='font-small'>Buddied Pledge Completion</div>
+            </div>
+            <div class='flex1'>
+              <h1>{{ data.gameUserStats.buddiedReachTeamsNumActions }}</h1>
+              <div class='font-small'>Total Impact <span class='btn-link game-impact-details-btn'>Details</span></div>
+            </div>
+          </div>
+          {{ #if data.display.impactDetails }}
+            <div class='flexbox h6 game-impact-details-row'>
+              <div class='flex1'>Name</div>
+              <div class='game-impact-details-col'>Pledge %</div>
+              <div class='game-impact-details-col'>Total</div>
+            </div>
+            {{ >gameImpactDetail userStat=data.gameUserStats.selfUser type='self' }}
+            {{ #if data.gameUserStats.buddyUser }}
+              {{ >gameImpactDetail userStat=data.gameUserStats.buddyUser type='buddy' }}
+            {{ /if }}
+            {{ #each data.gameUserStats.selfReachUsers }}
+              {{ >gameImpactDetail userStat=this type='self-reach' }}
+            {{ /each }}
+            {{ #each data.gameUserStats.buddyReachUsers }}
+              {{ >gameImpactDetail userStat=this type='buddy-reach' }}
+            {{ /each }}
+
+            <div class='margin-tb'>
+              <div><span class='btn-link game-impact-details-info-btn font-small'>What does this mean?</span></div>
+              {{ #if data.display.impactDetailsInfo }}
+                {{ >gameInfoPledgeImpact mainAction=data.gameRule.mainAction }}
+              {{ /if }}
+            </div>
+          {{ /if }}
+        </div>
+        <div class='margin-large-b'>
+        </div>
+      {{ /if }}
+
       <div class='game-subheader-wrapper margin-large-t margin-large-lr'>
         <div class='game-subheader'>Your Daily Breakdown</div>
       </div>
@@ -198,5 +242,24 @@
       </div>
       <div class='font-small'>{{ challenge.timeDisplay }}</div>
     </div>
+  </div>
+</template>
+
+<template name="gameImpactDetail">
+  <div class='flexbox game-impact-details-row {{type}}'>
+    <div class='flex1'>{{ userStat.info.profile.name }}</div>
+    <div class='game-impact-details-col'>{{ userStat.pledgePercent }}%</div>
+    <div class='game-impact-details-col'>{{ userStat.numActions }}</div>
+  </div>
+</template>
+
+<template name="gameInfoPledgeImpact">
+  <div class='font-small'>
+    <div><b>Buddied Pledge Completion</b> is how on track you and your buddy are to meeting your pledges. For example, if you each pledged 1 per day (5 total over 5 days) and it was day 2, if you had each done 2 you would be at 100%.</div>
+    <div><b>Total Impact</b> is you and your buddy's "reach team". It's the sum of all {{ mainAction }} for:</div>
+    <div class='margin-l'>1. you</div>
+    <div class='margin-l'>2. your buddy</div>
+    <div class='margin-l'>3. any people you invited</div>
+    <div class='margin-l'>4. any people your buddy invited</div>
   </div>
 </template>

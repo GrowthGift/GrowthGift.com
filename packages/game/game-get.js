@@ -369,7 +369,7 @@ For performance reasons, you should pass in ONLY the userGames (and users)
  relevant to this one user (that user, the user's buddy, and the user's reach
  team).
 */
-ggGame.getGameUserStats =function(userGames, game, users, gameRule, nowTime, userId) {
+ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowTime) {
   var users1 =_ggGame.getGameUsersStatsData(userGames, game, users, gameRule, nowTime);
 
   var retUser ={
@@ -379,8 +379,8 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, nowTime, use
       selfReach: 0,
       buddyReach: 0
     },
-    selfUser: {},
-    buddyUser: {},
+    selfUser: null,
+    buddyUser: null,
     selfReachUsers: [],
     buddyReachUsers: []
   };

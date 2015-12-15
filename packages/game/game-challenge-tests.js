@@ -418,7 +418,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
 
 
   // do single user version too
-  var gameUser =ggGame.getGameUserStats(userGames, game, users, gameRule, nowTime, 'user1');
+  var gameUser =ggGame.getGameUserStats(userGames, game, users, gameRule, 'user1', nowTime);
   selfPledgePercent =Math.round( 6 / ( completionRatio * game.users[0].selfGoal ) * 100);
   // buddy is user2
   buddyPledgePercent =Math.round( 5 / ( completionRatio * game.users[1].selfGoal ) * 100);

@@ -46,7 +46,10 @@ if(Meteor.isClient) {
 
   Template.gameUsers.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
-    this.users =new ReactiveVar([]);
+    this.users = new ReactiveVar([]);
+    this.display = new ReactiveVar({
+      info: false
+    });
     this.inited =false;
   };
 
@@ -86,7 +89,8 @@ if(Meteor.isClient) {
         // Get game challenge completions possible
         gameChallenge: ggGame.getCurrentChallenge(game, gameRule),
         users: users,
-        challengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule, null)
+        challengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule, null),
+        display: Template.instance().display.get()
       };
     }
   });
@@ -106,6 +110,11 @@ if(Meteor.isClient) {
       var users =template.users.get();
       users =_.sortByOrder(users, ['buddiedReachTeamsNumActions'], ['desc']);
       template.users.set(users);
+    },
+    'click .game-users-info-btn': function(evt, template) {
+      var display =template.display.get();
+      display.info =!display.info;
+      template.display.set(display);
     }
   });
 }
