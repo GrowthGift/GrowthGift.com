@@ -1,5 +1,10 @@
-// Write your tests here!
-// Here is an example.
-// Tinytest.add('example', function (test) {
-//   test.equal(true, true);
-// });
+Tinytest.add('get user first name and last initial', function (test) {
+  var users =[
+    {
+      profile: {
+        name: 'Kayla'
+      }
+    }
+  ];
+  test.equal(ggUser.getName(users[0]), 'Kayla');
+});

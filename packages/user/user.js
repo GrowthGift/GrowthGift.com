@@ -13,8 +13,15 @@ ggUser.getName =function(user, format) {
   }
   var name =user.profile.name;
   var posSpace =name.indexOf(' ');
-  var first =name.slice(0, posSpace);
-  var last =name.slice((posSpace+1), name.length);
-  var lastInitial =( last && last.length >0 ) ? ( last.slice(0,1) + '.' ) : '';
-  return ( first + ' ' + lastInitial );
+  var first, last ='', lastInitial ='';
+  if(posSpace <0) {
+    first =name;
+    last ='';
+  }
+  else {
+    first =name.slice(0, posSpace);
+    last =name.slice((posSpace+1), name.length);
+    lastInitial =( last && last.length >0 ) ? ( last.slice(0,1) + '.' ) : '';
+  }
+  return ( lastInitial ) ? ( first + ' ' + lastInitial ) : first;
 }
