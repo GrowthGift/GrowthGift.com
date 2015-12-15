@@ -25,7 +25,15 @@ Meteor.methods({
       // overwrite with proper one
       doc =modifier;
     }
-    ggGame.saveUserGameChallenge(doc, docId, function(err, result) { });
+    ggGame.saveUserGameChallenge(doc, docId, function(err, result) {
+      if(!err && Meteor.isClient) {
+        var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
+        var gameSlug =templateInst.data.gameSlug;
+        if(gameSlug) {
+          Router.go(ggUrls.game(gameSlug));
+        }
+      }
+    });
   }
 });
 
