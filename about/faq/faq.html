@@ -16,7 +16,10 @@
   <div class='margin-large-b'>
     <h3 class='margin-b'>{{ header }}</h3>
     {{#each items}}
-      <div class='margin-xlarge-b'> 
+      <div class='margin-xlarge-b relative'>
+        {{ #if link }}
+          <a name='{{ link }}' href='#{{ link }}' class='a-div faq-link faq-hash-{{ link }}'>&nbsp;</a>
+        {{ /if }}
         <h5 class='red faq-header pointer'>{{ q }}</h5>
         <div class='{{ classes.visible }}'>{{{ a }}}</div>
       </div>

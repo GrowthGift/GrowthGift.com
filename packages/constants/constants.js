@@ -1,7 +1,9 @@
 ggConstants ={
   gameSelectNew: '_new',
   dateTimeFormat: 'YYYY-MM-DD HH:mm:ssZ',
-  dateTimeDisplay: 'ddd MMM DD, YYYY @ h:mma'
+  dateTimeDisplay: 'ddd MMM DD, YYYY @ h:mma',
+  headerHeight: 50,
+  navHeight: 50,
 };
 
 ggConstants.curDateTime =function() {
