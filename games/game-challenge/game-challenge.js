@@ -72,8 +72,9 @@ if(Meteor.isClient) {
           _xHref: ggUrls.myGames()
         };
       }
+      var userId =Meteor.userId();
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;
+      var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:userId }) ) || null;
       var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) ) || null;
       if(!game || !userGame || !gameRule) {
         return {
@@ -81,14 +82,14 @@ if(Meteor.isClient) {
           _xHref: ggUrls.myGames()
         };
       }
-      if(!ggMay.viewUserGameChallenge(game, Meteor.userId()) ) {
+      if(!ggMay.viewUserGameChallenge(game, userId) ) {
         nrAlert.alert("You are not in this game. Join the game first");
         Router.go('/g/'+this.gameSlug);
         return false;
       }
 
       var ret ={
-        challenges: ggGame.getUserGameChallenges(game._id, Meteor.userId()),
+        challenges: ggGame.getUserGameChallenges(game._id, userId),
         gameLink: ggUrls.game(this.gameSlug),
         game: game,
         gameRule: {
@@ -128,7 +129,7 @@ if(Meteor.isClient) {
       }
 
       var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
-      if(ggMay.addUserGameChallenge(game, Meteor.userId(), curChallenge, userChallenge)) {
+      if(ggMay.addUserGameChallenge(game, userId, curChallenge, userChallenge)) {
         ret.privileges.addChallenge =true;
       }
       // Output why not
