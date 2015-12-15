@@ -72,6 +72,7 @@
           <div class='margin-large-t padding-large-tb center game-section-gray-medium'>
             <h4>Game Starts:</h4>
             <div>{{ data.gameState.starts }}</div>
+            <div class='font-small'>Ends: {{ data.gameState.ends }}</div>
           </div>
         {{ else }}
           <div class='margin-large-t padding-large-tb center game-section-red'>
@@ -83,6 +84,8 @@
       <div class='margin-large-t padding-large-tb center game-section-dark'>
         <h4>Game Over</h4>
         <div>Go to <a class='red' href='{{ data.myGamesLink }}'>My Games</a> to see your current games. Or join a new one!</div>
+        <div class='font-small'>Started: {{ data.gameState.starts }}</div>
+        <div class='font-small'>Ended: {{ data.gameState.ends }}</div>
       </div>
 
       {{ /unless }}
