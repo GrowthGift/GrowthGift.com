@@ -20,24 +20,27 @@
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
     <div class='game-section-gray padding-large-t'>
       <div class='center margin-lr'>
-        <!-- <h2>{{ data.game.title }}</h2> -->
-        <h3>{{ data.game.actionGoal }} {{ data.gameRule.mainAction }}</h3>
-        {{ #unless data.gameState.gameEnded }}
-          <h4 class='red'>Team Pledged: {{ data.userChallengeTotals.userGoals }}</h4>
+        <h2>{{ data.game.title }}</h2>
+        {{ #unless data.gameState.gameStarted }}
+          <h4 class='red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</h4>
+        {{ else }}
+          <h4 class='red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</h4>
         {{ /unless }}
         <div>
+          <span class='h5'>
           {{#if data.privileges.viewPlayers }}
-            <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> |
+            <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
           {{else}}
-            {{ data.userChallengeTotals.numUsersText }} |
+            {{ data.userChallengeTotals.numUsersText }}
           {{/if}}
+          </span>
 
           <!-- {{ data.userChallengeTotals.userCompletions }} total challenge completions -->
-          {{#if data.privileges.viewChallenges }}
+          <!-- {{#if data.privileges.viewChallenges }}
             <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}</a>
           {{else}}
             {{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}
-          {{/if}}
+          {{/if}} -->
         </div>
       </div>
 
