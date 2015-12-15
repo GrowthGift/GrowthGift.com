@@ -1,19 +1,28 @@
 Meteor.methods({
   joinGame: function(game, buddyRequestKey, inviteUsername) {
     ggGame.join(game, Meteor.userId(), buddyRequestKey, inviteUsername, function(err, result) {
-      if(Meteor.isClient) {
-        if(!err && result) {
-          var templateInst =ggTemplate.getMainTemplate("Template.game");
-          var slug =templateInst.data.gameSlug;
-          if(slug) {
-            Router.go(ggUrls.gameInvite(slug));
-          }
+      if(Meteor.isClient && !err) {
+        var templateInst =ggTemplate.getMainTemplate("Template.game");
+        var slug =templateInst.data.gameSlug;
+        if(slug) {
+          Router.go(ggUrls.gameInvite(slug));
         }
       }
     });
   },
   leaveGame: function(game) {
     ggGame.leave(game, Meteor.userId(), function(err, result) { });
+  },
+  saveGameBuddy: function(game, buddyRequestKey) {
+    ggGame.saveBuddy(game, Meteor.userId(), buddyRequestKey, function(err, result) {
+      if(Meteor.isClient && !err) {
+        var templateInst =ggTemplate.getMainTemplate("Template.game");
+        var slug =templateInst.data.gameSlug;
+        if(slug) {
+          Router.go(ggUrls.game(slug));
+        }
+      }
+    });
   }
 });
 
@@ -87,7 +96,7 @@ if(Meteor.isClient) {
           viewPlayers: (game && userId) ? true : false,
           viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
           addChallenge: false,
-          buddy: ( this.buddy ? ggMay.beGameBuddy(game, null, this.buddy) : false )
+          buddy: ( this.buddy ? ggMay.beGameBuddy(game, userId, this.buddy) : false )
         },
         // challenges: {
         //   possibleCompletions: 0,
@@ -121,7 +130,12 @@ if(Meteor.isClient) {
           }
           // If were trying to buddy but cannot, output why
           if(!ret.privileges.buddy) {
-            ret.buddyErrorMessage ="Buddy taken. Join to invite another one!";
+            var selfUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
+            ret.buddyErrorMessage = ( selfUser && selfUser.buddyId ) ?
+             "You already have a buddy" : ( selfUser && selfUser.userId ===
+             buddyUser.userId ) ? "You may not buddy with yourself" :
+             "Buddy taken. " + ( userId ? "Invite" : "Join to invite" ) +
+             " another one!";
           }
         }
         // If were trying to buddy but cannot, output why
@@ -129,32 +143,6 @@ if(Meteor.isClient) {
           ret.buddyErrorMessage ="No buddy found. Please check your link.";
         }
       }
-
-      // // Game users
-      // ret.curChallenge =ggGame.getCurrentChallenge(game, gameRule);
-      // if(ret.curChallenge.nextChallenge) {
-      //   ret.curChallenge.nextChallenge.xDisplay ={
-      //     start: moment(ret.curChallenge.nextChallenge.start, ggConstants.dateTimeFormat).fromNow()
-      //   }
-      // }
-      // if(ret.curChallenge.currentChallenge) {
-      //   ret.curChallenge.currentChallenge.xDisplay ={
-      //     end: moment(ret.curChallenge.currentChallenge.end, ggConstants.dateTimeFormat).fromNow()
-      //   };
-      // }
-      // ret.challenges.possibleCompletions =ret.curChallenge.possibleCompletions;
-
-      // // Can only show challenges if user is in game
-      // if(ret.privileges.viewChallenges) {
-      //   var userGameSelf =UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() });
-      //   var userChallengeSelf =ggGame.getCurrentUserChallenge(game._id, Meteor.userId(), userGameSelf);
-      //   ret.challenges.selfCompletions =userChallengeSelf.numCompletions;
-      //   ret.privileges.addChallenge =(ggMay.addUserGameChallenge(game, Meteor.userId(), userGameSelf, gameRule) )
-      //    ? true : false;
-      // }
-
-      // ret.gameEndedForUser =( ret.curChallenge.gameEnded || (ret.privileges.viewChallenges && !ret.privileges.addChallenge) )
-      //  ? true : false;
 
       return ret;
     }
@@ -183,6 +171,10 @@ if(Meteor.isClient) {
     'click .game-leave': function(evt, template) {
       var game =GamesCollection.findOne({slug: this.gameSlug});
       Meteor.call('leaveGame', game);
+    },
+    'click .game-buddy': function(evt, template) {
+      var game =GamesCollection.findOne({slug: this.gameSlug});
+      Meteor.call('saveGameBuddy', game, this.buddy);
     },
     'click .game-impact-details-btn': function(evt, template) {
       var display =template.display.get();

@@ -21,7 +21,9 @@ ggGame.saveUserGameChallenge =function(doc, docId, callback) {
 ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
   var userGame =UserGamesCollection.findOne({ gameId:game._id, userId:userId });
   var gameRule =GameRulesCollection.findOne({ _id:game.gameRuleId });
-  var valid =ggMay.addUserGameChallenge(game, userId, userGame, gameRule);
+  var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
+  var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
+  var valid =ggMay.addUserGameChallenge(game, userId, curChallenge, userChallenge);
   if(!valid) {
     if(Meteor.isClient) {
       nrAlert.alert("You may not add a challenge completion right now. Please try again once the next challenge starts!");

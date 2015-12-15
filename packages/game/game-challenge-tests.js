@@ -1,6 +1,7 @@
 // Write your tests here!
 // Here is an example.
-var dateTimeFormat ='YYYY-MM-DD HH:mm:ssZ';
+// var dateTimeFormat ='YYYY-MM-DD HH:mm:ssZ';
+var dateTimeFormat =ggConstants.dateTimeFormat;
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get current challenge that has not started', function (test) {

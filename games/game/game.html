@@ -63,10 +63,29 @@
           </div>
         {{else}}
           <div class='center margin-b margin-large-t'>
-            <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>Choose Your Impact</a>
+            <!-- Can still buddy if already in game as long as do not have a buddy yet -->
+            {{ #if data.privileges.buddy }}
+              <div class='btn btn-primary margin-tb game-buddy'>
+                Buddy with {{ data.buddyName }}
+              </div>
+              <div class='red'>Become buddies with {{ data.buddyName }}.</div>
+            {{ /if }}
+            {{#if data.buddyErrorMessage }}
+              <div class='text-warning margin-b'>{{ data.buddyErrorMessage }}</div>
+            {{/if}}
+            {{ #unless data.privileges.buddy }}
+              <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>
+                {{ #unless data.gameState.gameStarted }}
+                Choose Your Impact
+                {{ else }}
+                Invite Friends
+                {{ /unless }}
+              </a>
+            {{ /unless }}
           </div>
         {{/if}}
-        <div class='font-small center'>Games are just 5 minutes a day for 5 days</div>
+        <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
+        <div class='font-small center'>Join any time, even after the game has started.</div>
 
         {{ #unless data.gameState.gameStarted }}
           <div class='margin-large-t padding-large-tb center game-section-gray-medium'>

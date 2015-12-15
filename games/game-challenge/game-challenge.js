@@ -108,9 +108,10 @@ if(Meteor.isClient) {
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
 
+      var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
+      var gameCurrentChallenge =curChallenge.currentChallenge;
       if(ret.hasChallenges) {
         // Check challenge edit privileges
-        var gameCurrentChallenge =ggGame.getCurrentChallenge(game, gameRule, null).currentChallenge;
         ret.challenges.forEach(function(challenge, index) {
           ret.challenges[index]._xPrivileges ={
             edit: ggMay.editUserGameChallenge(gameCurrentChallenge, challenge)
@@ -126,12 +127,12 @@ if(Meteor.isClient) {
         });
       }
 
-      if(ggMay.addUserGameChallenge(game, Meteor.userId(), userGame, gameRule)) {
+      var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
+      if(ggMay.addUserGameChallenge(game, Meteor.userId(), curChallenge, userChallenge)) {
         ret.privileges.addChallenge =true;
       }
       // Output why not
       else {
-        var curChallenge =ggGame.getCurrentChallenge(game, gameRule);
         if(!curChallenge.gameStarted) {
           ret.privileges.addChallengeMessage ='Game has not started yet.';
         }

@@ -172,9 +172,9 @@ ggGame.saveGameInvite =function(game, userId, gameUserData, callback) {
 };
 
 ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
-  if(!ggMay.beGameBuddy(game, null, buddyRequestKey)) {
+  if(!ggMay.beGameBuddy(game, selfUserId, buddyRequestKey)) {
     if(Meteor.isClient) {
-      nrAlert.alert("You may buddy with this person for this game.");
+      nrAlert.alert("You may not buddy with this person for this game.");
     }
     callback(true);
     return;

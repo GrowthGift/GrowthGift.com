@@ -20,6 +20,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
+  api.use('growthgift:mock-data');
   api.use('growthgift:may');
   api.addFiles('may-tests.js');
 });

@@ -77,15 +77,34 @@ ggMay.leaveGame =function(game, userId) {
    ? true : false;
 };
 
+/**
+TODO - DRY up - this is copied from ggGame
+*/
+_may.getGameUser =function(game, userId, params) {
+  var gameUserIndex;
+  if(!userId && params.buddyRequestKey) {
+    gameUserIndex =(game && game.users ) ?
+     _.findIndex(game.users, 'buddyRequestKey', params.buddyRequestKey) : -1;
+  }
+  else {
+    gameUserIndex =(game && game.users && userId ) ?
+     _.findIndex(game.users, 'userId', userId) : -1;
+  }
+  return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
+};
+
 ggMay.beGameBuddy =function(game, buddyUserId, buddyRequestKey) {
   if(!game || ( !buddyUserId && !buddyRequestKey ) ) {
     return false;
   }
-  var gameUser =ggGame.getGameUser(game, buddyUserId, { buddyRequestKey: buddyRequestKey });
+  var gameUserSelf =( buddyUserId ) ? _may.getGameUser(game, buddyUserId, {}) : null;
+  var gameUserBuddy =_may.getGameUser(game, null, { buddyRequestKey: buddyRequestKey });
   // If potential buddy does NOT already have a buddy and the request keys
   // match, then can be a buddy.
-  if(gameUser && !gameUser.buddyId && gameUser.buddyRequestKey &&
-   gameUser.buddyRequestKey === buddyRequestKey) {
+  if( gameUserBuddy && !gameUserBuddy.buddyId && ( !gameUserSelf || (
+   !gameUserSelf.buddyId && gameUserSelf.userId !== gameUserBuddy.userId ) )
+   && gameUserBuddy.buddyRequestKey && ( gameUserBuddy.buddyRequestKey ===
+   buddyRequestKey) ) {
     return true;
   }
   return false;
@@ -114,20 +133,18 @@ ggMay.viewUserGameChallenge =function(game, userId) {
   return true;
 };
 
-ggMay.addUserGameChallenge =function(game, userId, userGame, gameRule, nowTime) {
+ggMay.addUserGameChallenge =function(game, userId, curChallenge, userChallenge, nowTime) {
   nowTime =nowTime || moment();
   if(!game || !userId || !ggMay.viewUserGameChallenge(game, userId)) {
     return false;
   }
 
   // User can only add one challenge completion per challenge (time period)
-  var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
   // If game has not started or is already over, can not add a challenge
   if(!curChallenge.gameStarted || curChallenge.gameEnded || !curChallenge.currentChallenge) {
     return false;
   }
 
-  var userChallenge =ggGame.getCurrentUserChallenge(game._id, userId, userGame);
   // Only may add if the user has NOT completed a challenge yet OR the user
   // most recent challenge completion happened BEFORE the current challenge start
   if(!userChallenge.mostRecentChallenge || moment(userChallenge.mostRecentChallenge.updatedAt, ggConstants.dateTimeFormat)
