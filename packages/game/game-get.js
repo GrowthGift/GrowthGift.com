@@ -32,6 +32,9 @@ ggGame.getGameUser =function(game, userId, params) {
 }
 
 ggGame.getGameUsersInfo =function(userGames) {
+  if(!userGames) {
+    return [];
+  }
   // Get users
   var userIds =[];
   userGames.forEach(function(user) {
@@ -307,55 +310,61 @@ ggGame.getGameUsersStats =function(userGames, game, users, gameRule, nowTime) {
   var buddyUsers =[], alreadyBuddied, curBuddyUser;
   var buddyUser, reachIndex, buddyIndex;
   users1.forEach(function(u) {
-    // Only need to check user2 since will always put user1 as self. So the
-    // only way to already have been buddied is if this user is user2.
-    alreadyBuddied =( _.findIndex(buddyUsers, 'user2._id', u.info._id) >-1 )
-     ? true : false;
-    // Only add if buddy has not already been added for them
-    if(!alreadyBuddied) {
-      curBuddyUser ={
-        buddiedPledgePercent: 0,
-        buddiedReachTeamsNumActions: 0,
-        user1: u.info,
-        user2: {}
-      };
+    if(u.info) {
+      // Only need to check user2 since will always put user1 as self. So the
+      // only way to already have been buddied is if this user is user2.
+      alreadyBuddied =( _.findIndex(buddyUsers, 'user2._id', u.info._id) >-1 )
+       ? true : false;
+      // Only add if buddy has not already been added for them
+      if(!alreadyBuddied) {
+        curBuddyUser ={
+          buddiedPledgePercent: 0,
+          buddiedReachTeamsNumActions: 0,
+          buddiedTeamSize: 1,    // self
+          user1: u.info,
+          user2: {}
+        };
 
-      buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
-      if(buddyIndex >-1) {
-        buddyUser =users1[buddyIndex];
-        // u.buddyNumActions =buddyUser.numActions;
-        curBuddyUser.buddiedPledgePercent =Math.round ( ( u.pledgePercent +
-         buddyUser.pledgePercent ) / 2 );
-        curBuddyUser.user2 =buddyUser.info;
-      }
-      else {
-        // For now we will just get the user the full solo percent, but should
-        // probably denote (asterisk) it in the display.
-        curBuddyUser.buddiedPledgePercent =u.pledgePercent;
-      }
-
-      // Do reach team
-      // Add self actions.
-      curBuddyUser.buddiedReachTeamsNumActions +=u.numActions;
-      u.reachTeamUserIds.forEach(function(id) {
-        reachIndex =_.findIndex(users1, 'info._id', id);
-        if(reachIndex >-1) {
-          curBuddyUser.buddiedReachTeamsNumActions += users1[reachIndex].numActions;
+        buddyIndex =_.findIndex(users1, 'info._id', u.buddyId);
+        if(buddyIndex >-1) {
+          curBuddyUser.buddiedTeamSize++;
+          buddyUser =users1[buddyIndex];
+          // u.buddyNumActions =buddyUser.numActions;
+          curBuddyUser.buddiedPledgePercent =Math.round ( ( u.pledgePercent +
+           buddyUser.pledgePercent ) / 2 );
+          curBuddyUser.user2 =buddyUser.info;
         }
-      });
-      // Add buddy's reach teach too
-      if(buddyIndex >-1) {
-        // Add buddy actions.
-        curBuddyUser.buddiedReachTeamsNumActions +=buddyUser.numActions;
-        buddyUser.reachTeamUserIds.forEach(function(id) {
+        else {
+          // For now we will just get the user the full solo percent, but should
+          // probably denote (asterisk) it in the display.
+          curBuddyUser.buddiedPledgePercent =u.pledgePercent;
+        }
+
+        // Do reach team
+        // Add self actions.
+        curBuddyUser.buddiedReachTeamsNumActions +=u.numActions;
+        u.reachTeamUserIds.forEach(function(id) {
           reachIndex =_.findIndex(users1, 'info._id', id);
           if(reachIndex >-1) {
+            curBuddyUser.buddiedTeamSize++;
             curBuddyUser.buddiedReachTeamsNumActions += users1[reachIndex].numActions;
           }
         });
-      }
+        // Add buddy's reach teach too
+        if(buddyIndex >-1) {
+          // Add buddy actions.
+          curBuddyUser.buddiedReachTeamsNumActions +=buddyUser.numActions;
+          buddyUser.reachTeamUserIds.forEach(function(id) {
+            reachIndex =_.findIndex(users1, 'info._id', id);
+            if(reachIndex >-1) {
+              curBuddyUser.buddiedTeamSize++;
+              curBuddyUser.buddiedReachTeamsNumActions += users1[reachIndex].numActions;
+            }
+          });
+        }
 
-      buddyUsers.push(curBuddyUser);
+        buddyUsers.push(curBuddyUser);
+      }
     }
   });
   return buddyUsers;

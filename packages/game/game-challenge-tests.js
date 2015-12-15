@@ -385,6 +385,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   // 6 (user 1) + 5 (user 2) + (8 + 4) (user 1's reach team user 3 & 4)
   // + 2 (user 2's reach team user 5) = 25
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 25);
+  test.equal(buddyUsers[retIndex].buddiedTeamSize, 5);
 
   // solo user 3
   retIndex =1;
@@ -395,6 +396,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 8);
+  test.equal(buddyUsers[retIndex].buddiedTeamSize, 1);
 
   // solo user 4
   retIndex =2;
@@ -405,6 +407,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 4);
+  test.equal(buddyUsers[retIndex].buddiedTeamSize, 1);
 
   // solo user 5
   retIndex =3;
@@ -415,6 +418,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 2);
+  test.equal(buddyUsers[retIndex].buddiedTeamSize, 1);
 
 
   // do single user version too

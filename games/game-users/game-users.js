@@ -11,8 +11,17 @@ if(Meteor.isClient) {
           },
           displayHtml: null,
           classes: {
-            row: ''
-          }
+            row: ( ( user.user1._id && user.user1._id === Meteor.userId() ) ||
+             ( user.user2._id && user.user2._id === Meteor.userId() ) ) ?
+             'self' : ''
+          },
+          // Would do number of stars but for use with #each, needs to be an
+          // array. The values do not matter; just the length of the array.
+          pledgeStars: ( user.buddiedPledgePercent >=100 ) ? [1,1,1,1,1] :
+           ( user.buddiedPledgePercent >=90 ) ? [1,1,1,1] :
+           ( user.buddiedPledgePercent >=75 ) ? [1,1,1] :
+           ( user.buddiedPledgePercent >=55 ) ? [1,1] :
+           ( user.buddiedPledgePercent >=30 ) ? [1] : []
         };
         if(user.user1._id && user.user2._id) {
           // user.xDisplay.displayHtml ='<a href=' + user.xDisplay.user1.href +
@@ -24,17 +33,11 @@ if(Meteor.isClient) {
           // user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user1.href
           //  + '>' + ggUser.getName(user.user1) + '</a>';
           user.xDisplay.displayHtml ='*' + ggUser.getName(user.user1);
-          if(user.user1._id ===Meteor.userId()) {
-            user.xDisplay.classes.row ='self';
-          }
         }
         else if(user.user2._id) {
           // user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user2.href
           //  + '>' + ggUser.getName(user.user2) + '</a>';
           user.xDisplay.displayHtml ='*' + ggUser.getName(user.user2);
-          if(user.user2._id ===Meteor.userId()) {
-            user.xDisplay.classes.row ='self';
-          }
         }
       }
     });
@@ -50,7 +53,9 @@ if(Meteor.isClient) {
     this.display = new ReactiveVar({
       info: false
     });
-    this.inited =false;
+    // We will track when to get updates in the reactive var by when the
+    // game users array length changes
+    this.numGameUsers =0;
   };
 
   Template.gameUsers.helpers({
@@ -63,21 +68,27 @@ if(Meteor.isClient) {
       var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) )
        || null;
       var userGames =(game && UserGamesCollection.find({ gameId:game._id }).fetch() ) || null;
-      if(!game || !gameRule || !userGames) {
+      var gameUsers =ggGame.getGameUsersInfo(userGames);
+      // Have to wait until all users are loaded, which is when the game.users
+      // array length matches the the userGames length.
+      if(!game || !gameRule || !userGames || !userGames.length ||
+       (game && userGames && gameUsers && (game.users.length !==userGames.length
+       || userGames.length !==gameUsers.length ) ) ) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
         };
       }
 
-      var gameUsers =ggGame.getGameUsersInfo(userGames);
       var users;
       var reactiveUsers =Template.instance().users.get();
-      if(!Template.instance().inited) {
-        Template.instance().inited =true;
+      var userGamesLength =userGames.length;
+      if(Template.instance().numGameUsers !==userGames.length) {
         users =ggGame.getGameUsersStats(userGames, game, gameUsers, gameRule, null);
         users =formatUsers(users, ['buddiedPledgePercent'], ['desc']);
         Template.instance().users.set(users);
+        // update for next time
+        Template.instance().numGameUsers =userGamesLength;
       }
       else {
         users =Template.instance().users.get();
@@ -108,7 +119,8 @@ if(Meteor.isClient) {
     },
     'click .game-users-header-impact': function(evt, template) {
       var users =template.users.get();
-      users =_.sortByOrder(users, ['buddiedReachTeamsNumActions'], ['desc']);
+      // users =_.sortByOrder(users, ['buddiedReachTeamsNumActions'], ['desc']);
+      users =_.sortByOrder(users, ['buddiedTeamSize'], ['desc']);
       template.users.set(users);
     },
     'click .game-users-info-btn': function(evt, template) {
