@@ -80,6 +80,11 @@ if(Meteor.isClient) {
         //   a: "Anyone!",
         //   link: 'game-create'
         // },
+        {
+          q: "I forgot to log my results! But I did it, I promise!",
+          a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! As long as it is not the last day, you can just add it to today's score.",
+          link: 'game-forgot-to-log'
+        },
 
       ]
     };
