@@ -3,6 +3,7 @@
   @param {Array} userIds
   @param {String} type The notification type that will be used to check (against user.notification) which notifications (if any) to send to this user, i.e. 'event_invite', 'event_vote_due_soon' [many more - see db_schema.json for full list]
   @param {String} notifId Unique id used to identify individual notification calls (for debugging)
+  @param {Boolean} [noBulk =false] True to send immediately (do NOT queue for bulk sending)
 @return {Object} (via Promise)
   @param {Object} users
     @param {Array} inAppUsers
@@ -79,7 +80,9 @@ lmNotifyHelpers.separateUsers =function(params, callback) {
     if (!testing) {
       var ret1 =self.checkNotificationSettings(user, {type: params.type, notifId:params.notifId});
       // Remove any bulk ones (store them instead)
-      ret1 =self.separateBulk(ret1, user, params.type);
+      if(params.noBulk ===undefined || !params.noBulk) {
+        ret1 =self.separateBulk(ret1, user, params.type);
+      }
       if(ret1.inApp) {
         ret.users.inAppUsers.push(user);
       }
