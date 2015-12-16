@@ -46,11 +46,11 @@ if (Meteor.isClient){
 
   var menuItems = [
     menuItemHome,
-    // {
-    //   icon: "fa fa-bell",
-    //   title: "Alerts",
-    //   routeTo: "notifications"
-    // },
+    {
+      icon: "fa fa-bell",
+      title: "Alerts",
+      routeTo: "notifications"
+    },
     menuItemAbout,
     // {
     //   icon: "fa fa-home",
