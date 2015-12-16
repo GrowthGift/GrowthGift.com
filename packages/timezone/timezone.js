@@ -33,3 +33,28 @@ msTimezone.convertFromUTC =function(dateTimeString, tzTo, params) {
    moment(dateTimeString, format);
   return dateTimeMoment.utcOffset(tzTo).format(format);
 };
+
+/**
+@param {Number} [offset] Only used for testing purposes.
+*/
+msTimezone.getBrowserTimezone =function(offset) {
+  offset =( offset !==undefined ) ? offset : moment().utcOffset();
+  return msTimezone.offsetToTimezone(offset);
+};
+
+msTimezone.offsetToTimezone =function(offset) {
+  var offsetPositive = ( offset >=0 ) ? offset : ( -1 * offset );
+  var tz =( ( offset >=0 ) ? '+' : '-' ) +
+   msTimezone.padNumber( Math.floor( offsetPositive / 60 ) ) + ':' +
+   msTimezone.padNumber( ( offsetPositive % 60 ) );
+  return tz;
+};
+
+msTimezone.padNumber =function(num, size) {
+  size =size ? size : 2;
+  num =num.toString();
+  while (num.length <size) {
+    num ="0" + num;
+  }
+  return num;
+}
