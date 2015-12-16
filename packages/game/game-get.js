@@ -230,6 +230,9 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
 };
 
 _ggGame.getGameUsersStatsData =function(userGames, game, users, gameRule, nowTime) {
+  if(!gameRule || !gameRule.challenges || !gameRule.challenges.length) {
+    return [];
+  }
   nowTime =nowTime || moment();
   var userIndex, curUser, gameUserIndex, gameUser, buddyId, buddyIndex;
 

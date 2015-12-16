@@ -1,6 +1,10 @@
 ggUrls ={
 };
 
+ggUrls.removeLeadingSlash =function(url) {
+  return ( ( url[0] ==='/' ) ? url.slice(1, url.length) : url);
+}
+
 ggUrls.img =function(type) {
   return type ? '/img/'+type+'/' : '/img/';
 };

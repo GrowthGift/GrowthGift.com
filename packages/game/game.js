@@ -73,7 +73,9 @@ ggGame.join =function(game, userId, buddyRequestKey, inviteUsername, callback) {
       });
 
       // Add to game.users as well
-      var game =GamesCollection.findOne({ _id:game._id }, { fields: { users:1 } });
+      // Re-lookup for concurrency safety? Or just use the existing version
+      // for performance? Need title and slug for buddy notification.
+      var game =GamesCollection.findOne({ _id:game._id }, { fields: { users:1, title:1, slug:1 } });
       var userIndex =_.findIndex(game.users, 'userId', userId);
       if(userIndex >=0) {
         if(buddyRequestKey) {
@@ -192,7 +194,19 @@ ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
   // Set buddy id to each other (self to buddy and buddy to self).
   modifier.$set['users.'+gameUserSelfIndex+'.buddyId'] =buddyUserId;
   modifier.$set['users.'+gameUserBuddyIndex+'.buddyId'] =selfUserId;
-  GamesCollection.update({ _id: game._id }, modifier, callback);
+  GamesCollection.update({ _id: game._id }, modifier, function(err, result) {
+    callback(err, result);
+
+    // Send notification to person who did NOT initiate this action that they
+    // now have a buddy.
+    if(Meteor.isServer) {
+      var notifyUserIds =[buddyUserId, selfUserId];
+      // Sending to buddy user with self user's name
+      var selfUser =Meteor.users.findOne({ _id: selfUserId }, { fields: { profile: 1} });
+      lmNotify.send('gameBuddyAdded', { game: game, buddyUser: selfUser,
+       notifyUserIds: [ buddyUserId ] }, {});
+    }
+  });
 };
 
 ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
