@@ -3,11 +3,18 @@ msTimezone ={
   dateTimeDisplay: 'ddd MMM DD, YYYY @ h:mma'
 };
 
-msTimezone.curDateTime =function(format) {
-  format = ( format !==undefined ) ? format : msTimezone.dateTimeFormat;
+/**
+@param {String} [format ='YYYY-MM-DD HH:mm:ssZ'] The format OR 'moment' to
+ to return a raw moment object.
+@param {Object} [nowTime] ONLY FOR TESTS - the current time moment object.
+*/
+msTimezone.curDateTime =function(format, nowTime) {
+  nowTime =nowTime || moment();
+  format = ( format ) ? format : msTimezone.dateTimeFormat;
   // Important to use UTC so all timezones are stored in the SAME timezone
   // for easy comparisons.
-  return moment().utc().format(format);
+  var dtMoment =nowTime.utc();
+  return ( format ==='moment' ) ? dtMoment : dtMoment.format(format);
 };
 
 /**
