@@ -86,7 +86,15 @@ Tinytest.add('convert from UTC', function (test) {
   times.forEach(function(time) {
     test.equal(msTimezone.convertFromUTC(time.utc, time.tz, {}), time.local);
   });
+});
 
+Tinytest.add('convert from UTC with custom (differnt) output format', function (test) {
+  var dtUTC ='2015-07-01 09:15:00+00:00';
+  var nowTime =moment('2015-06-30 20:00:00+00:00', 'YYYY-MM-DD HH:mm:ssZ');
+  test.equal(msTimezone.convertFromUTC(dtUTC, '+01:00', { outputFormat: 'MMM DD, YYYY @ h:mma' }), 'Jul 01, 2015 @ 10:15am');
+  test.equal(msTimezone.convertFromUTC(dtUTC, '+01:00', { outputFormat: 'MM/DD/YY' }), '07/01/15');
+  test.isNotUndefined(msTimezone.convertFromUTC(dtUTC, '+01:00', { outputFormat: 'fromNow' }));
+  test.equal(msTimezone.convertFromUTC(dtUTC, '+01:00', { outputFormat: 'from', outputFromNowTime: nowTime }), 'in 13 hours');
 });
 
 Tinytest.add('get browser timzeone', function (test) {

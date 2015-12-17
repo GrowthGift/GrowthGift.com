@@ -4,6 +4,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 - add support for getting a moment (unformated) in `msTimezone.curDateTime` function
+- add custom format support for `msTimezone.convertFromUTC`, including `fromNow` and `from`
 
 
 # 1.1.4 (2015-12-16)
