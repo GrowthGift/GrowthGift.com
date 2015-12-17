@@ -117,8 +117,10 @@ if(Meteor.isClient) {
         display: Template.instance().display.get()
       };
 
-      ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
-      ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+      if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
+        ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
+        ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+      }
 
       if(ret.challenges && ret.challenges.length) {
         ret.challenges.forEach(function(challenge, index) {
