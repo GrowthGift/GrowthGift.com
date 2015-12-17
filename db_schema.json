@@ -12,7 +12,8 @@
     ],
     "createdAt": "{String} Wed Aug 21 2013 15:16:52 GMT-0700 (PDT)",
     "profile": {
-      "name": "{String} Joe Schmoe"
+      "name": "{String} Joe Schmoe",
+      "timezone": "{String} -07:00 [A 6 character timezone offset string, e.g. +10:30]"
     },
     "services": {
       "facebook": {
@@ -27,14 +28,7 @@
           }
         ]
       }
-    },
-    "photos": [
-      {
-        "photoUrl": "{String}",
-        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
-        "title": "{String}"
-      }
-    ]
+    }
   },
   "notifications": {
     "_id": "{String}",
@@ -67,31 +61,31 @@
     "bulk": {
       "email": {
         "wait": "{Number} Number of minutes to wait between sends",
-        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
         "messages": [
           {
             "type": "{String} todoseed - should match a notification type key",
-            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
           }
         ]
       },
       "sms": {
         "wait": "{Number} Number of minutes to wait between sends",
-        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
         "messages": [
           {
             "type": "{String} todoseed - should match a notification type key",
-            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
           }
         ]
       },
       "push": {
         "wait": "{Number} Number of minutes to wait between sends",
-        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00",
+        "lastSendAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
         "messages": [
           {
             "type": "{String} todoseed - should match a notification type key",
-            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
           }
         ]
       }
@@ -104,7 +98,7 @@
         "html": "{String} a bunch of text here",
         "notificationType": "{String} The notification type - should match a key in the settings above, i.e. 'todoseed'",
         "linkUrlPart": "{String} eg. event-view?id=...&page=...",
-        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00-07:00"
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
       }
     ],
     "notificationCount": "{Number} Nearly derived field for number of messages above that are unread. BUT gets reset to 0 each time they view notifications, even if they still have unread messages. So basically, each time user gets a new unread message (in app notification), increment this counter and each time they view notifications, set it to 0."

@@ -18,7 +18,8 @@ if(Meteor.isClient) {
             email: insertDoc.email.toLowerCase(),
             password: insertDoc.password,
             profile: {
-              name: insertDoc.name
+              name: insertDoc.name,
+              timezone: msTimezone.getBrowserTimezone()
             },
             username: slug
           };
