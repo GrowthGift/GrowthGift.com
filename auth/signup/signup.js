@@ -18,7 +18,8 @@ if(Meteor.isClient) {
           password: insertDoc.password,
           profile: {
             name: insertDoc.name,
-            timezone: msTimezone.getBrowserTimezone()
+            // Better to just get from browser dynamically
+            // timezone: msTimezone.getBrowserTimezone()
           }
         };
         Accounts.createUser(signupOpts, function(err) {
