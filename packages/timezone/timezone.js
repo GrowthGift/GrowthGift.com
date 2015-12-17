@@ -34,12 +34,28 @@ msTimezone.convertToUTC =function(dateTimeString, params) {
 @param {Object} params
   @param {Object} [moment] The already formed moment object
   @param {String} [format ='YYYY-MM-DD HH:mm:ssZ']
+  @param {String} [outputFormat] If set, will return in this format instead of
+   `format`. Set to `fromNow` or `from` to do a moment fromNow() or from() format.
+  @param {Object} [outputFromNowTime =msTimezone.curDateTime('moment')] if
+   `outputFormat` is `from`, this is the moment it will be from.
 */
 msTimezone.convertFromUTC =function(dateTimeString, tzTo, params) {
   var format =params.format ? params.format : msTimezone.dateTimeFormat;
   var dateTimeMoment =params.moment ? params.moment :
    moment(dateTimeString, format);
-  return dateTimeMoment.utcOffset(tzTo).format(format);
+
+  params =params || {};
+  if(params.outputFormat && params.outputFormat === 'from' && !params.outputFromNowTime) {
+    params.outputFromNowTime =msTimezone.curDateTime('moment');
+  }
+
+  dateTimeMomentTz =dateTimeMoment.utcOffset(tzTo);
+  return ( params.outputFormat && params.outputFormat ==='fromNow' ) ?
+   dateTimeMomentTz.fromNow() :
+   ( params.outputFormat && params.outputFormat ==='from' && params.outputFromNowTime ) ?
+   dateTimeMomentTz.from(params.outputFromNowTime) :
+   ( params.outputFormat ) ? dateTimeMomentTz.format(params.outputFormat) :
+   dateTimeMomentTz.format(format);
 };
 
 /**
