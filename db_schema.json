@@ -12,7 +12,8 @@
     ],
     "createdAt": "{String} Wed Aug 21 2013 15:16:52 GMT-0700 (PDT)",
     "profile": {
-      "name": "{String} Joe Schmoe"
+      "name": "{String} Joe Schmoe",
+      "timezone": "{String} -07:00 [A 6 character timezone offset string, e.g. +10:30]"
     },
     "services": {
       "facebook": {

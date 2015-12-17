@@ -3,10 +3,11 @@ msTimezone ={
   dateTimeDisplay: 'ddd MMM DD, YYYY @ h:mma'
 };
 
-msTimezone.curDateTime =function() {
+msTimezone.curDateTime =function(format) {
+  format = ( format !==undefined ) ? format : msTimezone.dateTimeFormat;
   // Important to use UTC so all timezones are stored in the SAME timezone
   // for easy comparisons.
-  return moment().utc().format(msTimezone.dateTimeFormat);
+  return moment().utc().format(format);
 };
 
 /**
