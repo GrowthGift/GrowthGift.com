@@ -121,7 +121,7 @@ if(Meteor.isClient) {
         // // start at 5pm so add 17 hours from midnight
         // start.add(17, 'hours');
         // start =now.clone();    // TODO - temporary for Apple app review and testing
-        start =start.format(ggConstants.dateTimeFormat);
+        start =start.format(msTimezone.dateTimeFormat);
       }
 
       ret.inputOpts ={
@@ -136,7 +136,7 @@ if(Meteor.isClient) {
         start: start,
         optsDatetimepicker: {
           pikaday: {
-            format: ggConstants.dateTimeDisplay
+            format: msTimezone.dateTimeDisplay
           }
         },
         gameRuleIdOpts: ggGameRule.allSelectOpts()

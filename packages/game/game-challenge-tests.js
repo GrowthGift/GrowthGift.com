@@ -1,11 +1,10 @@
 // Write your tests here!
 // Here is an example.
-// var dateTimeFormat ='YYYY-MM-DD HH:mm:ssZ';
-var dateTimeFormat =ggConstants.dateTimeFormat;
+var dtFormat =msTimezone.dateTimeFormat;
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get current challenge that has not started', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -17,7 +16,7 @@ Tinytest.add('get current challenge that has not started', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().add(5, 'days').format(dateTimeFormat)
+    start: nowTime.clone().add(5, 'days').format(dtFormat)
   };
   var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
   test.equal(curChallenge.gameStarted, false);
@@ -28,7 +27,7 @@ Tinytest.add('get current challenge that has not started', function (test) {
 });
 
 Tinytest.add('get current challenge that has ended', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -40,7 +39,7 @@ Tinytest.add('get current challenge that has ended', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract(15, 'days').format(dateTimeFormat)
+    start: nowTime.clone().subtract(15, 'days').format(dtFormat)
   };
   var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
   test.equal(curChallenge.gameEnded, true);
@@ -51,7 +50,7 @@ Tinytest.add('get current challenge that has ended', function (test) {
 });
 
 Tinytest.add('get current challenge that is running', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -72,21 +71,21 @@ Tinytest.add('get current challenge that is running', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract((1.5*24), 'hours').format(dateTimeFormat)
+    start: nowTime.clone().subtract((1.5*24), 'hours').format(dtFormat)
   };
   var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
   var curChallengeIndex =1;
   test.equal(curChallenge.gameStarted, true);
   test.equal(curChallenge.gameEnded, false);
   test.equal(curChallenge.currentChallenge.dueFromStart, gameRule.challenges[curChallengeIndex].dueFromStart);
-  test.equal(curChallenge.currentChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(curChallenge.currentChallenge.end, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(curChallenge.possibleCompletions, 2);
-  test.equal(curChallenge.nextChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat));
+  test.equal(curChallenge.nextChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat));
 });
 
 Tinytest.add('get current challenge that is on last challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -107,22 +106,22 @@ Tinytest.add('get current challenge that is on last challenge', function (test) 
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract((3.5*24), 'hours').format(dateTimeFormat)
+    start: nowTime.clone().subtract((3.5*24), 'hours').format(dtFormat)
   };
   var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime);
   var curChallengeIndex =3;
   test.equal(curChallenge.gameStarted, true);
   test.equal(curChallenge.gameEnded, false);
   test.equal(curChallenge.currentChallenge.dueFromStart, gameRule.challenges[curChallengeIndex].dueFromStart);
-  test.equal(curChallenge.currentChallenge.start, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(curChallenge.currentChallenge.end, moment(game.start, dateTimeFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(curChallenge.possibleCompletions, gameRule.challenges.length);
   test.equal(curChallenge.nextChallenge, null);
 });
 
 
 Tinytest.add('get current user challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameId ='game1';
   var userId ='user1';
   var userGame ={
@@ -131,20 +130,20 @@ Tinytest.add('get current user challenge', function (test) {
     challenges: [
       {
         actionCount: 1,
-        updatedAt: nowTime.format(dateTimeFormat)
+        updatedAt: nowTime.format(dtFormat)
       },
       {
         actionCount: 1,
-        updatedAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((1*24), 'hours').format(dtFormat)
       },
       // This one out of order
       {
         actionCount: 1,
-        updatedAt: nowTime.clone().add((3*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((3*24), 'hours').format(dtFormat)
       },
       {
         actionCount: 1,
-        updatedAt: nowTime.clone().add((1*24), 'hours').format(dateTimeFormat)
+        updatedAt: nowTime.clone().add((1*24), 'hours').format(dtFormat)
       }
     ]
   }
@@ -154,7 +153,7 @@ Tinytest.add('get current user challenge', function (test) {
 });
 
 Tinytest.add('get challenge totals', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -175,7 +174,7 @@ Tinytest.add('get challenge totals', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract((2.5*24), 'hours').format(dateTimeFormat)
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat)
   };
   var userGames =[
     {
@@ -184,15 +183,15 @@ Tinytest.add('get challenge totals', function (test) {
       challenges: [
         {
           actionCount: 1,
-          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dtFormat)
         },
         {
           actionCount: 2,
-          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dtFormat)
         },
         {
           actionCount: 3,
-          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dtFormat)
         }
       ]
     },
@@ -202,7 +201,7 @@ Tinytest.add('get challenge totals', function (test) {
       challenges: [
         {
           actionCount: 5,
-          updatedAt: nowTime.clone().subtract((0.8*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((0.8*24), 'hours').format(dtFormat)
         }
       ]
     }
@@ -220,7 +219,7 @@ Tinytest.add('get challenge totals', function (test) {
 });
 
 Tinytest.add('get game users actions and buddy actions', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var users =[
     {
       _id: 'user1',
@@ -262,7 +261,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract((2.5*24), 'hours').format(dateTimeFormat),
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
     users: [
       {
         userId: 'user1',

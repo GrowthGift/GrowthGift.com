@@ -39,7 +39,7 @@ if(Meteor.isClient) {
       var view =(this.view && this.view ==='past') ? 'past' : 'now';
       var endedText =(view ==='past') ? "Ended" : "Ends";
 
-      var nowTimeFormat =moment().format(ggConstants.dateTimeFormat);
+      var nowTimeFormat =moment().format(msTimezone.dateTimeFormat);
       var userGames =ggGame.getUserGames(Meteor.userId()).filter(function(ug) {
         if(view ==='past') {
           // Filter out any games that are not over
@@ -56,8 +56,8 @@ if(Meteor.isClient) {
         return _.extend({}, ug, {
           xDisplay: {
             gameTime: (ug.gameStart > nowTimeFormat) ? ( "Starts " +
-             moment(ug.gameStart, ggConstants.dateTimeFormat).fromNow() ) :
-             ( endedText+ " " + moment(ug.gameEnd, ggConstants.dateTimeFormat).fromNow() ),
+             moment(ug.gameStart, msTimezone.dateTimeFormat).fromNow() ) :
+             ( endedText+ " " + moment(ug.gameEnd, msTimezone.dateTimeFormat).fromNow() ),
             gameLink: ggUrls.game(ug.game.slug)
           }
         });

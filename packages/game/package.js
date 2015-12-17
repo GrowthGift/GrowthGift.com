@@ -13,7 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.use('momentjs:moment');
+  api.use('momentjs:moment@2.10.6');
+  api.use('meteorseed:timezone');
   api.use('growthgift:constants');
   api.use('growthgift:may');
   api.use('growthgift:user');
@@ -28,11 +29,11 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   api.use('ecmascript');
-  api.use('momentjs:moment');
-  api.use('growthgift:constants');
   api.use('tinytest');
-  api.use('growthgift:game');
+  api.use('momentjs:moment@2.10.6');
+  api.use('meteorseed:timezone');
   api.use('growthgift:mock-data');
+  api.use('growthgift:game');
   api.addFiles([
     'lib/lodash.custom.min.js',
     'game-challenge-tests.js',

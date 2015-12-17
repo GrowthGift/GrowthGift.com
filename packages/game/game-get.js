@@ -96,7 +96,7 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
   return _.sortByOrder(userGame.challenges.map(function(challenge, index) {
     return _.extend({}, challenge, {
       xDisplay: {
-        updatedAt: moment(challenge.updatedAt, ggConstants.dateTimeFormat).fromNow()
+        updatedAt: moment(challenge.updatedAt, msTimezone.dateTimeFormat).fromNow()
       },
       // VERY IMPORTANT to preserve the database index for updates since we are sorting
       // TODO - should update by id instead so order does not matter
@@ -120,12 +120,13 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
   if(!game || !gameRule || !gameRule.challenges) {
     return ret;
   }
+  var dtFormat =msTimezone.dateTimeFormat;
 
-  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  var gameStart =moment(game.start, dtFormat);
   if(gameStart >nowTime) {
     ret.nextChallenge =_.extend({}, gameRule.challenges[0], {
-      start: gameStart.format(ggConstants.dateTimeFormat),
-      end: gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(ggConstants.dateTimeFormat)
+      start: gameStart.format(dtFormat),
+      end: gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(dtFormat)
     });
     return ret;
   }
@@ -138,14 +139,14 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
     curChallengeDue =gameStart.clone().add(challenge.dueFromStart, 'minutes');
     if(curChallengeDue >nowTime) {
       ret.currentChallenge =_.extend({}, challenge, {
-        start: lastChallengeDue.format(ggConstants.dateTimeFormat),
-        end: curChallengeDue.format(ggConstants.dateTimeFormat)
+        start: lastChallengeDue.format(dtFormat),
+        end: curChallengeDue.format(dtFormat)
       });
       ret.possibleCompletions =(ii+1);
       if(ii <(gameRule.challenges.length-1) ) {
         ret.nextChallenge =_.extend({}, gameRule.challenges[(ii+1)], {
           start: ret.currentChallenge.end,
-          end: gameStart.clone().add(gameRule.challenges[(ii+1)].dueFromStart, 'minutes').format(ggConstants.dateTimeFormat)
+          end: gameStart.clone().add(gameRule.challenges[(ii+1)].dueFromStart, 'minutes').format(dtFormat)
         });
       }
       found =true;
@@ -166,15 +167,15 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
   }
 
   nowTime =nowTime || moment();
-  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
   return {
     gameStarted: ( gameStart <= nowTime ) ? true : false,
     gameEnded: ( gameEnd < nowTime ) ? true : false,
-    starts: gameStart.format(ggConstants.dateTimeDisplay),
-    ends: gameEnd.format(ggConstants.dateTimeDisplay)
+    starts: gameStart.format(msTimezone.dateTimeDisplay),
+    ends: gameEnd.format(msTimezone.dateTimeDisplay)
   };
 };
 
@@ -183,11 +184,11 @@ ggGame.getGameEnd =function(game, gameRule) {
     return null;
   }
 
-  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   return gameStart.clone().add(lastChallenge.dueFromStart,
-   'minutes').format(ggConstants.dateTimeFormat);
+   'minutes').format(msTimezone.dateTimeFormat);
 }
 
 ggGame.getGameTimeLeft =function(game, gameRule) {
@@ -199,7 +200,7 @@ ggGame.getGameTimeLeft =function(game, gameRule) {
     unit: 'days'
   };
 
-  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
@@ -497,6 +498,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
   if(!game || !gameRule || !gameRule.challenges) {
     return ret;
   }
+  var dtFormat =msTimezone.dateTimeFormat;
 
   var userId =userGame ? userGame.userId : null;
   var gameUser =userGame ? ggGame.getGameUser(game, userId, {}) : null;
@@ -505,7 +507,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
   var userMayViewChallenges =userGame
    ? ggMay.viewUserGameChallenge(game, userId) : false;
 
-  var gameStart =moment(game.start, ggConstants.dateTimeFormat);
+  var gameStart =moment(game.start, dtFormat);
   // Sort both game challenges and user completed challenges by date
   var challenges =_.sortByOrder(gameRule.challenges, ['dueFromStart'], ['asc']);
   var userChallenges =( !userGame || !userGame.challenges ) ? []
@@ -521,8 +523,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
     curChallenge ={
       title: challenge.title,
       description: challenge.description,
-      start: lastChallengeEnd.format(ggConstants.dateTimeFormat),
-      end: curChallengeEnd.format(ggConstants.dateTimeFormat),
+      start: lastChallengeEnd.format(dtFormat),
+      end: curChallengeEnd.format(dtFormat),
       // If challenge has not started, show when it does. If it has started
       // but has NOT ended, show when it ends. If it's already over, show
       // when it ended.
@@ -544,7 +546,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
       // Get user action count for this challenge (if there is one)
       for(ii =0; ii<userChallenges.length; ii++) {
         uc =userChallenges[ii];
-        ucUpdated =moment(uc.updatedAt, ggConstants.dateTimeFormat);
+        ucUpdated =moment(uc.updatedAt, dtFormat);
         // If updated between start and end of this challenge, this is it.
         if( ucUpdated >= lastChallengeEnd && ucUpdated <= curChallengeEnd ) {
           curChallenge.userActionCount =uc.actionCount;

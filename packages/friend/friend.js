@@ -7,7 +7,7 @@ ggFriend.follow =function(userId, followUserId, callback) {
   }
   var friend =FriendsCollection.findOne({userId: userId});
 
-  var updatedAt =ggConstants.curDateTime();
+  var updatedAt =msTimezone.curDateTime();
   var followUser ={
     userId: followUserId,
     relation: 'following',

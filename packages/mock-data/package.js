@@ -13,8 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.use('momentjs:moment');
-  api.use('growthgift:constants');
+  api.use('momentjs:moment@2.10.6');
+  api.use('meteorseed:timezone');
   api.addFiles([
     'mock-data-vars.js',
     'mock-data-game-rules.js',

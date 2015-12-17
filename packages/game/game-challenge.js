@@ -10,7 +10,7 @@ ggGame.saveUserGameChallenge =function(doc, docId, callback) {
         if(doc.challenges[index].id ===undefined) {
           doc.challenges[index].id =(Math.random() + 1).toString(36).substring(7);
         }
-        doc.challenges[index].updatedAt =ggConstants.curDateTime();
+        doc.challenges[index].updatedAt =msTimezone.curDateTime();
       });
     }
     UserGameSchema.clean(doc);
@@ -39,7 +39,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
     else {
       var modifier ={};
       challenge.id =(Math.random() + 1).toString(36).substring(7);
-      challenge.updatedAt =ggConstants.curDateTime();
+      challenge.updatedAt =msTimezone.curDateTime();
       if(!userGame.challenges) {
         modifier ={
           $set: {

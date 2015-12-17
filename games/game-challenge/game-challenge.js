@@ -18,7 +18,7 @@ Meteor.methods({
             for(field in challenge) {
               modifier.$set["challenges."+index+"."+field] =challenge[field];
             }
-            modifier.$set["challenges."+index+".updatedAt"] =ggConstants.curDateTime();
+            modifier.$set["challenges."+index+".updatedAt"] =msTimezone.curDateTime();
           }
         });
       }
@@ -145,7 +145,7 @@ if(Meteor.isClient) {
         }
         else {
           ret.privileges.addChallengeMessage ='Next challenge starts '
-           + moment(curChallenge.nextChallenge.start, ggConstants.dateTimeFormat).fromNow()
+           + moment(curChallenge.nextChallenge.start, msTimezone.dateTimeFormat).fromNow()
            + '.';
         }
       }

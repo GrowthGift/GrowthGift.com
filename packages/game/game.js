@@ -33,7 +33,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
             status: 'joined',
             buddyRequestKey: (Math.random() + 1).toString(36).substring(7),
             reachTeam: [],
-            updatedAt: ggConstants.curDateTime()
+            updatedAt: msTimezone.curDateTime()
           }
         ];
       }
@@ -93,7 +93,7 @@ ggGame.join =function(game, userId, buddyRequestKey, inviteUsername, callback) {
           userId: userId,
           status: 'joined',
           buddyRequestKey: (Math.random() + 1).toString(36).substring(7),
-          updatedAt: ggConstants.curDateTime()
+          updatedAt: msTimezone.curDateTime()
         };
         var modifier ={
           $push: {

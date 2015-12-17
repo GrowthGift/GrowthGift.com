@@ -68,7 +68,7 @@ if(Meteor.isClient) {
         gameRuleText: gameRule.slug
       };
       game.xDisplay ={
-        start: moment(game.start, ggConstants.dateTimeFormat).format(ggConstants.dateTimeDisplay)
+        start: moment(game.start, msTimezone.dateTimeFormat).format(msTimezone.dateTimeDisplay)
       };
 
       // TODO - fix this to allow access rules on cordova apps..

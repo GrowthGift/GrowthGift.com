@@ -1,8 +1,8 @@
-var dateTimeFormat ='YYYY-MM-DD HH:mm:ssZ';
+var dtFormat ='YYYY-MM-DD HH:mm:ssZ';
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get challenges with user info', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dateTimeFormat);
+  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     mainAction: 'pushups',
@@ -37,7 +37,7 @@ Tinytest.add('get challenges with user info', function (test) {
   var game ={
     _id: 'game1',
     gameRuleId: gameRule._id,
-    start: nowTime.clone().subtract((2.5*24), 'hours').format(dateTimeFormat),
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
     users: [
       {
         userId: 'user1',
@@ -53,29 +53,29 @@ Tinytest.add('get challenges with user info', function (test) {
       challenges: [
         {
           actionCount: 1,
-          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dtFormat)
         },
         {
           actionCount: 2,
-          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dtFormat)
         },
         {
           actionCount: 3,
-          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dateTimeFormat)
+          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dtFormat)
         }
       ]
     }
   ];
   var ret =ggGame.getChallengesWithUser(game, gameRule, userGames[0], nowTime);
   var challenges =ret.challenges;
-  var gameStart =moment(game.start, dateTimeFormat);
+  var gameStart =moment(game.start, dtFormat);
   var selfGoalPerChallenge =Math.ceil( game.users[0].selfGoal / gameRule.challenges.length );
 
   var curIndex =0;
   test.equal(challenges[curIndex].title, gameRule.challenges[0].title);
   test.equal(challenges[curIndex].description, gameRule.challenges[0].description);
-  test.equal(challenges[curIndex].start, gameStart.format(dateTimeFormat) );
-  test.equal(challenges[curIndex].end, gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(challenges[curIndex].start, gameStart.format(dtFormat) );
+  test.equal(challenges[curIndex].end, gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(challenges[curIndex].timeDisplay, "Ended 2 days ago");
   test.equal(challenges[curIndex].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[curIndex].userActionCount, 1);
@@ -85,8 +85,8 @@ Tinytest.add('get challenges with user info', function (test) {
   curIndex =1;
   test.equal(challenges[1].title, gameRule.challenges[1].title);
   test.equal(challenges[1].description, gameRule.challenges[1].description);
-  test.equal(challenges[1].start, gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(challenges[1].end, gameStart.clone().add(gameRule.challenges[1].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(challenges[1].start, gameStart.clone().add(gameRule.challenges[0].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(challenges[1].end, gameStart.clone().add(gameRule.challenges[1].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(challenges[1].timeDisplay, "Ended 12 hours ago");
   test.equal(challenges[1].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[1].userActionCount, 2);
@@ -96,8 +96,8 @@ Tinytest.add('get challenges with user info', function (test) {
   curIndex =2;
   test.equal(challenges[2].title, gameRule.challenges[2].title);
   test.equal(challenges[2].description, gameRule.challenges[2].description);
-  test.equal(challenges[2].start, gameStart.clone().add(gameRule.challenges[1].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(challenges[2].end, gameStart.clone().add(gameRule.challenges[2].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(challenges[2].start, gameStart.clone().add(gameRule.challenges[1].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(challenges[2].end, gameStart.clone().add(gameRule.challenges[2].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(challenges[2].timeDisplay, "Ends in 12 hours");
   test.equal(challenges[2].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[2].userActionCount, 3);
@@ -107,8 +107,8 @@ Tinytest.add('get challenges with user info', function (test) {
   curIndex =3;
   test.equal(challenges[3].title, gameRule.challenges[3].title);
   test.equal(challenges[3].description, gameRule.challenges[3].description);
-  test.equal(challenges[3].start, gameStart.clone().add(gameRule.challenges[2].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(challenges[3].end, gameStart.clone().add(gameRule.challenges[3].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(challenges[3].start, gameStart.clone().add(gameRule.challenges[2].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(challenges[3].end, gameStart.clone().add(gameRule.challenges[3].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(challenges[3].timeDisplay, "Starts in 12 hours");
   test.equal(challenges[3].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[3].userActionCount, 0);
@@ -118,8 +118,8 @@ Tinytest.add('get challenges with user info', function (test) {
   curIndex =4;
   test.equal(challenges[curIndex].title, gameRule.challenges[4].title);
   test.equal(challenges[curIndex].description, gameRule.challenges[4].description);
-  test.equal(challenges[curIndex].start, gameStart.clone().add(gameRule.challenges[3].dueFromStart, 'minutes').format(dateTimeFormat) );
-  test.equal(challenges[curIndex].end, gameStart.clone().add(gameRule.challenges[4].dueFromStart, 'minutes').format(dateTimeFormat) );
+  test.equal(challenges[curIndex].start, gameStart.clone().add(gameRule.challenges[3].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(challenges[curIndex].end, gameStart.clone().add(gameRule.challenges[4].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(challenges[curIndex].timeDisplay, "Starts in 2 days");
   test.equal(challenges[curIndex].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[curIndex].userActionCount, 0);
