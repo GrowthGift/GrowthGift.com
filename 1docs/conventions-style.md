@@ -34,7 +34,13 @@ Additionally, any time a schema change is made, update `db_schema.json`,
  `simple-schema.js`, and write a database migrate script to handle this
  change. This migration will then need to be run on ALL environments
  (locally, dev / staging, production).
-TODO - figure out & set conventions for doing this
+
+Use the `database-migration` package to add a new migration (by adding a 
+ new function and a new key). Then run it by calling `ggDatabaseMigration.run`,
+ which can currently be called from the `dev-test-test` page. We should
+ probably add this in to be auto-run before tests rather than triggered by
+ a frontend, publicly accessible page button. Though since migrations should
+ never be run more than once, it should be safe here.
 
 
 ## File structure

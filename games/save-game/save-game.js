@@ -111,7 +111,7 @@ if(Meteor.isClient) {
       var start =(edit && game.start) ? game.start : null;
       if(!edit) {
         var nowTime =msTimezone.curDateTime('moment');
-        start =nowTime().clone().startOf('week');
+        start =nowTime.clone().startOf('week');
         start =start.add(1, 'days');    // Start on Monday
         // Allow same day, but if past the day, set to next week.
         if(start.format('YYYY-MM-DD') <nowTime.format('YYYY-MM-DD')) {

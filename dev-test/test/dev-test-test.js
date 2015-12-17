@@ -172,6 +172,9 @@ if(Meteor.isClient) {
         }
       };
       Meteor.call("lmAccountsPasswordSignupUser", userData, {});
-    }
+    },
+    'click .dev-test-test-database-migrate-btn': function(evt, template) {
+      Meteor.call("databaseMigrateRun");
+    },
   });
 }

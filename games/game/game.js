@@ -120,11 +120,13 @@ if(Meteor.isClient) {
       ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
       ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
 
-      ret.challenges.forEach(function(challenge, index) {
-        ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + ggUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
-       : ( challenge.started && !challenge.ended) ? ( "Ends " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
-       : ( "Ended " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
-      });
+      if(ret.challenges && ret.challenges.length) {
+        ret.challenges.forEach(function(challenge, index) {
+          ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + ggUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
+         : ( challenge.started && !challenge.ended) ? ( "Ends " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
+         : ( "Ended " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
+        });
+      }
 
       ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
        "1 player" : ret.userChallengeTotals.numUsers + " players";

@@ -58,3 +58,4 @@ growthgift:user
 growthgift:mock-data
 growthgift:reminder
 meteorseed:timezone
+growthgift:database-migrate

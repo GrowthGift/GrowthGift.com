@@ -61,7 +61,8 @@ Meteor.methods({
           doc.users =[
             {
               userId: Meteor.userId(),
-              role: 'creator'
+              role: 'creator',
+              updatedAt: msTimezone.curDateTime()
             }
           ];
         }
