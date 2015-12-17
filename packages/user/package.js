@@ -13,6 +13,8 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
+  api.use('momentjs:moment@2.10.6');
+  api.use('meteorseed:timezone');
   api.addFiles('user.js');
   api.export('ggUser');
 });

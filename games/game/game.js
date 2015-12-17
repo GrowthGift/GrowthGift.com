@@ -68,7 +68,7 @@ if(Meteor.isClient) {
         gameRuleText: gameRule.slug
       };
       game.xDisplay ={
-        start: moment(game.start, msTimezone.dateTimeFormat).format(msTimezone.dateTimeDisplay)
+        start: ggUser.toUserTime(Meteor.user(), game.start, null, msTimezone.dateTimeDisplay)
       };
 
       // TODO - fix this to allow access rules on cordova apps..
@@ -116,6 +116,15 @@ if(Meteor.isClient) {
         buddyErrorMessage: null,
         display: Template.instance().display.get()
       };
+
+      ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
+      ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+
+      ret.challenges.forEach(function(challenge, index) {
+        ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + ggUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
+       : ( challenge.started && !challenge.ended) ? ( "Ends " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
+       : ( "Ended " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
+      });
 
       ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
        "1 player" : ret.userChallengeTotals.numUsers + " players";

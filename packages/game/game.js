@@ -21,9 +21,13 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   else {
     if(gameDocId) {
       var modifier =gameDoc;
+      if(modifier.$set.start) {
+        modifier.$set.start =msTimezone.convertToUTC(modifier.$set.start, {});
+      }
       GamesCollection.update({_id:gameDocId}, modifier, callback);
     }
     else {
+      gameDoc.start =msTimezone.convertToUTC(gameDoc.start, {});
       GameSchema.clean(gameDoc);
       if(userId) {
         gameDoc.users =[

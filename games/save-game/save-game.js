@@ -110,18 +110,18 @@ if(Meteor.isClient) {
       // Form start date
       var start =(edit && game.start) ? game.start : null;
       if(!edit) {
-        var now =moment();
-        start =moment().startOf('week');
+        var nowTime =msTimezone.curDateTime('moment');
+        start =nowTime().clone().startOf('week');
         start =start.add(1, 'days');    // Start on Monday
         // Allow same day, but if past the day, set to next week.
-        if(start.format('YYYY-MM-DD') <now.format('YYYY-MM-DD')) {
+        if(start.format('YYYY-MM-DD') <nowTime.format('YYYY-MM-DD')) {
           start =start.add(7, 'days');
         }
         // Just start at midnight to make it easier to explain.
         // // start at 5pm so add 17 hours from midnight
         // start.add(17, 'hours');
-        // start =now.clone();    // TODO - temporary for Apple app review and testing
-        start =start.format(msTimezone.dateTimeFormat);
+        // start =nowTime.clone();    // TODO - temporary for Apple app review and testing
+        start =ggUser.toUserTime(Meteor.user(), start.format(msTimezone.dateTimeFormat), null);
       }
 
       ret.inputOpts ={

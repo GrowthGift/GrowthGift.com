@@ -93,23 +93,14 @@ ggGame.getUserGameChallenges =function(gameId, userId) {
   if(!userGame || !userGame.challenges) {
     return [];
   }
-  return _.sortByOrder(userGame.challenges.map(function(challenge, index) {
-    return _.extend({}, challenge, {
-      xDisplay: {
-        updatedAt: moment(challenge.updatedAt, msTimezone.dateTimeFormat).fromNow()
-      },
-      // VERY IMPORTANT to preserve the database index for updates since we are sorting
-      // TODO - should update by id instead so order does not matter
-      _xIndex: index
-    });
-  }), ['updatedAt'], ['desc']);
+  return userGame.challenges;
 };
 
 /**
-@param {Object} [nowTime] moment()
+@param {Object} [nowTime] a moment
 */
 ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var ret ={
     gameStarted: false,
     gameEnded: false,
@@ -166,7 +157,7 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
     return null;
   }
 
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var gameStart =moment(game.start, msTimezone.dateTimeFormat);
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
@@ -174,8 +165,8 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
   return {
     gameStarted: ( gameStart <= nowTime ) ? true : false,
     gameEnded: ( gameEnd < nowTime ) ? true : false,
-    starts: gameStart.format(msTimezone.dateTimeDisplay),
-    ends: gameEnd.format(msTimezone.dateTimeDisplay)
+    starts: gameStart.format(msTimezone.dateTimeFormat),
+    ends: gameEnd.format(msTimezone.dateTimeFormat)
   };
 };
 
@@ -204,13 +195,13 @@ ggGame.getGameTimeLeft =function(game, gameRule) {
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
-  var now =moment();
+  var nowTime =msTimezone.curDateTime('moment');
   // If game already over, stop
-  if(now >gameEnd) {
+  if(nowTime >gameEnd) {
     return ret;
   }
   // If game has not started yet, compute from game start rather than from now
-  var startTime =(now > gameStart) ? now : gameStart;
+  var startTime =(nowTime > gameStart) ? nowTime : gameStart;
   ret.amount =gameEnd.clone().diff(startTime.clone(), ret.unit);
   return ret;
 };
@@ -234,7 +225,7 @@ _ggGame.getGameUsersStatsData =function(userGames, game, users, gameRule, nowTim
   if(!gameRule || !gameRule.challenges || !gameRule.challenges.length) {
     return [];
   }
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var userIndex, curUser, gameUserIndex, gameUser, buddyId, buddyIndex;
 
   // Figure out total possible completions for calculating pledge percent.
@@ -450,7 +441,7 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
 };
 
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var ret ={
     possible: 0,
     possibleAllUsers: 0,
@@ -491,7 +482,7 @@ for each.
 If no userGame, just returns the challenges with a formated time display.
 */
 ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var ret ={
     challenges: []
   };
@@ -523,6 +514,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
     curChallenge ={
       title: challenge.title,
       description: challenge.description,
+      started: challengeStarted,
+      ended: challengeEnded,
       start: lastChallengeEnd.format(dtFormat),
       end: curChallengeEnd.format(dtFormat),
       // If challenge has not started, show when it does. If it has started
@@ -530,9 +523,6 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
       // when it ended.
       timePeriod: ( !challengeStarted ) ? 'future'
        : ( challengeStarted && !challengeEnded ) ? 'present' : 'past',
-      timeDisplay: ( !challengeStarted) ? ( "Starts " + lastChallengeEnd.from(nowTime) )
-       : ( challengeStarted && !challengeEnded) ? ( "Ends " + curChallengeEnd.from(nowTime) )
-       : ( "Ended " + curChallengeEnd.from(nowTime) ),
       userSelfGoal: userSelfGoalPerChallenge,
       userActionCount: 0,    // May be updated
       // May update if this is the current challenge

@@ -25,3 +25,36 @@ ggUser.getName =function(user, format) {
   }
   return ( lastInitial ) ? ( first + ' ' + lastInitial ) : first;
 }
+
+ggUser.getUserTimezone =function(user) {
+  // Default to browser time.
+  return ( user && user.profile && user.profile.timezone ) ?
+   user.profile.timezone : msTimezone.getBrowserTimezone();
+};
+
+/**
+@param {String} dateTimeUTC The date time, in UTC, as a string in `format` format
+@param {String} [format =msTimezone.dateTimeFormat]
+@param {String} [outputFormat] If set, will return in this format instead of
+ `format`. Set to `fromNow` or `from` to do a moment fromNow() or from() format.
+@param {Object} [params]
+  @param {Object} [outputFromNowTime] if `outputFormat` is `from`, this is the
+   moment it will be from.
+*/
+ggUser.toUserTime =function(user, dateTimeUTC, format, outputFormat, params) {
+  var timezone =ggUser.getUserTimezone(user);
+  if(!timezone) {
+    return datetime;
+  }
+  params =params || {};
+  if(outputFormat && outputFormat === 'from' && (!params || !params.outputFromNowTime) ) {
+    params.outputFromNowTime =msTimezone.curDateTime('moment');
+  }
+  var dateTimeUser =msTimezone.convertFromUTC(dateTimeUTC, timezone, { format: format });
+  return ( outputFormat && outputFormat ==='fromNow' ) ?
+   moment(dateTimeUser, format).fromNow() :
+   ( outputFormat && outputFormat ==='from' && params && params.outputFromNowTime ) ?
+   moment(dateTimeUser, format).from(params.outputFromNowTime) :
+   ( outputFormat ) ? moment(dateTimeUser, format).format(outputFormat) :
+   dateTimeUser;
+};

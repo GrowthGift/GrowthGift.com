@@ -93,7 +93,7 @@ if(Meteor.isClient) {
       var perDay =Math.round( ( reactiveData.selfGoal - userTotalActions ) /
        daysLeft);
 
-      return {
+      var ret ={
         game: game,
         gameRule: gameRule,
         gameUser: gameUser,
@@ -116,6 +116,11 @@ if(Meteor.isClient) {
         },
         selfGoal: reactiveData.selfGoal
       };
+
+      ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
+      ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+
+      return ret;
     }
   });
 

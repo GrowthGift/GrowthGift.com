@@ -194,56 +194,6 @@
       {{ /each }}
     </div>
 
-
-    <!-- current challenge -->
-    <!-- {{#if data.curChallenge.currentChallenge }}
-      <div class='game-wrapper margin-large-tb margin-lr'>
-        <div class='game-subheader-wrapper flexbox'>
-          <div class='game-subheader flex1'>Today's Current challenge:</div>
-          <div>Ends {{ data.curChallenge.currentChallenge.xDisplay.end }}</div>
-        </div>
-        <div>
-          <span class='h5'>{{ data.curChallenge.currentChallenge.title }}:</span>
-          <span> {{ data.curChallenge.currentChallenge.description }}</span>
-        </div>
-
-        {{#if data.privileges.addChallenge }}
-        <div class='margin-tb center'>
-          <a class='a-div btn btn-primary' href='{{ data.gameChallengeLink }}'>Do the Challenge</a>
-        </div>
-        {{/if}}
-      </div>
-    {{/if}} -->
-
-    <!-- next challenge (includes if game has not started) -->
-    <!-- {{#if data.curChallenge.nextChallenge }}
-      <div class='game-wrapper margin-large-tb margin-lr'>
-        <div class='game-subheader-wrapper flexbox'>
-          <div class='game-subheader flex1'>Next challenge:</div>
-          <div>Starts {{ data.curChallenge.nextChallenge.xDisplay.start }}</div>
-        </div>
-        <div>
-          <span class='h5'>{{ data.curChallenge.nextChallenge.title }}:</span>
-          <span> {{ data.curChallenge.nextChallenge.description }}</span>
-        </div>
-      </div>
-    {{/if}} -->
-
-    <!-- game is over (or user has already added his last challenge so it is over for him) -->
-    <!-- {{#if data.curChallenge.gameStarted }}
-      {{#if data.gameEndedForUser }}
-        <div class='game-wrapper margin-large-tb margin-lr'>
-          <div class='game-subheader-wrapper'><div class='game-subheader'>Game Stats</div></div>
-          {{#if data.privileges.viewChallenges }}
-            <a href='{{ data.gameChallengeLink }}'>Your game challenges: {{ data.challenges.selfCompletions }} / {{ data.challenges.possibleCompletions }}</a>
-          {{else}}
-            <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a> | 
-            {{ data.userChallengeTotals.userActions }} total {{ data.gameRule.mainAction }}
-          {{/if}}
-        </div>
-      {{/if}}
-    {{/if}} -->
-
     <div class='padding-xlarge-tb center game-section-gray'>
       <a href='/about'>What is Growth Gift?</a>
     </div>

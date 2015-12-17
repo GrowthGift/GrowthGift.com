@@ -109,6 +109,17 @@ if(Meteor.isClient) {
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
 
+      ret.challenges =_.sortByOrder(ret.challenges.map(function(challenge, index) {
+        return _.extend({}, challenge, {
+          xDisplay: {
+            updatedAt: ggUser.toUserTime(Meteor.user(), challenge.updatedAt, null, 'fromNow')
+          },
+          // VERY IMPORTANT to preserve the database index for updates since we are sorting
+          // TODO - should update by id instead so order does not matter
+          _xIndex: index
+        });
+      }), ['updatedAt'], ['desc']);
+
       var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
       var gameCurrentChallenge =curChallenge.currentChallenge;
       if(ret.hasChallenges) {
@@ -145,7 +156,7 @@ if(Meteor.isClient) {
         }
         else {
           ret.privileges.addChallengeMessage ='Next challenge starts '
-           + moment(curChallenge.nextChallenge.start, msTimezone.dateTimeFormat).fromNow()
+           + ggUser.toUserTime(Meteor.user(), curChallenge.nextChallenge.start, null, 'fromNow')
            + '.';
         }
       }

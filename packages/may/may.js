@@ -134,7 +134,7 @@ ggMay.viewUserGameChallenge =function(game, userId) {
 };
 
 ggMay.addUserGameChallenge =function(game, userId, curChallenge, userChallenge, nowTime) {
-  nowTime =nowTime || moment();
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   if(!game || !userId || !ggMay.viewUserGameChallenge(game, userId)) {
     return false;
   }
