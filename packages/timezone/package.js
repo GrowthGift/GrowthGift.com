@@ -21,6 +21,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
+  api.use('momentjs:moment@2.10.6');
   api.use('meteorseed:timezone');
   api.addFiles('timezone-tests.js');
 });

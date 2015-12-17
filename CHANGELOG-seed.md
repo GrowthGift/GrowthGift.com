@@ -1,5 +1,11 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.1.5-1 (2015-12-16)
+
+## Features
+- add support for getting a moment (unformated) in `msTimezone.curDateTime` function
+
+
 # 1.1.4 (2015-12-16)
 
 ## Features

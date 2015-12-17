@@ -1,3 +1,5 @@
+var dtFormat =msTimezone.dateTimeFormat;
+
 var testDates =[
   {
     local: '2015-07-01 09:30:00-09:00',
@@ -62,6 +64,12 @@ var times =[
     utc: '2015-06-15 03:42:00+00:00'
   }
 ];
+
+Tinytest.add('get current date time', function (test) {
+  var nowTime =moment('2015-07-01 12:00:00-08:00', dtFormat);
+  test.equal(msTimezone.curDateTime('moment', nowTime), nowTime);
+  test.equal(msTimezone.curDateTime(null, nowTime), '2015-07-01 20:00:00+00:00');
+});
 
 Tinytest.add('convert to UTC', function (test) {
   testDates.forEach(function(td) {
