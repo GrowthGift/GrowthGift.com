@@ -10,7 +10,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 - add `msTimezone` package for use in converting to and from UTC timezone for storing ALL data in UTC
-  - add `user.profile.timezone` database field and autosave browser timezone on signup
+  - add `user.profile.timezone` database field
 
 
 # 1.1.3 (2015-12-16)

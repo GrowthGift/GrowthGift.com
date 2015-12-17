@@ -23,7 +23,7 @@ msTimezone.curDateTime =function(format, nowTime) {
   @param {String} [format ='YYYY-MM-DD HH:mm:ssZ']
 */
 msTimezone.convertToUTC =function(dateTimeString, params) {
-  format =format ? format : msTimezone.dateTimeFormat;
+  var format =params.format ? params.format : msTimezone.dateTimeFormat;
   var dateTimeMoment =params.moment ? params.moment :
    moment(dateTimeString, format);
   return dateTimeMoment.utc().format(format);
@@ -36,7 +36,7 @@ msTimezone.convertToUTC =function(dateTimeString, params) {
   @param {String} [format ='YYYY-MM-DD HH:mm:ssZ']
 */
 msTimezone.convertFromUTC =function(dateTimeString, tzTo, params) {
-  format =format ? format : msTimezone.dateTimeFormat;
+  var format =params.format ? params.format : msTimezone.dateTimeFormat;
   var dateTimeMoment =params.moment ? params.moment :
    moment(dateTimeString, format);
   return dateTimeMoment.utcOffset(tzTo).format(format);
