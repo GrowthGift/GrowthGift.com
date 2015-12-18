@@ -42,18 +42,20 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
       if(challenge.feedback) {
         var userIndex =_.findIndex(game.users, 'userId', userId);
         if(userIndex >-1) {
+          var feedbackObj =challenge.feedback;
+          feedbackObj.updatedAt =msTimezone.curDateTime();
           var gameUser =game.users[userIndex];
           if(gameUser.feedback) {
             modifier ={
               $push: {}
             };
-            modifier.$push['users.'+userIndex+'.feedback'] = challenge.feedback;
+            modifier.$push['users.'+userIndex+'.feedback'] = feedbackObj;
           }
           else {
             modifier ={
               $set: {}
             };
-            modifier.$set['users.'+userIndex+'.feedback'] =[ challenge.feedback ];
+            modifier.$set['users.'+userIndex+'.feedback'] =[ feedbackObj ];
           }
           GamesCollection.update({ _id:game._id }, modifier, function(err, result) {});
         }

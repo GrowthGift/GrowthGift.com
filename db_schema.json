@@ -156,7 +156,8 @@
         "feedback": [
           {
             "prompt": "{String} [The question or prompt this answer refers to]",
-            "answer": "{String} [The user reply / feedback]"
+            "answer": "{String} [The user reply / feedback]",
+            "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
           }
         ]
       }
