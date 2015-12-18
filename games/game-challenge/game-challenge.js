@@ -82,9 +82,6 @@ if(Meteor.isClient) {
 
         var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
-        if(insertDoc.feedback) {
-          insertDoc.feedback.prompt =templateInst.feedbackPrompt;
-        }
         Meteor.call("saveGameChallengeNew", game, insertDoc);
 
         this.done();
@@ -95,7 +92,7 @@ if(Meteor.isClient) {
 
   Template.gameChallenge.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
-    Template.instance().feedbackPrompt ="";
+    Template.instance().feedbackPrompt =null;
   };
 
   Template.gameChallenge.helpers({
@@ -155,9 +152,18 @@ if(Meteor.isClient) {
         hiEmail: 'hi@growthgift.com'    // TODO - pull from config
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
-      ret.inputOpts.feedback.prompt =( ret.inputOpts.feedback.visible ) ?
-       ggFeedback.getRandomGamePrompt(gameUser.buddyId).q : "";
-      Template.instance().feedbackPrompt =ret.inputOpts.feedback.prompt;
+
+      // Important to only set this ONCE since it returns a DIFFERENT prompt
+      // each time and this template helper runs more than once! Without this,
+      // the prompt displayed was often DIFFERENT than the prompt saved!
+      if(!Template.instance().feedbackPrompt) {
+        ret.inputOpts.feedback.prompt =( ret.inputOpts.feedback.visible ) ?
+         ggFeedback.getRandomGamePrompt(gameUser.buddyId).q : "";
+        Template.instance().feedbackPrompt =ret.inputOpts.feedback.prompt;
+      }
+      else {
+        ret.inputOpts.feedback.prompt =Template.instance().feedbackPrompt;
+      }
 
       ret.challenges =_.sortByOrder(ret.challenges.map(function(challenge, index) {
         return _.extend({}, challenge, {
