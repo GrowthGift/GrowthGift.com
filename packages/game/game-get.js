@@ -15,6 +15,36 @@ ggGame.getUserGameTotalActions =function(userGame) {
   return numActions;
 };
 
+ggGame.getUserActiveChallenge =function(userGame, game, gameRule, nowTime) {
+  var challenge =null;
+  if(!userGame || !userGame.challenges || !game || !gameRule) {
+    return challenge;
+  }
+  var curChallenge =ggGame.getCurrentChallenge(game, gameRule, nowTime)
+   .currentChallenge;
+  var lastUserChallenge =ggGame.getCurrentUserChallenge(game._id,
+   userGame.userId, userGame).mostRecentChallenge;
+
+  var dtFormat =msTimezone.dateTimeFormat;
+  var userUpdated =moment(lastUserChallenge.updatedAt, dtFormat);
+  if(curChallenge && lastUserChallenge &&
+   ( userUpdated >= moment(curChallenge.start, dtFormat) ) &&
+   ( userUpdated <= moment(curChallenge.end, dtFormat) ) ) {
+    challenge =lastUserChallenge;
+  }
+  return challenge;
+};
+
+ggGame.getUserGamePastTotalActions =function(userGame, game, gameRule, nowTime) {
+  var totalActions =ggGame.getUserGameTotalActions(userGame);
+  var userActiveChallenge =ggGame.getUserActiveChallenge(userGame, game,
+   gameRule, nowTime);
+  if(userActiveChallenge && userActiveChallenge.actionCount) {
+    totalActions -= userActiveChallenge.actionCount;
+  }
+  return totalActions;
+};
+
 /**
 Gets a game user by user id OR buddy request key.
 */
@@ -182,7 +212,7 @@ ggGame.getGameEnd =function(game, gameRule) {
    'minutes').format(msTimezone.dateTimeFormat);
 }
 
-ggGame.getGameTimeLeft =function(game, gameRule) {
+ggGame.getGameTimeLeft =function(game, gameRule, nowTime) {
   if(!game || !gameRule || !gameRule.challenges) {
     return null;
   }
@@ -191,11 +221,11 @@ ggGame.getGameTimeLeft =function(game, gameRule) {
     unit: 'days'
   };
 
+  nowTime =nowTime || msTimezone.curDateTime('moment');
   var gameStart =moment(game.start, msTimezone.dateTimeFormat);
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
-  var nowTime =msTimezone.curDateTime('moment');
   // If game already over, stop
   if(nowTime >gameEnd) {
     return ret;
@@ -495,6 +525,12 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
   var gameUser =userGame ? ggGame.getGameUser(game, userId, {}) : null;
   var userSelfGoalPerChallenge =userGame
    ? Math.ceil( gameUser.selfGoal / gameRule.challenges.length ) : 0;
+  var userPastTotalActions =ggGame.getUserGamePastTotalActions(userGame, game, gameRule, nowTime);
+  var gameLeft =ggGame.getGameTimeLeft(game, gameRule, nowTime);
+  var daysLeft =( gameLeft.amount > 0 ? ( gameLeft.amount +1 ) : 1 );
+  var userAdjustedGoalPerChallenge =userGame
+   ? Math.ceil( ( gameUser.selfGoal - userPastTotalActions ) / daysLeft ) : 0;
+
   var userMayViewChallenges =userGame
    ? ggMay.viewUserGameChallenge(game, userId) : false;
 
@@ -507,10 +543,14 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
   var curChallenge, curChallengeEnd, ii, ucUpdated, uc;
   var challengeEnded, challengeStarted;
   var lastChallengeEnd =gameStart;
+  var actionsToDo;
   challenges.forEach(function(challenge) {
     curChallengeEnd =gameStart.clone().add(challenge.dueFromStart, 'minutes');
     challengeEnded = ( curChallengeEnd <= nowTime ) ? true : false;
     challengeStarted =( lastChallengeEnd <= nowTime ) ? true : false;
+    actionsToDo =( !challengeEnded && userAdjustedGoalPerChallenge > 0 ) ?
+     userAdjustedGoalPerChallenge :
+     ( ( userSelfGoalPerChallenge > 0 ) ? userSelfGoalPerChallenge : "??" );
     curChallenge ={
       title: challenge.title,
       description: challenge.description,
@@ -528,8 +568,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
       // May update if this is the current challenge
       mayUpdate: ( userMayViewChallenges && nowTime >= lastChallengeEnd &&
        nowTime <= curChallengeEnd ) ? true : false,
-      instruction: "Do " + ( ( userSelfGoalPerChallenge > 0 )
-       ? userSelfGoalPerChallenge : "??" ) + " " + gameRule.mainAction   // May be updated
+      instruction: "Do " + actionsToDo + " " + gameRule.mainAction   // May be updated
     };
 
     if(userGame) {
@@ -542,8 +581,9 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
           curChallenge.userActionCount =uc.actionCount;
           // Update instruction
           curChallenge.instruction = ( ( challengeEnded ) ? ( "You did" ) :
-           ( "You've done" ) ) + " " + uc.actionCount + " / " + userSelfGoalPerChallenge + " " +
-           gameRule.mainAction;
+           ( "You've done" ) ) + " " + uc.actionCount + " / " +
+           actionsToDo
+           + " " + gameRule.mainAction;
           break;
         }
         // If updated after this challenge ended, we're already too far, stop

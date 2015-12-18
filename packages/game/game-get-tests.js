@@ -108,7 +108,9 @@ Tinytest.add('get challenges with user info', function (test) {
   test.equal(challenges[curIndex].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[curIndex].userActionCount, 3);
   test.equal(challenges[curIndex].mayUpdate, true);
-  test.equal(challenges[curIndex].instruction, "You've done 3 / 20 pushups");
+  // Should adjust for missed ones. Goal is 100, have done 3, so have 97
+  // left in 3 days, which is 33 per day.
+  test.equal(challenges[curIndex].instruction, "You've done 3 / 33 pushups");
 
   curIndex =3;
   test.equal(challenges[curIndex].title, gameRule.challenges[3].title);
@@ -121,7 +123,9 @@ Tinytest.add('get challenges with user info', function (test) {
   test.equal(challenges[curIndex].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[curIndex].userActionCount, 0);
   test.equal(challenges[curIndex].mayUpdate, false);
-  test.equal(challenges[curIndex].instruction, "Do 20 pushups");
+  // Should adjust for missed ones. Goal is 100, have done 3, so have 97
+  // left in 3 days, which is 33 per day.
+  test.equal(challenges[curIndex].instruction, "Do 33 pushups");
 
   curIndex =4;
   test.equal(challenges[curIndex].title, gameRule.challenges[4].title);
@@ -134,5 +138,7 @@ Tinytest.add('get challenges with user info', function (test) {
   test.equal(challenges[curIndex].userSelfGoal, selfGoalPerChallenge);
   test.equal(challenges[curIndex].userActionCount, 0);
   test.equal(challenges[curIndex].mayUpdate, false);
-  test.equal(challenges[curIndex].instruction, "Do 20 pushups");
+  // Should adjust for missed ones. Goal is 100, have done 3, so have 97
+  // left in 3 days, which is 33 per day.
+  test.equal(challenges[curIndex].instruction, "Do 33 pushups");
 });

@@ -95,7 +95,7 @@ if(Meteor.isClient) {
       }
 
       var shortRootUrl =Config.appInfo().shortRootUrl;
-      var gameLeft =ggGame.getGameTimeLeft(game, gameRule);
+      var gameLeft =ggGame.getGameTimeLeft(game, gameRule, null);
       var reactiveData =Template.instance().reactiveData.get();
       var userTotalActions =ggGame.getUserGameTotalActions(userGame);
 
