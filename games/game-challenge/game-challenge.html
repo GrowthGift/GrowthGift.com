@@ -19,7 +19,7 @@
         {{ #if data.inputOpts.feedback.visible }}
           {{>afQuickField name="feedback.prompt" type="hidden" value=data.inputOpts.feedback.prompt }}
           {{>afQuickField name="feedback.answer" type="textarea" label=data.inputOpts.feedback.prompt class='game-challenge-feedback-answer-input'}}
-          <div class='font-small'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
+          <div class='font-small red'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
         {{ /if }}
 
         <div class='margin-large-t flexbox'>
