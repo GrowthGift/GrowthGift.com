@@ -12,8 +12,13 @@ ggFeedback ={
       q: "What was 1 personal success in this game?",
       tags: ['game']
     },
+    // {
+    //   q: "What is 1 way you improved during this game?",
+    //   tags: ['game']
+    // },
     {
-      q: "What is 1 way you improved during this game?",
+      q: "What is 1 positive outcome of this game for you?",
+      help: "A way you improved, something you got out of the game, etc.",
       tags: ['game']
     },
     {

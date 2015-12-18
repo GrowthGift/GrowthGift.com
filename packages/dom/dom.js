@@ -13,6 +13,13 @@ ggDom.setInputVal =function(val, classname) {
   }
 };
 
+ggDom.setInputPlaceholder =function(val, classname) {
+  var ele =_dom.getEle(classname);
+  if(ele) {
+    ele.placeholder =val;
+  }
+};
+
 ggDom.getInputVal =function(classname) {
   var ele =_dom.getEle(classname);
   if(ele) {

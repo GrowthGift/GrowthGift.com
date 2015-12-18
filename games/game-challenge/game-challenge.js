@@ -146,7 +146,8 @@ if(Meteor.isClient) {
           actionCountLabel: "Number of " + gameRule.mainAction + ":",
           feedback: {
             visible: ( curChallenge.possibleCompletions ===gameRule.challenges.length ) ? true : false,
-            prompt: ""
+            prompt: "",
+            help: ""
           }
         },
         hiEmail: 'hi@growthgift.com'    // TODO - pull from config
@@ -156,13 +157,20 @@ if(Meteor.isClient) {
       // Important to only set this ONCE since it returns a DIFFERENT prompt
       // each time and this template helper runs more than once! Without this,
       // the prompt displayed was often DIFFERENT than the prompt saved!
-      if(!Template.instance().feedbackPrompt) {
-        ret.inputOpts.feedback.prompt =( ret.inputOpts.feedback.visible ) ?
-         ggFeedback.getRandomGamePrompt(gameUser.buddyId).q : "";
-        Template.instance().feedbackPrompt =ret.inputOpts.feedback.prompt;
-      }
-      else {
-        ret.inputOpts.feedback.prompt =Template.instance().feedbackPrompt;
+      if(ret.inputOpts.feedback.visible) {
+        if(!Template.instance().feedbackPrompt) {
+          var feedbackItem =ggFeedback.getRandomGamePrompt(gameUser.buddyId);
+          ret.inputOpts.feedback.prompt =feedbackItem.q;
+          ret.inputOpts.feedback.help =feedbackItem.help || "";
+          // Placeholder is not being set without a timeout..
+          setTimeout(function() {
+            ggDom.setInputPlaceholder(ret.inputOpts.feedback.help, 'game-challenge-feedback-answer-input');
+          }, 250);
+          Template.instance().feedbackPrompt =ret.inputOpts.feedback.prompt;
+        }
+        else {
+          ret.inputOpts.feedback.prompt =Template.instance().feedbackPrompt;
+        }
       }
 
       ret.challenges =_.sortByOrder(ret.challenges.map(function(challenge, index) {
