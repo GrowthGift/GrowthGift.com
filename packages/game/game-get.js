@@ -270,12 +270,17 @@ _ggGame.getGameUsersStatsData =function(userGames, game, users, gameRule, nowTim
     // Reset
     curUser ={
       numActions: 0,
+      numCompletions: (ug && ug.challenges) ? ug.challenges.length : 0,
+      possibleCompletions: possibleCompletions,
+      completionPercent: 0,
       pledgePercent: 0,
       numChallenges: 0,
       info: {},
       buddyId: null,
       reachTeamUserIds: []
     };
+    curUser.completionPercent = (curUser.possibleCompletions >0) ?
+     Math.round(curUser.numCompletions / curUser.possibleCompletions * 100) : 0;
 
     // Get buddy id for later
     gameUserIndex =game.users ? _.findIndex(game.users, 'userId', ug.userId)
@@ -344,6 +349,10 @@ ggGame.getGameUsersStats =function(userGames, game, users, gameRule, nowTime) {
       if(!alreadyBuddied) {
         curBuddyUser ={
           buddiedPledgePercent: 0,
+          buddiedNumCompletions: u.numCompletions,
+          buddiedPossibleCompletions: u.possibleCompletions,
+          buddiedCompletionPercent: (u.possibleCompletions >0) ?
+           Math.round(u.numCompletions / u.possibleCompletions * 100) : 0,
           buddiedReachTeamsNumActions: 0,
           buddiedTeamSize: 1,    // self
           user1: u.info,
@@ -355,6 +364,10 @@ ggGame.getGameUsersStats =function(userGames, game, users, gameRule, nowTime) {
           curBuddyUser.buddiedTeamSize++;
           buddyUser =users1[buddyIndex];
           // u.buddyNumActions =buddyUser.numActions;
+          curBuddyUser.buddiedNumCompletions += buddyUser.numCompletions;
+          curBuddyUser.buddiedPossibleCompletions += buddyUser.possibleCompletions;
+          curBuddyUser.buddiedCompletionPercent = (curBuddyUser.buddiedPossibleCompletions >0) ?
+           Math.round(curBuddyUser.buddiedNumCompletions / curBuddyUser.buddiedPossibleCompletions * 100) : 0;
           curBuddyUser.buddiedPledgePercent =Math.round ( ( u.pledgePercent +
            buddyUser.pledgePercent ) / 2 );
           curBuddyUser.user2 =buddyUser.info;
@@ -408,6 +421,9 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
 
   var retUser ={
     buddiedPledgePercent: 0,
+    buddiedNumCompletions: 0,
+    buddiedPossibleCompletions: 0,
+    buddiedCompletionPercent: 0,
     buddiedReachTeamsNumActions: 0,
     numActionsTotals: {
       selfReach: 0,
@@ -425,9 +441,17 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
   }
   var user =users1[userIndex];
   retUser.selfUser =user;
+  retUser.buddiedNumCompletions +=user.numCompletions;
+  retUser.buddiedPossibleCompletions +=user.possibleCompletions;
+  retUser.buddiedCompletionPercent = (retUser.buddiedPossibleCompletions >0) ?
+   Math.round(retUser.buddiedNumCompletions / retUser.buddiedPossibleCompletions * 100) : 0;
   var buddyIndex =_.findIndex(users1, 'info._id', user.buddyId);
   if(buddyIndex >-1) {
     var buddyUser =users1[buddyIndex];
+    retUser.buddiedNumCompletions +=buddyUser.numCompletions;
+    retUser.buddiedPossibleCompletions +=buddyUser.possibleCompletions;
+    retUser.buddiedCompletionPercent = (retUser.buddiedPossibleCompletions >0) ?
+     Math.round(retUser.buddiedNumCompletions / retUser.buddiedPossibleCompletions * 100) : 0;
     retUser.buddiedPledgePercent =Math.round ( ( user.pledgePercent +
      buddyUser.pledgePercent ) / 2 );
     retUser.buddyUser =buddyUser;

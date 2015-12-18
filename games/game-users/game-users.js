@@ -132,6 +132,11 @@ if(Meteor.isClient) {
       users =_.sortByOrder(users, ['buddiedTeamSize'], ['desc']);
       template.users.set(users);
     },
+    'click .game-users-header-completions': function(evt, template) {
+      var users =template.users.get();
+      users =_.sortByOrder(users, ['buddiedCompletionPercent'], ['desc']);
+      template.users.set(users);
+    },
     'click .game-users-info-btn': function(evt, template) {
       var display =template.display.get();
       display.info =!display.info;

@@ -18,7 +18,8 @@
 
         <div class='flexbox game-users-row-header'>
           <h6 class='flex1 game-users-header-buddy pointer'>Buddy Team</h6>
-          <h6 class='game-users-col-pledge game-users-header-pledge pointer'>Pledge Completion</h6>
+          <h6 class='game-users-col-pledge game-users-header-pledge pointer'>Pledge Completion %</h6>
+          <h6 class='game-users-col game-users-header-completions pointer'># Done</h6>
           <h6 class='game-users-col game-users-header-impact pointer'>Team Size</h6>
         </div>
       {{ #each data.users }}
@@ -32,6 +33,7 @@
               <i class='fa fa-star-half'></i>
             {{ /if }}
           </div>
+          <div class='game-users-col'>{{ buddiedNumCompletions }} / {{ buddiedPossibleCompletions }}</div>
           <div class='game-users-col'>{{ buddiedTeamSize }}</div>
         </div>
       {{/each}}

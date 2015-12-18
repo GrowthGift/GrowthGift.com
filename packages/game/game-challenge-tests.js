@@ -366,6 +366,7 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   // buddyUsers =_.sortByOrder(buddyUsers, ['reachTeamNumActions'], ['desc']);
   // Game is on 3rd challenge out of 5
   var completionRatio =(3 / 5);
+  var possibleCompletionsSolo =3;
   var retIndex, selfPledgePercent, buddyPledgePercent;
 
   // user 1 and user 2 should be joined as buddies.
@@ -380,6 +381,10 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   buddyPledgePercent =Math.round( 5 / ( completionRatio * game.users[1].selfGoal ) * 100);
   test.equal(buddyUsers[retIndex].user1.profile.name, 'User1 One');
   test.equal(buddyUsers[retIndex].user2.profile.name, 'User2 Two');
+  test.equal(buddyUsers[retIndex].buddiedNumCompletions, 4);
+  test.equal(buddyUsers[retIndex].buddiedPossibleCompletions, (possibleCompletionsSolo * 2));
+  test.equal(buddyUsers[retIndex].buddiedCompletionPercent,
+   Math.round( 4 / (possibleCompletionsSolo * 2 ) * 100 ), 'buddiedCompletionPercent user1 & 2' );
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, ( Math.round (
    ( selfPledgePercent + buddyPledgePercent ) / 2 ) ) );
   // 6 (user 1) + 5 (user 2) + (8 + 4) (user 1's reach team user 3 & 4)
@@ -393,6 +398,9 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   selfPledgePercent =Math.round( 8 / ( completionRatio * game.users[2].selfGoal ) * 100);
   test.equal(buddyUsers[retIndex].user1.profile.name, 'User3 Three');
   test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedNumCompletions, 2);
+  test.equal(buddyUsers[retIndex].buddiedPossibleCompletions, possibleCompletionsSolo);
+  test.equal(buddyUsers[retIndex].buddiedCompletionPercent, Math.round( 2 / possibleCompletionsSolo * 100 ) );
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 8);
@@ -404,6 +412,9 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   selfPledgePercent =Math.round( 4 / ( completionRatio * game.users[3].selfGoal ) * 100);
   test.equal(buddyUsers[retIndex].user1.profile.name, 'User4 Four');
   test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedNumCompletions, 2);
+  test.equal(buddyUsers[retIndex].buddiedPossibleCompletions, possibleCompletionsSolo);
+  test.equal(buddyUsers[retIndex].buddiedCompletionPercent, Math.round( 2 / possibleCompletionsSolo * 100 ) );
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 4);
@@ -415,6 +426,9 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   selfPledgePercent =Math.round( 2 / ( completionRatio * game.users[4].selfGoal ) * 100);
   test.equal(buddyUsers[retIndex].user1.profile.name, 'User5 Five');
   test.equal(buddyUsers[retIndex].user2, {});
+  test.equal(buddyUsers[retIndex].buddiedNumCompletions, 1);
+  test.equal(buddyUsers[retIndex].buddiedPossibleCompletions, possibleCompletionsSolo);
+  test.equal(buddyUsers[retIndex].buddiedCompletionPercent, Math.round( 1 / possibleCompletionsSolo * 100 ) );
   test.equal(buddyUsers[retIndex].buddiedPledgePercent, selfPledgePercent);
   // self only
   test.equal(buddyUsers[retIndex].buddiedReachTeamsNumActions, 2);
@@ -434,6 +448,10 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   test.equal(gameUser.buddyUser.info.profile.name, 'User2 Two');
   test.equal(gameUser.buddyUser.pledgePercent, buddyPledgePercent);
   test.equal(gameUser.buddyUser.numActions, 5);
+  test.equal(gameUser.buddiedNumCompletions, 4);
+  test.equal(gameUser.buddiedPossibleCompletions, ( possibleCompletionsSolo * 2 ) ) ;
+  test.equal(gameUser.buddiedCompletionPercent,
+   Math.round( 4 / ( possibleCompletionsSolo * 2 ) * 100 ), 'buddiedCompletionPercent single user 1 & 2' );
   test.equal(gameUser.buddiedPledgePercent, ( Math.round (
    ( selfPledgePercent + buddyPledgePercent ) / 2 ) ) );
   // 6 (user 1) + 5 (user 2) + (8 + 4) (user 1's reach team user 3 & 4)
