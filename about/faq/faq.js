@@ -1,6 +1,7 @@
 if(Meteor.isClient) {
   function formFaq() {
     var appInfo =Config.appInfo();
+    var hiEmail ="hi@growthgift.com";   // TODO - pull from config
     var faq ={
       general: [
         {
@@ -22,6 +23,21 @@ if(Meteor.isClient) {
           q: "Is there a mobile app?",
           a: "Yep! <a href='"+appInfo.mobileApps.android.link+"' target='_blank'>Android is live</a> and iOS is coming.",
           link: 'mobile-app'
+        },
+        {
+          q: "The app is not working for me.",
+          a: "If you found a bug or are having issues, please send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with the details and we'll work to get it fixed pronto. The more information you can include, the faster we'll be able to fix it. Notably, your browser name (e.g. Chrome, Firefox, Safari, Internet Explorer), operating system (e.g. Mac, Windows), platform (desktop, Android app, iOS app) and the steps you took so we can reproduce it.",
+          link: 'feedback-bug'
+        },
+        {
+          q: "I have a suggestion.",
+          a: "We love feedback. Send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with the details and we'll get in touch to discuss!",
+          link: 'feedback-suggestion'
+        },
+        {
+          q: "I'd like to share my testimonial or story and be featured on the blog.",
+          a: "Awesome! We're glad you're enjoying the app. Send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with a few sentences summary and we'll get in touch!",
+          link: 'feedback-story-blog'
         }
       ],
       games: [
@@ -75,16 +91,16 @@ if(Meteor.isClient) {
           a: "Hopefully not. You buddy IS your reminder. The games are built around human connection. So call, text or talk in person with your buddy after you complete your pledge for the day and remind them to do theirs. That said, if NEITHER of you have completed your pledge for the day, you may get a reminder.",
           link: 'game-reminder'
         },
-        // {
-        //   q: "Who can create a game?",
-        //   a: "Anyone!",
-        //   link: 'game-create'
-        // },
+        {
+          q: "I have a game idea, can I create a game?",
+          a: "Yep! Send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with the game type (Growth, Giving, Gratitude) and the details!",
+          link: 'game-create'
+        },
         {
           q: "I forgot to log my results! But I did it, I promise!",
           a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! As long as it is not the last day, you can just add it to today's score.",
           link: 'game-forgot-to-log'
-        },
+        }
 
       ]
     };

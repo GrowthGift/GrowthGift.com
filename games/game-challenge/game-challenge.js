@@ -1,3 +1,37 @@
+GameChallengeFeedbackSchema = new SimpleSchema({
+  id: {
+    type: String,
+    optional: true    // required but set manually..
+  },
+  actionCount: {
+    type: Number,
+    min: 1
+  },
+  description: {
+    type: String
+  },
+  privacy: {
+    type: String
+  },
+  updatedAt: {
+    type: String,
+    optional: true,   // If can not auto set, need to make optional to pass validation..
+    // autoValue: autoValCreatedAt    // Not working? And leading to validation error? Just set manually.
+  },
+  feedback: {
+    type: Object,
+    optional: true
+  },
+  "feedback.prompt": {
+    type: String,
+    optional: true
+  },
+  "feedback.answer": {
+    type: String,
+    optional: true
+  }
+});
+
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
     ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) { });
@@ -39,7 +73,7 @@ Meteor.methods({
 
 if(Meteor.isClient) {
   AutoForm.hooks({
-    gameChallengeForm: {
+    gameChallengeFeedbackForm: {
       onSubmit: function(insertDoc, updateDoc, currentDoc) {
         var self =this;
         //without this, the Meteor.call line submits the form..
@@ -48,6 +82,9 @@ if(Meteor.isClient) {
 
         var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
+        if(insertDoc.feedback) {
+          insertDoc.feedback.prompt =templateInst.feedbackPrompt;
+        }
         Meteor.call("saveGameChallengeNew", game, insertDoc);
 
         this.done();
@@ -58,6 +95,7 @@ if(Meteor.isClient) {
 
   Template.gameChallenge.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
+    Template.instance().feedbackPrompt ="";
   };
 
   Template.gameChallenge.helpers({
@@ -88,6 +126,10 @@ if(Meteor.isClient) {
         return false;
       }
 
+      var gameUser =ggGame.getGameUser(game, userId, {});
+      var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
+      var gameCurrentChallenge =curChallenge.currentChallenge;
+
       var ret ={
         challenges: ggGame.getUserGameChallenges(game._id, userId),
         gameLink: ggUrls.game(this.gameSlug),
@@ -104,10 +146,18 @@ if(Meteor.isClient) {
           addChallengeMessage: 'You may not add a challenge completion at this time.'
         },
         inputOpts: {
-          actionCountLabel: "Number of " + gameRule.mainAction + ":"
-        }
+          actionCountLabel: "Number of " + gameRule.mainAction + ":",
+          feedback: {
+            visible: ( curChallenge.possibleCompletions ===gameRule.challenges.length ) ? true : false,
+            prompt: ""
+          }
+        },
+        hiEmail: 'hi@growthgift.com'    // TODO - pull from config
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
+      ret.inputOpts.feedback.prompt =( ret.inputOpts.feedback.visible ) ?
+       ggFeedback.getRandomGamePrompt(gameUser.buddyId).q : "";
+      Template.instance().feedbackPrompt =ret.inputOpts.feedback.prompt;
 
       ret.challenges =_.sortByOrder(ret.challenges.map(function(challenge, index) {
         return _.extend({}, challenge, {
@@ -120,8 +170,6 @@ if(Meteor.isClient) {
         });
       }), ['updatedAt'], ['desc']);
 
-      var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
-      var gameCurrentChallenge =curChallenge.currentChallenge;
       if(ret.hasChallenges) {
         // Check challenge edit privileges
         ret.challenges.forEach(function(challenge, index) {

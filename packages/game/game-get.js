@@ -59,7 +59,7 @@ ggGame.getGameUser =function(game, userId, params) {
      _.findIndex(game.users, 'userId', userId) : -1;
   }
   return ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
-}
+};
 
 ggGame.getGameUsersInfo =function(userGames) {
   if(!userGames) {

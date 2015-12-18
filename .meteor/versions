@@ -33,6 +33,7 @@ geojson-utils@1.0.4
 growthgift:constants@0.0.1
 growthgift:database-migrate@0.0.1
 growthgift:dom@0.0.1
+growthgift:feedback@0.0.1
 growthgift:friend@0.0.1
 growthgift:game@0.0.1
 growthgift:game-rule@0.0.1

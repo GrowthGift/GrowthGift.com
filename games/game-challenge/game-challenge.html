@@ -9,12 +9,17 @@
     {{#if data.privileges.addChallenge }}
     <div class='margin-xlarge-b'>
       <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
-      {{#autoForm schema="GameChallengeSchema" id='gameChallengeForm' validation="blur" }}
+      {{#autoForm schema="GameChallengeFeedbackSchema" id='gameChallengeFeedbackForm' validation="blur" }}
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
         {{>afQuickField name="description" type="textarea" label="Details" }}
 
         <!-- Hidden and auto set for now -->
         {{>afQuickField name="privacy" type="hidden" value="private" }}
+
+        {{ #if data.inputOpts.feedback.visible }}
+          {{>afQuickField name="feedback.answer" type="textarea" label=data.inputOpts.feedback.prompt }}
+          <div class='font-small'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
+        {{ /if }}
 
         <div class='margin-large-t flexbox'>
           <div class='flex1'>&nbsp;</div>
