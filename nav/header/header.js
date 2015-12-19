@@ -156,7 +156,6 @@ if(Meteor.isClient){
       }
     }
     if(!found) {
-      // console.log("using navDefault");   //TESTING
       ret.curNav =navDefault;
     }
     //remove logo if html is set
@@ -219,10 +218,8 @@ if(Meteor.isClient){
     },
     deviceType: function(){
       if(Meteor.isCordova){
-        // console.log("running in cordova mobile environment");
         var iOS = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
         if(iOS){
-          // console.log("using iOS");
           return "header-iOS";
         }
         return "header-android";

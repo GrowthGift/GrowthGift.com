@@ -41,10 +41,8 @@ ejson
 spacebars
 check
 
-growthgift:slug
 growthgift:may
 growthgift:game-rule
-growthgift:template
 growthgift:dom
 growthgift:constants
 growthgift:game
@@ -54,9 +52,12 @@ growthgift:friend
 meteorseed:nav-secondary
 meteorseed:banner-alert
 lukemadera:sendgrid
-growthgift:user
 growthgift:mock-data
 growthgift:reminder
 meteorseed:timezone
 growthgift:database-migrate
 growthgift:feedback
+
+meteorseed:user
+meteorseed:slug
+meteorseed:template

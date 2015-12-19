@@ -1,7 +1,7 @@
 if(Meteor.isClient) {
   Template.signup.rendered = function(){
     if (Meteor.user()){
-      console.log("Already Logged In. Redirecting ...");
+      // console.info("Already Logged In. Redirecting ...");
       Router.go('home');
     }
   }
@@ -13,13 +13,14 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        Meteor.call('ggSlugAutogenValid', insertDoc.name, null, 'users', { slugField:'username'}, function(err, slug) {
+        Meteor.call('msSlugAutogenValid', insertDoc.name, null, 'users', { slugField:'username'}, function(err, slug) {
           var signupOpts ={
             email: insertDoc.email.toLowerCase(),
             password: insertDoc.password,
             profile: {
               name: insertDoc.name,
-              // Better to just get from browser dynamically
+              // Better to just get from browser dynamically than to save in
+              // database permanently.
               // timezone: msTimezone.getBrowserTimezone()
             },
             username: slug

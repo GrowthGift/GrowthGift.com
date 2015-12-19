@@ -6,7 +6,7 @@ This describes the logentries agent ( https://logentries.com/doc/agent/#installa
 
 Note that Heroku uses Token TCP and has ONE log per the host whereas installing via an "agent" as above will give multiple (around 11) logs - each following a different log file / source.
 
-You'll then need to add the node/forever log file to see the console.log output:
+You'll then need to add the node/forever log file to see the console log output:
 NOTE: To see forever log file location: `forever list`. It's best to SET the forever log location with the `l path/to/logfile -a` options
 
 `sudo le follow [path to forever/node log] --name [name]`

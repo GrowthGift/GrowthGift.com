@@ -43,7 +43,7 @@ Meteor.methods({
       AFTestCollection.insert(doc, function(error, result) {
         if(Meteor.isClient) {
           if(!error && result) {
-            // console.log('success');
+            // console.info('success');
           }
         }
       });
@@ -58,7 +58,7 @@ Meteor.methods({
       }
     }
     else {
-      console.log('no valid userId - must be logged in to send push notification!');
+      console.info('no valid userId - must be logged in to send push notification!');
     }
   },
   devTestTestSendEmail: function(params) {
@@ -75,7 +75,7 @@ Meteor.methods({
       }
     }
     else {
-      console.log('no valid userId - must be logged in to send email notification!');
+      console.info('no valid userId - must be logged in to send email notification!');
     }
   },
   devTestTestNotify: function(params) {
@@ -88,7 +88,7 @@ Meteor.methods({
       }
     }
     else {
-      console.log('no valid userId - must be logged in to send '+params.type+' notification!');
+      console.info('no valid userId - must be logged in to send '+params.type+' notification!');
     }
   }
 });

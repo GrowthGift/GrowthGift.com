@@ -13,7 +13,10 @@
     "createdAt": "{String} Wed Aug 21 2013 15:16:52 GMT-0700 (PDT)",
     "profile": {
       "name": "{String} Joe Schmoe",
-      "timezone": "{String} -07:00 [A 6 character timezone offset string, e.g. +10:30]"
+      "timezone": "{String} -07:00 [A 6 character timezone offset string, e.g. +10:30]",
+      "image": "{String} http://google.com/image.jpg [url of image]",
+      "gender": "{String} 'male', 'female'",
+      "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
     },
     "services": {
       "facebook": {

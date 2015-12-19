@@ -113,7 +113,7 @@ AccountsPassword.signupUser =function(userData, type, params) {
     if(userData.password ===undefined) {
       this.setEnrollAccountEmail(type, params.emailParams);
       Accounts.sendEnrollmentEmail(userId);
-      console.log("AccountsPassword.signupUser enrollment email sent to: "+userId+" "+userData.email);
+      console.info("AccountsPassword.signupUser enrollment email sent to: "+userId+" "+userData.email);
     }
   }
   return ret;
@@ -136,7 +136,7 @@ AccountsPassword.resendEnrollmentEmail =function(userData, type, params) {
     var userId =userData._id;
     this.setEnrollAccountEmail(type, params.emailParams);
     Accounts.sendEnrollmentEmail(userId);
-    console.log("AccountsPassword.resendEnrollmentEmail enrollment email sent to: "+userId);
+    console.info("AccountsPassword.resendEnrollmentEmail enrollment email sent to: "+userId);
   }
   return ret;
 };

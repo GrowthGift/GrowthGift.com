@@ -11,7 +11,7 @@ Config.init =function(params) {
       env =Meteor.settings.public.env;
     }
     Config.ENV =env;
-    console.log('Config.ENV: '+Config.ENV);
+    console.info('Config.ENV: '+Config.ENV);
   }
   if(Meteor.isClient) {
     var env ='dev';   //DEFAULT
@@ -19,7 +19,7 @@ Config.init =function(params) {
       env =Meteor.settings.public.env;
     }
     Config.ENV =env;
-    console.log('Config.ENV: '+Config.ENV); 
+    console.info('Config.ENV: '+Config.ENV);
   }
 };
 
