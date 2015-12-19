@@ -2,7 +2,7 @@ Meteor.methods({
   joinGame: function(game, buddyRequestKey, inviteUsername) {
     ggGame.join(game, Meteor.userId(), buddyRequestKey, inviteUsername, function(err, result) {
       if(Meteor.isClient && !err) {
-        var templateInst =ggTemplate.getMainTemplate("Template.game");
+        var templateInst =msTemplate.getMainTemplate("Template.game");
         var slug =templateInst.data.gameSlug;
         if(slug) {
           Router.go(ggUrls.gameInvite(slug));
@@ -16,7 +16,7 @@ Meteor.methods({
   saveGameBuddy: function(game, buddyRequestKey) {
     ggGame.saveBuddy(game, Meteor.userId(), buddyRequestKey, function(err, result) {
       if(Meteor.isClient && !err) {
-        var templateInst =ggTemplate.getMainTemplate("Template.game");
+        var templateInst =msTemplate.getMainTemplate("Template.game");
         var slug =templateInst.data.gameSlug;
         if(slug) {
           Router.go(ggUrls.game(slug));
@@ -68,7 +68,7 @@ if(Meteor.isClient) {
         gameRuleText: gameRule.slug
       };
       game.xDisplay ={
-        start: ggUser.toUserTime(Meteor.user(), game.start, null, msTimezone.dateTimeDisplay)
+        start: msUser.toUserTime(Meteor.user(), game.start, null, msTimezone.dateTimeDisplay)
       };
 
       // TODO - fix this to allow access rules on cordova apps..
@@ -118,15 +118,15 @@ if(Meteor.isClient) {
       };
 
       if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
-        ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
-        ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+        ret.gameState.starts =msUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
+        ret.gameState.ends =msUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
       }
 
       if(ret.challenges && ret.challenges.length) {
         ret.challenges.forEach(function(challenge, index) {
-          ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + ggUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
-         : ( challenge.started && !challenge.ended) ? ( "Ends " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
-         : ( "Ended " + ggUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
+          ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + msUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
+         : ( challenge.started && !challenge.ended) ? ( "Ends " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
+         : ( "Ended " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
         });
       }
 

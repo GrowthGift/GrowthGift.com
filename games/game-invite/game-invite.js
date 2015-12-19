@@ -26,7 +26,7 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        var templateInst =ggTemplate.getMainTemplate("Template.gameInvite");
+        var templateInst =msTemplate.getMainTemplate("Template.gameInvite");
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
         Meteor.call("saveGameInvite", game, updateDoc.$set);
 
@@ -144,12 +144,12 @@ if(Meteor.isClient) {
 
       var gameStarts =ret.gameState.starts;
       var gameEnds =ret.gameState.ends;
-      ret.gameState.starts =ggUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
-      ret.gameState.ends =ggUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
+      ret.gameState.starts =msUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
+      ret.gameState.ends =msUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
 
       ret.inputOpts.selfGoalLabel ="How many " + gameRule.mainAction + " will you pledge for "
-       + ( userStartToday ? "today" : ggUser.toUserTime(Meteor.user(), gameStarts, null, "ddd MM/DD") )
-       + ( ( numDays ==1 ) ? "" : ( " to " + ggUser.toUserTime(Meteor.user(), gameEnds, null, "ddd MM/DD") ) )
+       + ( userStartToday ? "today" : msUser.toUserTime(Meteor.user(), gameStarts, null, "ddd MM/DD") )
+       + ( ( numDays ==1 ) ? "" : ( " to " + msUser.toUserTime(Meteor.user(), gameEnds, null, "ddd MM/DD") ) )
        + "?" +
        ( ( ret.userTotalActions ) ? (" You've already done " + ret.userTotalActions + "." ) : "" );
 

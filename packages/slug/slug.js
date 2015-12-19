@@ -13,6 +13,8 @@ Meteor.methods({
 
 msSlug.getCollection =function(key) {
   return key ==='users' ? Meteor.users :
+   key ==='games' ? GamesCollection :
+   key ==='gameRules' ? GameRulesCollection :
    null;
 };
 

@@ -56,8 +56,8 @@ if(Meteor.isClient) {
         return _.extend({}, ug, {
           xDisplay: {
             gameTime: (ug.gameStart > nowTimeFormat) ? ( "Starts " +
-             ggUser.toUserTime(Meteor.user(), ug.gameStart, null, 'fromNow') ) :
-             ( endedText+ " " + ggUser.toUserTime(Meteor.user(), ug.gameEnd, null, 'fromNow') ),
+             msUser.toUserTime(Meteor.user(), ug.gameStart, null, 'fromNow') ) :
+             ( endedText+ " " + msUser.toUserTime(Meteor.user(), ug.gameEnd, null, 'fromNow') ),
             gameLink: ggUrls.game(ug.game.slug)
           }
         });

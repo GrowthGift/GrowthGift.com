@@ -61,7 +61,7 @@ Meteor.methods({
     }
     ggGame.saveUserGameChallenge(doc, docId, function(err, result) {
       if(!err && Meteor.isClient) {
-        var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
+        var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var gameSlug =templateInst.data.gameSlug;
         if(gameSlug) {
           Router.go(ggUrls.game(gameSlug));
@@ -80,7 +80,7 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        var templateInst =ggTemplate.getMainTemplate("Template.gameChallenge");
+        var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
         Meteor.call("saveGameChallengeNew", game, insertDoc);
 
@@ -176,7 +176,7 @@ if(Meteor.isClient) {
       ret.challenges =_.sortByOrder(ret.challenges.map(function(challenge, index) {
         return _.extend({}, challenge, {
           xDisplay: {
-            updatedAt: ggUser.toUserTime(Meteor.user(), challenge.updatedAt, null, 'fromNow')
+            updatedAt: msUser.toUserTime(Meteor.user(), challenge.updatedAt, null, 'fromNow')
           },
           // VERY IMPORTANT to preserve the database index for updates since we are sorting
           // TODO - should update by id instead so order does not matter
@@ -218,7 +218,7 @@ if(Meteor.isClient) {
         }
         else {
           ret.privileges.addChallengeMessage ='Next challenge starts '
-           + ggUser.toUserTime(Meteor.user(), curChallenge.nextChallenge.start, null, 'fromNow')
+           + msUser.toUserTime(Meteor.user(), curChallenge.nextChallenge.start, null, 'fromNow')
            + '.';
         }
       }

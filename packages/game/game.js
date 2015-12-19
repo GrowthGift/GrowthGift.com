@@ -7,7 +7,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   var slug =(gameDoc.$set && gameDoc.$set.slug) || gameDoc.slug;
   if(slug) {
     var existingDoc =(gameDocId && ({_id: gameDocId})) || null;
-    var slugExists =ggSlug.exists(slug, 'games', existingDoc, null);
+    var slugExists =msSlug.exists(slug, 'games', existingDoc, null);
     if(slugExists) {
       valid =false;
     }
@@ -214,7 +214,7 @@ ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
 };
 
 ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
-  var inviteUserObj =ggUser.getByUsername(inviteUsername);
+  var inviteUserObj =msUser.getByUsername(inviteUsername);
   if(!inviteUserObj) {
     callback(null);
     return;

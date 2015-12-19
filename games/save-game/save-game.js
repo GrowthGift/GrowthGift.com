@@ -4,7 +4,7 @@ Meteor.methods({
     var onSuccess =function(error, result) {
       if(Meteor.isClient) {
         if(!error && result) {
-          var templateInst =ggTemplate.getMainTemplate("Template.saveGame");
+          var templateInst =msTemplate.getMainTemplate("Template.saveGame");
           var slug =((doc.$set && doc.$set.slug) || doc.slug ||
            templateInst.data.gameSlug);
           if(slug) {
@@ -126,7 +126,7 @@ if(Meteor.isClient) {
         // start.add(17, 'hours');
         // start =nowTime.clone();    // TODO - temporary for Apple app review and testing
         // As with above, do NOT conver time; just keep local.
-        // start =ggUser.toUserTime(Meteor.user(), start.format(msTimezone.dateTimeFormat), null);
+        // start =msUser.toUserTime(Meteor.user(), start.format(msTimezone.dateTimeFormat), null);
         start =start.format(msTimezone.dateTimeFormat);
       }
 
@@ -157,14 +157,14 @@ if(Meteor.isClient) {
 
   Template.saveGame.events({
     'blur .save-game-input-title': function(evt, template) {
-      ggSlug.setToAutogen(AutoForm.getFieldValue('title', 'saveGameForm'),
+      msSlug.setToAutogen(AutoForm.getFieldValue('title', 'saveGameForm'),
        AutoForm.getFieldValue('slug', 'saveGameForm'), 'save-game-input-slug');
     },
     'blur .save-game-input-slug': function(evt, template) {
       var slug =AutoForm.getFieldValue('slug', 'saveGameForm');
       var existingGame =(template.data.gameSlug &&
        GamesCollection.findOne({slug: template.data.gameSlug}) ) || null;
-      Meteor.call('ggSlugValidate', slug, 'games', existingGame, null, function(err, exists) {
+      Meteor.call('msSlugValidate', slug, 'games', existingGame, null, function(err, exists) {
         if(exists) {
           AutoForm.addStickyValidationError('saveGameForm', 'slug', 'slugExists', slug);
         }

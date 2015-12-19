@@ -26,20 +26,20 @@ if(Meteor.isClient) {
            user.buddiedPledgePercent <20 ) ? true : false
         };
         if(user.user1._id && user.user2._id) {
-          // user.xDisplay.displayHtml ='<a href=' + user.xDisplay.user1.href +
-          //  '>' + ggUser.getName(user.user1) + '</a> & <a href=' +
-          //  user.xDisplay.user2.href + '>' + ggUser.getName(user.user2) + '</a>';
-          user.xDisplay.displayHtml = ggUser.getName(user.user1) + ' & ' + ggUser.getName(user.user2);
+          user.xDisplay.displayHtml ='<a href=' + user.xDisplay.user1.href +
+           '>' + msUser.getName(user.user1) + '</a> & <a href=' +
+           user.xDisplay.user2.href + '>' + msUser.getName(user.user2) + '</a>';
+          // user.xDisplay.displayHtml = msUser.getName(user.user1) + ' & ' + msUser.getName(user.user2);
         }
         else if(user.user1._id) {
-          // user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user1.href
-          //  + '>' + ggUser.getName(user.user1) + '</a>';
-          user.xDisplay.displayHtml ='*' + ggUser.getName(user.user1);
+          user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user1.href
+           + '>' + msUser.getName(user.user1) + '</a>';
+          // user.xDisplay.displayHtml ='*' + msUser.getName(user.user1);
         }
         else if(user.user2._id) {
-          // user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user2.href
-          //  + '>' + ggUser.getName(user.user2) + '</a>';
-          user.xDisplay.displayHtml ='*' + ggUser.getName(user.user2);
+          user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user2.href
+           + '>' + msUser.getName(user.user2) + '</a>';
+          // user.xDisplay.displayHtml ='*' + msUser.getName(user.user2);
         }
       }
     });

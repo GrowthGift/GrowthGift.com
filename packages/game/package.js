@@ -17,7 +17,7 @@ Package.onUse(function(api) {
   api.use('meteorseed:timezone');
   api.use('growthgift:constants');
   api.use('growthgift:may');
-  api.use('growthgift:user');
+  api.use('meteorseed:user');
   api.addFiles([
     'game-vars.js',
     'game-get.js',

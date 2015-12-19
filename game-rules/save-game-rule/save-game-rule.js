@@ -4,7 +4,7 @@ Meteor.methods({
     var onSuccess =function(error, result) {
       if(Meteor.isClient) {
         if(!error && result) {
-          var templateInst =ggTemplate.getMainTemplate("Template.saveGameRule");
+          var templateInst =msTemplate.getMainTemplate("Template.saveGameRule");
           slug =(slug || templateInst.data.gameRuleSlug);
           if(templateInst.data.gameSelect) {
             var gameSelect =templateInst.data.gameSelect;
@@ -28,7 +28,7 @@ Meteor.methods({
     var slug =(doc.$set && doc.$set.slug) || doc.slug;
     if(slug) {
       var existingDoc =(docId && ({_id: docId})) || null;
-      var slugExists =ggSlug.exists(slug, 'gameRules', existingDoc, null);
+      var slugExists =msSlug.exists(slug, 'gameRules', existingDoc, null);
       if(slugExists) {
         valid =false;
       }
@@ -119,14 +119,14 @@ if(Meteor.isClient) {
 
   Template.saveGameRule.events({
     'blur .save-game-rule-input-title': function(evt, template) {
-      ggSlug.setToAutogen(AutoForm.getFieldValue('title', 'saveGameRuleForm'),
+      msSlug.setToAutogen(AutoForm.getFieldValue('title', 'saveGameRuleForm'),
        AutoForm.getFieldValue('slug', 'saveGameRuleForm'), 'save-game-rule-input-slug');
     },
     'blur .save-game-rule-input-slug': function(evt, template) {
       var slug =AutoForm.getFieldValue('slug', 'saveGameRuleForm');
       var existingGameRule =(template.data.gameRuleSlug &&
        GameRulesCollection.findOne({slug: template.data.gameRuleSlug}) ) || null;
-      Meteor.call('ggSlugValidate', slug, 'gameRules', existingGameRule, null, function(err, exists) {
+      Meteor.call('msSlugValidate', slug, 'gameRules', existingGameRule, null, function(err, exists) {
         if(exists) {
           AutoForm.addStickyValidationError('saveGameRuleForm', 'slug', 'slugExists', slug);
         }

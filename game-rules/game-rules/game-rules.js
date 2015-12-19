@@ -26,7 +26,7 @@ if(Meteor.isClient) {
         this.event.preventDefault();
         this.event.stopPropagation();
 
-        getFormValues(ggTemplate.getMainTemplate("Template.gameRules"));
+        getFormValues(msTemplate.getMainTemplate("Template.gameRules"));
       }
     }
   });
