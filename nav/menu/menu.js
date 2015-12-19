@@ -10,7 +10,7 @@ if (Meteor.isClient){
     title: "Logout",
     // routeTo: "login"
     click: function() {
-      console.log('logging out');   //TESTING
+      console.info('logging out');
       Meteor.logout(function(err) {
         if(err) {
           nrAlert.alert(err);
@@ -33,6 +33,11 @@ if (Meteor.isClient){
   };
   var menuItems = [
     menuItemHome,
+    {
+      icon: "fa fa-user",
+      title: "Profile",
+      routeTo: "userSelf"
+    },
     {
       icon: "fa fa-bell",
       title: "Alerts",

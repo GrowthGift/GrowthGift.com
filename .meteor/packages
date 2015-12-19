@@ -44,3 +44,6 @@ meteorseed:nav-secondary
 meteorseed:banner-alert
 lukemadera:sendgrid
 meteorseed:timezone
+meteorseed:user
+meteorseed:slug
+meteorseed:template

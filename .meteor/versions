@@ -59,7 +59,10 @@ meteor@1.1.10
 meteor-base@1.0.1
 meteorseed:banner-alert@0.0.1
 meteorseed:nav-secondary@0.0.1
+meteorseed:slug@0.0.1
+meteorseed:template@0.0.1
 meteorseed:timezone@0.0.1
+meteorseed:user@0.0.1
 minifiers@1.1.7
 minimongo@1.0.10
 mobile-experience@1.0.1

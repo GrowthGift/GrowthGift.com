@@ -32,7 +32,6 @@ Template.bannerAlert.helpers({
 
 Template.bannerAlert.events({
   'click .nr-banner-close': function(){
-    // console.log("")
     nrBannerText.set('');
   }
 });
