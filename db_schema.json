@@ -175,10 +175,24 @@
         "actionCount": "{Number} [The number of the 'mainAction' completed]",
         "description": "{String} [Any notes to document / track the (these) action(s)]",
         "privacy": "{String} One of 'public', 'private'",
+        "contactedBuddy": "{Number} 1 [or 0 if did NOT contact buddy",
         "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
       }
     ],
+    "awards": [
+      {
+        "type": "{String} 'perfectAttendance', 'perfectPledge', 'perfectBuddy', 'biggestImpact', 'biggestReach'",
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+      }
+    ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+  },
+  "userAwards": {
+    "userId": "{String}",
+    "longestGameStreak": "{Number}",
+    "currentGameStreak": "{Number}",
+    "lastGameChallengeCompletedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
+    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
   },
   "groups": {
     "_id": "{String}",
