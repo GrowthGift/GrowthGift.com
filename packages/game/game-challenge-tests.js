@@ -468,3 +468,5 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
   test.equal(gameUser.buddyReachUsers[0].info.profile.name, 'User5 Five');
 
 });
+
+// TODO - add get awards test(s)

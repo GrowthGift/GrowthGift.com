@@ -79,7 +79,6 @@ if(Meteor.isClient) {
       var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
        || null;
       var selfGameUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
-      var userInGame = ( userId ) ? ggGame.userInGame(game, userId) : false;
       var buddyId =selfGameUser ? selfGameUser.buddyId : null;
       var userGameBuddy =buddyId ? UserGamesCollection.findOne({ userId: buddyId, gameId: game._id }) : null;
 
@@ -120,16 +119,17 @@ if(Meteor.isClient) {
         buddyName: null,
         buddyErrorMessage: null,
         display: Template.instance().display.get(),
+        userInGame: ( userId ) ? ggGame.userInGame(game, userId) : false,
         showHowToPlay: true
       };
 
       ret.showHowToPlay =( ret.gameState.gameStarted && !ret.gameState.gameEnded
-       && userInGame ) ? false : true;
+       && ret.userInGame ) ? false : true;
 
       var templateHelperData ={
         challengeInstruction: {
-          showChooseBuddy: ( userInGame && !buddyId ) ? true : false,
-          showChoosePledge: ( userInGame && !selfGameUser.selfGoal ) ? true : false
+          showChooseBuddy: ( ret.userInGame && !buddyId ) ? true : false,
+          showChoosePledge: ( ret.userInGame && !selfGameUser.selfGoal ) ? true : false
         },
         gameChallengeLink: ret.gameChallengeLink,
         gameInviteLink: ret.gameInviteLink

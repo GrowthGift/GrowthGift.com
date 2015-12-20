@@ -81,8 +81,10 @@
             {{ /unless }}
           </div>
         {{/if}}
-        <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
-        <div class='font-small center'>Join any time, even after the game has started.</div>
+        <div class='margin-large-b'>
+          <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
+          <div class='font-small center'>Join any time, even after the game has started.</div>
+        </div>
 
         {{ #unless data.gameState.gameStarted }}
           <div class='margin-large-t padding-large-tb center game-section-gray-medium'>
@@ -91,10 +93,12 @@
             <div class='font-small'>Ends: {{ data.gameState.ends }}</div>
           </div>
         {{ else }}
+          {{ #unless data.userInGame }}
           <div class='margin-large-t padding-large-tb center game-section-red'>
             <h4>Game Happening Now</h4>
             <div>Ends: {{ data.gameState.ends }}</div>
           </div>
+          {{ /unless }}
         {{ /unless }}
       {{ else }}
       <div class='margin-large-t padding-large-tb center game-section-dark'>
