@@ -2,7 +2,7 @@
   {{#if data._xNotFound }}
   <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
   {{else}}
-  <div class='max-600 game-cont'>
+  <div class='max-600 bg-white'>
 
     {{#if data.privileges.edit }}
       <div class='flexbox'>
@@ -17,8 +17,9 @@
       </div>
     {{/if}}
 
+
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
-    <div class='game-section-gray padding-large-t'>
+    <div class='bg-gray-lighter padding-t padding-large-b'>
       <div class='center margin-lr'>
         <h2>{{ data.game.title }}</h2>
         <div>
@@ -40,11 +41,14 @@
 
       <!-- <div>Game Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
         <div>Start: {{ data.game.xDisplay.start }}</div> -->
+    </div>
 
-      {{ #unless data.gameState.gameEnded }}
+
+    {{ #unless data.gameState.gameEnded }}
+      <div class='bg-gray-lighter padding-tb'>
         {{#if data.privileges.join }}
-          <div class='center margin-t'>
-            <div class='btn btn-primary margin-tb game-join'>
+          <div class='center'>
+            <div class='btn btn-primary margin-b game-join'>
               {{#if data.privileges.buddy }}
                 Join with {{ data.buddyName }}
               {{else}}
@@ -59,10 +63,10 @@
             {{/if}}
           </div>
         {{else}}
-          <div class='center margin-b margin-large-t'>
+          <div class='center'>
             <!-- Can still buddy if already in game as long as do not have a buddy yet -->
             {{ #if data.privileges.buddy }}
-              <div class='btn btn-primary margin-tb game-buddy'>
+              <div class='btn btn-primary margin-b game-buddy'>
                 Buddy with {{ data.buddyName }}
               </div>
               <div class='red'>Become buddies with {{ data.buddyName }}.</div>
@@ -71,7 +75,7 @@
               <div class='text-warning margin-b'>{{ data.buddyErrorMessage }}</div>
             {{/if}}
             {{ #unless data.privileges.buddy }}
-              <a class='a-div btn btn-primary' href='{{ data.gameInviteLink }}'>
+              <a class='a-div btn btn-primary margin-b' href='{{ data.gameInviteLink }}'>
                 {{ #unless data.gameState.gameStarted }}
                 Choose Your Impact
                 {{ else }}
@@ -85,34 +89,42 @@
           <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
           <div class='font-small center'>Join any time, even after the game has started.</div>
         </div>
+      </div>
+    {{ /unless }}
 
-        {{ #unless data.gameState.gameStarted }}
-          <div class='margin-large-t padding-large-tb center game-section-gray-medium'>
-            <h4>Game Starts:</h4>
-            <div>{{ data.gameState.starts }}</div>
-            <div class='font-small'>Ends: {{ data.gameState.ends }}</div>
-          </div>
-        {{ else }}
-          {{ #unless data.userInGame }}
-          <div class='margin-large-t padding-large-tb center game-section-red'>
+
+    {{ #if data.gameState.gameStarted }}
+      {{ >gameAwards gameSlug=../gameSlug }}
+    {{ /if }}
+
+
+    {{ #unless data.gameState.gameEnded }}
+      {{ #unless data.gameState.gameStarted }}
+        <div class='bg-gray-light center padding-large-tb'>
+          <h4>Game Starts:</h4>
+          <div>{{ data.gameState.starts }}</div>
+          <div class='font-small'>Ends: {{ data.gameState.ends }}</div>
+        </div>
+      {{ else }}
+        {{ #unless data.userInGame }}
+          <div class='bg-red-light center padding-large-tb'>
             <h4>Game Happening Now</h4>
             <div>Ends: {{ data.gameState.ends }}</div>
           </div>
-          {{ /unless }}
         {{ /unless }}
-      {{ else }}
-      <div class='margin-large-t padding-large-tb center game-section-dark'>
+      {{ /unless }}
+    {{ else }}
+      <div class='center bg-gray-dark white padding-large-tb'>
         <h4>Game Over</h4>
         <div>Go to <a class='red' href='{{ data.myGamesLink }}'>My Games</a> to see your current games. Or join a new one!</div>
         <div class='font-small'>Started: {{ data.gameState.starts }}</div>
         <div class='font-small'>Ended: {{ data.gameState.ends }}</div>
       </div>
+    {{ /unless }}
 
-      {{ /unless }}
-    </div>
 
-    <div class='game-wrapper margin-large-tb'>
-      {{ #if data.showHowToPlay }}
+    {{ #if data.showHowToPlay }}
+      <div class='padding-large-t'>
         <div class='game-subheader-wrapper margin-large-lr'>
           <div class='game-subheader'>How to Play</div>
         </div>
@@ -137,10 +149,13 @@
           </div>
           <div class='margin-l'>b. Call or text your buddy to let them know & to help them achieve their pledge.</div>
         </div>
-      {{ /if }}
+      </div>
+    {{ /if }}
 
-      {{ #if data.gameState.gameStarted }}
-        <div class='game-subheader-wrapper margin-large-lr margin-large-t'>
+
+    {{ #if data.gameState.gameStarted }}
+      <div class='padding-large-t'>
+        <div class='game-subheader-wrapper margin-large-lr'>
           <div class='game-subheader'>Your Impact</div>
         </div>
         <div class='margin-large-lr'>
@@ -181,9 +196,12 @@
         </div>
         <div class='margin-large-b'>
         </div>
-      {{ /if }}
+      </div>
+    {{ /if }}
 
-      <div class='game-subheader-wrapper margin-large-t margin-large-lr'>
+
+    <div class='padding-large-t'>
+      <div class='game-subheader-wrapper margin-large-lr'>
         <div class='game-subheader'>Your Daily Breakdown</div>
       </div>
       <!-- show EACH challenge with button next to it if user can update / log it -->
@@ -192,9 +210,11 @@
       {{ /each }}
     </div>
 
-    <div class='padding-xlarge-tb center game-section-gray'>
+
+    <div class='padding-xlarge-tb center bg-gray-lighter'>
       <a href='/about'>What is Growth Gift?</a>
     </div>
+
 
   </div>
   {{/if}}
