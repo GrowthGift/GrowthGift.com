@@ -494,6 +494,85 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
   return retUser;
 };
 
+_ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
+  params.maxVal = ( params.maxVal !==undefined ) ? params.maxVal : null;
+  var award ={
+    winners: [],
+    max: -1,
+    winner: null    // (Randomly) select ONE team (if more than one).
+  };
+  var ii, len =usersStats.length;
+  var max, val, team, keyUsers, keyAwards, pushObj;
+
+  usersStats =_.sortByOrder(usersStats, [keyUsers], ['desc']);
+  for(ii = 0; ii < len; ii++) {
+    team = usersStats[ii];
+    val = team[keyUsers];
+    max = award.max;
+    if(val >= max || ( params.maxVal && val >= params.maxVal) ) {
+      // Some can be over a value but want to treat all above that value equally.
+      // E.g. pledge percent can be over 100 but want to treat them all the same.
+      award.max = params.maxVal ? ( ( val > params.maxVal ) ?
+       params.maxVal : val ) : val;
+      pushObj ={
+        user1: team.user1,
+        user2: team.user2
+      };
+      pushObj[keyAwards] =val;
+      award.winners.push(pushObj);
+    }
+    // Go until get below max AND below maxVal (if set)
+    if(val < max && ( !params.maxVal || val < params.maxVal ) ) {
+      break;
+    }
+  }
+
+  // Break any ties randomly.
+  var winnerIndex =0;
+  if( award.winners.length > 0 ) {
+    winnerIndex =Math.floor(Math.random() * (award.winners.length - 0)) + 0;
+  }
+  award.winner =award.winners[winnerIndex];
+
+  return award;
+};
+
+ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
+  nowTime =nowTime || msTimezone.curDateTime('moment');
+  var usersStats =ggGame.getGameUsersStats(userGames, game, users, gameRule, nowTime);
+  var awards ={};
+
+  // Have to find max and then save the one or more teams at that max.
+  // So will sort by each award type and pull the top one(s). This is O(n)
+  // for each award so is performance intensive. However, the order of awards
+  // may help since they are related and top teams will likely be near the
+  // top in multiple categories.
+  var keyUsers, keyAwards;
+
+  // Pledge percent
+  keyUsers = 'buddiedPledgePercent';
+  keyAwards = 'pledgePercent';
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
+   { maxVal: 100 });
+
+  // Completion percent
+  keyUsers = 'buddiedCompletionPercent';
+  keyAwards = 'completionPercent';
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+
+  // Reach teams num actions
+  keyUsers = 'buddiedReachTeamsNumActions';
+  keyAwards = 'reachTeamsNumActions';
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+
+  // Team size
+  keyUsers = 'buddiedTeamSize';
+  keyAwards = 'teamSize';
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+
+  return awards;
+};
+
 ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var ret ={

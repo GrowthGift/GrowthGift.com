@@ -3,40 +3,10 @@ var dtFormat ='YYYY-MM-DD HH:mm:ssZ';
 
 Tinytest.add('get challenges with user info', function (test) {
   var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
-  var gameRule ={
-    _id: 'gameRule1',
-    mainAction: 'pushups',
-    challenges: [
-      {
-        title: 'title 1',
-        description: 'desc 1',
-        dueFromStart: 1*24*60
-      },
-      {
-        title: 'title 2',
-        description: 'desc 2',
-        dueFromStart: 2*24*60
-      },
-      {
-        title: 'title 3',
-        description: 'desc 3',
-        dueFromStart: 3*24*60
-      },
-      {
-        title: 'title 4',
-        description: 'desc 4',
-        dueFromStart: 4*24*60
-      },
-      {
-        title: 'title 5',
-        description: 'desc 5',
-        dueFromStart: 5*24*60
-      }
-    ]
-  };
+  var gameRule =ggMockData.getGameRule('gameRule2');
   var game ={
     _id: 'game1',
-    gameRuleId: gameRule._id,
+    gameRuleId: 'gameRule2',
     start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
     users: [
       {

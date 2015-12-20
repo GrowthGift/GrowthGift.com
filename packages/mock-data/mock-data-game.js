@@ -51,9 +51,28 @@ var games =[
         selfGoal: 15
       }
     ]
+  },
+  {
+    _id: 'game2',
+    gameRuleId: 'gameRule2',
+    start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
+    users: [
+      {
+        userId: 'user1',
+        status: 'joined',
+        selfGoal: 100,
+        buddyId: 'user2'
+      },
+      {
+        userId: 'user2',
+        status: 'joined',
+        selfGoal: 50,
+        buddyId: 'user1'
+      }
+    ]
   }
 ];
 
-ggMockData.getGame =function(type) {
-  return games[0];
+ggMockData.getGame =function(id) {
+  return games[_.findIndex(games, '_id', id)];
 };

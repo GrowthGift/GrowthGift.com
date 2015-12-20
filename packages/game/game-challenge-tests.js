@@ -257,10 +257,10 @@ Tinytest.add('get game users actions and buddy actions', function (test) {
       }
     }
   ];
-  var gameRule =ggMockData.getChallenge();
+  var gameRule =ggMockData.getGameRule('gameRule1');
   var game ={
     _id: 'game1',
-    gameRuleId: gameRule._id,
+    gameRuleId: 'gameRule1',
     start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
     users: [
       {
