@@ -16,9 +16,14 @@ Package.onUse(function(api) {
   api.use('momentjs:moment@2.10.6');
   api.use('meteorseed:timezone');
   api.addFiles([
+    'lib/lodash.custom.min.js',
     'mock-data-vars.js',
+    'mock-data-user.js',
     'mock-data-game-rules.js',
-    'mock-data-game.js'
+    'mock-data-game.js',
+    'mock-data-user-game.js',
+
+    'mock-data-set-game-user.js'
   ]);
 
   api.export('ggMockData');
@@ -28,5 +33,7 @@ Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('growthgift:mock-data');
-  api.addFiles('mock-data-tests.js');
+  api.addFiles([
+    'mock-data-tests.js'
+  ]);
 });

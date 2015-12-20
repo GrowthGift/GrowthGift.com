@@ -348,6 +348,7 @@ ggGame.getGameUsersStats =function(userGames, game, users, gameRule, nowTime) {
       // Only add if buddy has not already been added for them
       if(!alreadyBuddied) {
         curBuddyUser ={
+          _id: (Math.random() + 1).toString(36).substring(7),
           buddiedPledgePercent: 0,
           buddiedNumCompletions: u.numCompletions,
           buddiedPossibleCompletions: u.possibleCompletions,
@@ -420,6 +421,7 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
   var users1 =_ggGame.getGameUsersStatsData(userGames, game, users, gameRule, nowTime);
 
   var retUser ={
+    _id: (Math.random() + 1).toString(36).substring(7),
     buddiedPledgePercent: 0,
     buddiedNumCompletions: 0,
     buddiedPossibleCompletions: 0,
@@ -494,8 +496,16 @@ ggGame.getGameUserStats =function(userGames, game, users, gameRule, userId, nowT
   return retUser;
 };
 
+/**
+@param {Object} params
+  @param {Number} [maxVal] A value above which all will be treated the same
+  @param {Number} [minVal] Below this value, no award will be given
+  @param {[String]} [skipWinners] Array of team id's to skip (NOT award -
+   e.g. because they've already won a similar award.).
+*/
 _ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
   params.maxVal = ( params.maxVal !==undefined ) ? params.maxVal : null;
+  params.minVal = ( params.minVal !==undefined ) ? params.minVal : -1;
   var award ={
     winners: [],
     max: -1,
@@ -503,40 +513,62 @@ _ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
   };
   var ii, len =usersStats.length;
   var max, val, team, keyUsers, keyAwards, pushObj;
+  var skipIndex =-1;
 
   usersStats =_.sortByOrder(usersStats, [keyUsers], ['desc']);
   for(ii = 0; ii < len; ii++) {
     team = usersStats[ii];
     val = team[keyUsers];
     max = award.max;
-    if(val >= max || ( params.maxVal && val >= params.maxVal) ) {
-      // Some can be over a value but want to treat all above that value equally.
-      // E.g. pledge percent can be over 100 but want to treat them all the same.
-      award.max = params.maxVal ? ( ( val > params.maxVal ) ?
-       params.maxVal : val ) : val;
+    // Some can be over a value but want to treat all above that value equally.
+    // E.g. pledge percent can be over 100 but want to treat them all the same.
+    if( val >= params.minVal && ( val >= max ||
+     ( params.maxVal && val >= params.maxVal) ) ) {
+      // Do NOT set max if this is a skip winner. But still want to add to
+      // winners list to give an individual badge.
+      skipIndex = ( params.skipWinners ) ? params.skipWinners.indexOf(team._id)
+       : -1;
+      if( skipIndex < 0 ) {
+        award.max = params.maxVal ? ( ( val > params.maxVal ) ?
+         params.maxVal : val ) : val;
+      }
       pushObj ={
+        _id: team._id,
         user1: team.user1,
-        user2: team.user2
+        user2: team.user2,
+        skipWinner: ( skipIndex > -1 ) ? true : false
       };
       pushObj[keyAwards] =val;
       award.winners.push(pushObj);
     }
-    // Go until get below max AND below maxVal (if set)
-    if(val < max && ( !params.maxVal || val < params.maxVal ) ) {
+    // Go until get below minVal OR below max AND below maxVal (if set)
+    if( val < params.minVal || ( val < max &&
+     ( !params.maxVal || val < params.maxVal ) ) ) {
       break;
     }
   }
 
+  // Remove any skip winners
+  var winners =award.winners.filter(function(winner) {
+    return ( winner.skipWinner ) ? false : true;
+  });
+
   // Break any ties randomly.
   var winnerIndex =0;
-  if( award.winners.length > 0 ) {
-    winnerIndex =Math.floor(Math.random() * (award.winners.length - 0)) + 0;
+  if( winners.length > 0 ) {
+    winnerIndex =Math.floor(Math.random() * (winners.length - 0)) + 0;
+    award.winner =winners[winnerIndex];
   }
-  award.winner =award.winners[winnerIndex];
 
   return award;
 };
 
+/**
+Award players for completing pledges, recruiting large teams, making big
+ impacts. BUT only if above some minimum threshold (e.g. do not want to
+ award a 25% completion if that's the top team). Also, do NOT allow one
+ team / player to win everything.
+*/
 ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var usersStats =ggGame.getGameUsersStats(userGames, game, users, gameRule, nowTime);
@@ -548,27 +580,49 @@ ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   // may help since they are related and top teams will likely be near the
   // top in multiple categories.
   var keyUsers, keyAwards;
+  var skipWinners =null;
+
+  // Order matters as we will not allow the same team to win all awards.
+  // If a team wins pledge percent, they will NOT win completion percent too.
+  // If win team num actions, will NOT win team size too.
 
   // Pledge percent
   keyUsers = 'buddiedPledgePercent';
   keyAwards = 'pledgePercent';
+  // Ideally would have minVal around 80 but since percentage drops as soon
+  // as the new day starts, one the 2nd day of 5 for example, a perfect 100%
+  // person could have 50% because has not done their challenge for the day
+  // yet. So set to 50.
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { maxVal: 100 });
+   { maxVal: 100, minVal: 50 });
 
   // Completion percent
   keyUsers = 'buddiedCompletionPercent';
   keyAwards = 'completionPercent';
-  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+  // Ideally would have minVal around 80 but since percentage drops as soon
+  // as the new day starts, one the 2nd day of 5 for example, a perfect 100%
+  // person could have 50% because has not done their challenge for the day
+  // yet. So set to 50.
+  skipWinners =awards.pledgePercent.winner ?
+   awards.pledgePercent.winner._id : null;
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
+   { minVal: 50, skipWinners: skipWinners });
 
   // Reach teams num actions
   keyUsers = 'buddiedReachTeamsNumActions';
   keyAwards = 'reachTeamsNumActions';
-  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
+   { minVal: 5 });
 
   // Team size
   keyUsers = 'buddiedTeamSize';
   keyAwards = 'teamSize';
-  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards, {});
+  // Minimum value of 3 so requires more than just a buddy
+  // TEMPORARY: allow minimum of 2 while still getting started?
+  skipWinners =awards.reachTeamsNumActions.winner ?
+   awards.reachTeamsNumActions.winner._id : null;
+  awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
+   { minVal: 2, skipWinners: skipWinners });
 
   return awards;
 };

@@ -4,7 +4,7 @@ var dtFormat =ggMockData._dtFormat;
 var games =[
   {
     _id: 'game1',
-    // gameRuleId: gameRule._id,
+    gameRuleId: 'gameRule1',
     start: nowTime.clone().subtract((2.5*24), 'hours').format(dtFormat),
     users: [
       {
