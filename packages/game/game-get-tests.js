@@ -42,7 +42,14 @@ Tinytest.add('get challenges with user info', function (test) {
       {
         userId: 'user1',
         status: 'joined',
-        selfGoal: 100
+        selfGoal: 100,
+        buddyId: 'user2'
+      },
+      {
+        userId: 'user2',
+        status: 'joined',
+        selfGoal: 50,
+        buddyId: 'user1'
       }
     ]
   };
@@ -64,9 +71,27 @@ Tinytest.add('get challenges with user info', function (test) {
           updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dtFormat)
         }
       ]
+    },
+    {
+      gameId: game._id,
+      userId: 'user2',
+      challenges: [
+        {
+          actionCount: 5,
+          updatedAt: nowTime.clone().subtract((2.4*24), 'hours').format(dtFormat)
+        },
+        {
+          actionCount: 6,
+          updatedAt: nowTime.clone().subtract((1.4*24), 'hours').format(dtFormat)
+        },
+        {
+          actionCount: 4,
+          updatedAt: nowTime.clone().subtract((0.4*24), 'hours').format(dtFormat)
+        }
+      ]
     }
   ];
-  var ret =ggGame.getChallengesWithUser(game, gameRule, userGames[0], nowTime);
+  var ret =ggGame.getChallengesWithUser(game, gameRule, userGames[0], nowTime, userGames[1]);
   var challenges =ret.challenges;
   var gameStart =moment(game.start, dtFormat);
   var selfGoalPerChallenge =Math.ceil( game.users[0].selfGoal / gameRule.challenges.length );
@@ -83,6 +108,7 @@ Tinytest.add('get challenges with user info', function (test) {
   test.equal(challenges[curIndex].userActionCount, 1);
   test.equal(challenges[curIndex].mayUpdate, false);
   test.equal(challenges[curIndex].instruction, "You did 1 / 20 pushups");
+  test.equal(challenges[curIndex].buddyInstruction, "Buddy did 5 / 10 pushups");
 
   curIndex =1;
   test.equal(challenges[curIndex].title, gameRule.challenges[1].title);
@@ -96,6 +122,7 @@ Tinytest.add('get challenges with user info', function (test) {
   test.equal(challenges[curIndex].userActionCount, 2);
   test.equal(challenges[curIndex].mayUpdate, false);
   test.equal(challenges[curIndex].instruction, "You did 2 / 20 pushups");
+  test.equal(challenges[curIndex].buddyInstruction, "Buddy did 6 / 10 pushups");
 
   curIndex =2;
   test.equal(challenges[curIndex].title, gameRule.challenges[2].title);
@@ -111,6 +138,9 @@ Tinytest.add('get challenges with user info', function (test) {
   // Should adjust for missed ones. Goal is 100, have done 3, so have 97
   // left in 3 days, which is 33 per day.
   test.equal(challenges[curIndex].instruction, "You've done 3 / 33 pushups");
+  // Should adjust for missed ones. Goal is 50, have done 11, so have 39
+  // left in 3 days, which is 13 per day.
+  test.equal(challenges[curIndex].buddyInstruction, "Buddy has done 4 / 13 pushups");
 
   curIndex =3;
   test.equal(challenges[curIndex].title, gameRule.challenges[3].title);
@@ -126,6 +156,9 @@ Tinytest.add('get challenges with user info', function (test) {
   // Should adjust for missed ones. Goal is 100, have done 3, so have 97
   // left in 3 days, which is 33 per day.
   test.equal(challenges[curIndex].instruction, "Do 33 pushups");
+  // Should adjust for missed ones. Goal is 50, have done 11, so have 39
+  // left in 3 days, which is 13 per day.
+  test.equal(challenges[curIndex].buddyInstruction, "Help your buddy do 13 pushups");
 
   curIndex =4;
   test.equal(challenges[curIndex].title, gameRule.challenges[4].title);
@@ -141,4 +174,7 @@ Tinytest.add('get challenges with user info', function (test) {
   // Should adjust for missed ones. Goal is 100, have done 3, so have 97
   // left in 3 days, which is 33 per day.
   test.equal(challenges[curIndex].instruction, "Do 33 pushups");
+  // Should adjust for missed ones. Goal is 50, have done 11, so have 39
+  // left in 3 days, which is 13 per day.
+  test.equal(challenges[curIndex].buddyInstruction, "Help your buddy do 13 pushups");
 });

@@ -78,6 +78,11 @@ if(Meteor.isClient) {
       var userId =Meteor.userId();
       var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
        || null;
+      var selfGameUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
+      var userInGame = ( userId ) ? ggGame.userInGame(game, userId) : false;
+      var buddyId =selfGameUser ? selfGameUser.buddyId : null;
+      var userGameBuddy =buddyId ? UserGamesCollection.findOne({ userId: buddyId, gameId: game._id }) : null;
+
       // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
@@ -104,7 +109,7 @@ if(Meteor.isClient) {
         // },
         // curChallenge: null,
         // gameEndedForUser: false,
-        challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null),
+        challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null, userGameBuddy),
         gameState: ggGame.getGameState(game, gameRule, null),
         userChallengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule),
         gameUserStats: ggGame.getGameUserStats(userGames, game, gameUsers, gameRule, userId, null),
@@ -114,19 +119,36 @@ if(Meteor.isClient) {
         myGamesLink: ggUrls.myGames(),
         buddyName: null,
         buddyErrorMessage: null,
-        display: Template.instance().display.get()
+        display: Template.instance().display.get(),
+        showHowToPlay: true
       };
+
+      ret.showHowToPlay =( ret.gameState.gameStarted && !ret.gameState.gameEnded
+       && userInGame ) ? false : true;
+
+      var templateHelperData ={
+        challengeInstruction: {
+          showChooseBuddy: ( userInGame && !buddyId ) ? true : false,
+          showChoosePledge: ( userInGame && !selfGameUser.selfGoal ) ? true : false
+        },
+        gameChallengeLink: ret.gameChallengeLink,
+        gameInviteLink: ret.gameInviteLink
+      };
+      // Set on template instance so it is accessible.
+      Template.instance().data.templateHelperData =templateHelperData;
 
       if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
         ret.gameState.starts =msUser.toUserTime(Meteor.user(), ret.gameState.starts, null, msTimezone.dateTimeDisplay);
         ret.gameState.ends =msUser.toUserTime(Meteor.user(), ret.gameState.ends, null, msTimezone.dateTimeDisplay);
       }
 
-      if(ret.challenges && ret.challenges.length) {
-        ret.challenges.forEach(function(challenge, index) {
-          ret.challenges[index].timeDisplay = ( !challenge.started) ? ( "Starts " + msUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
-         : ( challenge.started && !challenge.ended) ? ( "Ends " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
-         : ( "Ended " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
+      if(ret.challenges && ret.challenges.challenges) {
+        ret.challenges.challenges.forEach(function(challenge, index) {
+          ret.challenges.challenges[index].timeDisplay = ( !challenge.started) ?
+           ( "Starts " + msUser.toUserTime(Meteor.user(), challenge.start, null, 'from') )
+           : ( challenge.started && !challenge.ended) ?
+           ( "Ends " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') )
+           : ( "Ended " + msUser.toUserTime(Meteor.user(), challenge.end, null, 'from') );
         });
       }
 
@@ -143,9 +165,8 @@ if(Meteor.isClient) {
           }
           // If were trying to buddy but cannot, output why
           if(!ret.privileges.buddy) {
-            var selfUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
-            ret.buddyErrorMessage = ( selfUser && selfUser.buddyId ) ?
-             "You already have a buddy" : ( selfUser && selfUser.userId ===
+            ret.buddyErrorMessage = ( selfGameUser && selfGameUser.buddyId ) ?
+             "You already have a buddy" : ( selfGameUser && selfGameUser.userId ===
              buddyUser.userId ) ? "You may not buddy with yourself" :
              "Buddy taken. " + ( userId ? "Invite" : "Join to invite" ) +
              " another one!";
@@ -198,14 +219,6 @@ if(Meteor.isClient) {
       var display =template.display.get();
       display.impactDetailsInfo =!display.impactDetailsInfo;
       template.display.set(display);
-    }
-  });
-
-  Template.gameChallengesUser.helpers({
-    data: function() {
-      return {
-        gameChallengeLink: ggUrls.gameChallenge(this.gameSlug),
-      }
     }
   });
 }

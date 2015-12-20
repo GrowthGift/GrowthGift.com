@@ -21,26 +21,20 @@
     <div class='game-section-gray padding-large-t'>
       <div class='center margin-lr'>
         <h2>{{ data.game.title }}</h2>
-        {{ #unless data.gameState.gameStarted }}
-          <h4 class='red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</h4>
-        {{ else }}
-          <h4 class='red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</h4>
-        {{ /unless }}
         <div>
-          <span class='h5'>
-          {{#if data.privileges.viewPlayers }}
-            <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
-          {{else}}
-            {{ data.userChallengeTotals.numUsersText }}
-          {{/if}}
-          </span>
+        {{ #unless data.gameState.gameStarted }}
+          <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</span>
+        {{ else }}
+          <span class='h4 red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</span>
+        {{ /unless }}
 
-          <!-- {{ data.userChallengeTotals.userCompletions }} total challenge completions -->
-          <!-- {{#if data.privileges.viewChallenges }}
-            <a href='{{ data.gameChallengeLink }}'>{{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}</a>
+        <span class='h5'>
+          {{#if data.privileges.viewPlayers }}
+            by <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
           {{else}}
-            {{ data.userChallengeTotals.userActions }} team {{ data.gameRule.mainAction }}
-          {{/if}} -->
+            by {{ data.userChallengeTotals.numUsersText }}
+          {{/if}}
+        </span>
         </div>
       </div>
 
@@ -114,7 +108,7 @@
     </div>
 
     <div class='game-wrapper margin-large-tb'>
-      {{ #unless data.gameState.gameEnded }}
+      {{ #if data.showHowToPlay }}
         <div class='game-subheader-wrapper margin-large-lr'>
           <div class='game-subheader'>How to Play</div>
         </div>
@@ -129,17 +123,17 @@
           </div>
           <!-- <div>2. Invite friends</div> -->
           <div>2. Once the game starts, each day of the game:</div>
-          <div class='margin-l'>a. Complete your pledge for the day.</div>
           <div class='margin-l'>
+            a. Complete your pledge for the day &
             {{#if data.privileges.viewChallenges }}
-              b. <a href='{{ data.gameChallengeLink }}'>Log it here.</a>
+              <a href='{{ data.gameChallengeLink }}'>log it here.</a>
             {{ else }}
-              b. Log it here.
+              log it here.
             {{ /if }}
           </div>
-          <div class='margin-l'>c. Call or text your buddy to let them know & to help them achieve their pledge.</div>
+          <div class='margin-l'>b. Call or text your buddy to let them know & to help them achieve their pledge.</div>
         </div>
-      {{ /unless }}
+      {{ /if }}
 
       {{ #if data.gameState.gameStarted }}
         <div class='game-subheader-wrapper margin-large-lr margin-large-t'>
@@ -190,7 +184,7 @@
       </div>
       <!-- show EACH challenge with button next to it if user can update / log it -->
       {{ #each data.challenges.challenges }}
-        {{ >gameChallengesUser challenge=this gameSlug=../gameSlug }}
+        {{ >gameChallengesUser challenge=this data=../templateHelperData }}
       {{ /each }}
     </div>
 
@@ -206,7 +200,13 @@
   <div class='game-challenges-user-cont padding-tb {{ challenge.timePeriod }}'>
     <div class='margin-large-lr'>
       <div class='flexbox'>
-        <div class='flex1'>{{ challenge.instruction }}</div>
+        <div class='flex1'>1.
+          {{ #if data.challengeInstruction.showChoosePledge }}
+            <a href='{{ data.gameInviteLink }}'>Choose your pledge.</a>
+          {{ else }}
+            {{ challenge.instruction }}
+          {{ /if }}
+        </div>
         <div class='game-challenges-user-update-btn'>
           {{ #if challenge.mayUpdate }}
             <a class='a-div btn btn-primary btn-small' href='{{ data.gameChallengeLink }}'>
@@ -221,7 +221,16 @@
           {{ /if }}
         </div>
       </div>
-      <div class='font-small'>{{ challenge.timeDisplay }}</div>
+      <div class='flexbox'>
+        <div class='flex1'>2.
+          {{ #if data.challengeInstruction.showChooseBuddy }}
+            <a href='{{ data.gameInviteLink }}'>Choose a buddy.</a>
+          {{ else }}
+            {{ challenge.buddyInstruction }}
+          {{ /if }}
+        </div>
+        <div class='font-small'>{{ challenge.timeDisplay }}</div>
+      </div>
     </div>
   </div>
 </template>

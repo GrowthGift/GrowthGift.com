@@ -530,12 +530,28 @@ ggGame.getChallengeTotals =function(game, userGames, gameRule, nowTime) {
   return ret;
 };
 
+ggGame.userInGame =function(game, userId) {
+  if(!game || !userId) {
+    return false;
+  }
+  var gameUser =ggGame.getGameUser(game, userId, {});
+  return ( gameUser && gameUser.status ==='joined' ) ? true : false;
+};
+
+ggGame.getGameUserBuddyId =function(game, userId) {
+  if(!game || !userId) {
+    return null;
+  }
+  var gameUser =ggGame.getGameUser(game, userId, {});
+  return gameUser ? gameUser.buddyId : null;
+};
+
 /**
 Get all the challenges for the game and stuff in the current user's results
 for each.
 If no userGame, just returns the challenges with a formated time display.
 */
-ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
+ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGameBuddy) {
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var ret ={
     challenges: []
@@ -545,29 +561,44 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
   }
   var dtFormat =msTimezone.dateTimeFormat;
 
+  var gameLeft =ggGame.getGameTimeLeft(game, gameRule, nowTime);
+  var daysLeft =( gameLeft.amount > 0 ? ( gameLeft.amount +1 ) : 1 );
+  var gameStart =moment(game.start, dtFormat);
+  var gameStarted =( nowTime >= gameStart ) ? true : false;
+  // Sort both game challenges and user completed challenges by date
+  var challenges =_.sortByOrder(gameRule.challenges, ['dueFromStart'], ['asc']);
+
   var userId =userGame ? userGame.userId : null;
   var gameUser =userGame ? ggGame.getGameUser(game, userId, {}) : null;
   var userSelfGoalPerChallenge =userGame
    ? Math.ceil( gameUser.selfGoal / gameRule.challenges.length ) : 0;
   var userPastTotalActions =ggGame.getUserGamePastTotalActions(userGame, game, gameRule, nowTime);
-  var gameLeft =ggGame.getGameTimeLeft(game, gameRule, nowTime);
-  var daysLeft =( gameLeft.amount > 0 ? ( gameLeft.amount +1 ) : 1 );
   var userAdjustedGoalPerChallenge =userGame
    ? Math.ceil( ( gameUser.selfGoal - userPastTotalActions ) / daysLeft ) : 0;
+  var userChallenges =( !userGame || !userGame.challenges ) ? []
+   : _.sortByOrder(userGame.challenges, ['updatedAt'], ['asc']);
+
+  // Get info for buddy instruction too
+  var buddyId =userGameBuddy ? userGameBuddy.userId : null;
+  if(buddyId) {
+    var gameUserBuddy =ggGame.getGameUser(game, buddyId, {});
+    var buddySelfGoalPerChallenge =Math.ceil( gameUserBuddy.selfGoal /
+     gameRule.challenges.length );
+    var buddyPastTotalActions =ggGame.getUserGamePastTotalActions(
+      userGameBuddy, game, gameRule, nowTime);
+    var buddyAdjustedGoalPerChallenge =Math.ceil(
+     ( gameUserBuddy.selfGoal - buddyPastTotalActions ) / daysLeft );
+    var buddyChallenges =( !userGameBuddy.challenges ) ? []
+     : _.sortByOrder(userGameBuddy.challenges, ['updatedAt'], ['asc']);
+  }
 
   var userMayViewChallenges =userGame
    ? ggMay.viewUserGameChallenge(game, userId) : false;
 
-  var gameStart =moment(game.start, dtFormat);
-  // Sort both game challenges and user completed challenges by date
-  var challenges =_.sortByOrder(gameRule.challenges, ['dueFromStart'], ['asc']);
-  var userChallenges =( !userGame || !userGame.challenges ) ? []
-   : _.sortByOrder(userGame.challenges, ['updatedAt'], ['asc']);
-
   var curChallenge, curChallengeEnd, ii, ucUpdated, uc;
   var challengeEnded, challengeStarted;
   var lastChallengeEnd =gameStart;
-  var actionsToDo;
+  var actionsToDo, actionsToDoBuddy;
   challenges.forEach(function(challenge) {
     curChallengeEnd =gameStart.clone().add(challenge.dueFromStart, 'minutes');
     challengeEnded = ( curChallengeEnd <= nowTime ) ? true : false;
@@ -575,6 +606,11 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
     actionsToDo =( !challengeEnded && userAdjustedGoalPerChallenge > 0 ) ?
      userAdjustedGoalPerChallenge :
      ( ( userSelfGoalPerChallenge > 0 ) ? userSelfGoalPerChallenge : "??" );
+
+    actionsToDoBuddy = !buddyId ? "??" : ( !challengeEnded &&
+     buddyAdjustedGoalPerChallenge > 0 ) ? buddyAdjustedGoalPerChallenge :
+     ( ( buddySelfGoalPerChallenge > 0 ) ? buddySelfGoalPerChallenge : "??" );
+
     curChallenge ={
       title: challenge.title,
       description: challenge.description,
@@ -592,7 +628,9 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
       // May update if this is the current challenge
       mayUpdate: ( userMayViewChallenges && nowTime >= lastChallengeEnd &&
        nowTime <= curChallengeEnd ) ? true : false,
-      instruction: "Do " + actionsToDo + " " + gameRule.mainAction   // May be updated
+      instruction: "Do " + actionsToDo + " " + gameRule.mainAction,   // May be updated
+      buddyInstruction: ( buddyId || !userGame ) ? ( "Help your buddy do " + actionsToDoBuddy + " " +
+       gameRule.mainAction ) : "Choose a buddy"   // May be updated
     };
 
     if(userGame) {
@@ -607,6 +645,29 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime) {
           curChallenge.instruction = ( ( challengeEnded ) ? ( "You did" ) :
            ( "You've done" ) ) + " " + uc.actionCount + " / " +
            actionsToDo
+           + " " + gameRule.mainAction;
+          break;
+        }
+        // If updated after this challenge ended, we're already too far, stop
+        // (user did NOT complete this challenge).
+        else if( ucUpdated > curChallengeEnd ) {
+          break;
+        }
+        // Otherwise (if updated before start), move on to next one
+      }
+    }
+
+    if(buddyId) {
+      // Get user action count for this challenge (if there is one)
+      for(ii =0; ii<buddyChallenges.length; ii++) {
+        uc =buddyChallenges[ii];
+        ucUpdated =moment(uc.updatedAt, dtFormat);
+        // If updated between start and end of this challenge, this is it.
+        if( ucUpdated >= lastChallengeEnd && ucUpdated <= curChallengeEnd ) {
+          // Update instruction
+          curChallenge.buddyInstruction = ( ( challengeEnded ) ? ( "Buddy did" ) :
+           ( "Buddy has done" ) ) + " " + uc.actionCount + " / " +
+           actionsToDoBuddy
            + " " + gameRule.mainAction;
           break;
         }
