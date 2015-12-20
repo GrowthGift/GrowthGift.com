@@ -39,5 +39,8 @@
       <span class='h4'>{{ data.title }}</span>
     </div>
     <div class='red'>{{ data.value }}</div>
+    {{ #if data.otherWinnersHtml }}
+      Other winners: <span>{{{ data.otherWinnersHtml }}}</span>.
+    {{ /if }}
   </div>
 </template>

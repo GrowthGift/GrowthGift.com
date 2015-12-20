@@ -41,10 +41,24 @@ if(Meteor.isClient) {
   Template.gameAward.helpers({
     data: function() {
       var award = this.award;
+      var otherWinners =[];
+      var html, href;
+      award.winners.forEach(function(winner) {
+        if(!award.winner || winner._id !== award.winner._id) {
+          href =( winner.user1.username ) ? ggUrls.user(winner.user1.username) : '';
+          html ='<a href=' + href + '>' + msUser.getName(winner.user1) + '</a>';
+          if( winner.user2.profile ) {
+            href =( winner.user2.username ) ? ggUrls.user(winner.user2.username) : '';
+            html += ' & <a href=' + href + '>' + msUser.getName(winner.user2) + '</a>';
+          }
+          otherWinners.push(html);
+        }
+      });
       var ret ={
         icon: '/svg/',
         user1: award.winner.user1,
-        user2: ( award.winner.user2.profile ) ? award.winner.user2 : null
+        user2: ( award.winner.user2.profile ) ? award.winner.user2 : null,
+        otherWinnersHtml: otherWinners.length ? otherWinners.join(', ') : null
       };
       if(award.winner.reachTeamsNumActions) {
         ret.title ="Impact";
