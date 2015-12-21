@@ -4,7 +4,7 @@
   {{else}}
 
   {{ #if data.atLeastOneAward }}
-    <div class='padding-tb center bg-gray-light'>
+    <div class='padding-tb center bg-yellow-light'>
       <h3 class='center'>{{ data.title }}</h3>
       {{ #if data.awards.reachTeamsNumActions.winner }}
         {{ >gameAward award=data.awards.reachTeamsNumActions gameRule=data.gameRule gameSlug=gameSlug }}

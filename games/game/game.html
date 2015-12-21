@@ -19,7 +19,7 @@
 
 
     <div><img class='img-100' src='{{ data.game.xDisplay.img }}' /></div>
-    <div class='bg-gray-lighter padding-t padding-large-b'>
+    <div class='padding-t padding-large-b'>
       <div class='center margin-lr'>
         <h2>{{ data.game.title }}</h2>
         <div>
@@ -45,7 +45,7 @@
 
 
     {{ #unless data.gameState.gameEnded }}
-      <div class='bg-gray-lighter padding-tb'>
+      <div class='padding-tb'>
         {{#if data.privileges.join }}
           <div class='center'>
             <div class='btn btn-primary margin-b game-join'>
@@ -93,9 +93,7 @@
     {{ /unless }}
 
 
-    {{ #if data.gameState.gameStarted }}
-      {{ >gameAwards gameSlug=../gameSlug }}
-    {{ /if }}
+    {{ >gameAwards gameSlug=../gameSlug }}
 
 
     {{ #unless data.gameState.gameEnded }}
