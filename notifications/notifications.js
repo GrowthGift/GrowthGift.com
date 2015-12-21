@@ -139,7 +139,8 @@ if(Meteor.isClient) {
           { value: (12 * 60), label: '12 hours'},
           { value: (1 * 24 * 60), label: '1 day'},
           { value: (2 * 24 * 60), label: '2 days'}
-        ]
+        ],
+        showPush: Meteor.isCordova ? true : false
       };
       var notifications =lmNotify.readNotifications(Meteor.userId(), {});
 
