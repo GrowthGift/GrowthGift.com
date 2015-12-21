@@ -28,7 +28,8 @@ if(Meteor.isClient) {
         {
           q: "The app is not working for me.",
           a: "If you found a bug or are having issues, please send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with the details and we'll work to get it fixed pronto. The more information you can include, the faster we'll be able to fix it. Notably, your browser name (e.g. Chrome, Firefox, Safari, Internet Explorer), operating system (e.g. Mac, Windows), platform (desktop, Android app, iOS app) and the steps you took so we can reproduce it.",
-          link: 'feedback-bug'
+          link: 'feedback-bug',
+          nonCordovaOnly: true
         },
         {
           q: "I have a suggestion.",
