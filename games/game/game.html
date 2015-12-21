@@ -30,11 +30,7 @@
         {{ /unless }}
 
         <span class='h5'>
-          {{#if data.privileges.viewPlayers }}
-            by <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
-          {{else}}
-            by {{ data.userChallengeTotals.numUsersText }}
-          {{/if}}
+          by <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
         </span>
         </div>
       </div>

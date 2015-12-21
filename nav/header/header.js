@@ -125,6 +125,14 @@ if(Meteor.isClient){
   navConfig.gameRule.urlRegEx ="gr\/[.]*";
   navConfig.gameRule.auth ={};
 
+  navConfig.gameUsers =EJSON.clone(navDefault);
+  navConfig.gameUsers.urlRegEx ="game-users\/[.]*";
+  navConfig.gameUsers.auth ={};
+
+  navConfig.user =EJSON.clone(navDefault);
+  navConfig.user.urlRegEx ="u\/[.]*";
+  navConfig.user.auth ={};
+
   navConfig.about =EJSON.clone(navDefault);
   navConfig.about.url ='about';
   navConfig.about.auth ={};

@@ -97,7 +97,6 @@ if(Meteor.isClient) {
           // Show join button if not logged in
           join: (game && (!userId || ggMay.joinGame(game, userId) )) ? true : false,
           leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
-          viewPlayers: (game && userId) ? true : false,
           viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
           addChallenge: false,
           buddy: ( this.buddy ? ggMay.beGameBuddy(game, userId, this.buddy) : false )
