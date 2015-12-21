@@ -34,8 +34,9 @@
     {{#autoForm collection="NotificationsCollection" doc=data.notifications id="saveNotificationsForm" type=data.afMethod meteormethod="saveNotificationSettings" }}
       {{> afQuickField name="bulk.email.wait" type="select" label="How long between emails?" options=data.inputOpts.emailOpts firstOption=false }}
       <!-- {{> afQuickField name="bulk.sms.wait" type="select" label="How long between SMS text messages?" options=data.inputOpts.smsOpts firstOption=false }} -->
-      {{> afQuickField name="bulk.push.wait" type="select" label="How long between push notifications?" options=data.inputOpts.pushOpts firstOption=false }}
-      <div class='font-small'>Only applies to Android & iOS phone apps</div>
+      {{ #if data.inputOpts.showPush }}
+        {{> afQuickField name="bulk.push.wait" type="select" label="How long between push notifications?" options=data.inputOpts.pushOpts firstOption=false }}
+      {{ /if }}
       <div class='margin-large-t flexbox'>
         <div class='flex1'>&nbsp;</div>
         <div>
