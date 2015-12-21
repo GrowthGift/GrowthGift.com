@@ -119,12 +119,10 @@ if(Meteor.isClient) {
         buddyName: null,
         buddyErrorMessage: null,
         display: Template.instance().display.get(),
-        userInGame: ( userId ) ? ggGame.userInGame(game, userId) : false,
-        showHowToPlay: true
+        userInGame: ( userId ) ? ggGame.userInGame(game, userId) : false
       };
 
-      ret.showHowToPlay =( ret.gameState.gameStarted && ret.userInGame ) ?
-       false : true;
+      ret.showHowToPlay =ret.userInGame ? false : true;
 
       var templateHelperData ={
         challengeInstruction: {
