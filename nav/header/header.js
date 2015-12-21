@@ -146,6 +146,20 @@ if(Meteor.isClient){
       }
     }
 
+    // customize if logged in
+    var index1 =notoriiArray.findArrayIndex(ret.curNav.buttons[menuButtonSide], 'id', 'menu', {});
+    if(index1 >-1) {
+      if(Meteor.user()) {
+        ret.curNav.buttons[menuButtonSide][index1].icon ='fa fa-user';
+        ret.curNav.buttons[menuButtonSide][index1].html =msUser.getName(Meteor.user());
+      }
+      else {
+        ret.curNav.buttons[menuButtonSide][index1].icon ='fa fa-bars';
+        ret.curNav.buttons[menuButtonSide][index1].html ='Menu';
+      }
+    }
+
+
     return ret;
   }
 
