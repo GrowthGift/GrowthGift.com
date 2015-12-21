@@ -123,6 +123,7 @@ if(Meteor.isClient) {
       };
 
       ret.showHowToPlay =ret.userInGame ? false : true;
+      ret.showImpact = ( ret.userInGame && ret.gameState.gameStarted ) ? true : false;
 
       var templateHelperData ={
         challengeInstruction: {
