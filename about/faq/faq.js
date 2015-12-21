@@ -98,7 +98,7 @@ if(Meteor.isClient) {
         },
         {
           q: "I forgot to log my results! But I did it, I promise!",
-          a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! As long as it is not the last day, you can just add it to today's score.",
+          a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! You may only log while the challenge is active. But as long as it is not the last day, you can just add it to today's score.",
           link: 'game-forgot-to-log'
         }
 
