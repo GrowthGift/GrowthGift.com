@@ -1,4 +1,9 @@
 if(Meteor.isClient) {
+  Template.gameAwards.created =function() {
+    // Since winner is random, can only get ONCE, otherwise could
+    // have mismatched values.
+    Template.instance().awards =null;
+  };
 
   Template.gameAwards.helpers({
     data: function() {
@@ -22,10 +27,15 @@ if(Meteor.isClient) {
       }
 
       var userId =Meteor.userId();
+      var awards =Template.instance().awards;
+      if(!awards) {
+        awards =ggGame.getAwards(userGames, game, gameUsers, gameRule, userId, null);
+        Template.instance().awards =awards;
+      }
 
       var ret ={
         game: game,
-        awards: ggGame.getAwards(userGames, game, gameUsers, gameRule, userId, null),
+        awards: awards,
         gameRule: gameRule,
         gameState: ggGame.getGameState(game, gameRule, null)
       };
@@ -45,20 +55,24 @@ if(Meteor.isClient) {
       var html, href;
       award.winners.forEach(function(winner) {
         if(!award.winner || winner._id !== award.winner._id) {
-          href =( winner.user1.username ) ? ggUrls.user(winner.user1.username) : '';
-          html ='<a href=' + href + '>' + msUser.getName(winner.user1) + '</a>';
-          if( winner.user2.profile ) {
-            href =( winner.user2.username ) ? ggUrls.user(winner.user2.username) : '';
-            html += ' & <a href=' + href + '>' + msUser.getName(winner.user2) + '</a>';
-          }
-          otherWinners.push(html);
+          // href =( winner.user1.username ) ? ggUrls.user(winner.user1.username) : '';
+          // html ='<a href=' + href + '>' + msUser.getName(winner.user1) + '</a>';
+          // if( winner.user2.profile ) {
+          //   href =( winner.user2.username ) ? ggUrls.user(winner.user2.username) : '';
+          //   html += ' & <a href=' + href + '>' + msUser.getName(winner.user2) + '</a>';
+          // }
+          // otherWinners.push(html);
+          otherWinners.push(winner);
         }
       });
       var ret ={
         icon: '/svg/',
         user1: award.winner.user1,
         user2: ( award.winner.user2.profile ) ? award.winner.user2 : null,
-        otherWinnersHtml: otherWinners.length ? otherWinners.join(', ') : null
+        // otherWinnersHtml: otherWinners.length ? otherWinners.join(', ') : null
+        otherWinnersHtml: otherWinners.length ? ( "<a href='" +
+         ggUrls.gameUsers(this.gameSlug) + "'>" + otherWinners.length +
+         " other winner" + ( ( otherWinners.length ===1 ) ? "" : "s" ) + ".</a>" ) : null
       };
       if(award.winner.reachTeamsNumActions) {
         ret.title ="Impact";

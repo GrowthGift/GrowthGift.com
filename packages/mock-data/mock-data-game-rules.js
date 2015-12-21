@@ -38,7 +38,14 @@ var gameRules =[
     _id: 'gameRule2',
     mainAction: 'pushups',
     challenges: challengesSets[0]
-  }
+  },
+  // {
+  //   _id: 'pushups',
+  //   title: 'Pushups',
+  //   slug: 'pushups',
+  //   challenges: challengesSets[0],
+  //   mainAction: 'pushups'
+  // }
 ];
 
 ggMockData.getGameRule =function(id) {

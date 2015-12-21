@@ -7,16 +7,16 @@
     <div class='padding-tb center bg-gray-light'>
       <h3 class='center'>{{ data.title }}</h3>
       {{ #if data.awards.reachTeamsNumActions.winner }}
-        {{ >gameAward award=data.awards.reachTeamsNumActions gameRule=data.gameRule }}
+        {{ >gameAward award=data.awards.reachTeamsNumActions gameRule=data.gameRule gameSlug=gameSlug }}
       {{ /if }}
-      {{ #if data.awards.timeSize.winner }}
-        {{ >gameAward award=data.awards.timeSize gameRule=data.gameRule }}
+      {{ #if data.awards.teamSize.winner }}
+        {{ >gameAward award=data.awards.teamSize gameRule=data.gameRule gameSlug=gameSlug }}
       {{ /if }}
       {{ #if data.awards.pledgePercent.winner }}
-        {{ >gameAward award=data.awards.pledgePercent gameRule=data.gameRule }}
+        {{ >gameAward award=data.awards.pledgePercent gameRule=data.gameRule gameSlug=gameSlug }}
       {{ /if }}
       {{ #if data.awards.completionPercent.winner }}
-        {{ >gameAward award=data.awards.completionPercent gameRule=data.gameRule }}
+        {{ >gameAward award=data.awards.completionPercent gameRule=data.gameRule gameSlug=gameSlug }}
       {{ /if }}
     </div>
   {{ /if }}
@@ -40,7 +40,7 @@
     </div>
     <div class='red'>{{ data.value }}</div>
     {{ #if data.otherWinnersHtml }}
-      Other winners: <span>{{{ data.otherWinnersHtml }}}</span>.
+      <span>{{{ data.otherWinnersHtml }}}</span>
     {{ /if }}
   </div>
 </template>
