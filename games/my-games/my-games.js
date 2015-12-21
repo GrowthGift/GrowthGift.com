@@ -50,6 +50,7 @@ if(Meteor.isClient) {
           return (ug.gameEnd > nowTimeFormat) ? true : false;
         }
       });
+      ret.atLeastOneGame = ( userGames.length ) ? true : false;
 
       var sortOrder =( view ==='past' ) ? 'desc' : 'asc';
       ret.userGames =_.sortByOrder(userGames.map(function(ug) {

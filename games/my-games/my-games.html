@@ -2,6 +2,10 @@
   {{> msNavSecondary nav=nav }}
   
   <div class='max-600 padding'>
+    {{ #unless data.atLeastOneGame }}
+      <div class='center'>No games here! <a href='/'>Join the main game here</a>. Other games are currently invite only but more are coming soon!</div>
+    {{ /unless }}
+
     {{#each data.userGames }}
       <div>
         <div class='flexbox'>
