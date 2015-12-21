@@ -1,5 +1,12 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+
+# 1.1.6-1
+
+## Features
+- show user name in header if logged in.
+
+
 # 1.1.5 (2015-12-19)
 
 ## Features
