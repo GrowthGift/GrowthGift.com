@@ -22,7 +22,8 @@ if(Meteor.isClient) {
         {
           q: "Is there a mobile app?",
           a: "Yep! <a href='"+appInfo.mobileApps.android.link+"' target='_blank'>Android is live</a> and iOS is coming.",
-          link: 'mobile-app'
+          link: 'mobile-app',
+          nonCordovaOnly: true
         },
         {
           q: "The app is not working for me.",
@@ -106,20 +107,26 @@ if(Meteor.isClient) {
     };
 
     // Add some common fields
-    var type;
+    var type, curIndex =0;
+    var faqFinal ={};
     for(type in faq) {
-      faq[type] =faq[type].map(function(item, index) {
-        return _.extend({}, item, {
-          classes: {
-            visible: 'visible'
-          },
-          type: type,
-          index: index
-        });
+      faqFinal[type] =[];
+      curIndex =0;    // Reset
+      faq[type].forEach(function(item, index) {
+        if( !Meteor.isCordova || !item.nonCordovaOnly ) {
+          faqFinal[type][curIndex] =_.extend({}, item, {
+            classes: {
+              visible: 'visible'
+            },
+            type: type,
+            index: curIndex
+          });
+          curIndex++;
+        }
       });
     }
 
-    return faq;
+    return faqFinal;
   }
 
   Template.faq.created =function() {
