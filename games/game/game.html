@@ -89,7 +89,8 @@
     {{ /unless }}
 
 
-    {{ >gameAwards gameSlug=../gameSlug }}
+    <!-- {{ >gameAwards gameSlug=../gameSlug dataReady=../templateHelperData.dataReady }} -->
+    {{ >gameAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction gameState=../templateHelperData.gameState gameSlug=../gameSlug }}
 
 
     {{ #unless data.gameState.gameEnded }}

@@ -22,7 +22,8 @@ Package.onUse(function(api) {
     'game-vars.js',
     'game-get.js',
     'game.js',
-    'game-challenge.js'
+    'game-challenge.js',
+    'game-get-cache.js'
   ]);
   api.export('ggGame');
 });
