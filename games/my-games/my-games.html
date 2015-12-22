@@ -1,18 +1,22 @@
 <template name="myGames">
   {{> msNavSecondary nav=nav }}
   
-  <div class='max-600 padding'>
-    {{ #unless data.atLeastOneGame }}
-      <div class='center'>No games here! <a href='/'>Join the main game here</a>. Other games are currently invite only but more are coming soon!</div>
-    {{ /unless }}
+  {{ #unless data.atLeastOneGame }}
+    <div class='center max-600 padding'>No games here! <a href='/'>Join the main game here</a>. Other games are currently invite only but more are coming soon!</div>
+  {{ /unless }}
 
+  <div class='center padding-large-tb'>
     {{#each data.userGames }}
-      <div>
+      <!-- <div>
         <div class='flexbox'>
           <div class='flex1'><a href='{{ xDisplay.gameLink }}'>{{ game.title }}</a></div>
           <div>{{ xDisplay.gameTime }}</div>
         </div>
+      </div> -->
+      <div class='games-game bg-white padding margin inline-block'>
+        {{ >gamePreview game=this.game }}
       </div>
     {{/each}}
   </div>
+  
 </template>

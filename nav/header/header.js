@@ -31,13 +31,13 @@ if(Meteor.isClient){
             Router.go('myGames')
           }
         },
-        // {
-        //   icon: 'fa fa-cubes',
-        //   html: 'All Games',
-        //   click: function() {
-        //     Router.go('games')
-        //   }
-        // },
+        {
+          icon: 'fa fa-cubes',
+          html: 'All Games',
+          click: function() {
+            Router.go('games')
+          }
+        },
         // {
         //   icon: 'fa fa-magic',
         //   html: 'My Gifts',
@@ -124,6 +124,10 @@ if(Meteor.isClient){
   navConfig.gameRule =EJSON.clone(navDefault);
   navConfig.gameRule.urlRegEx ="gr\/[.]*";
   navConfig.gameRule.auth ={};
+
+  navConfig.games =EJSON.clone(navDefault);
+  navConfig.games.url ="games";
+  navConfig.games.auth ={};
 
   navConfig.gameUsers =EJSON.clone(navDefault);
   navConfig.gameUsers.urlRegEx ="game-users\/[.]*";

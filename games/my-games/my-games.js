@@ -54,14 +54,14 @@ if(Meteor.isClient) {
 
       var sortOrder =( view ==='past' ) ? 'desc' : 'asc';
       ret.userGames =_.sortByOrder(userGames.map(function(ug) {
-        return _.extend({}, ug, {
+        ug.game =_.extend({}, ug.game, {
           xDisplay: {
             gameTime: (ug.gameStart > nowTimeFormat) ? ( "Starts " +
              msUser.toUserTime(Meteor.user(), ug.gameStart, null, 'fromNow') ) :
-             ( endedText+ " " + msUser.toUserTime(Meteor.user(), ug.gameEnd, null, 'fromNow') ),
-            gameLink: ggUrls.game(ug.game.slug)
+             ( endedText+ " " + msUser.toUserTime(Meteor.user(), ug.gameEnd, null, 'fromNow') )
           }
         });
+        return ug;
       }), ['gameStart'], [sortOrder]);
 
       return ret;

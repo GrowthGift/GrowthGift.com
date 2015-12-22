@@ -109,7 +109,8 @@ ggGame.getUserGames =function(userId) {
       gameEnd: gameEnd,
       game: {
         slug: game ? game.slug : null,
-        title: game ? game.title : null
+        title: game ? game.title : null,
+        image: game ? game.image : null
       }
     };
   });

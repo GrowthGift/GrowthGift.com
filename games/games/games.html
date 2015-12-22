@@ -1,0 +1,13 @@
+<template name="games">
+  {{ #if data._xNotFound }}
+  <div class='padding center'>No games at the moment. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  {{ else }}
+    <div class='center padding-large-tb'>
+    {{ #each data.games }}
+      <div class='games-game bg-white padding margin inline-block'>
+        {{ >gamePreview game=this }}
+      </div>
+    {{ /each }}
+    </div>
+  {{ /if }}
+</template>
