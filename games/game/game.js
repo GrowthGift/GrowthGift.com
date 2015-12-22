@@ -27,42 +27,20 @@ Meteor.methods({
 });
 
 if(Meteor.isClient) {
-  Template.game.created =function() {
-    Meteor.subscribe('game', Template.instance().data.gameSlug);
-    this.display =new ReactiveVar({
-      impactDetails: false,
-      impactDetailsInfo: false
-    });
-  };
-
-  Template.game.rendered =function() {
-    var signInCallback =Session.get('signInCallback');
-    if(signInCallback && signInCallback.action) {
-      if(signInCallback.action ==='joinGame') {
-        Meteor.call("joinGame", signInCallback.data.game, signInCallback.data.buddy, signInCallback.data.inviteUsername);
-      }
-      //unset for future
-      Session.set('signInCallback', false);
-    }
-  };
-
-  Template.game.helpers({
-    data: function() {
-      var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug}))
+  function getData(templateData, templateInst) {
+    var game =(templateData.gameSlug && GamesCollection.findOne({slug: templateData.gameSlug}))
        || null;
       var gameRule =(game && GameRulesCollection.findOne({_id: game.gameRuleId}) )
        || null;
-      if(!game || !gameRule) {
-        if(this.gameSlug) {
-          // Game does not exist (or has not loaded yet).
-          return {
-            _xNotFound: true,
-            _xHref: ggUrls.myGames()
-          };
-        }
-        Router.go('myGames');
-        return false;
-      }
+      var userId =Meteor.userId();
+      var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
+       || null;
+      var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
+
+      var selfGameUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
+      var buddyId =selfGameUser ? selfGameUser.buddyId : null;
+      var userGameBuddy =buddyId ? UserGamesCollection.findOne({ userId: buddyId, gameId: game._id }) : null;
+
       game.xHref ={
         gameRule: '/gr/'+gameRule.slug,
         gameRuleText: gameRule.slug
@@ -75,17 +53,9 @@ if(Meteor.isClient) {
       game.xDisplay.img =(game.image && !Meteor.isCordova) ? game.image
        : ggUrls.img('games')+'playful-beach.jpg';
 
-      var userId =Meteor.userId();
-      var userGame =userId && UserGamesCollection.findOne({ userId: userId, gameId: game._id })
-       || null;
-      var selfGameUser =( userId ) ? ggGame.getGameUser(game, userId, {}) : null;
-      var buddyId =selfGameUser ? selfGameUser.buddyId : null;
-      var userGameBuddy =buddyId ? UserGamesCollection.findOne({ userId: buddyId, gameId: game._id }) : null;
-
       // Privileges
       var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
-      var userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
       var gameUsers =ggGame.getGameUsersInfo(userGames);
 
       var ret ={
@@ -99,7 +69,7 @@ if(Meteor.isClient) {
           leave: (game && ggMay.leaveGame(game, userId) ) ? true : false,
           viewChallenges: (game && ggMay.viewUserGameChallenge(game, userId)) ? true : false,
           addChallenge: false,
-          buddy: ( this.buddy ? ggMay.beGameBuddy(game, userId, this.buddy) : false )
+          buddy: ( templateData.buddy ? ggMay.beGameBuddy(game, userId, templateData.buddy) : false )
         },
         // challenges: {
         //   possibleCompletions: 0,
@@ -153,9 +123,9 @@ if(Meteor.isClient) {
       ret.userChallengeTotals.numUsersText =(ret.userChallengeTotals.numUsers ===1) ?
        "1 player" : ret.userChallengeTotals.numUsers + " players";
 
-      if(this.buddy) {
+      if(templateData.buddy) {
         // Look up buddy name
-        var buddyUser =ggGame.getGameUser(game, null, { buddyRequestKey: this.buddy });
+        var buddyUser =ggGame.getGameUser(game, null, { buddyRequestKey: templateData.buddy });
         if(buddyUser) {
           var user =Meteor.users.findOne({ _id: buddyUser.userId }, { fields: { profile:1, username:1 } });
           if(user) {
@@ -176,7 +146,59 @@ if(Meteor.isClient) {
         }
       }
 
+      templateInst.dataSave =ret;
       return ret;
+  }
+
+  Template.game.created =function() {
+    this.dataReady = new ReactiveVar(false);
+    this.pauseLoad =false;
+    this.dataSave =null;
+    var self =this;
+    Meteor.subscribe('game', Template.instance().data.gameSlug, {
+      onReady: function() { self.dataReady.set(true); }
+    });
+    this.display =new ReactiveVar({
+      impactDetails: false,
+      impactDetailsInfo: false
+    });
+  };
+
+  Template.game.rendered =function() {
+    var signInCallback =Session.get('signInCallback');
+    if(signInCallback && signInCallback.action) {
+      if(signInCallback.action ==='joinGame') {
+        Meteor.call("joinGame", signInCallback.data.game, signInCallback.data.buddy, signInCallback.data.inviteUsername);
+      }
+      //unset for future
+      Session.set('signInCallback', false);
+    }
+  };
+
+  Template.game.helpers({
+    data: function() {
+      var templateInst =Template.instance();
+      if(!templateInst.dataReady.get()) {
+        if(this.gameSlug) {
+          // Game does not exist (or has not loaded yet).
+          return {
+            _xNotFound: true,
+            _xHref: ggUrls.myGames()
+          };
+        }
+        Router.go('myGames');
+        return false;
+      }
+      if(!templateInst.pauseLoad) {
+        templateInst.pauseLoad =true;
+        setTimeout(function() {
+          templateInst.pauseLoad =false;
+        }, 1000);
+        return getData(this, templateInst);
+      }
+      else {
+        return templateInst.dataSave;
+      }
     }
   });
 

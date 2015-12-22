@@ -29,7 +29,7 @@ if(Meteor.isClient) {
       var userId =Meteor.userId();
       var awards =Template.instance().awards;
       if(!awards) {
-        awards =ggGame.getAwards(userGames, game, gameUsers, gameRule, userId, null);
+        awards =ggGame.getAwards(userGames, game, gameUsers, gameRule, null);
         Template.instance().awards =awards;
       }
 
