@@ -25,7 +25,7 @@ msUser.getName =function(user, format) {
 };
 
 msUser.getImage =function(user) {
-  return (user && user.profile && user.profile.image) ?
+  return (!Meteor.isCordova && user && user.profile && user.profile.image) ?
    user.profile.image : '/img/user-silhouette.jpg';
 };
 
