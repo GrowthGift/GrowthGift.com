@@ -34,7 +34,11 @@ GameChallengeFeedbackSchema = new SimpleSchema({
 
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
-    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) { });
+    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) {
+      // Need to clear cache
+      var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
+      ggGame.clearCache(cacheKey);
+    });
   },
   saveGameChallenge: function(doc, docId) {
     // The $set modifier is odd for this.. it is passing the whole array and
@@ -63,6 +67,9 @@ Meteor.methods({
       if(!err && Meteor.isClient) {
         var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var gameSlug =templateInst.data.gameSlug;
+        // Need to clear cache
+        var cacheKey ='game_slug_'+gameSlug+'_user_id_'+Meteor.userId();
+        ggGame.clearCache(cacheKey);
         if(gameSlug) {
           Router.go(ggUrls.game(gameSlug));
         }

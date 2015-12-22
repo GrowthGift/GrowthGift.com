@@ -6,6 +6,12 @@
 _ggGame.cache ={};
 _ggGame.cacheTime =3;   // Minutes
 
+ggGame.clearCache =function(key) {
+  if(_ggGame.cache[key]) {
+    delete _ggGame.cache[key];
+  }
+};
+
 ggGame.hasCache =function(key) {
   // First check cache
   var timestampMoment =msTimezone.curDateTime('moment');

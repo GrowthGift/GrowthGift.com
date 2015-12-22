@@ -53,7 +53,8 @@ if(Meteor.isClient) {
   function getData(templateData, templateInst) {
     var dataLoaded = templateInst.dataLoaded.get();
     var dataReady =templateInst.dataReady.get();
-    var cacheKey =cacheKey ='game_'+templateData.gameSlug+'_user_'+userId;
+    var userId =Meteor.userId();
+    var cacheKey ='game_slug_'+templateData.gameSlug+'_user_id_'+userId;
     var ret;
     if(dataLoaded) {
       // return null;
@@ -70,7 +71,6 @@ if(Meteor.isClient) {
      || null;
     var gameRule =(game && GameRulesCollection.findOne({_id: game.gameRuleId}) )
      || null;
-    var userId =Meteor.userId();
     var userGame =(game && userId &&
      UserGamesCollection.findOne({ userId: userId, gameId: game._id }) )
      || null;

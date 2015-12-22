@@ -10,6 +10,9 @@ Meteor.methods({
     ggGame.saveGameInvite(game, Meteor.userId(), gameUserData, function(err, result) {
       if(Meteor.isClient) {
         if(!err && result) {
+          // Need to clear cache
+          var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
+          ggGame.clearCache(cacheKey);
           Router.go(ggUrls.game(game.slug));
         }
       }
