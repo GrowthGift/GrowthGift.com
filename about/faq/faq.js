@@ -21,7 +21,7 @@ if(Meteor.isClient) {
         },
         {
           q: "Is there a mobile app?",
-          a: "Yep! <a href='"+appInfo.mobileApps.android.link+"' target='_blank'>Android is live</a> and iOS is coming.",
+          a: "Yep! Here's the <a href='"+appInfo.mobileApps.android.link+"' target='_blank'>Android app</a> and <a href='"+appInfo.mobileApps.ios.link+"' target='_blank'>iOS app</a>.",
           link: 'mobile-app',
           nonCordovaOnly: true
         },

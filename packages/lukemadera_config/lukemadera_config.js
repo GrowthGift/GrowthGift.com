@@ -38,7 +38,7 @@ Config.appInfo =function(params) {
         link: 'https://play.google.com/store/apps/details?id=com.idmhuhu81ewth241q5f8l3'
       },
       ios: {
-        link: ''
+        link: 'https://itunes.apple.com/us/app/growth-gift/id1064362492'
       }
     }
   };
