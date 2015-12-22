@@ -4,7 +4,7 @@
   @param {Object|Array} data
 */
 _ggGame.cache ={};
-_ggGame.cacheTime =3;   // Minutes
+_ggGame.cacheTime =2;   // Minutes
 
 ggGame.clearCache =function(key) {
   if(_ggGame.cache[key]) {
