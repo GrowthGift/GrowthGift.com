@@ -24,18 +24,18 @@ if (Meteor.isClient){
   var menuItemHome ={
     icon: "fa fa-home",
     title: "Home",
-    routeTo: "home"
+    // routeTo: "home"
     // TEMPOARARY hardcoded current (promoted) game
     // Home should work but was going to login page..
-    // routeTo: '/games/planks'
+    routeTo: '/games'
   };
   var menuItemLanding ={
     icon: "fa fa-home",
     title: "Home",
-    routeTo: "home"
+    // routeTo: "home"
     // TEMPOARARY hardcoded current (promoted) game
     // Home should work but was going to login page..
-    // routeTo: '/g/planks'
+    routeTo: '/games'
   };
 
   var menuItemAbout ={
