@@ -84,7 +84,7 @@ ggReminder.gameChallengeDue =function() {
   // Find any challenges that are due X minutes from now, give or take Y
   // minutes, which is often we run this cron job.
   var minutesBefore =12 * 60;
-  minutesBefore =10.6 * 60;   // TESTING
+  // minutesBefore =8.7 * 60;   // TESTING
   var minutesRange =15;
   var dtFormat =msTimezone.dateTimeFormat;
   var dueTime =msTimezone.curDateTime('moment').add(minutesBefore, 'minutes');
@@ -96,9 +96,14 @@ ggReminder.gameChallengeDue =function() {
 
   var userGames, challengeStart, query;
   var gameUserIndex, gameUser, gameBuddyUser, doneUserIds;
+  var mostRecentUserChallenge;
   var user, buddyUser, paramsNotify;
   cacheGames.forEach(function(cg) {
     // Find all users who have not completed this challenge yet.
+    // Note this will still get PAST challenges so we still need to double
+    // check later if MOST RECENT challenge is before the current challenge
+    // start date. I.e. There may be user games returned who have ALREADY
+    // completed the challenge and should NOT be notified.
     challengeStart =cg.currentChallengeStart;
     // db.userGames.find({ gameId: 'L9zRezwmmH4LYyzkS', $or: [ { challenges: { $exists: false } }, { 'challenges.updatedAt': { $lt: '2015-12-23 08:00:00+00:00' } } ] }).pretty();
     query ={
@@ -115,36 +120,43 @@ ggReminder.gameChallengeDue =function() {
       ]
     }
     userGames =UserGamesCollection.find(query, { fields: { userId:1, challenges:1 } }).fetch();
+    // console.log(query, 'userGames: ', userGames);
 
     // Send a reminder to each user who needs to be reminded AND to their buddy.
     doneUserIds =[];    // Reset. This prevent duplicate reminders if their
     // buddy already triggered it.
     userGames.forEach(function(ug) {
-      if(doneUserIds.indexOf(ug.userId) <0) {
-        // May NOT have a valid user if user joined since the cached data was
-        // created.
-        gameUserIndex =_.findIndex(cg.users, 'userId', ug.userId);
-        gameUser = ( gameUserIndex > -1 ) ? cg.users[gameUserIndex] : null;
-        if(gameUser) {
-          paramsNotify ={
-            notifyUserIds: [ ug.userId ],
-            game: {
-              title: cg.gameTitle,
-              slug: cg.gameSlug
-            },
-            gameMainAction: cg.gameMainAction
-          };
-          gameUserBuddy =gameUser.buddyId ?
-           cg.users[_.findIndex(cg.users, 'userId', gameUser.buddyId)] : null;
-          // No need to push self user id as have already gone through this user.
-          if(gameUserBuddy) {
-            doneUserIds.push(gameUser.buddyId);
-            paramsNotify.notifyUserIds.push(gameUser.buddyId);
-            buddyUser =Meteor.users.findOne({ _id: gameUser.buddyId }, { fields: { profile:1 } });
-            paramsNotify.buddyUser =buddyUser;
-          }
+      // Need to check if the MOST RECENT challenge is less than the current
+      // challenge start date (since the query just looks for ANY challenges).
+      // Assume challenges in order with most recent last
+      mostRecentChallenge =ug.challenges ? ug.challenges[(ug.challenges.length -1)] : null;
+      if(!mostRecentChallenge || ( mostRecentChallenge.updatedAt < challengeStart) ) {
+        if(doneUserIds.indexOf(ug.userId) <0) {
+          // May NOT have a valid user if user joined since the cached data was
+          // created.
+          gameUserIndex =_.findIndex(cg.users, 'userId', ug.userId);
+          gameUser = ( gameUserIndex > -1 ) ? cg.users[gameUserIndex] : null;
+          if(gameUser) {
+            paramsNotify ={
+              notifyUserIds: [ ug.userId ],
+              game: {
+                title: cg.gameTitle,
+                slug: cg.gameSlug
+              },
+              gameMainAction: cg.gameMainAction
+            };
+            gameUserBuddy =gameUser.buddyId ?
+             cg.users[_.findIndex(cg.users, 'userId', gameUser.buddyId)] : null;
+            // No need to push self user id as have already gone through this user.
+            if(gameUserBuddy) {
+              doneUserIds.push(gameUser.buddyId);
+              paramsNotify.notifyUserIds.push(gameUser.buddyId);
+              buddyUser =Meteor.users.findOne({ _id: gameUser.buddyId }, { fields: { profile:1 } });
+              paramsNotify.buddyUser =buddyUser;
+            }
 
-          lmNotify.send('gameChallengeDueReminder', paramsNotify, {});
+            lmNotify.send('gameChallengeDueReminder', paramsNotify, {});
+          }
         }
       }
     });

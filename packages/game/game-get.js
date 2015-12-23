@@ -613,7 +613,7 @@ ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   keyUsers = 'buddiedReachTeamsNumActions';
   keyAwards = 'reachTeamsNumActions';
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { minVal: 5 });
+   { minVal: 2 });
 
   // Team size
   keyUsers = 'buddiedTeamSize';
