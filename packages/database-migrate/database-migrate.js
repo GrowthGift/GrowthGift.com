@@ -15,6 +15,10 @@ ggDatabaseMigrate ={
     {
       key: '2015-12-17T07:51:00-date-times-to-utc',
       fxn: function() { _ggDatabaseMigrate.dateTimesToUTC() }
+    },
+    {
+      key: '2015-12-23T08:47:00-add-game-end',
+      fxn: function() { _ggDatabaseMigrate.addGameEnd() }
     }
   ]
 };
@@ -49,6 +53,7 @@ ggDatabaseMigrate.run =function() {
     DatabaseMigrationsCollection.insert(insertDoc);
   });
   _ggDatabaseMigrate.reattachSchema();
+  console.info(toRun.length + ' total migration(s) run.');
 };
 
 /**
@@ -75,6 +80,10 @@ _ggDatabaseMigrate.unattachSchema =function() {
 
   GameOpenSchema = new SimpleSchema({
     start: {
+      type: String,
+      optional: true
+    },
+    end: {
       type: String,
       optional: true
     },
@@ -193,4 +202,24 @@ _ggDatabaseMigrate.dateTimesToUTC =function() {
   });
 
   // Friends and other collections not actually used yet: SKIP
+};
+
+/**
+Add game.end to all games
+SAFE TO RE-RUN? YES
+*/
+_ggDatabaseMigrate.addGameEnd =function() {
+  var modifier ={}, result, gameRule, gameEnd;
+  var games =GamesCollection.find({}, { fields: { start:1, end:1, gameRuleId:1 } }).fetch();
+  games.forEach(function(game) {
+    gameRule =GameRulesCollection.findOne({ _id: game.gameRuleId });
+    gameEnd =ggGame.getGameEnd(game, gameRule);
+    modifier ={
+      $set: {
+        end: msTimezone.convertToUTC(gameEnd, {})
+      }
+    };
+    console.info(game, game._id, modifier);
+    GamesCollection.update( { _id: game._id }, modifier);
+  });
 };

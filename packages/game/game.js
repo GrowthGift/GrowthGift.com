@@ -21,13 +21,31 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
   else {
     if(gameDocId) {
       var modifier =gameDoc;
+      var gameRule, gameEnd;
       if(modifier.$set.start) {
+        // Must do this BEFORE calculate game end, which expects UTC
         modifier.$set.start =msTimezone.convertToUTC(modifier.$set.start, {});
+
+        // Set game end
+        var gameRuleId = modifier.$set.gameRuleId ? modifier.$set.gameRuleId : null;
+        if(!gameRuleId) {
+          var game =GamesCollection.findOne({ _id: gameDocId }, { fields: { gameRuleId: 1} });
+          gameRuleId = game.gameRuleId;
+        }
+        gameRule =GameRulesCollection.findOne({ _id: gameRuleId });
+        gameEnd =ggGame.getGameEnd({ start: modifier.$set.start }, gameRule);
+        modifier.$set.end =msTimezone.convertToUTC(gameEnd, {});
       }
       GamesCollection.update({_id:gameDocId}, modifier, callback);
     }
     else {
       gameDoc.start =msTimezone.convertToUTC(gameDoc.start, {});
+
+      // Set game end
+      gameRule =GameRulesCollection.findOne({ _id: gameDoc.gameRuleId });
+      gameEnd =ggGame.getGameEnd(gameDoc, gameRule);
+      gameDoc.end =msTimezone.convertToUTC(gameEnd, {});
+
       GameSchema.clean(gameDoc);
       if(userId) {
         gameDoc.users =[
