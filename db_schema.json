@@ -141,7 +141,7 @@
     "actionGoal": "{Number} 1000 [Total actions desired for all players]",
     "privacy": "{String} [One of 'public', 'private' for if the description / notes are shared too.]",
     "start": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
-    "end": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00 [This is a derived field from the game rule challenges]",
+    "end": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00 [This is a derived field from the game rule challenges. If the game rule challenges change, this needs to be re-calculated for all games using that game rule.]",
     "users": [
       {
         "userId": "{String}",
@@ -254,11 +254,12 @@
     },
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
   },
-  "cacheGameCurrentChallenge": {
+  "cacheGameCurrentChallenges": {
     "_id": "{String}",
     "gameId": "{String} link to 'games._id'",
-    "title": "{String}",
-    "slug": "{String}",
+    "gameTitle": "{String}",
+    "gameSlug": "{String}",
+    "gameMainAction": "{String}",
     "currentChallengeStart": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
     "currentChallengeEnd": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
     "users": [
@@ -269,7 +270,7 @@
         "selfGoal": "{Number} 25 [The user's total (for entire game, not per day - so 5 per day for 5 days would be 25 total) self set number of main actions she wants to complete.]"
       }
     ],
-    "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+    "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
   },
   "databaseMigrations": {
     "_id": "{String}",

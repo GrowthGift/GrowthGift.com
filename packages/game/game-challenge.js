@@ -84,6 +84,8 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
 
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
        function (err, result) {
+        callback(err, result);
+
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);
 
         // Not using notifications any more, focus on human connection instead.

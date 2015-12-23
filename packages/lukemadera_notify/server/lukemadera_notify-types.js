@@ -108,3 +108,36 @@ lmNotifyTypes.gameBuddyAdded =function(type, data, params) {
 
   });
 };
+
+lmNotifyTypes.gameChallengeDueReminder =function(type, data, params) {
+  var notifId =type;
+
+  var userIds =data.notifyUserIds;
+  var buddyUserName =data.buddyUser ? data.buddyUser.profile.name : null;
+  var gameName =data.game.title;
+  var gameMainAction =data.gameMainAction;
+  var gameUrl =ggUrls.game(data.game.slug);
+  var hrefGame =ggUrls.removeLeadingSlash(gameUrl);
+  var gameFullUrl =Config.appInfo().shortRootUrl + gameUrl;
+
+  lmNotifyHelpers.separateUsers({type:type, userIds: userIds, notifId:notifId, noBulk:true}, function(retSep) {
+
+    var title ="Game Challenge Due";
+    var message =buddyUserName ? ( "You and your buddy " + buddyUserName + " have not both" ) : ( "You have not" ) + " done today's challenge for " + gameName + ".";
+    var inAppData =false;
+    var pushData ={
+      title: title,
+      text: message
+    };
+    var emailData ={
+      subject: title,
+      html: "Here's a friendly reminder for you " + ( buddyUserName ? ( "and your buddy " + buddyUserName ) : "" ) + " to do your " + gameMainAction + " for today and then log them at the link below!"+
+        "<br /><br />"+
+        gameFullUrl
+    };
+    var smsData =false;
+
+    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {});
+
+  });
+};
