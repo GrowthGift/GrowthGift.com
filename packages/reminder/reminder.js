@@ -21,6 +21,6 @@ ggReminder.formGameChallengeDueCache =function() {
 ggReminder.gameChallengeDue =function() {
 };
 
-ggReminder.gameStart =function() {
+// ggReminder.gameStart =function() {
   
-};
+// };

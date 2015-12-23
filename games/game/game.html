@@ -23,16 +23,17 @@
       <div class='center margin-lr'>
         <h2>{{ data.game.title }}</h2>
         <div>
-        {{ #unless data.gameState.gameStarted }}
-          <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</span>
-        {{ else }}
-          <span class='h4 red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</span>
-        {{ /unless }}
+          {{ #unless data.gameState.gameStarted }}
+            <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</span>
+          {{ else }}
+            <span class='h4 red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</span>
+          {{ /unless }}
 
-        <span class='h5'>
-          by <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
-        </span>
+          <span class='h5'>
+            by <a href='{{ data.gameUsersLink }}'>{{ data.userChallengeTotals.numUsersText }}</a>
+          </span>
         </div>
+        <div class='font-small margin-t'>{{ data.gameRule.challenges.[0].description }}</div>
       </div>
 
       <!-- <div>Game Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
