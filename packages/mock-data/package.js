@@ -13,8 +13,10 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
-  api.use('momentjs:moment@2.10.6');
-  api.use('meteorseed:timezone');
+  api.use([
+    'momentjs:moment@2.10.6',
+    'meteorseed:timezone'
+  ]);
   api.addFiles([
     'lib/lodash.custom.min.js',
     'mock-data-vars.js',
@@ -32,6 +34,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
+  // api.use('velocity:meteor-stubs');
   api.use('growthgift:mock-data');
   api.addFiles([
     'mock-data-tests.js'

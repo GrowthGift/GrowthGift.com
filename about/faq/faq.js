@@ -59,6 +59,10 @@ if(Meteor.isClient) {
           link: 'game-collaborative'
         },
         {
+          q: "What are the awards?",
+          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day."
+        },
+        {
           q: "The goal is huge! Will I matter?",
           a: "Yes! Every single action counts. The point of the games is building positive habits and change together, ONE action at a time. Secondly, you can multiply your impact by inviting more people to join the game. So no matter how much you can do individually, empowering others will almost always be the way to make the biggest difference.",
           link: 'game-my-impact'
@@ -90,7 +94,7 @@ if(Meteor.isClient) {
         },
         {
           q: "Will I get reminders?",
-          a: "Hopefully not. You buddy IS your reminder. The games are built around human connection. So call, text or talk in person with your buddy after you complete your pledge for the day and remind them to do theirs. That said, if NEITHER of you have completed your pledge for the day, you may get a reminder.",
+          a: "Hopefully not. You buddy IS your reminder. The games are built around human connection. So call, text or talk in person with your buddy after you complete your pledge for the day and remind them to do theirs. That said, if you have not completed your pledge for the day, you may get a reminder.",
           link: 'game-reminder'
         },
         {

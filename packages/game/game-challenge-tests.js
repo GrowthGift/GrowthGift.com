@@ -4,7 +4,7 @@ var dtFormat =msTimezone.dateTimeFormat;
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get current challenge that has not started', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -27,7 +27,7 @@ Tinytest.add('get current challenge that has not started', function (test) {
 });
 
 Tinytest.add('get current challenge that has ended', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -50,7 +50,7 @@ Tinytest.add('get current challenge that has ended', function (test) {
 });
 
 Tinytest.add('get current challenge that is running', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -85,7 +85,7 @@ Tinytest.add('get current challenge that is running', function (test) {
 });
 
 Tinytest.add('get current challenge that is on last challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -121,7 +121,7 @@ Tinytest.add('get current challenge that is on last challenge', function (test) 
 
 
 Tinytest.add('get current user challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameId ='game1';
   var userId ='user1';
   var userGame ={
@@ -153,7 +153,7 @@ Tinytest.add('get current user challenge', function (test) {
 });
 
 Tinytest.add('get challenge totals', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [

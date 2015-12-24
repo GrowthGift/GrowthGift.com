@@ -1,4 +1,4 @@
-ggGame.saveUserGameChallenge =function(doc, docId, callback) {
+ggGame.saveUserGameChallenge =function(doc, docId, userId, gameId, callback) {
   if(docId) {
     var modifier =doc;
     UserGamesCollection.update({ _id: docId }, modifier, callback);
@@ -16,6 +16,8 @@ ggGame.saveUserGameChallenge =function(doc, docId, callback) {
     UserGameSchema.clean(doc);
     UserGamesCollection.insert(doc, callback);
   }
+  // Update awards
+  ggGame.saveUserAwards(userId, gameId, msTimezone.curDateTime());
 };
 
 ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
@@ -84,6 +86,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
 
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
        function (err, result) {
+        ggGame.saveUserAwards(userId, game._id, msTimezone.curDateTime());
         callback(err, result);
 
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);

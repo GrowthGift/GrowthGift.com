@@ -20,8 +20,11 @@ Package.onUse(function(api) {
   api.use('meteorseed:user');
   api.addFiles([
     'game-vars.js',
+    'lib/collections.js',
     'game-get.js',
+    'game-get-awards.js',
     'game.js',
+    'game-awards.js',
     'game-challenge.js',
     'game-get-cache.js'
   ]);
@@ -29,16 +32,21 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('momentjs:moment@2.10.6');
-  api.use('meteorseed:timezone');
-  api.use('growthgift:mock-data');
-  api.use('growthgift:game');
+  api.use([
+    'ecmascript',
+    'tinytest',
+    'momentjs:moment@2.10.6',
+    'meteorseed:timezone',
+    'growthgift:mock-data',
+    'growthgift:game'
+  ]);
   api.addFiles([
+    'lib/test-env.js',
     'lib/lodash.custom.min.js',
+    'lib/collections.js',
+    'game-tests.js',
+    'game-awards-tests.js',
     'game-challenge-tests.js',
-    'game-get-tests.js',
-    'game-tests.js'
+    'game-get-tests.js'
   ]);
 });

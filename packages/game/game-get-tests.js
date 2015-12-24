@@ -2,7 +2,7 @@ var dtFormat ='YYYY-MM-DD HH:mm:ssZ';
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get challenges with user info', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00-08:00', dtFormat);
+  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule =ggMockData.getGameRule('gameRule2');
   var game ={
     _id: 'game1',

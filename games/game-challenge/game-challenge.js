@@ -41,6 +41,9 @@ Meteor.methods({
     });
   },
   saveGameChallenge: function(doc, docId) {
+    // Need game id for saving awards.
+    var gameId =doc.$set.gameId;
+    delete doc.$set.gameId;
     // The $set modifier is odd for this.. it is passing the whole array and
     // overwriting rather than setting specific fields.. So have to fix
     // here manually.
@@ -63,7 +66,7 @@ Meteor.methods({
       // overwrite with proper one
       doc =modifier;
     }
-    ggGame.saveUserGameChallenge(doc, docId, function(err, result) {
+    ggGame.saveUserGameChallenge(doc, docId, Meteor.userId(), gameId, function(err, result) {
       if(!err && Meteor.isClient) {
         var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var gameSlug =templateInst.data.gameSlug;
@@ -241,6 +244,7 @@ if(Meteor.isClient) {
       var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;
       var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) ) || null;
       return {
+        gameId: game._id,
         userGame: userGame,
         gameRule: gameRule,
         inputOpts: {
