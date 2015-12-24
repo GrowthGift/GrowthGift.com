@@ -165,7 +165,7 @@
               <div class='font-small'>Total Impact <span class='btn-link game-impact-details-btn'>Details</span></div>
             </div>
           </div>
-          {{ #if data.display.impactDetails }}
+          {{ #if display.impactDetails }}
             <div class='flexbox h6 game-impact-details-row'>
               <div class='flex1'>Name</div>
               <div class='game-impact-details-col'>Pledge %</div>
@@ -184,7 +184,7 @@
 
             <div class='margin-tb'>
               <div><span class='btn-link game-impact-details-info-btn font-small'>What does this mean?</span></div>
-              {{ #if data.display.impactDetailsInfo }}
+              {{ #if display.impactDetailsInfo }}
                 {{ >gameInfoPledgeImpact mainAction=data.gameRule.mainAction }}
               {{ /if }}
             </div>

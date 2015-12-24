@@ -31,8 +31,6 @@ if(Meteor.isClient) {
     var selfGameUser =( Meteor.userId() && ret.game ) ? ggGame.getGameUser(ret.game, Meteor.userId(), {}) : null;
     var buddyId =selfGameUser ? selfGameUser.buddyId : null;
 
-    ret.display =templateInst.display.get();
-
     var templateHelperData ={
       challengeInstruction: {
         showChooseBuddy: ( ret.userInGame && !buddyId ) ? true : false,
@@ -144,6 +142,9 @@ if(Meteor.isClient) {
         return false;
       }
       return getData(this, Template.instance());
+    },
+    display: function() {
+      return Template.instance().display.get();
     }
   });
 
