@@ -152,3 +152,57 @@ ggGame.getBuddiedUserTeamSize =function(userId, game) {
 
   return buddiedTeamSize;
 }
+
+/**
+6 possible awards:
+- per game
+  - self (non-comparative)
+    - perfectPledge: 100+% pledge
+    - perfectAttendance: 100% completions
+  - comparative
+    - biggestImpact
+    - biggestReach
+- across all games, self
+  - biggest reach
+  - longest streak
+*/
+_ggGame.userHasAward =function(award, userId, minVal, valKey) {
+  var hasAward =false;
+  var winner, ii;
+  if( award.winners && award.winners.length ) {
+    for(ii =0; ii < award.winners.length; ii++) {
+      winner =award.winners[ii];
+      if( winner.user1._id === userId || ( winner.user2 &&
+       winner.user2._id === userId) ) {
+        if( minVal === undefined || winner[valKey] >= minVal ) {
+          hasAward =true;
+        }
+        break;
+      }
+    }
+  }
+  return hasAward;
+};
+
+ggGame.getUserAwards =function(userGames, game, users, gameRule, userAwards, userId, nowTime) {
+  nowTime =nowTime || msTimezone.curDateTime('moment');
+
+  var ret ={
+    selfReach: {
+      game: ggGame.getBuddiedUserTeamSize(userId, game),
+      max: userAwards && userAwards.biggestReach && userAwards.biggestReach.amount || 0
+    },
+    selfStreak: {
+      current: userAwards && userAwards.currentGameStreak || 0,
+      longest: userAwards && userAwards.longestGameStreak || 0
+    }
+  };
+
+  var awards =ggGame.getAwards(userGames, game, users, gameRule, nowTime);
+  ret.perfectPledge =_ggGame.userHasAward(awards.pledgePercent, userId, 100, 'pledgePercent');
+  ret.perfectAttendance =_ggGame.userHasAward(awards.completionPercent, userId, 100, 'completionPercent');
+  ret.biggestImpact =_ggGame.userHasAward(awards.reachTeamsNumActions, userId);
+  ret.biggestReach =_ggGame.userHasAward(awards.teamSize, userId);
+
+  return ret;
+};

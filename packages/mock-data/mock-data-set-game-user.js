@@ -17,6 +17,9 @@ var setGameUser =[
       ggMockData.getUserGame('ugGame1User3'),
       ggMockData.getUserGame('ugGame1User4'),
       ggMockData.getUserGame('ugGame1User5')
+    ],
+    userAwards: [
+      ggMockData.getUserAward('uaUser1')
     ]
   }
 ];

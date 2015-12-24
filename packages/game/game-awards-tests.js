@@ -25,11 +25,12 @@ var _games =[
   }
 ];
 
-// function cleanUp() {
-//   UserAwardsCollection.remove({});
-// }
+function cleanUp() {
+  UserAwardsCollection.remove({});
+}
 
 Tinytest.add('user awards create new streak if none', function (test) {
+  // cleanUp();
   var userAward =null;
   var retDoc ={
     userId: 'user1'
@@ -155,4 +156,58 @@ Tinytest.add('user awards do nothing if not bigger reach than exists', function 
     test.equal(result, null);
     test.equal(data, null);
   });
+});
+
+Tinytest.add('get game awards', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var awards =ggGame.getAwards(data.userGames, data.game,
+   data.users, data.gameRule, data.nowTime);
+
+  // Game is on 3rd challenge out of 5
+  var completionRatio =(3 / 5);
+  var possibleCompletionsSolo =3;
+  var retIndex, selfPledgePercent, buddyPledgePercent;
+
+  // User 1 & 2 are average of: 6 / 10 * 3/5 = 100, 5 / 20 * 3/5 = 42 so 71
+  test.equal(awards.pledgePercent.max, 71);
+  test.equal(awards.pledgePercent.winners.length, 1);
+  test.equal(awards.pledgePercent.winner.user1.profile.name, 'User1 One');
+  test.equal(awards.pledgePercent.winner.user2.profile.name, 'User2 Two');
+
+  // User 3 & 4 are 2/3 = 67. User 1 & 2 are also 67 average
+  // (100, 33 = 67) BUT they won pledge percent so should NOT be the
+  // single winner here.
+  test.equal(awards.completionPercent.max, 67);
+  test.equal(awards.completionPercent.winners.length, 3);
+  test.notEqual(awards.completionPercent.winner.user1.profile.name, 'User1 One');
+  test.equal(awards.completionPercent.winner.user2, {});
+
+  // User 1 & 2 have total team actions of 6 + 5 + 8 + 4 + 2 = 25
+  test.equal(awards.reachTeamsNumActions.max, 25);
+  test.equal(awards.reachTeamsNumActions.winners.length, 1);
+  test.equal(awards.reachTeamsNumActions.winner.user1.profile.name, 'User1 One');
+  test.equal(awards.reachTeamsNumActions.winner.user2.profile.name, 'User2 Two');
+
+  // User 1 & 2 have total team size of 1 + 1 + 2 + 1 = 5 BUT already won team
+  // actions so should NOT be winners. And since there is a minimum of 2
+  // required and no other teams have more than 1, there is NO winner.
+  test.equal(awards.teamSize.max, -1);
+  test.equal(awards.teamSize.winners.length, 1);
+  test.equal(awards.teamSize.winner, null);
+});
+
+Tinytest.add('get game awards for one user', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var awards =ggGame.getUserAwards(data.userGames, data.game,
+   data.users, data.gameRule, data.userAwards[0], data.userAwards[0].userId,
+   nowTime);
+
+  test.equal(awards.selfReach.game, 5);
+  test.equal(awards.selfReach.max, 10);
+  test.equal(awards.selfStreak.current, 5);
+  test.equal(awards.selfStreak.longest, 10);
+  test.equal(awards.perfectPledge, false, 'pledge');
+  test.equal(awards.perfectAttendance, false, 'attendance');
+  test.equal(awards.biggestImpact, true, 'impact');
+  test.equal(awards.biggestReach, true, 'reach');
 });

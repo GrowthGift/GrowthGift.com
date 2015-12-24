@@ -21,9 +21,10 @@ Package.onUse(function(api) {
     'lib/lodash.custom.min.js',
     'mock-data-vars.js',
     'mock-data-user.js',
-    'mock-data-game-rules.js',
+    'mock-data-game-rule.js',
     'mock-data-game.js',
     'mock-data-user-game.js',
+    'mock-data-user-award.js',
 
     'mock-data-set-game-user.js'
   ]);
