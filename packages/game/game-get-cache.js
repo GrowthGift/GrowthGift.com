@@ -121,6 +121,7 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
       }
       // If were trying to buddy but cannot, output why
       if(!ret.privileges.buddy) {
+        var selfGameUser =( userId && ret.game ) ? ggGame.getGameUser(ret.game, userId, {}) : null;
         ret.buddyErrorMessage = ( selfGameUser && selfGameUser.buddyId ) ?
          "You already have a buddy" : ( selfGameUser && selfGameUser.userId ===
          buddyGameUser.userId ) ? "You may not buddy with yourself" :
