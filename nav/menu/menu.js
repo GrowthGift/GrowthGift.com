@@ -11,6 +11,7 @@ if (Meteor.isClient){
     // routeTo: "login"
     click: function() {
       console.info('logging out');
+      ggGame.cacheClearAll();
       Meteor.logout(function(err) {
         if(err) {
           nrAlert.alert(err);

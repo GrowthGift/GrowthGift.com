@@ -12,6 +12,13 @@ ggGame.clearCache =function(key) {
   }
 };
 
+ggGame.cacheClearAll =function() {
+  var cc;
+  for(cc in _ggGame.cache) {
+    delete _ggGame.cache[cc];
+  }
+};
+
 ggGame.hasCache =function(key) {
   // First check cache
   var timestampMoment =msTimezone.curDateTime('moment');
@@ -30,7 +37,7 @@ ggGame.hasCache =function(key) {
 };
 
 ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
- userGame, userGames, userGameBuddy, buddyUser, templateData, dataReady) {
+ userGame, userGames, userGameBuddy, buddyUser, buddyGameUser, templateData, dataReady) {
   var ret =ggGame.hasCache(key);
   if(ret) {
     return ret;

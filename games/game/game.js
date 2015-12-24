@@ -81,9 +81,10 @@ if(Meteor.isClient) {
     var userGameBuddy =( buddyId && game ) ?
      UserGamesCollection.findOne({ userId: buddyId, gameId: game._id }) : null;
 
+    var buddyGameUser;
     if(templateData.buddy) {
       // Look up buddy name
-      var buddyGameUser =game ? ggGame.getGameUser(game, null,
+      buddyGameUser =game ? ggGame.getGameUser(game, null,
        { buddyRequestKey: templateData.buddy }) : null;
       if(buddyGameUser) {
         var buddyUser =Meteor.users.findOne({ _id: buddyGameUser.userId },
@@ -93,7 +94,7 @@ if(Meteor.isClient) {
 
     ret =ggGame.getCacheGameByUser(cacheKey, userId,
      Meteor.user(), game, gameRule, userGame, userGames, userGameBuddy,
-     buddyUser, templateData, dataReady);
+     buddyUser, buddyGameUser, templateData, dataReady);
 
     if(!ret.game) {
       // Game does not exist (or has not loaded yet).
