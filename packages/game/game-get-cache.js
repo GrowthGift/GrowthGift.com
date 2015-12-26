@@ -95,6 +95,10 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
 
   ret.showHowToPlay =ret.userInGame ? false : true;
   ret.showImpact = ( ret.userInGame && ret.gameState.gameStarted ) ? true : false;
+  var userActiveChallenge =ggGame.getUserActiveChallenge(userGame, game,
+   gameRule, null);
+  ret.showGameSummaryLink = ( ret.userInGame && ( ret.gameState.gameEnded
+   || userActiveChallenge ) ) ? ggUrls.gameUserSummary(game.slug) : null;
 
   if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
     ret.gameState.starts =msUser.toUserTime(user, ret.gameState.starts, null, msTimezone.dateTimeDisplay);

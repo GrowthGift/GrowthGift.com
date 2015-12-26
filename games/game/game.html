@@ -190,7 +190,10 @@
             </div>
           {{ /if }}
         </div>
-        <div class='margin-large-b'>
+        <div class='margin-large-b margin-large-t center'>
+          {{ #if data.showGameSummaryLink }}
+            <a class='btn a-div' href='{{ data.showGameSummaryLink }}'>My Game Summary</a>
+          {{ /if }}
         </div>
       </div>
     {{ /if }}
