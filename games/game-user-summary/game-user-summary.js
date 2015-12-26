@@ -36,7 +36,8 @@ if(Meteor.isClient) {
 
       var ret ={
         game: game,
-        gameUrl: ggUrls.game(game.slug)
+        gameUrl: ggUrls.game(game.slug),
+        gamesSuggestUrl: ggUrls.gamesSuggest()
       };
 
       var templateHelperData ={

@@ -52,7 +52,7 @@ ggReminder.formGameChallengeDueCache =function() {
       users: game.users,    // Fields should already be filtered via database query
       createdAt: nowTime
     };
-    gameStart =moment(game.start, dtFormat);
+    gameStart =moment(game.start, dtFormat).utc();
     lastChallengeDue =gameStart;
     // Assumes challenges are in order by date (due from start)
     for(ii =0; ii<gameRule.challenges.length; ii++) {

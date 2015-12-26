@@ -26,10 +26,10 @@ ggGame.getUserActiveChallenge =function(userGame, game, gameRule, nowTime) {
    userGame.userId, userGame).mostRecentChallenge;
 
   var dtFormat =msTimezone.dateTimeFormat;
-  var userUpdated =moment(lastUserChallenge.updatedAt, dtFormat);
+  var userUpdated =moment(lastUserChallenge.updatedAt, dtFormat).utc();
   if(curChallenge && lastUserChallenge &&
-   ( userUpdated >= moment(curChallenge.start, dtFormat) ) &&
-   ( userUpdated <= moment(curChallenge.end, dtFormat) ) ) {
+   ( userUpdated >= moment(curChallenge.start, dtFormat).utc() ) &&
+   ( userUpdated <= moment(curChallenge.end, dtFormat).utc() ) ) {
     challenge =lastUserChallenge;
   }
   return challenge;
@@ -144,7 +144,7 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
   }
   var dtFormat =msTimezone.dateTimeFormat;
 
-  var gameStart =moment(game.start, dtFormat);
+  var gameStart =moment(game.start, dtFormat).utc();
   if(gameStart >nowTime) {
     ret.nextChallenge =_.extend({}, gameRule.challenges[0], {
       start: gameStart.format(dtFormat),
@@ -189,7 +189,7 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
   }
 
   nowTime =nowTime || msTimezone.curDateTime('moment');
-  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat).utc();
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
@@ -206,7 +206,7 @@ ggGame.getGameEnd =function(game, gameRule) {
     return null;
   }
 
-  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat).utc();
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   return gameStart.clone().add(lastChallenge.dueFromStart,
@@ -223,7 +223,7 @@ ggGame.getGameTimeLeft =function(game, gameRule, nowTime) {
   };
 
   nowTime =nowTime || msTimezone.curDateTime('moment');
-  var gameStart =moment(game.start, msTimezone.dateTimeFormat);
+  var gameStart =moment(game.start, msTimezone.dateTimeFormat).utc();
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
   var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
@@ -570,7 +570,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
 
   var gameLeft =ggGame.getGameTimeLeft(game, gameRule, nowTime);
   var daysLeft =( gameLeft.amount > 0 ? ( gameLeft.amount +1 ) : 1 );
-  var gameStart =moment(game.start, dtFormat);
+  var gameStart =moment(game.start, dtFormat).utc();
   var gameStarted =( nowTime >= gameStart ) ? true : false;
   // Sort both game challenges and user completed challenges by date
   var challenges =_.sortByOrder(gameRule.challenges, ['dueFromStart'], ['asc']);
@@ -644,7 +644,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
       // Get user action count for this challenge (if there is one)
       for(ii =0; ii<userChallenges.length; ii++) {
         uc =userChallenges[ii];
-        ucUpdated =moment(uc.updatedAt, dtFormat);
+        ucUpdated =moment(uc.updatedAt, dtFormat).utc();
         // If updated between start and end of this challenge, this is it.
         if( ucUpdated >= lastChallengeEnd && ucUpdated <= curChallengeEnd ) {
           curChallenge.userActionCount =uc.actionCount;
@@ -668,7 +668,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
       // Get user action count for this challenge (if there is one)
       for(ii =0; ii<buddyChallenges.length; ii++) {
         uc =buddyChallenges[ii];
-        ucUpdated =moment(uc.updatedAt, dtFormat);
+        ucUpdated =moment(uc.updatedAt, dtFormat).utc();
         // If updated between start and end of this challenge, this is it.
         if( ucUpdated >= lastChallengeEnd && ucUpdated <= curChallengeEnd ) {
           // Update instruction

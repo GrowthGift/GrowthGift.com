@@ -1,8 +1,9 @@
 var dtFormat ='YYYY-MM-DD HH:mm:ssZ';
+var nowTime =ggMockData._nowTime;
+var nowTimeFormat =ggMockData._nowTimeFormat;
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get challenges with user info', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule =ggMockData.getGameRule('gameRule2');
   var game ={
     _id: 'game1',
@@ -63,7 +64,7 @@ Tinytest.add('get challenges with user info', function (test) {
   ];
   var ret =ggGame.getChallengesWithUser(game, gameRule, userGames[0], nowTime, userGames[1]);
   var challenges =ret.challenges;
-  var gameStart =moment(game.start, dtFormat);
+  var gameStart =moment(game.start, dtFormat).utc();
   var selfGoalPerChallenge =Math.ceil( game.users[0].selfGoal / gameRule.challenges.length );
 
   var curIndex =0;

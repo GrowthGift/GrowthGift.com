@@ -1,13 +1,15 @@
 if(Meteor.isClient) {
-  Template.games.created =function() {
+  Template.gamesSuggest.created =function() {
+    // For now just show all games (no actual recommendations)
     Meteor.subscribe('games-start');
   };
 
-  Template.games.helpers({
+  Template.gamesSuggest.helpers({
     data: function() {
 
       // Want to get all games still happening.
       var endTime =msTimezone.curDateTime();
+
       var games =GamesCollection.find({ end: { $gte : endTime } }).fetch();
       if(games) {
         var gameRuleIds =[];
@@ -32,6 +34,13 @@ if(Meteor.isClient) {
 
       var nowTimeFormat =msTimezone.curDateTime();
       var gameEnd, gameRule;
+
+      // Slice top 3 games and then add in a "dummy one" for suggesting one.
+      var maxGames =3;
+      if(games.length > maxGames ) {
+        games = games.slice(0, maxGames);
+      }
+
       games =_.sortByOrder(games.map(function(game) {
         gameRule =gameRules[_.findIndex(gameRules, '_id', game.gameRuleId)];
         gameEnd =ggGame.getGameEnd(game, gameRule);
@@ -45,7 +54,8 @@ if(Meteor.isClient) {
       }), ['start'], ['asc']);
 
       return {
-        games: games
+        games: games,
+        hiEmail: "mailto:hi@growthgift.com"   // TODO - pull from config
       };
     }
   });

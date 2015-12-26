@@ -8,6 +8,9 @@
     <div class='margin-large-b'><a class='h5' href='{{ data.gameUrl }}'>{{ data.game.title }}</a></div>
 
     {{ >gameUserAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction game=../game }}
+
+    <div class='margin-b'>Keep your streak alive, or start a new one!</div>
+    <a class='a-div btn btn-primary btn-large' href='{{ data.gamesSuggestUrl }}'>Choose Your Next Game</a>
   </div>
 
   {{ /if }}

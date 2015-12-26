@@ -67,8 +67,8 @@ ggGame.saveUserAwardsWeekStreak =function(userAward, game, userGame, gameRule, u
   var dtFormat =msTimezone.dateTimeFormat;
   // See if last completion was within a week (8 days) of now, in which
   // case we add to the streak. Otherwise, we reset the streak.
-  var todayMoment =moment(timestamp, dtFormat);
-  var lastMoment =moment(userAward.weekStreak.current.last, dtFormat);
+  var todayMoment =moment(timestamp, dtFormat).utc();
+  var lastMoment =moment(userAward.weekStreak.current.last, dtFormat).utc();
   var diffDays =todayMoment.diff(lastMoment, 'days');
   if(diffDays <= 8) {
     // Add to streak.

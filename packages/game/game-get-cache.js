@@ -25,7 +25,7 @@ ggGame.hasCache =function(key) {
   var dtFormat =msTimezone.dateTimeFormat;
   // If we have a cache for this key AND it's NOT stale, just use cache.
   if(_ggGame.cache[key]) {
-    if(moment(_ggGame.cache[key].loadedAt, dtFormat).add(_ggGame.cacheTime, 'minutes')
+    if(moment(_ggGame.cache[key].loadedAt, dtFormat).utc().add(_ggGame.cacheTime, 'minutes')
      > timestampMoment ) {
       return _ggGame.cache[key].data;
     }

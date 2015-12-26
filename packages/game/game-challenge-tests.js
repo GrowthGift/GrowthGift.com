@@ -1,10 +1,11 @@
 // Write your tests here!
 // Here is an example.
 var dtFormat =msTimezone.dateTimeFormat;
+var nowTime =ggMockData._nowTime;
+var nowTimeFormat =ggMockData._nowTimeFormat;
 // NOTE: do NOT use dates that go around daylight savings!
 
 Tinytest.add('get current challenge that has not started', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -27,7 +28,6 @@ Tinytest.add('get current challenge that has not started', function (test) {
 });
 
 Tinytest.add('get current challenge that has ended', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -50,7 +50,6 @@ Tinytest.add('get current challenge that has ended', function (test) {
 });
 
 Tinytest.add('get current challenge that is running', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -78,14 +77,13 @@ Tinytest.add('get current challenge that is running', function (test) {
   test.equal(curChallenge.gameStarted, true);
   test.equal(curChallenge.gameEnded, false);
   test.equal(curChallenge.currentChallenge.dueFromStart, gameRule.challenges[curChallengeIndex].dueFromStart);
-  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
-  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).utc().add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).utc().add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(curChallenge.possibleCompletions, 2);
-  test.equal(curChallenge.nextChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat));
+  test.equal(curChallenge.nextChallenge.start, moment(game.start, dtFormat).utc().add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat));
 });
 
 Tinytest.add('get current challenge that is on last challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [
@@ -113,15 +111,14 @@ Tinytest.add('get current challenge that is on last challenge', function (test) 
   test.equal(curChallenge.gameStarted, true);
   test.equal(curChallenge.gameEnded, false);
   test.equal(curChallenge.currentChallenge.dueFromStart, gameRule.challenges[curChallengeIndex].dueFromStart);
-  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
-  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.start, moment(game.start, dtFormat).utc().add(gameRule.challenges[(curChallengeIndex-1)].dueFromStart, 'minutes').format(dtFormat) );
+  test.equal(curChallenge.currentChallenge.end, moment(game.start, dtFormat).utc().add(gameRule.challenges[(curChallengeIndex)].dueFromStart, 'minutes').format(dtFormat) );
   test.equal(curChallenge.possibleCompletions, gameRule.challenges.length);
   test.equal(curChallenge.nextChallenge, null);
 });
 
 
 Tinytest.add('get current user challenge', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameId ='game1';
   var userId ='user1';
   var userGame ={
@@ -153,7 +150,6 @@ Tinytest.add('get current user challenge', function (test) {
 });
 
 Tinytest.add('get challenge totals', function (test) {
-  var nowTime =moment('2015-09-01 12:00:00+00:00', dtFormat);
   var gameRule ={
     _id: 'gameRule1',
     challenges: [

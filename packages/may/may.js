@@ -147,8 +147,8 @@ ggMay.addUserGameChallenge =function(game, userId, curChallenge, userChallenge, 
 
   // Only may add if the user has NOT completed a challenge yet OR the user
   // most recent challenge completion happened BEFORE the current challenge start
-  if(!userChallenge.mostRecentChallenge || moment(userChallenge.mostRecentChallenge.updatedAt, msTimezone.dateTimeFormat)
-   < moment(curChallenge.currentChallenge.start, msTimezone.dateTimeFormat) ) {
+  if(!userChallenge.mostRecentChallenge || moment(userChallenge.mostRecentChallenge.updatedAt, msTimezone.dateTimeFormat).utc()
+   < moment(curChallenge.currentChallenge.start, msTimezone.dateTimeFormat).utc() ) {
     return true;
   }
   return false;
@@ -165,9 +165,9 @@ ggMay.editUserGameChallenge =function(gameCurrentChallenge, challenge) {
   var dtFormat =msTimezone.dateTimeFormat;
   // Only may edit if the challenge was added after the game current challenge
   // start but before the game current challenge end.
-  var challengeCreatedMoment =moment(challenge.updatedAt, dtFormat);
-  if(challengeCreatedMoment > moment(gameCurrentChallenge.start, dtFormat)
-   && challengeCreatedMoment < moment(gameCurrentChallenge.end, dtFormat) ) {
+  var challengeCreatedMoment =moment(challenge.updatedAt, dtFormat).utc();
+  if(challengeCreatedMoment > moment(gameCurrentChallenge.start, dtFormat).utc()
+   && challengeCreatedMoment < moment(gameCurrentChallenge.end, dtFormat).utc() ) {
     return true;
   }
   return false;
