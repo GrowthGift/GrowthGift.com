@@ -4,6 +4,9 @@ Meteor.methods({
       if(Meteor.isClient && !err) {
         var templateInst =msTemplate.getMainTemplate("Template.game");
         var slug =templateInst.data.gameSlug;
+        // Need to clear cache
+        var cacheKey ='game_slug_'+slug+'_user_id_'+Meteor.userId();
+        ggGame.clearCache(cacheKey);
         if(slug) {
           Router.go(ggUrls.gameInvite(slug));
         }
@@ -11,13 +14,26 @@ Meteor.methods({
     });
   },
   leaveGame: function(game) {
-    ggGame.leave(game, Meteor.userId(), function(err, result) { });
+    ggGame.leave(game, Meteor.userId(), function(err, result) {
+      if(Meteor.isClient && !err) {
+        var templateInst =msTemplate.getMainTemplate("Template.game");
+        var slug =templateInst.data.gameSlug;
+        // Need to clear cache
+        var cacheKey ='game_slug_'+slug+'_user_id_'+Meteor.userId();
+        ggGame.clearCache(cacheKey);
+        // Trigger reload of data
+        templateInst.dataLoaded.set(false);
+      }
+    });
   },
   saveGameBuddy: function(game, buddyRequestKey) {
     ggGame.saveBuddy(game, Meteor.userId(), buddyRequestKey, function(err, result) {
       if(Meteor.isClient && !err) {
         var templateInst =msTemplate.getMainTemplate("Template.game");
         var slug =templateInst.data.gameSlug;
+        // Need to clear cache
+        var cacheKey ='game_slug_'+slug+'_user_id_'+Meteor.userId();
+        ggGame.clearCache(cacheKey);
         if(slug) {
           Router.go(ggUrls.game(slug));
         }

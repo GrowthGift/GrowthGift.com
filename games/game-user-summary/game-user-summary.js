@@ -8,7 +8,7 @@ if(Meteor.isClient) {
 
   Template.gameUserSummary.helpers({
     data: function() {
-      if(!this.gameSlug) {
+      if(!this.gameSlug || !Meteor.userId()) {
         Router.go('myGames');
         return false;
       }
@@ -22,6 +22,21 @@ if(Meteor.isClient) {
       var gameUsers =userGames ? ggGame.getGameUsersInfo(userGames) : null;
       var userId = Meteor.userId();
       var userAwards =UserAwardsCollection.findOne({ userId: userId });
+
+      // Get user games for next week to see if user is in one already.
+      // Get user games for next week to see if user is in one already.
+      var dtFormat =msTimezone.dateTimeFormat;
+      var nowTime =msTimezone.curDateTime('moment');
+      var nextWeekTime =nowTime.clone().add(6, 'days').format(dtFormat);
+      var nowTimeFormat =nowTime.format(dtFormat);
+      var games =GamesCollection.find({ start: { $gte: nowTimeFormat,
+       $lte: nextWeekTime }, "users.userId": userId }).fetch();
+      var gameIds =[];
+      games.forEach(function(game) {
+        gameIds.push(game._id);
+      });
+      var userGamesSelf =UserGamesCollection.find({ userId: userId,
+       gameId: { $in: gameIds } }).fetch();
 
       if(!game || !gameRule || !userGames || !userGames.length || !gameUsers
        || !gameUsers.length ) {
@@ -37,7 +52,8 @@ if(Meteor.isClient) {
       var ret ={
         game: game,
         gameUrl: ggUrls.game(game.slug),
-        gamesSuggestUrl: ggUrls.gamesSuggest()
+        gamesSuggestUrl: ( !userGamesSelf || !userGamesSelf.length )
+         ? ggUrls.gamesSuggest() : null
       };
 
       var templateHelperData ={

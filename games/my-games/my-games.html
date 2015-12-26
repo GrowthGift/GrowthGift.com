@@ -2,7 +2,7 @@
   {{> msNavSecondary nav=nav }}
   
   {{ #unless data.atLeastOneGame }}
-    <div class='center max-600 padding'>No games here! <a href='/'>Find a game to join</a>.</div>
+    <div class='center max-600 padding'>No games here! <a href='{{ data.urlGamesSuggest }}'>Find a game to join</a>.</div>
   {{ /unless }}
 
   <div class='center padding-large-tb'>

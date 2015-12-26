@@ -33,7 +33,8 @@ if(Meteor.isClient) {
     },
     data: function() {
       var ret ={
-        userGames: []
+        userGames: [],
+        urlGamesSuggest: ggUrls.gamesSuggest()
       };
 
       var view =(this.view && this.view ==='past') ? 'past' : 'now';
@@ -51,11 +52,6 @@ if(Meteor.isClient) {
         }
       });
       ret.atLeastOneGame = ( userGames.length ) ? true : false;
-
-      if( view !== 'past' && !ret.atLeastOneGame) {
-        Router.go('gamesSuggest');
-        return;
-      }
 
       var sortOrder =( view ==='past' ) ? 'desc' : 'asc';
       ret.userGames =_.sortByOrder(userGames.map(function(ug) {
