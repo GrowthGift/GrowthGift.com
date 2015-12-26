@@ -1,7 +1,6 @@
 if(Meteor.isClient) {
   Template.gamesSuggest.created =function() {
-    // For now just show all games (no actual recommendations)
-    Meteor.subscribe('games-start');
+    Meteor.subscribe('games-suggest');
   };
 
   Template.gamesSuggest.helpers({
