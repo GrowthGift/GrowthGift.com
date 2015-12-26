@@ -6,10 +6,23 @@ if(Meteor.isClient) {
   Template.gamesSuggest.helpers({
     data: function() {
 
-      // Want to get all games still happening.
-      var endTime =msTimezone.curDateTime();
+      // Get games that start next week (not this week or 2+ weeks in future).
+      var dtFormat =msTimezone.dateTimeFormat;
+      var nowTime =msTimezone.curDateTime('moment');
+      var endTime =nowTime.format(dtFormat);
+      var nextWeekTime =nowTime.clone().add(5, 'days').format(dtFormat);
+      var sundayTime =nowTime.clone().startOf('week');
+      // Allow same day, but if past the day, set to next week.
+      if(sundayTime.format('YYYY-MM-DD') < nowTime.format('YYYY-MM-DD')) {
+        sundayTime =sundayTime.add(7, 'days');
+      }
+      sundayTime =sundayTime.format(dtFormat);
 
-      var games =GamesCollection.find({ end: { $gte : endTime } }).fetch();
+      // Should be able to limit fields returned BUT it causes an issue on
+      // the main game page where only the userId and status fields for the user
+      // are loaded and the subscription ready fires.. So just return all fields.
+      var games =GamesCollection.find({ end: { $gte : endTime }, start:
+       { $gte : sundayTime, $lte : nextWeekTime } }).fetch();
       if(games) {
         var gameRuleIds =[];
         games.forEach(function(game) {
