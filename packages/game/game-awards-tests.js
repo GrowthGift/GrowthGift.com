@@ -47,6 +47,26 @@ Tinytest.add('user awards create new streak if none', function (test) {
   });
 });
 
+Tinytest.add('user awards add streak to existing award if already exists', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
+  };
+  var userAward ={
+    userId: retDoc.userId,
+    biggestReach: {}
+  };
+  ggGame.saveUserAwardsWeekStreak(userAward, data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
+    test.equal(err, null);
+    test.isNotUndefined(result);
+    test.equal(ret.$set.weekStreak.longest.amount, 1);
+    test.equal(ret.$set.weekStreak.current.amount, 1);
+    test.equal(ret.$set.weekStreak.current.start, nowTimeFormat);
+    test.equal(ret.$set.weekStreak.current.last, nowTimeFormat);
+  });
+});
+
 Tinytest.add('user awards do nothing if not over completion percent and no streak yet', function (test) {
   var data =ggMockData.getSetGameUser('setGameUser1');
   var userAward ={};
@@ -62,7 +82,7 @@ Tinytest.add('user awards do nothing if not over completion percent and no strea
   });
 });
 
-Tinytest.add('user awards end existing streak if not over completion percent', function (test) {
+Tinytest.add('user awards end existing streak if not over completion percent and over a week', function (test) {
   var data =ggMockData.getSetGameUser('setGameUser1');
   var retDoc ={
     userId: 'user1'
@@ -72,7 +92,7 @@ Tinytest.add('user awards end existing streak if not over completion percent', f
     weekStreak: {
       current: {
         amount: 3,
-        last: nowTimeFormat
+        last: nowTime.clone().subtract((20), 'days').format(dtFormat)
       },
       longest: {
         amount: 3     // Set to SAME as current so it will be ended too.
@@ -89,6 +109,32 @@ Tinytest.add('user awards end existing streak if not over completion percent', f
   });
 });
 
+Tinytest.add('user awards do nothing if not over completion percent but it has been less than a week', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
+  };
+  var userAward ={
+    userId: retDoc.userId,
+    weekStreak: {
+      current: {
+        amount: 3,
+        last: nowTimeFormat
+      },
+      longest: {
+        amount: 3
+      }
+    }
+  };
+  data.userGames[0].challenges =[];
+  ggGame.saveUserAwardsWeekStreak(userAward, data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
+    test.equal(err, null);
+    test.equal(result, null);
+    test.equal(ret, null);
+  });
+});
+
 Tinytest.add('user awards add to current streak if this is the next week in a row', function (test) {
   var data =ggMockData.getSetGameUser('setGameUser1');
   var retDoc ={
@@ -100,6 +146,20 @@ Tinytest.add('user awards add to current streak if this is the next week in a ro
     test.isNotUndefined(result);
     test.equal(ret.$set["weekStreak.current.amount"], 6);
     test.equal(ret.$set["weekStreak.current.last"], nowTimeFormat);
+  });
+});
+
+Tinytest.add('user awards do nothing if this is the next week in a row but already added to streak this week', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
+  };
+  data.userAwards[0].weekStreak.current.last =nowTime.clone().subtract((2), 'days').format(dtFormat);
+  ggGame.saveUserAwardsWeekStreak(data.userAwards[0], data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
+    test.equal(err, null);
+    test.equal(result, null);
+    test.equal(ret, null);
   });
 });
 
@@ -136,8 +196,7 @@ Tinytest.add('user awards reset streak if missed a week', function (test) {
 });
 
 Tinytest.add('user awards create new biggest reach if none', function (test) {
-  // cleanUp();
-  var userAward =null;
+  var userAward ={};
   var game =_games[0];
   var retDoc ={
     userId: 'userReach1'
@@ -148,6 +207,23 @@ Tinytest.add('user awards create new biggest reach if none', function (test) {
     test.equal(ret.userId, 'userReach1');
     test.equal(ret.biggestReach.amount, 4);
     test.equal(ret.biggestReach.gameId, game._id);
+  });
+});
+
+Tinytest.add('user awards add reach to existing award if already exists', function (test) {
+  var retDoc ={
+    userId: 'userReach1'
+  };
+  var userAward ={
+    userId: retDoc.userId,
+    weekStreak: {}
+  };
+  var game =_games[0];
+  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, ret) {
+    test.equal(err, null);
+    test.isNotUndefined(result);
+    test.equal(ret.$set.biggestReach.amount, 4);
+    test.equal(ret.$set.biggestReach.gameId, game._id);
   });
 });
 
