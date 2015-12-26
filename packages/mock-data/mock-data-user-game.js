@@ -76,5 +76,5 @@ var userGames =[
 ];
 
 ggMockData.getUserGame =function(id) {
-  return userGames[_.findIndex(userGames, '_id', id)];
+  return EJSON.clone(userGames[_.findIndex(userGames, '_id', id)]);
 };

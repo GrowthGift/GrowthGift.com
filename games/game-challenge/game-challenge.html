@@ -22,6 +22,8 @@
           <div class='font-small red'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
         {{ /if }}
 
+        {{>afQuickField name="onLastChallenge" type="hidden" value=data.inputOpts.onLastChallengeVal }}
+
         <div class='margin-large-t flexbox'>
           <div class='flex1'>&nbsp;</div>
           <div>

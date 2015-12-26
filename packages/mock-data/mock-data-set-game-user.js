@@ -25,5 +25,5 @@ var setGameUser =[
 ];
 
 ggMockData.getSetGameUser =function(id) {
-  return setGameUser[_.findIndex(setGameUser, '_id', id)];
+  return EJSON.clone(setGameUser[_.findIndex(setGameUser, '_id', id)]);
 };

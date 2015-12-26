@@ -29,6 +29,10 @@ GameChallengeFeedbackSchema = new SimpleSchema({
   "feedback.answer": {
     type: String,
     optional: true
+  },
+  onLastChallenge: {
+    type: Number,
+    optional: false
   }
 });
 
@@ -38,6 +42,13 @@ Meteor.methods({
       // Need to clear cache
       var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
       ggGame.clearCache(cacheKey);
+      if(!err && Meteor.isClient) {
+        var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
+        var gameSlug =templateInst.data.gameSlug;
+        if(gameSlug) {
+          Router.go(ggUrls.gameUserSummary(gameSlug));
+        }
+      }
     });
   },
   saveGameChallenge: function(doc, docId) {
@@ -67,12 +78,12 @@ Meteor.methods({
       doc =modifier;
     }
     ggGame.saveUserGameChallenge(doc, docId, Meteor.userId(), gameId, function(err, result) {
+      // Need to clear cache
+      var cacheKey ='game_slug_'+gameSlug+'_user_id_'+Meteor.userId();
+      ggGame.clearCache(cacheKey);
       if(!err && Meteor.isClient) {
         var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var gameSlug =templateInst.data.gameSlug;
-        // Need to clear cache
-        var cacheKey ='game_slug_'+gameSlug+'_user_id_'+Meteor.userId();
-        ggGame.clearCache(cacheKey);
         if(gameSlug) {
           Router.go(ggUrls.game(gameSlug));
         }
@@ -155,10 +166,11 @@ if(Meteor.isClient) {
         inputOpts: {
           actionCountLabel: "Number of " + gameRule.mainAction + ":",
           feedback: {
-            visible: ( curChallenge.possibleCompletions ===gameRule.challenges.length ) ? true : false,
+            visible: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? true : false,
             prompt: "",
             help: ""
-          }
+          },
+          onLastChallengeVal: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? 1 : 0
         },
         hiEmail: 'hi@growthgift.com'    // TODO - pull from config
       };

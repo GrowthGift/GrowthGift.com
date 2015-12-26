@@ -21,32 +21,38 @@ if(Meteor.isClient) {
   Template.gameUserAward.helpers({
     data: function() {
       var award = this.award;
+      var earned = award.earned;
+      var awardType =this.awardType;
       var action =this.gameMainAction;
       var ret ={
         icon: '/svg/',
-        earned: this.earned,
-        classes: ( this.earned ) ? 'earned' : 'not-earned',
-        earnedText: ( this.earned ) ? 'You and your buddy earned this!' : 'You did not earn this award this game.'
+        earned: earned,
+        classes: ( earned ) ? 'earned' : 'not-earned',
+        earnedText: ( earned ) ? 'You and your buddy earned this!' : 'You did not earn this award this game.',
+        scoreToWin: award.scoreToWin || 0,
+        yourScore: award.selfUser ? award.selfUser.val : 0
       };
-      if(award === 'biggestImpact') {
+      if(awardType === 'biggestImpact') {
         ret.title ="Impact";
         ret.description ="Your team completed the most " + action + ".";
         ret.icon +='superhero-take-off.svg';
       }
-      else if(award === 'biggestReach' ) {
+      else if(awardType === 'biggestReach' ) {
         ret.title ="Reach";
         ret.description ="Your team had the most team members";
         ret.icon +='group-male-female.svg';
       }
-      else if(award === 'perfectPledge') {
+      else if(awardType === 'perfectPledge') {
         ret.title ="Marksman";
         ret.description ="You and your buddy completed 100+% of your pledge.";
         ret.icon +='target-bulls-eye.svg';
+        ret.scoreToWin =100;
       }
-      else if(award === 'perfectAttendance') {
+      else if(awardType === 'perfectAttendance') {
         ret.title ="Reliable";
         ret.description ="You and your buddy are your word - you both did your " + action + " every day.";
         ret.icon +='handshake.svg';
+        ret.scoreToWin =100;
       }
       return ret;
     }

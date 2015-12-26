@@ -30,78 +30,108 @@ function cleanUp() {
 }
 
 Tinytest.add('user awards create new streak if none', function (test) {
-  // cleanUp();
-  var userAward =null;
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var userAward ={};
   var retDoc ={
     userId: 'user1'
   };
-  ggGame.saveUserAwardsGameStreak(userAward, retDoc.userId, nowTimeFormat, function(err, result, data) {
+  ggGame.saveUserAwardsWeekStreak(userAward, data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
     test.equal(err, null);
     test.isNotUndefined(result);
-    test.equal(data.userId, retDoc.userId);
-    test.equal(data.currentGameStreak, 1);
-    test.equal(data.longestGameStreak, 1);
-    test.equal(data.lastGameChallengeCompletedAt, nowTimeFormat);
+    test.equal(ret.userId, retDoc.userId);
+    test.equal(ret.weekStreak.longest.amount, 1);
+    test.equal(ret.weekStreak.current.amount, 1);
+    test.equal(ret.weekStreak.current.start, nowTimeFormat);
+    test.equal(ret.weekStreak.current.last, nowTimeFormat);
   });
 });
 
-Tinytest.add('user awards add to current streak from Mon to Tue', function (test) {
-  lastTime =nowTime.clone().startOf('week');
-  lastTime =lastTime.add(1, 'days').utc();    // Start on Monday
-  var todayTime =lastTime.clone().add(1, 'days').utc();
-  var todayTimeFormat =todayTime.format(dtFormat);
-  var userAward ={
-    userId: 'user1',
-    longestGameStreak: 99,
-    currentGameStreak: 3,
-    lastGameChallengeCompletedAt: lastTime.format(dtFormat)
+Tinytest.add('user awards do nothing if not over completion percent and no streak yet', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var userAward ={};
+  data.userGames[0].challenges =[];
+  var retDoc ={
+    userId: 'user1'
   };
-  ggGame.saveUserAwardsGameStreak(userAward, userAward.userId, todayTimeFormat, function(err, result, data) {
+  ggGame.saveUserAwardsWeekStreak(userAward, data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
     test.equal(err, null);
-    test.isNotUndefined(result);
-    test.equal(data.$set.currentGameStreak, 4);
-    test.equal(data.$set.longestGameStreak, userAward.longestGameStreak);
-    test.equal(data.$set.lastGameChallengeCompletedAt, todayTimeFormat);
+    test.equal(result, null);
+    test.equal(ret, null);
   });
 });
 
-Tinytest.add('user awards add to current streak, and longest streak, from Fri to Mon', function (test) {
-  lastTime =nowTime.clone().startOf('week');
-  lastTime =lastTime.subtract(2, 'days').utc();    // Start on Friday
-  var todayTime =lastTime.clone().add(3, 'days').utc();   // Monday
-  var todayTimeFormat =todayTime.format(dtFormat);
-  var userAward ={
-    userId: 'user1',
-    longestGameStreak: 2,
-    currentGameStreak: 3,
-    lastGameChallengeCompletedAt: lastTime.format(dtFormat)
+Tinytest.add('user awards end existing streak if not over completion percent', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
   };
-  ggGame.saveUserAwardsGameStreak(userAward, userAward.userId, todayTimeFormat, function(err, result, data) {
+  var userAward ={
+    userId: retDoc.userId,
+    weekStreak: {
+      current: {
+        amount: 3,
+        last: nowTimeFormat
+      },
+      longest: {
+        amount: 3     // Set to SAME as current so it will be ended too.
+      }
+    }
+  };
+  data.userGames[0].challenges =[];
+  ggGame.saveUserAwardsWeekStreak(userAward, data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
     test.equal(err, null);
     test.isNotUndefined(result);
-    test.equal(data.$set.currentGameStreak, 4);
-    test.equal(data.$set.longestGameStreak, 4);
-    test.equal(data.$set.lastGameChallengeCompletedAt, todayTimeFormat);
+    test.equal(ret.$set["weekStreak.longest.end"], userAward.weekStreak.current.last);
+    test.equal(ret.$set["weekStreak.current.amount"], 0);
   });
 });
 
-Tinytest.add('user awards reset streak from Mon to Wed', function (test) {
-  lastTime =nowTime.clone().startOf('week');
-  lastTime =lastTime.add(1, 'days').utc();    // Start on Monday
-  var todayTime =lastTime.clone().add(2, 'days').utc();   // Wednesday
-  var todayTimeFormat =todayTime.format(dtFormat);
-  var userAward ={
-    userId: 'user1',
-    longestGameStreak: 99,
-    currentGameStreak: 3,
-    lastGameChallengeCompletedAt: lastTime.format(dtFormat)
+Tinytest.add('user awards add to current streak if this is the next week in a row', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
   };
-  ggGame.saveUserAwardsGameStreak(userAward, userAward.userId, todayTimeFormat, function(err, result, data) {
+  ggGame.saveUserAwardsWeekStreak(data.userAwards[0], data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
     test.equal(err, null);
     test.isNotUndefined(result);
-    test.equal(data.$set.currentGameStreak, 1);
-    test.equal(data.$set.longestGameStreak, userAward.longestGameStreak);
-    test.equal(data.$set.lastGameChallengeCompletedAt, todayTimeFormat);
+    test.equal(ret.$set["weekStreak.current.amount"], 6);
+    test.equal(ret.$set["weekStreak.current.last"], nowTimeFormat);
+  });
+});
+
+Tinytest.add('user awards add to current streak, and longest streak, if the next week in a row', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
+  };
+  data.userAwards[0].weekStreak.longest.amount =5;    // Set to SAME as current streak.
+  ggGame.saveUserAwardsWeekStreak(data.userAwards[0], data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTimeFormat, function(err, result, ret) {
+    test.equal(err, null);
+    test.isNotUndefined(result);
+    test.equal(ret.$set["weekStreak.current.amount"], 6);
+    test.equal(ret.$set["weekStreak.current.last"], nowTimeFormat);
+    test.equal(ret.$set["weekStreak.longest.amount"], 6);
+    test.equal(ret.$set["weekStreak.longest.start"], data.userAwards[0].weekStreak.current.start);
+  });
+});
+
+Tinytest.add('user awards reset streak if missed a week', function (test) {
+  var data =ggMockData.getSetGameUser('setGameUser1');
+  var retDoc ={
+    userId: 'user1'
+  };
+  var nowTime1Format =nowTime.clone().add(14, 'days').utc().format(dtFormat);
+  ggGame.saveUserAwardsWeekStreak(data.userAwards[0], data.game, data.userGames[0],
+   data.gameRule, retDoc.userId, data.game._id, nowTime1Format, function(err, result, ret) {
+    test.equal(err, null);
+    test.isNotUndefined(result);
+    test.equal(ret.$set["weekStreak.current.amount"], 1);
+    test.equal(ret.$set["weekStreak.current.start"], nowTime1Format);
   });
 });
 
@@ -112,12 +142,12 @@ Tinytest.add('user awards create new biggest reach if none', function (test) {
   var retDoc ={
     userId: 'userReach1'
   };
-  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, data) {
+  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, ret) {
     test.equal(err, null);
     test.isNotUndefined(result);
-    test.equal(data.userId, 'userReach1');
-    test.equal(data.biggestReach.amount, 4);
-    test.equal(data.biggestReach.gameId, game._id);
+    test.equal(ret.userId, 'userReach1');
+    test.equal(ret.biggestReach.amount, 4);
+    test.equal(ret.biggestReach.gameId, game._id);
   });
 });
 
@@ -132,11 +162,11 @@ Tinytest.add('user awards update if bigger this game', function (test) {
   var retDoc ={
     userId: 'userReach1'
   };
-  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, data) {
+  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, ret) {
     test.equal(err, null);
     test.isNotUndefined(result);
-    test.equal(data.$set['biggestReach.amount'], 4);
-    test.equal(data.$set['biggestReach.gameId'], game._id);
+    test.equal(ret.$set['biggestReach.amount'], 4);
+    test.equal(ret.$set['biggestReach.gameId'], game._id);
   });
 });
 
@@ -151,17 +181,17 @@ Tinytest.add('user awards do nothing if not bigger reach than exists', function 
   var retDoc ={
     userId: 'userReach1'
   };
-  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, data) {
+  ggGame.saveUserAwardsBiggestReach(userAward, game, 'userReach1', game._id, function(err, result, ret) {
     test.equal(err, null);
     test.equal(result, null);
-    test.equal(data, null);
+    test.equal(ret, null);
   });
 });
 
 Tinytest.add('get game awards', function (test) {
   var data =ggMockData.getSetGameUser('setGameUser1');
   var awards =ggGame.getAwards(data.userGames, data.game,
-   data.users, data.gameRule, data.nowTime);
+   data.users, data.gameRule, null, data.nowTime);
 
   // Game is on 3rd challenge out of 5
   var completionRatio =(3 / 5);
@@ -173,6 +203,7 @@ Tinytest.add('get game awards', function (test) {
   test.equal(awards.pledgePercent.winners.length, 1);
   test.equal(awards.pledgePercent.winner.user1.profile.name, 'User1 One');
   test.equal(awards.pledgePercent.winner.user2.profile.name, 'User2 Two');
+  test.equal(awards.pledgePercent.scoreToWin, 71);
 
   // User 3 & 4 are 2/3 = 67. User 1 & 2 are also 67 average
   // (100, 33 = 67) BUT they won pledge percent so should NOT be the
@@ -181,12 +212,14 @@ Tinytest.add('get game awards', function (test) {
   test.equal(awards.completionPercent.winners.length, 3);
   test.notEqual(awards.completionPercent.winner.user1.profile.name, 'User1 One');
   test.equal(awards.completionPercent.winner.user2, {});
+  test.equal(awards.completionPercent.scoreToWin, 67);
 
   // User 1 & 2 have total team actions of 6 + 5 + 8 + 4 + 2 = 25
   test.equal(awards.reachTeamsNumActions.max, 25);
   test.equal(awards.reachTeamsNumActions.winners.length, 1);
   test.equal(awards.reachTeamsNumActions.winner.user1.profile.name, 'User1 One');
   test.equal(awards.reachTeamsNumActions.winner.user2.profile.name, 'User2 Two');
+  test.equal(awards.reachTeamsNumActions.scoreToWin, 25);
 
   // User 1 & 2 have total team size of 1 + 1 + 2 + 1 = 5 BUT already won team
   // actions so should NOT be winners. And since there is a minimum of 2
@@ -194,6 +227,7 @@ Tinytest.add('get game awards', function (test) {
   test.equal(awards.teamSize.max, -1);
   test.equal(awards.teamSize.winners.length, 1);
   test.equal(awards.teamSize.winner, null);
+  test.equal(awards.teamSize.scoreToWin, 5);
 });
 
 Tinytest.add('get game awards for one user', function (test) {
@@ -204,10 +238,14 @@ Tinytest.add('get game awards for one user', function (test) {
 
   test.equal(awards.selfReach.game, 5);
   test.equal(awards.selfReach.max, 10);
-  test.equal(awards.selfStreak.current, 5);
-  test.equal(awards.selfStreak.longest, 10);
-  test.equal(awards.perfectPledge, false, 'pledge');
-  test.equal(awards.perfectAttendance, false, 'attendance');
-  test.equal(awards.biggestImpact, true, 'impact');
-  test.equal(awards.biggestReach, true, 'reach');
+  test.equal(awards.selfStreak.current.amount, 5);
+  test.equal(awards.selfStreak.longest.amount, 10);
+  test.equal(awards.perfectPledge.earned, false, 'pledge');
+  test.equal(awards.perfectAttendance.earned, false, 'attendance');
+  test.equal(awards.biggestImpact.earned, true);
+  test.equal(awards.biggestImpact.reachTeamsNumActions, 25, 'impact');
+  test.equal(awards.biggestImpact.scoreToWin, 25,);
+  test.equal(awards.biggestReach.earned, true);
+  test.equal(awards.biggestReach.teamSize, 5, 'reach');
+  test.equal(awards.biggestReach.scoreToWin, 5);
 });

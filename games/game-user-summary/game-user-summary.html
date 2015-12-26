@@ -5,7 +5,7 @@
 
   <div class='center padding'>
     <h2 class=''>Your Game Summary</h2>
-    <div class='h5 margin-large-b'>{{ data.game.title }}</div>
+    <div class='margin-large-b'><a class='h5' href='{{ data.gameUrl }}'>{{ data.game.title }}</a></div>
 
     {{ >gameUserAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction game=../game }}
   </div>

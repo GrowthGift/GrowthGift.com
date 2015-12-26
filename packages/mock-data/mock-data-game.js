@@ -258,5 +258,5 @@ var games =[
 ];
 
 ggMockData.getGame =function(id) {
-  return games[_.findIndex(games, '_id', id)];
+  return EJSON.clone(games[_.findIndex(games, '_id', id)]);
 };

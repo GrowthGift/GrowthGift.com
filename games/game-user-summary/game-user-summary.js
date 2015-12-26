@@ -1,8 +1,9 @@
 if(Meteor.isClient) {
 
   Template.gameUserSummary.created =function() {
-    Meteor.subscribe('game', Template.instance().data.gameSlug);
-    Meteor.subscribe('userAwards-userId');
+    // Meteor.subscribe('game', Template.instance().data.gameSlug);
+    // Meteor.subscribe('userAwards-userId');
+    Meteor.subscribe('game-user-award', Template.instance().data.gameSlug);
   };
 
   Template.gameUserSummary.helpers({
@@ -23,7 +24,7 @@ if(Meteor.isClient) {
       var userAwards =UserAwardsCollection.findOne({ userId: userId });
 
       if(!game || !gameRule || !userGames || !userGames.length || !gameUsers
-       || !gameUsers.length) {
+       || !gameUsers.length ) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -34,7 +35,8 @@ if(Meteor.isClient) {
        gameRule, userAwards, userId, null);
 
       var ret ={
-        game: game
+        game: game,
+        gameUrl: ggUrls.game(game.slug)
       };
 
       var templateHelperData ={

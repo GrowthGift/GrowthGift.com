@@ -90,7 +90,7 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
     buddyName: null,
     buddyErrorMessage: null,
     userInGame: ( userId ) ? ggGame.userInGame(game, userId) : false,
-    awards: ggGame.getAwards(userGames, game, gameUsers, gameRule, null)
+    awards: ggGame.getAwards(userGames, game, gameUsers, gameRule, null, null)
   };
 
   ret.showHowToPlay =ret.userInGame ? false : true;

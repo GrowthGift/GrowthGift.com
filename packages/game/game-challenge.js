@@ -17,7 +17,7 @@ ggGame.saveUserGameChallenge =function(doc, docId, userId, gameId, callback) {
     UserGamesCollection.insert(doc, callback);
   }
   // Update awards
-  ggGame.saveUserAwards(userId, gameId, msTimezone.curDateTime());
+  ggGame.saveUserAwardsBiggestReach(null, null, userId, gameId, function() {});
 };
 
 ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
@@ -40,6 +40,9 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
     }
     else {
       var modifier ={};
+      // See if on last challenge, then remove key
+      var onLastChallenge =challenge.onLastChallenge;
+      delete challenge.onLastChallenge;
       // If submitted feedback, save that separately
       if(challenge.feedback) {
         var userIndex =_.findIndex(game.users, 'userId', userId);
@@ -86,7 +89,11 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
 
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
        function (err, result) {
-        ggGame.saveUserAwards(userId, game._id, msTimezone.curDateTime());
+        ggGame.saveUserAwardsBiggestReach(null, game, userId, game._id, function() {});
+        if(onLastChallenge) {
+          ggGame.saveUserAwardsWeekStreak(null, game, null, null, userId,
+           game._id, msTimezone.curDateTime(), function() {});
+        }
         callback(err, result);
 
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);

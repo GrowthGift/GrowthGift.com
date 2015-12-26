@@ -9,15 +9,15 @@
       <h4>Game Streak</h4>
       <div class='flexbox'>
         <div class='flex1'>
-          <h1>{{ data.awards.selfStreak.longest }}</h1>
+          <h1>{{ data.awards.selfStreak.longest.amount }}</h1>
           <div>Longest</div>
         </div>
         <div class='flex1 red'>
-          <h1>{{ data.awards.selfStreak.current }}</h1>
+          <h1>{{ data.awards.selfStreak.current.amount }}</h1>
           <div>Current</div>
         </div>
       </div>
-      <div class='font-small'>Days completed in a row.</div>
+      <div class='font-small'>Weeks in a row you played at least 1 game with at least 50% days completed.</div>
     </div>
     <div class='game-user-award-item bg-white padding margin'>
       <h4>Reach</h4>
@@ -37,10 +37,10 @@
 
   <h4 class='margin-b'>Game Awards</h4>
   <div class='center margin-large-b'>
-    {{ >gameUserAward award="biggestImpact" earned=data.awards.biggestImpact gameMainAction=data.gameMainAction }}
-    {{ >gameUserAward award="biggestReach" earned=data.awards.biggestReach gameMainAction=data.gameMainAction }}
-    {{ >gameUserAward award="perfectPledge" earned=data.awards.perfectPledge gameMainAction=data.gameMainAction }}
-    {{ >gameUserAward award="perfectAttendance" earned=data.awards.perfectAttendance gameMainAction=data.gameMainAction }}
+    {{ >gameUserAward awardType="perfectPledge" award=data.awards.perfectPledge gameMainAction=data.gameMainAction }}
+    {{ >gameUserAward awardType="perfectAttendance" award=data.awards.perfectAttendance gameMainAction=data.gameMainAction }}
+    {{ >gameUserAward awardType="biggestImpact" award=data.awards.biggestImpact gameMainAction=data.gameMainAction }}
+    {{ >gameUserAward awardType="biggestReach" award=data.awards.biggestReach gameMainAction=data.gameMainAction }}
   </div>
 
   {{ /if }}
@@ -52,6 +52,10 @@
       <img src='{{ data.icon }}' class='game-user-award-item-image' />
     </div>
     <h4>{{ data.title }}</h4>
+    <div class='flexbox'>
+      <div class='flex1'>You: {{ data.yourScore }}</div>
+      <div class='flex1'>To earn: {{ data.scoreToWin }}</div>
+    </div>
     <div class='font-small'>{{ data.description }}</div>
     {{ #if data.earned }}
       <div class='font-small red'>{{ data.earnedText }}</div>

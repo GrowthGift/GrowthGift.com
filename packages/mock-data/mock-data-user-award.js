@@ -5,9 +5,18 @@ var userAwards =[
   {
     _id: 'uaUser1',
     userId: 'user1',
-    longestGameStreak: 10,
-    currentGameStreak: 5,
-    lastGameChallengeCompletedAt: nowTime.clone().subtract((0.3*24), 'hours').format(dtFormat),
+    weekStreak: {
+      longest: {
+        amount: 10,
+        start: nowTime.clone().subtract((100), 'days').format(dtFormat),
+        end: nowTime.clone().subtract((30), 'days').format(dtFormat)
+      },
+      current: {
+        amount: 5,
+        start: nowTime.clone().subtract((40), 'days').format(dtFormat),
+        last: nowTime.clone().subtract((5), 'days').format(dtFormat),
+      }
+    },
     biggestReach: {
       amount: 10,
       gameId: 'game1'
@@ -16,5 +25,5 @@ var userAwards =[
 ];
 
 ggMockData.getUserAward =function(id) {
-  return userAwards[_.findIndex(userAwards, '_id', id)];
+  return EJSON.clone(userAwards[_.findIndex(userAwards, '_id', id)]);
 };

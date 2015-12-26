@@ -49,5 +49,5 @@ var gameRules =[
 ];
 
 ggMockData.getGameRule =function(id) {
-  return gameRules[_.findIndex(gameRules, '_id', id)];
+  return EJSON.clone(gameRules[_.findIndex(gameRules, '_id', id)]);
 }

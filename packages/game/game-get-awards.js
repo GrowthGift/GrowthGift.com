@@ -5,14 +5,16 @@
   @param {[String]} [skipWinners] Array of team id's to skip (NOT award -
    e.g. because they've already won a similar award.).
 */
-_ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
+_ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, userId, params) {
   params.maxVal = ( params.maxVal !==undefined ) ? params.maxVal : null;
   params.minVal = ( params.minVal !==undefined ) ? params.minVal : -1;
   var award ={
     winners: [],
     max: -1,
-    winner: null    // (Randomly) select ONE team (if more than one).
+    winner: null,    // (Randomly) select ONE team (if more than one).
+    selfUser: null
   };
+  var scoreToWin = params.minVal ? params.minVal : -1;
   var ii, len =usersStats.length;
   var max, val, team, keyUsers, keyAwards, pushObj;
   var skipIndex =-1;
@@ -34,6 +36,9 @@ _ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
         award.max = params.maxVal ? ( ( val > params.maxVal ) ?
          params.maxVal : val ) : val;
       }
+      if( val > scoreToWin ) {
+        scoreToWin = val;
+      }
       pushObj ={
         _id: team._id,
         user1: team.user1,
@@ -43,12 +48,26 @@ _ggGame.getAwardWinners =function(usersStats, keyUsers, keyAwards, params) {
       pushObj[keyAwards] =val;
       award.winners.push(pushObj);
     }
-    // Go until get below minVal OR below max AND below maxVal (if set)
-    if( val < params.minVal || ( val < max &&
-     ( !params.maxVal || val < params.maxVal ) ) ) {
+
+    // See if self user
+    if( userId && ( team.user1._id === userId ||
+     ( team.user2 && team.user2._id === userId ) ) ) {
+      award.selfUser = {
+        userId: userId,
+        val: val
+      };
+    }
+
+    // If no userId, go until get below minVal OR below max AND below maxVal (if set)
+    if( !userId && ( val < params.minVal || ( val < max &&
+     ( !params.maxVal || val < params.maxVal ) ) ) ) {
       break;
     }
   }
+
+  // Save absolute max since if skipped, the single winner may not be the
+  // max value.
+  award.scoreToWin =scoreToWin;
 
   // Remove any skip winners
   var winners =award.winners.filter(function(winner) {
@@ -71,7 +90,7 @@ Award players for completing pledges, recruiting large teams, making big
  award a 25% completion if that's the top team). Also, do NOT allow one
  team / player to win everything.
 */
-ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
+ggGame.getAwards =function(userGames, game, users, gameRule, userId, nowTime) {
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var usersStats =ggGame.getGameUsersStats(userGames, game, users, gameRule, nowTime);
   var awards ={};
@@ -96,7 +115,7 @@ ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   // person could have 50% because has not done their challenge for the day
   // yet. So set to 50.
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { maxVal: 100, minVal: 50 });
+   userId, { maxVal: 100, minVal: 50 });
 
   // Completion percent
   keyUsers = 'buddiedCompletionPercent';
@@ -108,13 +127,13 @@ ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   skipWinners =awards.pledgePercent.winner ?
    awards.pledgePercent.winner._id : null;
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { minVal: 50, skipWinners: skipWinners });
+   userId, { minVal: 50, skipWinners: skipWinners });
 
   // Reach teams num actions
   keyUsers = 'buddiedReachTeamsNumActions';
   keyAwards = 'reachTeamsNumActions';
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { minVal: 2 });
+   userId, { minVal: 2 });
 
   // Team size
   keyUsers = 'buddiedTeamSize';
@@ -124,7 +143,7 @@ ggGame.getAwards =function(userGames, game, users, gameRule, nowTime) {
   skipWinners =awards.reachTeamsNumActions.winner ?
    awards.reachTeamsNumActions.winner._id : null;
   awards[keyAwards] =_ggGame.getAwardWinners(usersStats, keyUsers, keyAwards,
-   { minVal: 2, skipWinners: skipWinners });
+   userId, { minVal: 2, skipWinners: skipWinners });
 
   return awards;
 };
@@ -166,8 +185,10 @@ ggGame.getBuddiedUserTeamSize =function(userId, game) {
   - biggest reach
   - longest streak
 */
-_ggGame.userHasAward =function(award, userId, minVal, valKey) {
-  var hasAward =false;
+_ggGame.getUserAward =function(award, userId, minVal, valKey) {
+  var userAward ={
+    earned: false
+  };
   var winner, ii;
   if( award.winners && award.winners.length ) {
     for(ii =0; ii < award.winners.length; ii++) {
@@ -175,13 +196,19 @@ _ggGame.userHasAward =function(award, userId, minVal, valKey) {
       if( winner.user1._id === userId || ( winner.user2 &&
        winner.user2._id === userId) ) {
         if( minVal === undefined || winner[valKey] >= minVal ) {
-          hasAward =true;
+          userAward =winner;
+          userAward.scoreToWin = award.scoreToWin;
+          userAward.earned =true;
         }
         break;
       }
     }
   }
-  return hasAward;
+  if( award.selfUser && award.selfUser.userId === userId ) {
+    userAward.selfUser =award.selfUser;
+  }
+  userAward.scoreToWin =award.scoreToWin;
+  return userAward;
 };
 
 ggGame.getUserAwards =function(userGames, game, users, gameRule, userAwards, userId, nowTime) {
@@ -193,16 +220,27 @@ ggGame.getUserAwards =function(userGames, game, users, gameRule, userAwards, use
       max: userAwards && userAwards.biggestReach && userAwards.biggestReach.amount || 0
     },
     selfStreak: {
-      current: userAwards && userAwards.currentGameStreak || 0,
-      longest: userAwards && userAwards.longestGameStreak || 0
+      current: {
+        amount: 0
+      },
+      longest: {
+        amount: 0
+      }
     }
   };
+  if( userAwards && userAwards.weekStreak && userAwards.weekStreak.current
+   && userAwards.weekStreak.current.amount !== undefined ) {
+    ret.selfStreak.current =userAwards.weekStreak.current;
+    if(userAwards.weekStreak.longest && userAwards.weekStreak.longest.amount) {
+      ret.selfStreak.longest =userAwards.weekStreak.longest;
+    }
+  }
 
-  var awards =ggGame.getAwards(userGames, game, users, gameRule, nowTime);
-  ret.perfectPledge =_ggGame.userHasAward(awards.pledgePercent, userId, 100, 'pledgePercent');
-  ret.perfectAttendance =_ggGame.userHasAward(awards.completionPercent, userId, 100, 'completionPercent');
-  ret.biggestImpact =_ggGame.userHasAward(awards.reachTeamsNumActions, userId);
-  ret.biggestReach =_ggGame.userHasAward(awards.teamSize, userId);
+  var awards =ggGame.getAwards(userGames, game, users, gameRule, userId, nowTime);
+  ret.perfectPledge =_ggGame.getUserAward(awards.pledgePercent, userId, 100, 'pledgePercent');
+  ret.perfectAttendance =_ggGame.getUserAward(awards.completionPercent, userId, 100, 'completionPercent');
+  ret.biggestImpact =_ggGame.getUserAward(awards.reachTeamsNumActions, userId);
+  ret.biggestReach =_ggGame.getUserAward(awards.teamSize, userId);
 
   return ret;
 };

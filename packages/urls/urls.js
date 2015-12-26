@@ -40,6 +40,10 @@ ggUrls.gameUsers =function(gameSlug) {
   return '/game-users/'+gameSlug;
 };
 
+ggUrls.gameUserSummary =function(gameSlug) {
+  return '/game-user-summary/'+gameSlug;
+};
+
 ggUrls.myGames =function(view) {
   return (view ==='past') ? '/my-games?view=past' : '/my-games';
 };

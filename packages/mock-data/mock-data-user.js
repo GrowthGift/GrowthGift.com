@@ -38,5 +38,5 @@ var users =[
 
 
 ggMockData.getUser =function(id) {
-  return users[_.findIndex(users, '_id', id)];
+  return EJSON.clone(users[_.findIndex(users, '_id', id)]);
 };
