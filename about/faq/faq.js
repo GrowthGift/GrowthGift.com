@@ -60,7 +60,8 @@ if(Meteor.isClient) {
         },
         {
           q: "What are the awards?",
-          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day."
+          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day.",
+          link: 'game-awards'
         },
         {
           q: "The goal is huge! Will I matter?",
