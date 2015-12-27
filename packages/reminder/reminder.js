@@ -5,6 +5,8 @@ Types of game reminders:
 
 - game-challenge-due - once per challenge (day) IF the user has not completed
  their pledge for the challenge / day yet.
+- game-join-next-week - once to twice per week if user has not joined a game
+ for next week yet.
 - game-choose-buddy - every 24 hours if do not have one yet UNTIL game starts,
  at which point the daily challenge reminders will handle this.
 - game-started - once, when game starts.
@@ -105,7 +107,6 @@ ggReminder.gameChallengeDue =function() {
     // start date. I.e. There may be user games returned who have ALREADY
     // completed the challenge and should NOT be notified.
     challengeStart =cg.currentChallengeStart;
-    // db.userGames.find({ gameId: 'L9zRezwmmH4LYyzkS', $or: [ { challenges: { $exists: false } }, { 'challenges.updatedAt': { $lt: '2015-12-23 08:00:00+00:00' } } ] }).pretty();
     query ={
       gameId: cg.gameId,
       $or: [
@@ -119,7 +120,8 @@ ggReminder.gameChallengeDue =function() {
         }
       ]
     }
-    userGames =UserGamesCollection.find(query, { fields: { userId:1, challenges:1 } }).fetch();
+    userGames =UserGamesCollection.find(query, { fields: { userId:1,
+     challenges:1 } }).fetch();
     // console.log(query, 'userGames: ', userGames);
 
     // Send a reminder to each user who needs to be reminded AND to their buddy.
@@ -151,7 +153,8 @@ ggReminder.gameChallengeDue =function() {
             if(gameUserBuddy) {
               doneUserIds.push(gameUser.buddyId);
               paramsNotify.notifyUserIds.push(gameUser.buddyId);
-              buddyUser =Meteor.users.findOne({ _id: gameUser.buddyId }, { fields: { profile:1 } });
+              buddyUser =Meteor.users.findOne({ _id: gameUser.buddyId },
+               { fields: { profile:1 } });
               paramsNotify.buddyUser =buddyUser;
             }
 
@@ -163,5 +166,65 @@ ggReminder.gameChallengeDue =function() {
   });
 };
 
-// ggReminder.gameStart =function() {
-// };
+ggReminder.gameJoinNextWeek =function() {
+  // Get games that start next week (not this week or 2+ weeks in future).
+  var dtFormat =msTimezone.dateTimeFormat;
+  var nowTime =msTimezone.curDateTime('moment');
+  var nextWeekTime =nowTime.clone().add(5, 'days').format(dtFormat);
+  var sundayTime =nowTime.clone().startOf('week');
+  // Allow same day, but if past the day, set to next week.
+  if(sundayTime.format('YYYY-MM-DD') < nowTime.format('YYYY-MM-DD')) {
+    sundayTime =sundayTime.add(7, 'days');
+  }
+  sundayTime =sundayTime.format(dtFormat);
+
+  var games =GamesCollection.find({ start: { $gte : sundayTime,
+   $lte : nextWeekTime } }, { fields: { "users.userId": 1 } }).fetch();
+
+  // Pull out all user ids in a game next week. Everyone ELSE is NOT.
+  var userIds =[];
+  games.forEach(function(game) {
+    game.users.forEach(function(gu) {
+      if( userIds.indexOf(gu.userId) < -1 ) {
+        userIds.push(gu.userId);
+      }
+    });
+  });
+
+  // Find all users OTHER than the user ids in games.
+  var userAward, userId, paramsNotify;
+  var paramsNotifyNoStreak ={
+    notifyUserIds: [],
+    weekStreakCurrent: false
+  };
+  var paramsNotifyStreak ={
+    notifyUserIds: [],
+    weekStreakCurrent: true
+  };
+  var users =Meteor.users.find({ _id: { $nin: userIds } }, { fields:
+   { profile: 1 } }).fetch();
+  users.forEach(function(user) {
+    userId =user._id;
+    userAward =UserAwardsCollection.findOne({ userId: userId });
+    // paramsNotify ={
+    //   notifyUserIds: [ userId ],
+    //   weekStreakCurrent: ( userAward && userAward.weekStreak &&
+    //    userAward.weekStreak.current ) ? userAward.weekStreak.current :
+    //    ( { amount: 0 } )
+    // };
+    // lmNotify.send('gameJoinNextWeekReminder', paramsNotify, {});
+    if( userAward && userAward.weekStreak && userAward.weekStreak.current
+     && userAward.weekStreak.current.amount > 0 ) {
+      paramsNotifyStreak.notifyUserIds.push(userId);
+    }
+    else {
+      paramsNotifyNoStreak.notifyUserIds.push(userId);
+    }
+  });
+  if(paramsNotifyStreak.notifyUserIds.length) {
+    lmNotify.send('gameJoinNextWeekReminder', paramsNotifyStreak, {});
+  }
+  if(paramsNotifyNoStreak.notifyUserIds.length) {
+    lmNotify.send('gameJoinNextWeekReminder', paramsNotifyNoStreak, {});
+  }
+};

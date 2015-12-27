@@ -36,6 +36,10 @@ ggUrls.gameRule =function(gameRuleSlug) {
   return '/gr/'+gameRuleSlug;
 };
 
+ggUrls.games =function() {
+  return '/games';
+};
+
 ggUrls.gamesSuggest =function() {
   return '/games-suggest';
 };

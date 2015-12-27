@@ -141,3 +141,41 @@ lmNotifyTypes.gameChallengeDueReminder =function(type, data, params) {
 
   });
 };
+
+lmNotifyTypes.gameJoinNextWeekReminder =function(type, data, params) {
+  var notifId =type;
+
+  var userIds =data.notifyUserIds;
+  var gamesUrl =ggUrls.games();
+  var hrefGames =ggUrls.removeLeadingSlash(gamesUrl);
+  var gamesFullUrl =Config.appInfo().shortRootUrl + gamesUrl;
+  // var gameStreak =data.weekStreakCurrent.amount;
+  var gameStreak =data.weekStreakCurrent;
+
+  lmNotifyHelpers.separateUsers({type:type, userIds: userIds, notifId:notifId, noBulk:true}, function(retSep) {
+
+    // var streakText =( ( gameStreak > 0) ? ( "Keep your game streak of " + gameStreak
+    //  + " game" + ( ( gameStreak === 1 ) ? "" : "s" ) + " alive" ) :
+    //  ( "Start a new game streak" ) );
+    // var title = ( gameStreak > 0 ) ? "Keep Your Game Streak Alive" : "Join Game Reminder";
+    var streakText = gameStreak ? ( "Keep your game streak alive" ) :
+     ( "Start a new game streak" );
+    var title = gameStreak ? "Keep Your Game Streak Alive" : "Join Game Reminder";
+    var message =streakText + " by joining a game this week.";
+    var inAppData =false;
+    var pushData ={
+      title: title,
+      text: message
+    };
+    var emailData ={
+      subject: title,
+      html: message +
+        "<br /><br />"+
+        gamesFullUrl
+    };
+    var smsData =false;
+
+    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {});
+
+  });
+};
