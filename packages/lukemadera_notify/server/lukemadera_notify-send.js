@@ -30,7 +30,10 @@ lmNotify.sendPush =function(pushData, userId, params) {
 /**
 @toc 2.
 @param {Object} emailData
-  @param {Array} to Array of email addresses to send email to
+  @param {Array} [to] Array of email addresses to send email to
+  @param {Array} [cc] Array of email addresses to send email to
+  @param {Array} [bcc] Array of email addresses to send email to
+  @param {Array} [replyTo] Array of email addresses
   @param {String} [from =cfgEmail.addresses.notify.name+" <"+cfgEmail.addresses.notify.email+">"] From email name and address
   @param {String} subject
   @param {String} html
@@ -44,7 +47,7 @@ lmNotify.sendEmail =function(emailData, params) {
   var emailObj =_.extend(defaultEmailObj, emailData);
 
   Meteor.Sendgrid.send(emailObj);
-  console.info('email sent: SUBJECT: '+emailObj.subject+' TO: '+JSON.stringify(emailObj.to));
+  console.info('email sent: SUBJECT: '+emailObj.subject+' TO: '+JSON.stringify(emailObj.to)+' BCC: '+JSON.stringify(emailObj.bcc)+' CC: '+JSON.stringify(emailObj.cc));
 };
 
 /**
@@ -107,10 +110,15 @@ lmNotify.sendSms =function() {
   @param {String} subject
   @param {String} html
 @param {Object} [smsData]
+@param {Object} params
+  @param {String} [emailToField ='to'] 'to', 'cc', 'bcc'
 */
 lmNotify.sendAll =function(sepUsers, inAppData, pushData, emailData, smsData, params) {
   var self =this;
   var ii;
+  if(!params) {
+    params ={};
+  }
   
   if(pushData) {
     var pushDataTemp =EJSON.clone(pushData);
@@ -122,13 +130,14 @@ lmNotify.sendAll =function(sepUsers, inAppData, pushData, emailData, smsData, pa
   }
 
   if(emailData) {
-    if(emailData.to ===undefined) {
-      emailData.to =[];
+    params.emailToField = params.emailToField || 'to';
+    if(emailData[params.emailToField] ===undefined) {
+      emailData[params.emailToField] =[];
     }
     for(ii =0; ii<sepUsers.emailUsers.length; ii++) {
-      emailData.to.push(sepUsers.emailUsers[ii].emails[0].address);
+      emailData[params.emailToField].push(sepUsers.emailUsers[ii].emails[0].address);
     }
-    if(emailData.to && emailData.to.length) {
+    if(emailData[params.emailToField] && emailData[params.emailToField].length) {
       self.sendEmail(emailData, {});
     }
   }

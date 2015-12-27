@@ -28,7 +28,7 @@ lmNotifyTypes.devTest =function(type, data, params) {
     };
     var smsData =false;
     
-    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {});
+    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {emailToField: 'bcc'});
     
   });
 };
