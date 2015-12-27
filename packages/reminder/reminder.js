@@ -122,7 +122,6 @@ ggReminder.gameChallengeDue =function() {
     }
     userGames =UserGamesCollection.find(query, { fields: { userId:1,
      challenges:1 } }).fetch();
-    // console.log(query, 'userGames: ', userGames);
 
     // Send a reminder to each user who needs to be reminded AND to their buddy.
     doneUserIds =[];    // Reset. This prevent duplicate reminders if their
@@ -185,7 +184,7 @@ ggReminder.gameJoinNextWeek =function() {
   var userIds =[];
   games.forEach(function(game) {
     game.users.forEach(function(gu) {
-      if( userIds.indexOf(gu.userId) < -1 ) {
+      if( userIds.indexOf(gu.userId) < 0 ) {
         userIds.push(gu.userId);
       }
     });
@@ -206,6 +205,9 @@ ggReminder.gameJoinNextWeek =function() {
   users.forEach(function(user) {
     userId =user._id;
     userAward =UserAwardsCollection.findOne({ userId: userId });
+    // Apparently Meteor email will fail if too many emails (simultaneously?)
+    // so send just 2 messages with multiple (bcc) recipients - has streak or
+    // not.
     // paramsNotify ={
     //   notifyUserIds: [ userId ],
     //   weekStreakCurrent: ( userAward && userAward.weekStreak &&
