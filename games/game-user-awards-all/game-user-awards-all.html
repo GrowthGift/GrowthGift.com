@@ -1,0 +1,53 @@
+<template name="gameUserAwardsAll">
+  {{ #unless data._xNotFound }}
+  <div class='center padding margin-large-t'>
+    <h4 class='margin-b'>Game Top Scores</h4>
+    <div class='center margin-large-b'>
+      <div class='game-user-award-all-item bg-white padding margin'>
+        <h4>Game Streak</h4>
+        <div class='flexbox'>
+          <div class='flex1'>
+            <h1>{{ data.awards.weekStreak.longest.amount }}</h1>
+            <div>Longest</div>
+          </div>
+          <div class='flex1 red'>
+            <h1>{{ data.awards.weekStreak.current.amount }}</h1>
+            <div>Current</div>
+          </div>
+        </div>
+        <div class='font-small'>Weeks in a row you played at least 1 game with at least 50% days completed.</div>
+      </div>
+      <div class='game-user-award-all-item bg-white padding margin'>
+        <h4>Reach</h4>
+        <div class='flexbox'>
+          <div class='flex1 red'>
+            <h1>{{ data.awards.biggestReachAll.amount }}</h1>
+            <div>Largest</div>
+          </div>
+        </div>
+        <div class='font-small'>Number of people on you and your buddy's team in one game.</div>
+      </div>
+    </div>
+
+    <h4 class='margin-b'>Game Awards Earned</h4>
+    <div class='center margin-large-b'>
+      {{ >gameUserAwardAll awardType="perfectPledge" awards=data.awards.perfectPledge }}
+      {{ >gameUserAwardAll awardType="perfectAttendance" awards=data.awards.perfectAttendance }}
+      {{ >gameUserAwardAll awardType="biggestImpact" awards=data.awards.biggestImpact }}
+      {{ >gameUserAwardAll awardType="biggestReach" awards=data.awards.biggestReach }}
+    </div>
+  </div>
+  {{ /unless }}
+
+</template>
+
+<template name="gameUserAwardAll">
+  <div class='game-user-award-all-item bg-white padding margin'>
+    <h1 class='red'>{{ data.amountEarned }}</h1>
+    <div>
+      <img src='{{ data.icon }}' class='game-user-award-all-item-image align-bottom' />
+      <span class='h4'>{{ data.title }}</span>
+    </div>
+    <div class='font-small'>{{ data.description }}</div>
+  </div>
+</template>

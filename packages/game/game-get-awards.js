@@ -244,3 +244,29 @@ ggGame.getUserAwards =function(userGames, game, users, gameRule, userAwards, use
 
   return ret;
 };
+
+ggGame.getUserAwardsAll =function(userGames, userAward, userId) {
+  var weekStreak = ( userAward && userAward.weekStreak ) ? userAward.weekStreak
+   : ( { longest: { amount: 0 }, current: { amount: 0} } );
+  var biggestReachAll = ( userAward && userAward.biggestReach ) ? userAward.biggestReach
+   : ( { amount: 0 } );
+  var awards ={
+    weekStreak: weekStreak,
+    biggestReachAll: biggestReachAll,
+    perfectPledge: [],
+    perfectAttendance: [],
+    biggestImpact: [],
+    biggestReach: []
+  };
+  userGames.forEach(function(ug) {
+    if(ug.awards && ug.awards.length) {
+      ug.awards.forEach(function(award) {
+        awards[award.type].push({
+          score: award.score,
+          createdAt: award.createdAt
+        })
+      });
+    }
+  });
+  return awards;
+};

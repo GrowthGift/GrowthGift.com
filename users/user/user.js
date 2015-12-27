@@ -73,6 +73,7 @@ if(Meteor.isClient) {
           ]
         }
       };
+
       return ret;
     }
   });
