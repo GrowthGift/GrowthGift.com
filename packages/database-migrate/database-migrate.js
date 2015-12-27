@@ -105,11 +105,42 @@ _ggDatabaseMigrate.unattachSchema =function() {
 
   UserGameOpenSchema = new SimpleSchema({
     challenges: {
-      type: [Object],
+      type: [ Object ],
+      optional: true,
+      blackbox: true
+    },
+    awards: {
+      type: [ Object ],
       optional: true,
       blackbox: true
     },
     createdAt: {
+      type: String,
+      optional: true
+    }
+  });
+  UserGamesCollection.attachSchema(UserGameOpenSchema, {replace: true} );
+
+  UserAwardOpenSchema = new SimpleSchema({
+    userId: {
+      type: String,
+      optional: true
+    },
+    weekStreak: {
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
+    biggestReach: {
+      type: Object,
+      optional: true,
+      blackbox: true
+    },
+    createdAt: {
+      type: String,
+      optional: true
+    },
+    updatedAt: {
       type: String,
       optional: true
     }

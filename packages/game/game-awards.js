@@ -168,9 +168,60 @@ ggGame.saveUserAwardsBiggestReach =function(userAward, game, userId, gameId, cal
   }
 };
 
-// ggGame.saveUserAwards =function(userId, gameId, lastGameChallengeCompletedAt) {
-//   var userAward = UserAwardsCollection.findOne({ userId: userId });
-//   var game = GamesCollection.findOne({ _id: gameId });
-//   ggGame.saveUserAwardsGameStreak(userAward, userId, lastGameChallengeCompletedAt, function() {});
-//   ggGame.saveUserAwardsBiggestReach(userAward, game, userId, gameId, function() {});
-// };
+/**
+Saves all users' game awards after the game is over and final. Some awards,
+ biggest reach and game streak, have already been saved IF the user completed
+ the last challenge, but we'll double check and updated as needed here, in case
+ the user did NOT complete the last challenge.
+*/
+ggGame.saveGameUserAwardsFinal =function() {
+  // Get all games in the last 24 hours
+  var dtFormat =msTimezone.dateTimeFormat;
+  var nowTime =msTimezone.curDateTime('moment');
+  var lastTime =nowTime.clone().subtract(1, 'days').format(dtFormat);
+  var nowTimeFormat =nowTime.format(dtFormat);
+  var games =GamesCollection.find({ end: { $gte: lastTime, $lt: nowTimeFormat } }).fetch();
+
+  var gameRule, userGames, gameUsers, userAwards, userId, awards;
+  var atLeastOneAward, modifier;
+  var awardTypes =['perfectPledge', 'perfectAttendance', 'biggestImpact', 'biggestReach'];
+  games.forEach(function(game) {
+    gameRule =GameRulesCollection.findOne({_id: game.gameRuleId});
+    userGames =UserGamesCollection.find({ gameId:game._id }).fetch();
+    gameUsers =userGames ? ggGame.getGameUsersInfo(userGames) : null;
+    if(userGames) {
+      userGames.forEach(function(ug) {
+        userId =ug.userId;
+        userAward =UserAwardsCollection.findOne({ userId: userId });
+        // Save user game wide awards
+        ggGame.saveUserAwardsBiggestReach(userAward, game, userId, game._id, function() {});
+        ggGame.saveUserAwardsWeekStreak(userAward, game, ug, gameRule, userId, game._id, null, function() {});
+        // Save game user awards
+        awards =ggGame.getUserAwards(userGames, game, gameUsers,
+         gameRule, userAward, userId, null);
+        atLeastOneAward =false;
+        // Should NOT have any awards in this game yet so will just set
+        // (overwrite) them.
+        modifier ={
+          $set : {
+            awards: []
+          }
+        };
+        awardTypes.forEach(function(awardType) {
+          if(awards[awardType] && awards[awardType].earned) {
+            atLeastOneAward =true;
+            modifier.$set.awards.push({
+              type: awardType,
+              score: awards[awardType].selfUser ? awards[awardType].selfUser.val : 0,
+              createdAt: nowTimeFormat
+            });
+          }
+        });
+        if(atLeastOneAward) {
+          console.log(userId, game._id, modifier.$set);   // TESTING
+          UserGamesCollection.update({ userId: userId, gameId: game._id}, modifier);
+        }
+      });
+    }
+  });
+};

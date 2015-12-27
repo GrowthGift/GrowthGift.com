@@ -21,9 +21,8 @@ if(Meteor.isClient) {
        .fetch() ) || null;
       var gameUsers =userGames ? ggGame.getGameUsersInfo(userGames) : null;
       var userId = Meteor.userId();
-      var userAwards =UserAwardsCollection.findOne({ userId: userId });
+      var userAward =UserAwardsCollection.findOne({ userId: userId });
 
-      // Get user games for next week to see if user is in one already.
       // Get user games for next week to see if user is in one already.
       var dtFormat =msTimezone.dateTimeFormat;
       var nowTime =msTimezone.curDateTime('moment');
@@ -47,7 +46,7 @@ if(Meteor.isClient) {
       }
 
       var awards =ggGame.getUserAwards(userGames, game, gameUsers,
-       gameRule, userAwards, userId, null);
+       gameRule, userAward, userId, null);
 
       var ret ={
         game: game,
