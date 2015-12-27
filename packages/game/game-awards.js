@@ -175,10 +175,10 @@ Saves all users' game awards after the game is over and final. Some awards,
  the user did NOT complete the last challenge.
 */
 ggGame.saveGameUserAwardsFinal =function() {
-  // Get all games in the last 24 hours
+  // Get all games in the last X hours (where X = how often the cron job is run).
   var dtFormat =msTimezone.dateTimeFormat;
   var nowTime =msTimezone.curDateTime('moment');
-  var lastTime =nowTime.clone().subtract(1, 'days').format(dtFormat);
+  var lastTime =nowTime.clone().subtract(1, 'hours').format(dtFormat);
   var nowTimeFormat =nowTime.format(dtFormat);
   var games =GamesCollection.find({ end: { $gte: lastTime, $lt: nowTimeFormat } }).fetch();
 
