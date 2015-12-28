@@ -1,0 +1,16 @@
+<template name="gameInviteReach">
+  {{ #unless data._xNotFound }}
+  <div class='margin-b'>
+    <h5>Multiply Your Impact</h5>
+    <div>Share this link (email, social media) to invite more people to contribute to the pledge!</div>
+    <div class='margin-tb'>
+      <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
+    </div>
+  </div>
+  {{ /unless }}
+  <div class='flexbox'>
+    <div class='flex1'>&nbsp;</div>
+    <a class='a-div btn btn-primary' href='{{ data.hrefNext }}'>Friend Invites Sent</a>
+  </div>
+
+</template>

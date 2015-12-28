@@ -54,6 +54,7 @@ if(Meteor.isClient) {
       },
       gameChallengeLink: ret.gameChallengeLink,
       gameInviteLink: ret.gameInviteLink,
+      links: ret.links,
       awards: ret.awards,
       gameState: ret.gameState,
       gameMainAction: ret.gameRule.mainAction

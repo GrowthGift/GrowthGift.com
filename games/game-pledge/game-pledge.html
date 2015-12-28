@@ -1,0 +1,32 @@
+<template name="gamePledge">
+
+  {{ #unless data._xNotFound }}
+  {{ #autoForm schema="GamePledgeSchema" doc=data.formData id='gamePledgeForm' validation="blur" }}
+    <div>{{ data.inputOpts.selfGoalLabel }}</div>
+    <div class='flexbox'>
+      <div class='flex1 margin-r'>
+        <label>Per Day</label>
+        <input type='number' value='{{ data.selfGoalPerDay }}' placeholder='1' class='game-pledge-input-self-goal-per-day' />
+      </div>
+      <div class='flex1'>
+        {{>afQuickField name="selfGoal" label="Total" placeholder="5" class="game-pledge-input-self-goal"}}
+      </div>
+    </div>
+
+    <div class='margin-large-t'>
+      {{ #if data.selfGoal }}
+      <div class='margin-b center red'>
+        Ready to do {{ data.selfGoal }} {{ data.gameRule.mainAction }}, and help your buddy achieve their pledge too?
+      </div>
+      {{ /if }}
+      <div class='flexbox'>
+        <div class='flex1'>&nbsp;</div>
+        <div>
+          <button type="submit" class="btn btn-primary">Let's do this</button>
+        </div>
+      </div>
+    </div>
+  {{ /autoForm }}
+  {{ /unless }}
+
+</template>

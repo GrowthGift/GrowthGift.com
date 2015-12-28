@@ -1,4 +1,6 @@
 <template name="gameInvite">
+  {{> msNavSecondary nav=nav }}
+
   {{#if data._xNotFound }}
   <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
   {{else}}
@@ -12,54 +14,22 @@
     </div>
     {{else}}
 
-      {{#autoForm schema="GameInviteSchema" doc=data.formData id='gameInviteForm' validation="blur" }}
-        <!-- {{>afQuickField name="selfGoal" label=data.inputOpts.selfGoalLabel placeholder="E.g. 25 (as your total pledge for all days in the game)" class="game-invite-input-self-goal"}} -->
-        <div>{{ data.inputOpts.selfGoalLabel }}</div>
-        <div class='flexbox'>
-          <div class='flex1 margin-r'>
-            <label>Per Day</label>
-            <input type='number' value='{{ data.selfGoalPerDay }}' placeholder='1' class='game-invite-input-self-goal-per-day' />
-          </div>
-          <div class='flex1'>
-            {{>afQuickField name="selfGoal" label="Total" placeholder="5" class="game-invite-input-self-goal"}}
-          </div>
-        </div>
+      {{ #if data.nav.pledge }}
+      {{ >gamePledge gameSlug=../gameSlug game=../helperData.game gameRule=../helperData.gameRule gameUser=../helperData.gameUser userGame=../helperData.userGame user=../helperData.user }}
+      {{ /if }}
 
-        <div class='margin-large-t'>
-          {{#unless data.gameUser.buddyId }}
-          <div class='margin-b'>
-            <h5>Who is your buddy?</h5>
-            <div>Share this link with someone to ask them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
-            {{ #if data.inputOpts.buddyTipVisible }}
-            <div class='font-small'>Someone who is at a similar level to you and may have a similar pledge is usually best.</div>
-            <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
-            <div class='font-small red'>Copy the link below. Then paste it in an email or on social media to send it to your buddy.</div>
-            {{ /if }}
-            <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' />
-          </div>
-          {{/unless}}
+      {{ #if data.nav.buddy }}
+      <div class='margin-tb'>
+        {{ >gameInviteBuddy gameSlug=../gameSlug game=../helperData.game gameUser=../helperData.gameUser }}
+      </div>
+      {{ /if }}
 
-          <div class='margin-b'>
-            <h5>Multiply Your Impact</h5>
-            <div>Share this link (email, social media) to invite more people to contribute to the pledge!</div>
-            <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
-          </div>
-        </div>
+      {{ #if data.nav.reach }}
+      <div class='margin-tb'>
+        {{ >gameInviteReach gameSlug=../gameSlug user=../helperData.user }}
+      </div>
+      {{ /if }}
 
-        <div class='margin-large-t'>
-          {{ #if data.selfGoal }}
-          <div class='margin-b center red'>
-            Ready to do {{ data.selfGoal }} {{ data.gameRule.mainAction }}, and help your buddy achieve their pledge too?
-          </div>
-          {{ /if }}
-          <div class='flexbox'>
-            <div class='flex1'>&nbsp;</div>
-            <div>
-              <button type="submit" class="btn btn-primary">Let's do this</button>
-            </div>
-          </div>
-        </div>
-      {{/autoForm}}
     {{/if}}
 
   </div>

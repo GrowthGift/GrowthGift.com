@@ -1,0 +1,31 @@
+<template name="gameInviteBuddy">
+
+  {{ #unless data.gameUser.buddyId }}
+  <div class='margin-b'>
+    <h5>Who is your buddy?</h5>
+    <div>Share this link with someone to ask them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
+    {{ #if data.inputOpts.buddyTipVisible }}
+    <div class='font-small'>Someone who is at a similar level to you and may have a similar pledge is usually best.</div>
+    <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
+    <div class='font-small red'>Copy the link below. Then paste it in an email or on social media to send it to your buddy.</div>
+    {{ /if }}
+    <div class='margin-tb'>
+      <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' />
+    </div>
+  </div>
+  {{ else }}
+  <div>You already have a buddy for this game!</div>
+  {{ /unless}}
+
+  <div class='flexbox'>
+    <div class='flex1'>&nbsp;</div>
+    <a class='a-div btn btn-primary' href='{{ data.hrefNext }}'>
+      {{ #unless data.gameUser.buddyId }}
+        Buddy Invites Sent
+      {{ else }}
+        Next
+      {{ /unless }}
+    </a>
+  </div>
+
+</template>

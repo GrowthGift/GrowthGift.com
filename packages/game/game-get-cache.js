@@ -65,6 +65,7 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
   var edit =(game && ggMay.editGame(game, userId)) ? true : false;
 
   var gameUsers =ggGame.getGameUsersInfo(userGames);
+  var selfGameUser =( userId && game ) ? ggGame.getGameUser(game, userId, {}) : null;
 
   ret ={
     game: game,
@@ -86,6 +87,11 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
     gameUsersLink: ggUrls.gameUsers(game.slug),
     gameChallengeLink: ggUrls.gameChallenge(game.slug),
     gameInviteLink: ggUrls.gameInvite(game.slug),
+    links: {
+      gamePledge: ggUrls.gamePledge(game.slug),
+      gameInviteBuddy: ggUrls.gameInviteBuddy(game.slug),
+      gameInviteReach: ggUrls.gameInviteReach(game.slug)
+    },
     myGamesLink: ggUrls.myGames(),
     buddyName: null,
     buddyErrorMessage: null,
@@ -125,7 +131,6 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
       }
       // If were trying to buddy but cannot, output why
       if(!ret.privileges.buddy) {
-        var selfGameUser =( userId && ret.game ) ? ggGame.getGameUser(ret.game, userId, {}) : null;
         ret.buddyErrorMessage = ( selfGameUser && selfGameUser.buddyId ) ?
          "You already have a buddy" : ( selfGameUser && selfGameUser.userId ===
          buddyGameUser.userId ) ? "You may not buddy with yourself" :

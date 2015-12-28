@@ -72,12 +72,12 @@
               <div class='text-warning margin-b'>{{ data.buddyErrorMessage }}</div>
             {{/if}}
             {{ #unless data.privileges.buddy }}
-              <a class='a-div btn btn-primary margin-b' href='{{ data.gameInviteLink }}'>
-                {{ #unless data.gameState.gameStarted }}
-                Choose Your Impact
-                {{ else }}
+              <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
+                Grow Your Reach Team
+              </a>
+            {{ else }}
+              <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
                 Invite Friends
-                {{ /unless }}
               </a>
             {{ /unless }}
           </div>
@@ -225,7 +225,7 @@
       <div class='flexbox'>
         <div class='flex1'>1.
           {{ #if data.challengeInstruction.showChoosePledge }}
-            <a href='{{ data.gameInviteLink }}'>Choose your pledge.</a>
+            <a href='{{ data.links.gamePledge }}'>Choose your pledge.</a>
           {{ else }}
             {{ challenge.instruction }}
           {{ /if }}
@@ -247,7 +247,7 @@
       <div class='flexbox'>
         <div class='flex1'>2.
           {{ #if data.challengeInstruction.showChooseBuddy }}
-            <a href='{{ data.gameInviteLink }}'>Choose a buddy.</a>
+            <a href='{{ data.links.gameInviteBuddy }}'>Choose a buddy.</a>
           {{ else }}
             {{ challenge.buddyInstruction }}
           {{ /if }}

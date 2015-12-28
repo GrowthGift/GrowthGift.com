@@ -31,6 +31,15 @@ ggUrls.gameChallenge =function(gameSlug) {
 ggUrls.gameInvite =function(gameSlug) {
   return '/gi/'+gameSlug;
 };
+ggUrls.gamePledge =function(gameSlug) {
+  return ggUrls.gameInvite(gameSlug)+'?nav=pledge';
+};
+ggUrls.gameInviteBuddy =function(gameSlug) {
+  return ggUrls.gameInvite(gameSlug)+'?nav=buddy';
+};
+ggUrls.gameInviteReach =function(gameSlug) {
+  return ggUrls.gameInvite(gameSlug)+'?nav=reach';
+};
 
 ggUrls.gameRule =function(gameRuleSlug) {
   return '/gr/'+gameRuleSlug;
