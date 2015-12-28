@@ -85,9 +85,9 @@ Send a reminder X hours before challenge is due if:
 ggReminder.gameChallengeDue =function() {
   // Find any challenges that are due X minutes from now, give or take Y
   // minutes, which is often we run this cron job.
-  var minutesBefore =12 * 60;
+  var minutesBefore =9 * 60;
   // minutesBefore =8.7 * 60;   // TESTING
-  var minutesRange =15;
+  var minutesRange =15;   // Should match how often the cron job is run.
   var dtFormat =msTimezone.dateTimeFormat;
   var dueTime =msTimezone.curDateTime('moment').add(minutesBefore, 'minutes');
   var dueTimeUpper =dueTime.clone().add(minutesRange, 'minutes').format(dtFormat);
