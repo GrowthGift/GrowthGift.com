@@ -9,7 +9,7 @@ if(Meteor.isClient){
       cont: 'header-default'
     },
     layoutClasses: {
-      cont: ''
+      cont: 'layout-default'
     },
     title: {
       // html: 'LOGO',
@@ -120,6 +120,24 @@ if(Meteor.isClient){
   navConfig.game =EJSON.clone(navDefault);
   navConfig.game.urlRegEx ="g\/[.]*";
   navConfig.game.auth ={};
+  navConfig.game.layoutClasses.cont ='layout-game';
+
+  navConfig.gameChallenge =EJSON.clone(navDefault);
+  navConfig.gameChallenge.urlRegEx ="gc\/[.]*";
+  navConfig.gameChallenge.layoutClasses.cont ='layout-game';
+
+  navConfig.gameInvite =EJSON.clone(navDefault);
+  navConfig.gameInvite.urlRegEx ="gi\/[.]*";
+  navConfig.gameInvite.layoutClasses.cont ='layout-game';
+
+  navConfig.gameUsers =EJSON.clone(navDefault);
+  navConfig.gameUsers.urlRegEx ="game-users\/[.]*";
+  navConfig.gameUsers.auth ={};
+  navConfig.gameUsers.layoutClasses.cont ='layout-game';
+
+  navConfig.gameUserSummary =EJSON.clone(navDefault);
+  navConfig.gameUserSummary.urlRegEx ="game-user-summary\/[.]*";
+  navConfig.gameUserSummary.layoutClasses.cont ='layout-game';
 
   navConfig.gameRule =EJSON.clone(navDefault);
   navConfig.gameRule.urlRegEx ="gr\/[.]*";
@@ -128,10 +146,6 @@ if(Meteor.isClient){
   navConfig.games =EJSON.clone(navDefault);
   navConfig.games.url ="games";
   navConfig.games.auth ={};
-
-  navConfig.gameUsers =EJSON.clone(navDefault);
-  navConfig.gameUsers.urlRegEx ="game-users\/[.]*";
-  navConfig.gameUsers.auth ={};
 
   navConfig.user =EJSON.clone(navDefault);
   navConfig.user.urlRegEx ="u\/[.]*";

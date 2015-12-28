@@ -1,6 +1,7 @@
 .layout-content {
   //so padding does not mess up min height
   box-sizing: border-box;
+  position: relative;
 }
 
 .layout-content.layout-green-dark {
@@ -8,4 +9,28 @@
 }
 .layout-content.layout-gray-dark {
   background-color: @grayDark;
+}
+
+//http://css-tricks.com/snippets/css/transparent-background-images/
+.layout-content-bg-img(@img)
+{
+  content: "";
+  background-image: @img;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.layout-content.layout-default::after {
+  .layout-content-bg-img(url("@{pathImgBg}/seminar-circle-forest.jpg"));
+}
+.layout-content.layout-game::after {
+  .layout-content-bg-img(url("@{pathImgBg}/hawaii-lazy-river.jpg"));
 }
