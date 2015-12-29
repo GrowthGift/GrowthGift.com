@@ -1,16 +1,21 @@
 <template name="gameInviteReach">
   {{ #unless data._xNotFound }}
   <div class='margin-b'>
-    <h5>Multiply Your Impact</h5>
-    <div>Share this link (email, social media) to invite more people to contribute to the pledge!</div>
-    <div class='margin-tb'>
-      <input type='text' readonly=true value='{{ data.shareLinks.reach }}' class='game-invite-reach-input-share-link center' />
+    <h5>Invite friends to join your reach team</h5>
+    <div>Multiply your impact by inviting more people to contribute to the pledge!</div>
+    <div class='margin-tb game-invite-reach-social-share'>
+      {{ >lmSocialShare opts=data.optsSocialShare }}
+
+      <div class='margin-large-t'>Here's some example share text if you'd like it:</div>
+      <div><textarea value='{{ data.exampleMessage }}' class='game-invite-reach-input-example-message' ></textarea></div>
     </div>
   </div>
   {{ /unless }}
-  <div class='flexbox'>
-    <div class='flex1'>&nbsp;</div>
-    <a class='a-div btn btn-primary' href='{{ data.hrefNext }}'>Done</a>
+
+  <div class='center margin-large-t'>
+    <a class='a-div btn btn-primary' href='{{ data.hrefNext }}'>
+      Done
+    </a>
   </div>
 
 </template>
