@@ -1,3 +1,8 @@
+ggGame.getImage =function(game) {
+  return ( game.image && !Meteor.isCordova ) ? game.image
+   : ggUrls.img('games')+'playful-beach.jpg';
+};
+
 ggGame.getUserGame =function(gameId, userId) {
   return UserGamesCollection.findOne({gameId: gameId, userId: userId});
 };

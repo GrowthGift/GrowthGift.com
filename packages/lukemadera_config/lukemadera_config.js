@@ -42,8 +42,10 @@ Config.appInfo =function(params) {
       }
     },
     facebook: {
-      // appId: '195380783916970'    // localhost
       appId: '1637200843214153'
+    },
+    twitter: {
+      handle: 'GrowthGift'
     }
   };
   if(Config.ENV ==='prod') {
@@ -54,10 +56,6 @@ Config.appInfo =function(params) {
     ret.port =null;
     ret.facebook.appId ='1637200623214175';
   }
-
-  // TESTING social share
-  ret.shortDomain ='gr0.co';
-  ret.port =null;
 
   // http://localhost:3000
   ret.rootUrl =ret.scheme + '://' + ret.domain + ( ret.port ? (':' + ret.port) : '');
