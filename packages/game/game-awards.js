@@ -8,6 +8,7 @@ _ggGame.awardsEndWeekStreak =function(userAward, modifier) {
 };
 
 ggGame.saveUserAwardsWeekStreak =function(userAward, game, userGame, gameRule, userId, gameId, timestamp, callback) {
+  timestamp = timestamp || msTimezone.curDateTime();
   userAward =userAward || UserAwardsCollection.findOne({ userId: userId });
   game =game || GamesCollection.findOne({ _id: gameId });
   userGame =userGame || UserGamesCollection.findOne({ userId: userId, gameId: gameId });
@@ -195,7 +196,7 @@ ggGame.saveGameUserAwardsFinal =function() {
         userAward =UserAwardsCollection.findOne({ userId: userId });
         // Save user game wide awards
         ggGame.saveUserAwardsBiggestReach(userAward, game, userId, game._id, function() {});
-        ggGame.saveUserAwardsWeekStreak(userAward, game, ug, gameRule, userId, game._id, null, function() {});
+        ggGame.saveUserAwardsWeekStreak(userAward, game, ug, gameRule, userId, game._id, nowTimeFormat, function() {});
         // Save game user awards
         awards =ggGame.getUserAwards(userGames, game, gameUsers,
          gameRule, userAward, userId, null);
