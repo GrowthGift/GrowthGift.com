@@ -14,6 +14,8 @@ ggGame.saveUserAwardsWeekStreak =function(userAward, game, userGame, gameRule, u
   userGame =userGame || UserGamesCollection.findOne({ userId: userId, gameId: gameId });
   gameRule =gameRule || GameRulesCollection.findOne({ _id: game.gameRuleId });
 
+  var numDaysToEndStreak =9;
+
   var modifier ={
     $set: {}
   };
@@ -38,7 +40,7 @@ ggGame.saveUserAwardsWeekStreak =function(userAward, game, userGame, gameRule, u
     todayMoment =moment(timestamp, dtFormat).utc();
     lastMoment =moment(userAward.weekStreak.current.last, dtFormat).utc();
     diffDays =todayMoment.diff(lastMoment, 'days');
-    if(diffDays > 5) {
+    if(diffDays >= numDaysToEndStreak) {
       modifier =_ggGame.awardsEndWeekStreak(userAward, modifier);
       modifier.$set["weekStreak.current.amount"] =0;
       result =UserAwardsCollection.update({ userId: userId }, modifier);
@@ -94,7 +96,7 @@ ggGame.saveUserAwardsWeekStreak =function(userAward, game, userGame, gameRule, u
   todayMoment =moment(timestamp, dtFormat).utc();
   lastMoment =moment(userAward.weekStreak.current.last, dtFormat).utc();
   diffDays =todayMoment.diff(lastMoment, 'days');
-  if(diffDays <= 8) {
+  if(diffDays <= numDaysToEndStreak) {
     // If have already added to streak this week, do nothing.
     if(diffDays <= 4) {
       return callback(null, null, null);
