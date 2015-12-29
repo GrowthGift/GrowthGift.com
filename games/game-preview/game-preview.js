@@ -6,8 +6,7 @@ if(Meteor.isClient) {
       if(!game.xDisplay) {
         game.xDisplay ={};
       }
-      game.xDisplay.img = (game.image && !Meteor.isCordova) ? game.image
-       : ggUrls.img('games')+'playful-beach.jpg';
+      game.xDisplay.img = ggGame.getImage(game);
       game.xDisplay.gameLink = ggUrls.game(game.slug);
       return {
         game: game

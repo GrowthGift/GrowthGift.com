@@ -1,4 +1,5 @@
 ggGame.getImage =function(game) {
+  // TODO - fix this to allow access rules on cordova apps..
   return ( game.image && !Meteor.isCordova ) ? game.image
    : ggUrls.img('games')+'playful-beach.jpg';
 };

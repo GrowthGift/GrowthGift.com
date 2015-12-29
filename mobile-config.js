@@ -5,15 +5,17 @@ if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.pr
     // author: 'Percolate Studio Team',
     // email: 'us@percolatestudio.com',
     website: 'growthgift.com',
-    version: '1.2.0'
+    version: '1.2.0',
+    // id: 'com.growthgift'
   });
 }
 else {
   App.info({
     name: 'GrowthGiftDev',
     description: 'Grow togther.',
-    website: 'growthgift.meteor.com',
-    version: '1.2.0'
+    website: 'growthgiftdev.meteor.com',
+    version: '1.2.0',
+    id: 'com.meteor.growthgiftdev'
   });
 }
 
@@ -72,15 +74,29 @@ App.setPreference('StatusBarStyle', 'lightcontent');
 App.setPreference('StatusBarBackgroundColor', '#8E9599');
 // App.setPreference('deployment-target', '7.0'); // not sure if this works, according to phonegap, it should...
 
-//meteor local is supposed to be auto included but was not?
-App.accessRule('*://meteor.local/*');
-App.accessRule('*://10.0.2.2/*');
-//environment specific (dev, prod) domains
-App.accessRule('*://growthgift.meteor.com/*');
-App.accessRule('*://growthgift.com/*');
-App.accessRule('*://gr0.co/*');
-App.accessRule('*://107.170.212.162/*');
-//google maps, places
-// App.accessRule('https://maps.googleapis.com/*');
-// App.accessRule('https://maps.gstatic.com/*');
+// //meteor local is supposed to be auto included but was not?
+// App.accessRule('*://meteor.local/*');
+// App.accessRule('*://10.0.2.2/*');
+// //environment specific (dev, prod) domains
+// App.accessRule('*://growthgift.meteor.com/*');
+// App.accessRule('*://growthgift.com/*');
+// App.accessRule('*://gr0.co/*');
+// App.accessRule('*://107.170.212.162/*');
+
+// //google maps, places
+// // App.accessRule('https://maps.googleapis.com/*');
+// // App.accessRule('https://maps.gstatic.com/*');
+
+// // Social sharing
+// App.accessRule('*://facebook.com/*');
+// App.accessRule('*://gmail.com/*');
+// App.accessRule('*://linkedin.com/*');
+// App.accessRule('*://pinterest.com/*');
+// App.accessRule('*://twitter.com/*');
+
+// // Images
+// App.accessRule('*://*/*.jpg');
+// App.accessRule('*://*/*.png');
+
+App.accessRule('*');
 

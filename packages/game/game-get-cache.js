@@ -57,9 +57,7 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
     start: msUser.toUserTime(user, game.start, null, msTimezone.dateTimeDisplay)
   };
 
-  // TODO - fix this to allow access rules on cordova apps..
-  game.xDisplay.img =(game.image && !Meteor.isCordova) ? game.image
-   : ggUrls.img('games')+'playful-beach.jpg';
+  game.xDisplay.img =ggGame.getImage(game);
 
   // Privileges
   var edit =(game && ggMay.editGame(game, userId)) ? true : false;
