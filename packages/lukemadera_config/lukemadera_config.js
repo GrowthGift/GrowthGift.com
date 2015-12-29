@@ -40,6 +40,10 @@ Config.appInfo =function(params) {
       ios: {
         link: 'https://itunes.apple.com/us/app/growth-gift/id1064362492'
       }
+    },
+    facebook: {
+      // appId: '195380783916970'    // localhost
+      appId: '1637200843214153'
     }
   };
   if(Config.ENV ==='prod') {
@@ -48,7 +52,12 @@ Config.appInfo =function(params) {
     ret.shortDomain ='gr0.co';
     ret.scheme ='http';
     ret.port =null;
+    ret.facebook.appId ='1637200623214175';
   }
+
+  // TESTING social share
+  ret.shortDomain ='gr0.co';
+  ret.port =null;
 
   // http://localhost:3000
   ret.rootUrl =ret.scheme + '://' + ret.domain + ( ret.port ? (':' + ret.port) : '');

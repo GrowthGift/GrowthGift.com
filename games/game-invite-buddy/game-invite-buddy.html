@@ -2,23 +2,26 @@
 
   {{ #unless data.gameUser.buddyId }}
   <div class='margin-b'>
-    <h5>Who is your buddy?</h5>
-    <div>Share this link with someone to ask them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
+    <h5>Who would you like to buddy up with for this game?</h5>
+    <div>Contact a friend to invite them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
     {{ #if data.inputOpts.buddyTipVisible }}
     <div class='font-small'>Someone who is at a similar level to you and may have a similar pledge is usually best.</div>
     <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
-    <div class='font-small red'>Copy the link below. Then paste it in an email or on social media to send it to your buddy.</div>
+    <div class='font-small red'>Click one of the buttons below to contact your buddy to-be on social media or email. Or copy the link to manually paste it in another medium to send to your buddy.</div>
     {{ /if }}
-    <div class='margin-tb'>
-      <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' />
+    <div class='margin-tb game-invite-buddy-social-share'>
+      <!-- <input type='text' readonly=true value='{{ data.shareLinks.buddy }}' class='game-invite-buddy-input-share-link center' /> -->
+      {{ >lmSocialShare opts=data.optsSocialShare }}
+
+      <div class='margin-large-t'>Here's some example share text if you'd like it:</div>
+      <div><textarea value='{{ data.exampleMessage }}' class='game-invite-buddy-input-example-message' ></textarea></div>
     </div>
   </div>
   {{ else }}
   <div>You already have a buddy for this game!</div>
   {{ /unless}}
 
-  <div class='flexbox'>
-    <div class='flex1'>&nbsp;</div>
+  <div class='center margin-large-t'>
     <a class='a-div btn btn-primary' href='{{ data.hrefNext }}'>
       {{ #unless data.gameUser.buddyId }}
         Done

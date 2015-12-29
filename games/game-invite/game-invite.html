@@ -20,13 +20,13 @@
 
       {{ #if data.nav.buddy }}
       <div class='margin-tb'>
-        {{ >gameInviteBuddy gameSlug=../gameSlug game=../helperData.game gameUser=../helperData.gameUser }}
+        {{ >gameInviteBuddy gameSlug=../gameSlug game=../helperData.game gameUser=../helperData.gameUser gameMainAction=../helperData.gameRule.mainAction }}
       </div>
       {{ /if }}
 
       {{ #if data.nav.reach }}
       <div class='margin-tb'>
-        {{ >gameInviteReach gameSlug=../gameSlug user=../helperData.user }}
+        {{ >gameInviteReach gameSlug=../gameSlug user=../helperData.user gameMainAction=../helperData.gameRule.mainAction }}
       </div>
       {{ /if }}
 
