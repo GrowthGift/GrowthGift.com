@@ -103,8 +103,10 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
   ret.showImpact = ( ret.userInGame && ret.gameState.gameStarted ) ? true : false;
   var userActiveChallenge =ggGame.getUserActiveChallenge(userGame, game,
    gameRule, null);
+  var isLastChallenge =( ret.userChallengeTotals.possible ===
+   gameRule.challenges.length ) ? true : false;
   ret.showGameSummaryLink = ( ret.userInGame && ( ret.gameState.gameEnded
-   || userActiveChallenge ) ) ? ggUrls.gameUserSummary(game.slug) : null;
+   || ( userActiveChallenge && isLastChallenge ) ) ) ? ggUrls.gameUserSummary(game.slug) : null;
 
   if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
     ret.gameState.starts =msUser.toUserTime(user, ret.gameState.starts, null, msTimezone.dateTimeDisplay);

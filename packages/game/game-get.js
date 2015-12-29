@@ -15,6 +15,9 @@ ggGame.getUserGameTotalActions =function(userGame) {
   return numActions;
 };
 
+/**
+Returns the current challenge IF the user has completed it. Null otherwise.
+*/
 ggGame.getUserActiveChallenge =function(userGame, game, gameRule, nowTime) {
   var challenge =null;
   if(!userGame || !userGame.challenges || !game || !gameRule) {

@@ -38,6 +38,7 @@ GameChallengeFeedbackSchema = new SimpleSchema({
 
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
+    var onLastChallenge =challenge.onLastChallenge;
     ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) {
       // Need to clear cache
       var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
@@ -46,7 +47,9 @@ Meteor.methods({
         var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
         var gameSlug =templateInst.data.gameSlug;
         if(gameSlug) {
-          Router.go(ggUrls.gameUserSummary(gameSlug));
+          var url = onLastChallenge ? ggUrls.gameUserSummary(gameSlug) :
+           ggUrls.game(gameSlug);
+          Router.go(url);
         }
       }
     });
