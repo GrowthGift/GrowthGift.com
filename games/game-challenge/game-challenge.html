@@ -9,7 +9,7 @@
     {{#if data.privileges.addChallenge }}
     <div class='margin-xlarge-b'>
       <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
-      {{#autoForm schema="GameChallengeFeedbackSchema" id='gameChallengeFeedbackForm' validation="blur" }}
+      {{#autoForm schema="GameChallengeNewSchema" id='gameChallengeFeedbackForm' validation="blur" }}
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
         {{>afQuickField name="description" type="textarea" label="Details" }}
 
@@ -20,6 +20,22 @@
           {{>afQuickField name="feedback.prompt" type="hidden" value=data.inputOpts.feedback.prompt }}
           {{>afQuickField name="feedback.answer" type="textarea" label=data.inputOpts.feedback.prompt class='game-challenge-feedback-answer-input'}}
           <div class='font-small red'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
+        {{ /if }}
+
+        {{ #if data.inputOpts.inspiration.visible }}
+          <div class='margin-large-t'>Feeling inspirational? (Optional)</div>
+          <div class='font-small'>You've been selected to choose an inspirational video, image, or quote to be displayed on the main game page and sent in the challenge reminders to those who have not yet completed their challenges. No pressure - if you're not in the mood right now, keep playing and you'll get more opportunities later!</div>
+          {{>afQuickField name="inspiration.userId" type="hidden" value=data.userId }}
+          {{>afQuickField name="inspiration.type" type="select" options=data.inputOpts.inspiration.typeOpts class="game-challenge-inspiration-type-input" }}
+          {{ #if data.inputOpts.inspiration.videoVisible }}
+            {{>afQuickField name="inspiration.video" label="An inspirational YouTube video link" }}
+          {{ /if }}
+          {{ #if data.inputOpts.inspiration.imageVisible }}
+            {{>afQuickField name="inspiration.image" label="Your link to an inspirational image on the Internet" }}
+          {{ /if }}
+          {{ #if data.inputOpts.inspiration.quoteVisible }}
+            {{>afQuickField name="inspiration.quote" type="textarea" label="Your inspirational quote (please cite the source if you know it!)" }}
+          {{ /if }}
         {{ /if }}
 
         {{>afQuickField name="onLastChallenge" type="hidden" value=data.inputOpts.onLastChallengeVal }}

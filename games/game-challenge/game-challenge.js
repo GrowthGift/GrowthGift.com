@@ -1,4 +1,4 @@
-GameChallengeFeedbackSchema = new SimpleSchema({
+GameChallengeNewSchema = new SimpleSchema({
   id: {
     type: String,
     optional: true    // required but set manually..
@@ -27,6 +27,30 @@ GameChallengeFeedbackSchema = new SimpleSchema({
     optional: true
   },
   "feedback.answer": {
+    type: String,
+    optional: true
+  },
+  inspiration: {
+    type: Object,
+    optional: true
+  },
+  "inspiration.userId": {
+    type: String,
+    optional: true
+  },
+  "inspiration.type": {
+    type: String,
+    optional: true
+  },
+  "inspiration.video": {
+    type: String,
+    optional: true
+  },
+  "inspiration.image": {
+    type: String,
+    optional: true
+  },
+  "inspiration.quote": {
     type: String,
     optional: true
   },
@@ -117,6 +141,11 @@ if(Meteor.isClient) {
   Template.gameChallenge.created =function() {
     Meteor.subscribe('game', Template.instance().data.gameSlug);
     Template.instance().feedbackPrompt =null;
+    this.reactiveData = new ReactiveVar({
+      inspirationVideoVisible: false,
+      inspirationImageVisible: false,
+      inspirationQuoteVisible: false
+    });
   };
 
   Template.gameChallenge.helpers({
@@ -150,6 +179,7 @@ if(Meteor.isClient) {
       var gameUser =ggGame.getGameUser(game, userId, {});
       var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
       var gameCurrentChallenge =curChallenge.currentChallenge;
+      var reactiveData =Template.instance().reactiveData.get();
 
       var ret ={
         challenges: ggGame.getUserGameChallenges(game._id, userId),
@@ -162,6 +192,7 @@ if(Meteor.isClient) {
           }
         },
         userGame: userGame,
+        userId: userId,
         privileges: {
           addChallenge: false,
           addChallengeMessage: 'You may not add a challenge completion at this time.'
@@ -172,6 +203,17 @@ if(Meteor.isClient) {
             visible: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? true : false,
             prompt: "",
             help: ""
+          },
+          inspiration: {
+            visible: ggGame.promptForNewInspiration(game, userId, null),
+            typeOpts: [
+              { value: 'video', label: 'Video' },
+              { value: 'image', label: 'Image' },
+              { value: 'quote', label: 'Quote' }
+            ],
+            videoVisible: reactiveData.inspirationVideoVisible,
+            imageVisible: reactiveData.inspirationImageVisible,
+            quoteVisible: reactiveData.inspirationQuoteVisible
           },
           onLastChallengeVal: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? 1 : 0
         },
@@ -249,6 +291,17 @@ if(Meteor.isClient) {
       }
 
       return ret;
+    }
+  });
+
+  Template.gameChallenge.events({
+    'change .game-challenge-inspiration-type-input': function(evt, template) {
+      var typeVal =evt.target.value;
+      var reactiveData =template.reactiveData.get();
+      reactiveData.inspirationVideoVisible = ( typeVal ==='video' ) ? true : false;
+      reactiveData.inspirationImageVisible = ( typeVal ==='image' ) ? true : false;
+      reactiveData.inspirationQuoteVisible = ( typeVal ==='quote' ) ? true : false;
+      template.reactiveData.set(reactiveData);
     }
   });
 

@@ -23,9 +23,11 @@ Package.onUse(function(api) {
     'lib/collections.js',
     'game-get.js',
     'game-get-awards.js',
+    'game-get-inspiration.js',
     'game.js',
     'game-awards.js',
     'game-challenge.js',
+    'game-inspiration.js',
     'game-get-cache.js'
   ]);
   api.export('ggGame');

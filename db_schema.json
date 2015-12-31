@@ -166,6 +166,20 @@
         ]
       }
     ],
+    "inspiration": [
+      {
+        "userId": "{String}",
+        "content": "{String} [Mixed, a video or image url or a quote]",
+        "type": "{String} 'image', 'video', 'quote'",
+        "likes": [
+          {
+            "userId": "{String}",
+            "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+          }
+        ],
+        "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+      }
+    ],
     "createdAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
     "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
   },

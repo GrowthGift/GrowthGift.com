@@ -43,6 +43,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
       // See if on last challenge, then remove key
       var onLastChallenge =challenge.onLastChallenge;
       delete challenge.onLastChallenge;
+
       // If submitted feedback, save that separately
       if(challenge.feedback) {
         var userIndex =_.findIndex(game.users, 'userId', userId);
@@ -65,6 +66,12 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
           GamesCollection.update({ _id:game._id }, modifier, function(err, result) {});
         }
         delete challenge.feedback;
+      }
+
+      // If submitted inspiration, save that separately
+      if(challenge.inspiration) {
+        ggGame.saveInspiration(game._id, challenge.inspiration);
+        delete challenge.inspiration;
       }
 
       modifier ={};   // Reset in case feedback set it
