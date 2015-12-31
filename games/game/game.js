@@ -57,7 +57,8 @@ if(Meteor.isClient) {
       links: ret.links,
       awards: ret.awards,
       gameState: ret.gameState,
-      gameMainAction: ret.gameRule.mainAction
+      gameMainAction: ret.gameRule.mainAction,
+      game: ret.game
     };
     // Set on template instance so it is accessible.
     templateInst.data.templateHelperData =templateHelperData;

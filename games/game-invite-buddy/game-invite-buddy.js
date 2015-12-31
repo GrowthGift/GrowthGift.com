@@ -1,7 +1,6 @@
 if(Meteor.isClient) {
 
   Template.gameInviteBuddy.created =function() {
-    Meteor.subscribe('game', Template.instance().data.gameSlug);
     this.reactiveData = new ReactiveVar({
       buddyTipVisible: false
     });
