@@ -41,6 +41,8 @@ if(Meteor.isClient) {
           email: true,
           facebookMessage: true,
           gmail: true,
+          googlePlus: true,
+          sms: true,
           url: true,
           shareData: {
             url: shareLinks.buddy,

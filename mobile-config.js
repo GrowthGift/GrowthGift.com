@@ -78,9 +78,9 @@ App.setPreference('StatusBarBackgroundColor', '#8E9599');
 App.accessRule('*://meteor.local/*');
 App.accessRule('*://10.0.2.2/*');
 //environment specific (dev, prod) domains
-App.accessRule('*://growthgift.meteor.com/*');
-App.accessRule('*://growthgift.com/*');
-App.accessRule('*://gr0.co/*');
+App.accessRule('*://*.growthgift.meteor.com/*');
+App.accessRule('*://*.growthgift.com/*');
+App.accessRule('*://*.gr0.co/*');
 App.accessRule('*://107.170.212.162/*');
 
 //google maps, places
@@ -88,11 +88,16 @@ App.accessRule('*://107.170.212.162/*');
 // App.accessRule('https://maps.gstatic.com/*');
 
 // Social sharing
-App.accessRule('*://facebook.com/*');
-App.accessRule('*://gmail.com/*');
-App.accessRule('*://linkedin.com/*');
-App.accessRule('*://pinterest.com/*');
-App.accessRule('*://twitter.com/*');
+App.accessRule('*://*.facebook.com/*');
+App.accessRule('*://*.fbcdn.net/*');
+App.accessRule('*://*.gmail.com/*');
+App.accessRule('*://*.google.com/*');
+App.accessRule('*://*.linkedin.com/*');
+App.accessRule('*://*.pinterest.com/*');
+App.accessRule('*://*.twitter.com/*');
+
+App.accessRule('mailto:*');
+App.accessRule('sms:*');
 
 // Images
 App.accessRule('*://*/*.jpg');

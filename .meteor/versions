@@ -1,7 +1,10 @@
 accounts-base@1.2.2
 accounts-password@1.1.4
 aldeed:autoform@5.8.1
-aldeed:collection2@2.7.1
+aldeed:collection2@2.8.0
+aldeed:collection2-core@1.0.0
+aldeed:schema-deny@1.0.1
+aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 autoupdate@1.2.4
 babel-compiler@5.8.24_1
@@ -66,7 +69,7 @@ lukemadera:config@0.0.1
 lukemadera:mocks@0.0.1
 lukemadera:notify@0.0.1
 lukemadera:sendgrid@0.0.1
-lukemadera:social-share@1.1.2
+lukemadera:social-share@1.2.0
 mdg:validation-error@0.2.0
 meteor@1.1.10
 meteor-base@1.0.1

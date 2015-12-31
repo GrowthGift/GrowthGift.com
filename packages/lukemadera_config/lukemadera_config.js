@@ -57,6 +57,11 @@ Config.appInfo =function(params) {
     ret.facebook.appId ='1637200623214175';
   }
 
+  // Social share testing
+  // ret.domain ='growthgiftdev.meteor.com';
+  // ret.shortDomain ='growthgiftdev.meteor.com';
+  // ret.port =null;
+
   // http://localhost:3000
   ret.rootUrl =ret.scheme + '://' + ret.domain + ( ret.port ? (':' + ret.port) : '');
   // https://short.co

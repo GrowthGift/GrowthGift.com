@@ -32,8 +32,10 @@ if(Meteor.isClient) {
         optsSocialShare: {
           email: true,
           facebook: true,
+          googlePlus: true,
           linkedIn: true,
           pinterest: true,
+          sms: true,
           twitter: true,
           url: true,
           shareData: {
