@@ -121,7 +121,7 @@ Meteor.methods({
 
 if(Meteor.isClient) {
   AutoForm.hooks({
-    gameChallengeFeedbackForm: {
+    gameChallengeNewForm: {
       onSubmit: function(insertDoc, updateDoc, currentDoc) {
         var self =this;
         //without this, the Meteor.call line submits the form..
@@ -144,7 +144,8 @@ if(Meteor.isClient) {
     this.reactiveData = new ReactiveVar({
       inspirationVideoVisible: false,
       inspirationImageVisible: false,
-      inspirationQuoteVisible: false
+      inspirationQuoteVisible: false,
+      inspirationContent: null
     });
   };
 
@@ -213,7 +214,8 @@ if(Meteor.isClient) {
             ],
             videoVisible: reactiveData.inspirationVideoVisible,
             imageVisible: reactiveData.inspirationImageVisible,
-            quoteVisible: reactiveData.inspirationQuoteVisible
+            quoteVisible: reactiveData.inspirationQuoteVisible,
+            content: reactiveData.inspirationContent
           },
           onLastChallengeVal: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? 1 : 0
         },
@@ -295,12 +297,25 @@ if(Meteor.isClient) {
   });
 
   Template.gameChallenge.events({
-    'change .game-challenge-inspiration-type-input': function(evt, template) {
+    'change .game-challenge-inspiration-type-input, blur .game-challenge-inspiration-type-input': function(evt, template) {
       var typeVal =evt.target.value;
       var reactiveData =template.reactiveData.get();
       reactiveData.inspirationVideoVisible = ( typeVal ==='video' ) ? true : false;
       reactiveData.inspirationImageVisible = ( typeVal ==='image' ) ? true : false;
       reactiveData.inspirationQuoteVisible = ( typeVal ==='quote' ) ? true : false;
+      template.reactiveData.set(reactiveData);
+    },
+    'change .game-challenge-inspiration-video-input, blur .game-challenge-inspiration-video-input': function(evt, template) {
+      var val =evt.target.value;
+      var reactiveData =template.reactiveData.get();
+      if(val.indexOf('youtube.com') < 0) {
+        AutoForm.addStickyValidationError('gameChallengeNewForm', 'inspiration.video', 'videoYoutube', val);
+        reactiveData.inspirationContent =null;
+      }
+      else {
+        AutoForm.removeStickyValidationError('gameChallengeNewForm', 'inspiration.video');
+        reactiveData.inspirationContent =val.replace('watch?v=', 'embed/');
+      }
       template.reactiveData.set(reactiveData);
     }
   });

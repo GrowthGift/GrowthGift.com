@@ -9,7 +9,7 @@
     {{#if data.privileges.addChallenge }}
     <div class='margin-xlarge-b'>
       <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
-      {{#autoForm schema="GameChallengeNewSchema" id='gameChallengeFeedbackForm' validation="blur" }}
+      {{#autoForm schema="GameChallengeNewSchema" id='gameChallengeNewForm' validation="blur" }}
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
         {{>afQuickField name="description" type="textarea" label="Details" }}
 
@@ -28,10 +28,15 @@
           {{>afQuickField name="inspiration.userId" type="hidden" value=data.userId }}
           {{>afQuickField name="inspiration.type" type="select" options=data.inputOpts.inspiration.typeOpts class="game-challenge-inspiration-type-input" }}
           {{ #if data.inputOpts.inspiration.videoVisible }}
-            {{>afQuickField name="inspiration.video" label="An inspirational YouTube video link" }}
+            {{>afQuickField name="inspiration.video" label="An inspirational YouTube video link" class="game-challenge-inspiration-video-input" }}
+            <div class='font-small'>Aim for 1 to 3 minutes long.</div>
+            {{ #if data.inputOpts.inspiration.content }}
+              <div>Preview:</div>
+              <iframe width="100%" height="340" src="{{ data.inputOpts.inspiration.content }}?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            {{ /if }}
           {{ /if }}
           {{ #if data.inputOpts.inspiration.imageVisible }}
-            {{>afQuickField name="inspiration.image" label="Your link to an inspirational image on the Internet" }}
+            {{>afQuickField name="inspiration.image" label="Your link to an inspirational image on the Internet" class='game-challenge-inspiration-image-input' }}
           {{ /if }}
           {{ #if data.inputOpts.inspiration.quoteVisible }}
             {{>afQuickField name="inspiration.quote" type="textarea" label="Your inspirational quote (please cite the source if you know it!)" }}

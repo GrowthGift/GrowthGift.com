@@ -18,6 +18,10 @@ if(Meteor.isClient) {
       var inspiration =ggGame.getMostRecentInspiration(game);
       if(inspiration) {
         ret[inspiration.type] =inspiration.content;
+        if( inspiration.type === 'video' ) {
+          // Convert Youtube video to embed format
+          ret[inspiration.type] =ret[inspiration.type].replace('watch?v=', 'embed/');
+        }
       }
       else {
         // Default

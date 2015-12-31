@@ -103,3 +103,6 @@ App.accessRule('sms:*');
 App.accessRule('*://*/*.jpg');
 App.accessRule('*://*/*.png');
 
+// Video
+App.accessRule('*://*.youtube.com/*');
+
