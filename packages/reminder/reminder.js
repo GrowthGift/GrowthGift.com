@@ -92,9 +92,9 @@ ggReminder.gameChallengeDue =function() {
   var dueTime =msTimezone.curDateTime('moment').add(minutesBefore, 'minutes');
   var dueTimeUpper =dueTime.clone().add(minutesRange, 'minutes').format(dtFormat);
   dueTime =dueTime.format(dtFormat);
-  console.log(dueTime, dueTimeUpper, msTimezone.curDateTime());   // TESTING
   var cacheGames =CacheGameCurrentChallengesCollection.find({
    currentChallengeEnd: { $gte: dueTime, $lt: dueTimeUpper } }).fetch();
+  console.log(dueTime, dueTimeUpper, msTimezone.curDateTime(), cacheGames);   // TESTING
 
   var userGames, challengeStart, query;
   var gameUserIndex, gameUser, gameBuddyUser, doneUserIds;
