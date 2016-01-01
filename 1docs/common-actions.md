@@ -25,6 +25,7 @@ APPNAMEDEV appNameDev
         - edit scheme build target (remove bad missing one and re-add proper one)
         - update build settings code signing to use distribution certificate & provisioning profile
         - update general bundle identifier (com.growthgift)
+        - bump version (or build) number
         - set device orientations to all
         - set build to generic device
         - run then archive
