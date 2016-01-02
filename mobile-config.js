@@ -5,7 +5,9 @@ if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.pr
     // author: 'Percolate Studio Team',
     // email: 'us@percolatestudio.com',
     website: 'growthgift.com',
-    version: '1.2.0',
+    version: '1.2.1',
+    // Too late for this.. can not change after publish to (Android)
+    // app store the first time..
     // id: 'com.growthgift'
   });
 }
@@ -14,7 +16,7 @@ else {
     name: 'GrowthGiftDev',
     description: 'Grow togther.',
     website: 'growthgiftdev.meteor.com',
-    version: '1.2.0',
+    version: '1.2.1',
     id: 'com.meteor.growthgiftdev'
   });
 }

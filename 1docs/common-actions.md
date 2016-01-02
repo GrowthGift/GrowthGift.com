@@ -14,11 +14,11 @@ APPNAMEDEV appNameDev
   - dev: `meteor deploy APPNAMEDEV.meteor.com`
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
-    - prod: `ENV=prod meteor run android-device --mobile-server http://APPNAME.meteor.com`
+    - prod: `ENV=prod meteor run android-device --mobile-server 107.170.212.162`
     - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com`
   - build
     - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server 107.170.212.162`
-      - open xcode project and fix things then build .ipa file
+      - ios: open xcode project and fix things then build .ipa file
         - run dev version first (NOTE: can not figure out how to run the SAME project on device and for distribution release..)
         - delete project after confirm working, then rebuild it
         - manage schemes to rename to proper one (was showing 'dev' but should be prod)
@@ -32,8 +32,8 @@ APPNAMEDEV appNameDev
     - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com`
 3. upload the .apk/.ipa and do android/ios specific app store stuff
   1. Android: https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store
-    1. `cd ~/Documents/web/1mobile-build/APPNAME/android && jarsigner -digestalg SHA1 unaligned.apk APPNAME`
-    2. `~/.meteor/android_bundle/android-sdk/build-tools/20.0.0/zipalign 4 unaligned.apk production.apk`
+    1. `cd ~/Documents/projects/1mobile-build/growthgift/android && jarsigner -digestalg SHA1 release-unsigned.apk growthgift`
+    2. `$ANDROID_HOME/build-tools/23.0.2/zipalign 4 release-unsigned.apk production.apk`
 
 ## Add new page / route
 - create new files (html, js, import.less) in a (root level) folder
