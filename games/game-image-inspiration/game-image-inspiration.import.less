@@ -1,0 +1,32 @@
+.game-image-inspiration-quote {
+  position: relative;
+  z-index:1;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+}
+.game-image-inspiration-quote::after {
+  content: "";
+  background-image: url("@{pathImgBg}/dark-texture.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+.game-image-inspiration-quote-text {
+  padding: 10px;
+  text-align: center;
+  .font-xlarge;
+  font-style: italic;
+  color: @white;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 45px;
+}

@@ -110,10 +110,10 @@ if(Meteor.isClient) {
       // Form start date
       var start =(edit && game.start) ? game.start : null;
       if(!edit) {
-        // var nowTime =msTimezone.curDateTime('moment');
         // We WANT a local (browser) time since that is what the date time
         // picker uses. TODO - if user's timezone does NOT match the browser
         // / moment timezone, would still need to convert this..?
+        // var nowTime =msTimezone.curDateTime('moment');
         var nowTime =moment();
         start =nowTime.clone().startOf('week');
         start =start.add(1, 'days');    // Start on Monday
@@ -121,12 +121,7 @@ if(Meteor.isClient) {
         if(start.format('YYYY-MM-DD') <nowTime.format('YYYY-MM-DD')) {
           start =start.add(7, 'days');
         }
-        // Just start at midnight to make it easier to explain.
-        // // start at 5pm so add 17 hours from midnight
-        // start.add(17, 'hours');
-        // start =nowTime.clone();    // TODO - temporary for Apple app review and testing
-        // As with above, do NOT conver time; just keep local.
-        // start =msUser.toUserTime(Meteor.user(), start.format(msTimezone.dateTimeFormat), null);
+        // As with above, do NOT convert time; just keep local.
         start =start.format(msTimezone.dateTimeFormat);
       }
 
