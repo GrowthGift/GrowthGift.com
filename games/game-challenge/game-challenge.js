@@ -181,6 +181,8 @@ if(Meteor.isClient) {
       var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
       var gameCurrentChallenge =curChallenge.currentChallenge;
       var reactiveData =Template.instance().reactiveData.get();
+      var onLastChallengeVal = ( curChallenge.possibleCompletions ===
+       gameRule.challenges.length ) ? 1 : 0;
 
       var ret ={
         challenges: ggGame.getUserGameChallenges(game._id, userId),
@@ -206,7 +208,10 @@ if(Meteor.isClient) {
             help: ""
           },
           inspiration: {
-            visible: ggGame.promptForNewInspiration(game, userId, null),
+            // Do not show on last challenge since already have feedback
+            // to fill out.
+            visible: !onLastChallengeVal &&
+             ggGame.promptForNewInspiration(game, userId, null),
             typeOpts: [
               { value: 'video', label: 'Video' },
               { value: 'image', label: 'Image' },
@@ -217,7 +222,7 @@ if(Meteor.isClient) {
             quoteVisible: reactiveData.inspirationQuoteVisible,
             content: reactiveData.inspirationContent
           },
-          onLastChallengeVal: ( curChallenge.possibleCompletions === gameRule.challenges.length ) ? 1 : 0
+          onLastChallengeVal: onLastChallengeVal
         },
         hiEmail: 'hi@growthgift.com'    // TODO - pull from config
       };
