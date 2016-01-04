@@ -1,6 +1,7 @@
 ggGame.promptForNewInspiration =function(game, userId, nowTime) {
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var minutesSpacing = 12 * 60;
+  minutesSpacing =0;    // TESTING
   var mostRecentInspiration =ggGame.getMostRecentInspiration(game);
   if(!mostRecentInspiration) {
     return true;

@@ -86,7 +86,7 @@ ggReminder.gameChallengeDue =function() {
   // Find any challenges that are due X minutes from now, give or take Y
   // minutes, which is often we run this cron job.
   var minutesBefore =9 * 60;
-  // minutesBefore =8.7 * 60;   // TESTING
+  // minutesBefore =10.35 * 60;   // TESTING
   var minutesRange =15;   // Should match how often the cron job is run.
   var dtFormat =msTimezone.dateTimeFormat;
   var dueTime =msTimezone.curDateTime('moment').add(minutesBefore, 'minutes');
@@ -100,7 +100,16 @@ ggReminder.gameChallengeDue =function() {
   var gameUserIndex, gameUser, gameBuddyUser, doneUserIds;
   var mostRecentUserChallenge;
   var user, buddyUser, paramsNotify;
+  var game, inspiration;
   cacheGames.forEach(function(cg) {
+    // Get current game inspiration, if any.
+    inspiration =null;    // Reset
+    game =GamesCollection.findOne({ _id: cg.gameId }, { fields: { inspiration:1 } });
+    if(game.inspiration && game.inspiration.length) {
+      inspiration =ggGame.getMostRecentInspiration(game);
+    }
+
+
     // Find all users who have not completed this challenge yet.
     // Note this will still get PAST challenges so we still need to double
     // check later if MOST RECENT challenge is before the current challenge
@@ -144,6 +153,7 @@ ggReminder.gameChallengeDue =function() {
                 title: cg.gameTitle,
                 slug: cg.gameSlug
               },
+              inspiration: inspiration,
               gameMainAction: cg.gameMainAction
             };
             gameUserBuddy =gameUser.buddyId ?

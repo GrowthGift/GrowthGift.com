@@ -120,6 +120,23 @@ lmNotifyTypes.gameChallengeDueReminder =function(type, data, params) {
   var hrefGame =ggUrls.removeLeadingSlash(gameUrl);
   var gameFullUrl =Config.appInfo().shortRootUrl + gameUrl;
 
+  var inspirationHtml =null;
+  if( data.inspiration ) {
+    inspirationHtml ="<br /><br />" +
+      "Need some inspiration?" +
+      "<br />";
+    if( data.inspiration.type === 'image' ) {
+      inspirationHtml += "<img src='" + data.inspiration.content + "' style='max-width: 480px;' />";
+    }
+    if( data.inspiration.type === 'video' ) {
+      inspirationHtml += data.inspiration.content;
+    }
+    if( data.inspiration.type === 'quote' ) {
+      inspirationHtml += data.inspiration.content;
+    }
+    inspirationHtml += "<br />";
+  }
+
   lmNotifyHelpers.separateUsers({type:type, userIds: userIds, notifId:notifId, noBulk:true}, function(retSep) {
 
     var title ="Game Challenge Due";
@@ -132,8 +149,9 @@ lmNotifyTypes.gameChallengeDueReminder =function(type, data, params) {
     var emailData ={
       subject: title,
       html: "Here's a friendly reminder for you " + ( buddyUserName ? ( "and your buddy " + buddyUserName ) : "" ) + " to do your " + gameMainAction + " for today and then log them at the link below!"+
-        "<br /><br />"+
-        gameFullUrl
+        "<br /><br />" +
+        gameFullUrl +
+        ( inspirationHtml ? inspirationHtml : '' )
     };
     var smsData =false;
 
