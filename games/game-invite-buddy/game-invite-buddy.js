@@ -29,7 +29,7 @@ if(Meteor.isClient) {
         body: "I'm doing " + gameMainAction + " for 5 minutes a day this week. It's a simple partnered habits game and I chose you to be my one and only buddy!\nClick below to join me!"
       };
 
-      return {
+      var ret = {
         gameUser: gameUser,
         shareLinks: shareLinks,
         inputOpts: {
@@ -53,6 +53,17 @@ if(Meteor.isClient) {
         },
         exampleMessage: shareContent.body + "\n" + shareLinks.buddy
       };
+
+      // TEMPORARY: iOS app needs to be approved before access rules take effect
+      if( Meteor.isCordova && navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ) {
+        ret.optsSocialShare.email =false;
+        ret.optsSocialShare.facebookMessage =false;
+        ret.optsSocialShare.gmail =false;
+        ret.optsSocialShare.googlePlus =false;
+        ret.optsSocialShare.sms =false;
+      }
+
+      return ret;
     }
   });
 

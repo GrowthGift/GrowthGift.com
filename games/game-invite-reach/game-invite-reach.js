@@ -26,7 +26,7 @@ if(Meteor.isClient) {
       var image =ggGame.getImage(game);
       image = ( image.indexOf('://') > -1 ) ? image : ( shortRootUrl + image );
 
-      return {
+      var ret ={
         shareLinks: shareLinks,
         hrefNext: ggUrls.game(this.gameSlug),
         optsSocialShare: {
@@ -51,6 +51,19 @@ if(Meteor.isClient) {
         },
         exampleMessage: shareContent.body + "\n" + shareLinks.reach
       };
+      
+      // TEMPORARY: iOS app needs to be approved before access rules take effect
+      if( Meteor.isCordova && navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ) {
+        ret.optsSocialShare.email =false;
+        ret.optsSocialShare.facebook =false;
+        ret.optsSocialShare.googlePlus =false;
+        ret.optsSocialShare.linkedIn =false;
+        ret.optsSocialShare.pinterest =false;
+        ret.optsSocialShare.sms =false;
+        ret.optsSocialShare.twitter =false;
+      }
+
+      return ret;
     }
   });
 
