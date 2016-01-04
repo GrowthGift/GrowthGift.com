@@ -88,10 +88,17 @@ ggReminder.gameChallengeDue =function() {
   var minutesBefore =9 * 60;
   // minutesBefore =10.35 * 60;   // TESTING
   var minutesRange =15;   // Should match how often the cron job is run.
-  var dtFormat =msTimezone.dateTimeFormat;
+  // Can NOT use seconds, otherwise if the cron job does not run exactly
+  // on the 00 seconds, it could run twice, once for >=17:45:06 and <18:00:06
+  // and a duplicate for <=18:00:00 and <18:15:00, since it is not guaranteed
+  // to run on the same second each time. Assuming it IS guaranteed to be
+  // run on the same MINUTE, we should be okay. Otherwise we could still
+  // run in to the same issue - running zero, 1 or 2 times pending when
+  // exactly the cron job was run.
+  var dtFormatNoSeconds =msTimezone.dateTimeFormatNoSeconds;
   var dueTime =msTimezone.curDateTime('moment').add(minutesBefore, 'minutes');
-  var dueTimeUpper =dueTime.clone().add(minutesRange, 'minutes').format(dtFormat);
-  dueTime =dueTime.format(dtFormat);
+  var dueTimeUpper =dueTime.clone().add(minutesRange, 'minutes').format(dtFormatNoSeconds);
+  dueTime =dueTime.format(dtFormatNoSeconds);
   var cacheGames =CacheGameCurrentChallengesCollection.find({
    currentChallengeEnd: { $gte: dueTime, $lt: dueTimeUpper } }).fetch();
   console.log(dueTime, dueTimeUpper, msTimezone.curDateTime(), cacheGames);   // TESTING

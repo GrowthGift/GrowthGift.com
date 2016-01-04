@@ -1,5 +1,6 @@
 msTimezone ={
   dateTimeFormat: 'YYYY-MM-DD HH:mm:ssZ',
+  dateTimeFormatNoSeconds: 'YYYY-MM-DD HH:mm:00Z',
   dateTimeDisplay: 'ddd MMM DD, YYYY @ h:mma'
 };
 
