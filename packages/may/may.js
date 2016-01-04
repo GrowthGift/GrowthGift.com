@@ -172,3 +172,13 @@ ggMay.editUserGameChallenge =function(gameCurrentChallenge, challenge) {
   }
   return false;
 };
+
+ggMay.likeGameInspiration =function(inspiration, game, userId, nowTime) {
+  nowTime =nowTime || msTimezone.curDateTime('moment');
+  if(!inspiration || !userId) {
+    return false;
+  }
+  return ( ( moment(game.end, msTimezone.dateTimeFormat) >= nowTime ) &&
+   ( !inspiration.likes || !inspiration.likes.length ||
+   ( _.findIndex(inspiration.likes, 'userId', userId) < 0 ) ) ) ? true : false;
+};

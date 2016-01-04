@@ -22,3 +22,39 @@ ggGame.getMostRecentInspiration =function(game) {
   // Assume in order so last is the most recent
   return game.inspiration[(game.inspiration.length - 1)];
 };
+
+/**
+Will return most recent OR most liked IF game over.
+*/
+ggGame.getCurrentInspiration =function(game, nowTime) {
+  if(!game || !game.inspiration || !game.inspiration.length) {
+    return null;
+  }
+  nowTime =nowTime || msTimezone.curDateTime('moment');
+  var nowTimeFormat =nowTime.format(msTimezone.dateTimeFormat);
+  if( game.end <= nowTimeFormat) {
+    return _ggGame.getMostLikedInspiration(game);
+  }
+  else {
+    return ggGame.getMostRecentInspiration(game);
+  }
+};
+
+_ggGame.getMostLikedInspiration =function(game) {
+  var mostLikes = {
+    amount: 0,
+    index: -1
+  };
+  game.inspiration.forEach(function(inspiration, index) {
+    if( inspiration.likes && inspiration.likes.length > mostLikes.amount ) {
+      mostLikes ={
+        amount: inspiration.likes.length,
+        index: index
+      };
+    }
+  });
+  if(mostLikes.index < 0) {
+    return null;
+  }
+  return game.inspiration[mostLikes.index];
+};

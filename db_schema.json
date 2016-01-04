@@ -168,6 +168,7 @@
     ],
     "inspiration": [
       {
+        "_id": "{String}",
         "userId": "{String}",
         "content": "{String} [Mixed, a video or image url or a quote]",
         "type": "{String} 'image', 'video', 'quote'",

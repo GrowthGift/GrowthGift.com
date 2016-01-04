@@ -11,5 +11,18 @@
         <div class='game-image-inspiration-quote-text'>{{ data.quote }}</div>
       </div>
     {{ /if }}
+
+    {{ #if data.hasInspiration }}
+      <div class='flexbox game-image-inspiration-info'>
+        <div class='flex1 center'>
+          <div class='inline-block pointer game-image-inspiration-like {{ data.classes.mayLike }}'>
+            <i class='fa fa-thumbs-up game-image-inspiration-like-icon margin-r'></i><span class='game-image-inspiration-like-count font-large'>{{ data.inspirationNumLikes }}</span>
+          </div>
+        </div>
+        <div class='flex1 center'>
+          {{ >userMiniProfile user=data.inspirationUser displayType='horizontal' }}
+        </div>
+      </div>
+    {{ /if }}
   {{ /unless }}
 </template>

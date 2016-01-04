@@ -1,6 +1,19 @@
 <template name="userMiniProfile">
-  <a class='a-div' href='{{ data.user.xDisplay.href }}'>
-    <img src='{{ data.user.xDisplay.img }}' class='user-mini-profile-image' />
-    <div class='ellipsis'>{{ data.user.profile.name }}</div>
+  {{ >UI.dynamic template=data.template data=data }}
+</template>
+
+<template name="userMiniProfileVertical">
+  <a class='a-div' href='{{ user.xDisplay.href }}'>
+    <img src='{{ user.xDisplay.img }}' class='user-mini-profile-vertical-image' />
+    <div class='ellipsis'>{{ user.profile.name }}</div>
+  </a>
+</template>
+
+<template name="userMiniProfileHorizontal">
+  <a class='a-div user-mini-profile-horizontal' href='{{ user.xDisplay.href }}'>
+    <div class='inline-block'>
+      <img src='{{ user.xDisplay.img }}' class='user-mini-profile-horizontal-image' />
+    </div>
+    <div class='ellipsis inline-block user-mini-profile-horizontal-name'>{{ user.profile.name }}</div>
   </a>
 </template>

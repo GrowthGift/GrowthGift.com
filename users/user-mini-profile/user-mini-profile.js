@@ -22,7 +22,10 @@ if(Meteor.isClient) {
         img: msUser.getImage(user),
         href: ( user.username ) ? ggUrls.user(user.username) : ''
       };
+      var displayType = this.displayType ? this.displayType : 'vertical';
       var ret ={
+        template: ( displayType === 'horizontal' ) ?
+         'userMiniProfileHorizontal' : 'userMiniProfileVertical',
         user: user,
         isSelf: ( Meteor.userId() && Meteor.userId() ===user._id ) ? true : false
       };
