@@ -34,9 +34,14 @@ Meteor.methods({
         // Need to clear cache
         var cacheKey ='game_slug_'+slug+'_user_id_'+Meteor.userId();
         ggGame.clearCache(cacheKey);
-        if(slug) {
-          Router.go(ggUrls.game(slug));
-        }
+        // Since the same URL, the template destroyed & created do not
+        // appear to be fired so we do a partial refresh manually.
+        // refreshTemplate(templateInst);
+        Router.go(ggUrls.game(slug));
+        // TODO - figure out a better way to do this than a page reload..
+        // Without this, the templateHelperData is blank in the DOM, even
+        // though it is defined in javascript console logging..
+        document.location.reload(true);
       }
     });
   }
@@ -73,7 +78,6 @@ if(Meteor.isClient) {
     var cacheKey ='game_slug_'+templateData.gameSlug+'_user_id_'+userId;
     var ret;
     if(dataLoaded) {
-      // return null;
       return ggGame.hasCache(cacheKey);
     }
     // Check cache
@@ -122,23 +126,31 @@ if(Meteor.isClient) {
     // Set to true since may be using cache.
     templateInst.dataLoaded.set(true);
     templateInst.dataReady.set(true);
-    dataReady =true;
 
     ret =getTemplateData(ret, templateData, templateInst);
 
     return ret;
   }
 
+  function initTemplate(templateInst) {
+    refreshTemplate(templateInst);
+    templateInst.dataReady = new ReactiveVar(false);
+  }
+
+  function refreshTemplate(templateInst) {
+    templateInst.dataLoaded = new ReactiveVar(false);
+    templateInst.display =new ReactiveVar({
+      impactDetails: false,
+      impactDetailsInfo: false
+    });
+    templateInst.data.templateHelperData =null;
+  }
+
   Template.game.created =function() {
-    this.dataReady = new ReactiveVar(false);
-    this.dataLoaded = new ReactiveVar(false);
+    initTemplate(this);
     self = this;
     Meteor.subscribe('game', Template.instance().data.gameSlug, {
       onReady: function() { self.dataReady.set(true); }
-    });
-    this.display =new ReactiveVar({
-      impactDetails: false,
-      impactDetailsInfo: false
     });
   };
 
@@ -151,6 +163,10 @@ if(Meteor.isClient) {
       //unset for future
       Session.set('signInCallback', false);
     }
+  };
+
+  Template.game.destroyed =function() {
+    initTemplate(this);
   };
 
   Template.game.helpers({

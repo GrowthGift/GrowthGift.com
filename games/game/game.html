@@ -77,17 +77,15 @@
               <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
                 Grow Your Reach Team
               </a>
-            {{ else }}
-              <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
-                Invite Friends
-              </a>
             {{ /unless }}
           </div>
         {{/if}}
-        <div class='margin-large-b'>
-          <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
-          <div class='font-small center'>Join any time, even after the game has started.</div>
-        </div>
+        {{ #unless data.privileges.buddy }}
+          <div class='margin-large-b'>
+            <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
+            <div class='font-small center'>Join any time, even after the game has started.</div>
+          </div>
+        {{ /unless }}
       </div>
     {{ /unless }}
 
