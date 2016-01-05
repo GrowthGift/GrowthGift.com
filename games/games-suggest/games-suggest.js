@@ -61,7 +61,14 @@ if(Meteor.isClient) {
       }), ['start'], ['asc']);
 
       return {
-        games: games,
+        games: games
+      };
+    }
+  });
+
+  Template.gamesSuggestNew.helpers({
+    data: function() {
+      return {
         hiEmail: "mailto:hi@growthgift.com"   // TODO - pull from config
       };
     }

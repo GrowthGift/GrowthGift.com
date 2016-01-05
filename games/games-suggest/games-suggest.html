@@ -10,14 +10,20 @@
             {{ >gamePreview game=this }}
           </div>
         {{ /each }}
-        <div class='games-game bg-white padding margin inline-block'>
-          <a class='a-div' href='{{ data.hiEmail }}' target='_blank'>
-            <div class='margin-b'><i class='fa fa-question games-suggest-question'></i></div>
-            <h3 class='center ellipsis'>[Your Game Here]</h3>
-            <div>Have a game idea? Suggest it!</div>
-          </a>
-        </div>
+
+        {{ >gamesSuggestNew }}
+
       </div>
     </div>
   {{ /if }}
+</template>
+
+<template name="gamesSuggestNew">
+  <div class='games-game bg-white padding margin inline-block'>
+    <a class='a-div' href='{{ data.hiEmail }}' target='_blank'>
+      <div class='margin-b'><i class='fa fa-question games-suggest-question'></i></div>
+      <h3 class='center ellipsis'>[Your Game Here]</h3>
+      <div>Have a game idea? Suggest it!</div>
+    </a>
+  </div>
 </template>
