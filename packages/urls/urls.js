@@ -9,6 +9,10 @@ ggUrls.img =function(type) {
   return type ? '/img/'+type+'/' : '/img/';
 };
 
+ggUrls.aboutOverview =function() {
+  return '/about/?nav=overview';
+};
+
 ggUrls.faq =function() {
   return '/about/?nav=faq';
 };

@@ -44,9 +44,19 @@ if(Meteor.isClient) {
       ],
       games: [
         {
+          q: "Is it really just 5 minutes a day?",
+          a: "Yep. Saturday: choose & join a game. Sunday: build your buddy team. Monday - Friday: complete & document your pledge & use it to motivate your buddy. You're welcome to go above and beyond, but the games are designed with an emphasis on small, simple, short, daily actions.",
+          link: 'game-5-minutes'
+        },
+        {
           q: "What is the game structure?",
           a: "The 'G Games' are weekly (5 day) group challenges comprised of simple, small actions.",
           link: 'game-structure'
+        },
+        {
+          q: "Can I join mid-week, after a game has already started?",
+          a: "Yep, join any time! Some awards require playing all 5 days to earn but there are no penalties for joining late.",
+          link: 'game-join-late'
         },
         {
           q: "What does 'G Games' stand for?",
@@ -107,6 +117,11 @@ if(Meteor.isClient) {
           q: "I forgot to log my results! But I did it, I promise!",
           a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! You may only log while the challenge is active. But as long as it is not the last day, you can just add it to today's score.",
           link: 'game-forgot-to-log'
+        },
+        {
+          q: "Do I win anything for earning one of the awards?",
+          a: "Nope, just bragging rights! Oh, and that feel good feeling of accomplishing something, helping others, and being part of something bigger than yourself, if you're in to that sort of thing. :)",
+          link: 'game-awards-win'
         }
 
       ]

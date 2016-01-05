@@ -4,6 +4,13 @@ if(Meteor.isClient) {
       return {
         buttons: [
           {
+            icon: 'fa fa-info',
+            html: 'Overview',
+            click: function() {
+              Router.go(ggUrls.aboutOverview());
+            }
+          },
+          {
             icon: 'fa fa-question',
             html: 'FAQ',
             click: function() {
@@ -21,10 +28,11 @@ if(Meteor.isClient) {
       };
     },
     data: function() {
+      var nav = this.nav ? this.nav : 'overview';
       return {
-       //  template: (this.nav && this.nav ==='hiw') ?
-       // 'howItWorks' : 'faq'
-       template: 'faq'
+        template: ( nav === 'hiw' ) ? 'howItWorks' :
+        ( nav === 'faq' ) ? 'faq' :
+        'aboutOverview'
       };
     }
   });
