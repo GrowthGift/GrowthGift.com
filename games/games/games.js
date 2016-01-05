@@ -43,7 +43,7 @@ if(Meteor.isClient) {
           xDisplay: {
             userInGame: userInGame,
             userMayJoin: (!userId || ggMay.joinGame(game, userId) ) ? true : false,
-            description: _.trunc(gameRule.challenges[0].description, {length: 100}),
+            description: gameRule && _.trunc(gameRule.challenges[0].description, {length: 100}),
             classes: {
               userInGame: userInGame ? 'user-in-game' : ''
             },

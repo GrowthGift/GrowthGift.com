@@ -8,7 +8,7 @@ if(Meteor.isClient) {
       var userGames = userId ? UserGamesCollection.find({ userId: userId,
        awards: { $exists: true } }).fetch() : null;
       var userAward =userId ? UserAwardsCollection.findOne({ userId: userId }) : null;
-      if(!userId || !userGames || !userGames.length || !userAward) {
+      if(!userId) {
         return {
           _xNotFound: true
         };
