@@ -55,7 +55,7 @@ if(Meteor.isClient) {
 
       games =_.sortByOrder(games.map(function(game) {
         gameRule =gameRules[_.findIndex(gameRules, '_id', game.gameRuleId)];
-        gameEnd =ggGame.getGameEnd(game, gameRule);
+        gameEnd =game.end;
         return _.extend({}, game, {
           xDisplay: {
             gameTime: (game.start > nowTimeFormat) ? ( "Starts " +

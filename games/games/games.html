@@ -4,7 +4,7 @@
   {{ else }}
     <div class='center padding-large-tb'>
     {{ #each data.games }}
-      <div class='games-game bg-white padding margin inline-block'>
+      <div class='games-game bg-white padding margin inline-block {{ xDisplay.classes.userInGame }}'>
         {{ >gamePreview game=this }}
       </div>
     {{ /each }}

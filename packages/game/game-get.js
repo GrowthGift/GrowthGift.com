@@ -112,7 +112,7 @@ ggGame.getUserGames =function(userId) {
     game =(gameIndex >-1) ? games[gameIndex] : null;
     gameRuleIndex = game ? _.findIndex(gameRules, '_id', game.gameRuleId) : -1;
     gameRule =(gameRuleIndex >-1) ? gameRules[gameRuleIndex] : null;
-    gameEnd = (game && gameRule) ? ggGame.getGameEnd(game, gameRule) : null;
+    gameEnd = (game) ? game.end : null;
     return {
       numChallenges: (ug.challenges && ug.challenges.length) || 0,
       gameStart: game ? game.start : null,
