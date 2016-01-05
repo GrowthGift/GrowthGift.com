@@ -70,8 +70,13 @@ if(Meteor.isClient) {
         },
         {
           q: "What are the awards?",
-          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day.",
+          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day. And perhaps most important is the 'game streak', for how many weeks in a row you've played a game. You can see all your awards at any time on your user profile.",
           link: 'game-awards'
+        },
+        {
+          q: "Do I win anything for earning one of the awards?",
+          a: "Nope, just bragging rights! Oh, and that feel good feeling of accomplishing something, helping others, and being part of something bigger than yourself, if you're in to that sort of thing. :)",
+          link: 'game-awards-win'
         },
         {
           q: "The goal is huge! Will I matter?",
@@ -117,11 +122,6 @@ if(Meteor.isClient) {
           q: "I forgot to log my results! But I did it, I promise!",
           a: "Doh! Do you have a buddy? This is what your buddy is for - helping you remember to complete & log your daily pledge! You may only log while the challenge is active. But as long as it is not the last day, you can just add it to today's score.",
           link: 'game-forgot-to-log'
-        },
-        {
-          q: "Do I win anything for earning one of the awards?",
-          a: "Nope, just bragging rights! Oh, and that feel good feeling of accomplishing something, helping others, and being part of something bigger than yourself, if you're in to that sort of thing. :)",
-          link: 'game-awards-win'
         }
 
       ]

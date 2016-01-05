@@ -1,7 +1,7 @@
 ggGame.getImage =function(game) {
   // TODO - fixed BUT need to re-release apps for it to take effect.
   // return game.image ? game.image
-  return ( game.image && !Meteor.isCordova ) ? game.image
+  return ( game.image && ( !Meteor.isCordova || !navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ) ) ? game.image
    : ggUrls.img('games')+'playful-beach.jpg';
 };
 
