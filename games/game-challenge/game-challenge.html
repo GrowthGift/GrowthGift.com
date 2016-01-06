@@ -13,13 +13,39 @@
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
         {{>afQuickField name="description" type="textarea" label="Details" }}
 
+        {{ #if data.inputOpts.media.visible }}
+          <div class='margin-t'>Buddy Motivation & Documentation</div>
+          <div class='font-small'>Send a message to your buddy with a photo or short video of your success to inspire them. You know your buddy best - your message could be encouraging or egging them on, whatever you think will get them the most fired up to complete their daily pledge!</div>
+          {{>afQuickField name="media.userId" type="hidden" value=data.userId }}
+          {{>afQuickField name="media.type" type="select" options=data.inputOpts.media.typeOpts class="game-challenge-media-type-input" }}
+          {{ #if data.inputOpts.media.videoVisible }}
+            <div class='font-small'>Under 1 minute long please.</div>
+            <div class='game-challenge-media-video-btn btn-link inline-block margin-t'>Record Video</div>
+            {{>afQuickField name="media.video" type="hidden" class="game-challenge-media-video-input" }}
+            {{ #if data.inputOpts.media.content }}
+              <!-- TODO - show video -->
+            {{ /if }}
+          {{ /if }}
+          {{ #if data.inputOpts.media.imageVisible }}
+            <div class='game-challenge-media-image-btn btn-link inline-block margin-t'>Take Photo</div>
+            {{>afQuickField name="media.image" type="hidden" class='game-challenge-media-image-input' }}
+            {{ #if data.inputOpts.media.content }}
+              <img src='{{ data.inputOpts.media.content }}' class='img-100' />
+            {{ /if }}
+          {{ /if }}
+        {{ else }}
+          <div>You don't have a buddy yet! TODO</div>
+        {{ /if }}
+
         <!-- Hidden and auto set for now -->
         {{>afQuickField name="privacy" type="hidden" value="private" }}
 
         {{ #if data.inputOpts.feedback.visible }}
-          {{>afQuickField name="feedback.prompt" type="hidden" value=data.inputOpts.feedback.prompt }}
-          {{>afQuickField name="feedback.answer" type="textarea" label=data.inputOpts.feedback.prompt class='game-challenge-feedback-answer-input'}}
-          <div class='font-small red'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
+          <div class='margin-large-t'>
+            {{>afQuickField name="feedback.prompt" type="hidden" value=data.inputOpts.feedback.prompt }}
+            {{>afQuickField name="feedback.answer" type="textarea" label=data.inputOpts.feedback.prompt class='game-challenge-feedback-answer-input'}}
+            <div class='font-small red'>Have more feedback? Want to share your story and be featured on the blog? Have a new game idea? Send us an email: <a href='mailto:{{ data.hiEmail }}' target='_blank'>{{ data.hiEmail }}</a>.</div>
+          </div>
         {{ /if }}
 
         {{ #if data.inputOpts.inspiration.visible }}
@@ -42,6 +68,7 @@
             {{>afQuickField name="inspiration.quote" type="textarea" label="Your inspirational quote (please cite the source if you know it!)" placeholder="Whether you think you can or you think you can't, you're correct. - Henry Ford"}}
           {{ /if }}
         {{ /if }}
+
 
         {{>afQuickField name="onLastChallenge" type="hidden" value=data.inputOpts.onLastChallengeVal }}
 

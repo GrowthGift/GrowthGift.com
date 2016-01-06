@@ -13,6 +13,30 @@ GameChallengeNewSchema = new SimpleSchema({
   privacy: {
     type: String
   },
+  media: {
+    type: Object,
+    optional: true
+  },
+  "media.userId": {
+    type: String,
+    optional: true
+  },
+  "media.type": {
+    type: String,
+    optional: true
+  },
+  "media.video": {
+    type: String,
+    optional: true
+  },
+  "media.image": {
+    type: String,
+    optional: true
+  },
+  "media.message": {
+    type: String,
+    optional: true
+  },
   updatedAt: {
     type: String,
     optional: true,   // If can not auto set, need to make optional to pass validation..
@@ -62,6 +86,7 @@ GameChallengeNewSchema = new SimpleSchema({
 
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
+    // TODO - upload, & save media
     var onLastChallenge =challenge.onLastChallenge;
     ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) {
       // Need to clear cache
@@ -145,7 +170,12 @@ if(Meteor.isClient) {
       inspirationVideoVisible: false,
       inspirationImageVisible: false,
       inspirationQuoteVisible: false,
-      inspirationContent: null
+      inspirationContent: null,
+      mediaVideoVisible: false,
+      mediaImageVisible: false,
+      mediaImageActive: false,
+      mediaVideoActive: false,
+      mediaContent: null
     });
   };
 
@@ -221,6 +251,17 @@ if(Meteor.isClient) {
             imageVisible: reactiveData.inspirationImageVisible,
             quoteVisible: reactiveData.inspirationQuoteVisible,
             content: reactiveData.inspirationContent
+          },
+          media: {
+            // Only show if have buddy
+            visible: gameUser.buddyId ? true : false,
+            typeOpts: [
+              { value: 'video', label: 'Video' },
+              { value: 'image', label: 'Image' }
+            ],
+            videoVisible: reactiveData.mediaVideoVisible,
+            imageVisible: reactiveData.mediaImageVisible,
+            content: reactiveData.mediaContent
           },
           onLastChallengeVal: onLastChallengeVal
         },
@@ -322,6 +363,30 @@ if(Meteor.isClient) {
         reactiveData.inspirationContent =val.replace('watch?v=', 'embed/');
       }
       template.reactiveData.set(reactiveData);
+    },
+    'change .game-challenge-media-type-input, blur .game-challenge-media-type-input': function(evt, template) {
+      var typeVal =evt.target.value;
+      var reactiveData =template.reactiveData.get();
+      reactiveData.mediaVideoVisible = ( typeVal ==='video' ) ? true : false;
+      reactiveData.mediaImageVisible = ( typeVal ==='image' ) ? true : false;
+      template.reactiveData.set(reactiveData);
+    },
+    'click .game-challenge-media-image-btn': function(evt, template) {
+      var reactiveData =template.reactiveData.get();
+      if(!reactiveData.mediaImageActive) {
+        MeteorCamera.getPicture({}, function(err, data) {
+          var reactiveData =template.reactiveData.get();
+          reactiveData.mediaContent =data;
+          reactiveData.mediaImageActive =false;
+          template.reactiveData.set(reactiveData);
+        });
+      }
+    },
+    'click .game-challenge-media-video-btn': function(evt, template) {
+      var reactiveData =template.reactiveData.get();
+      if(!reactiveData.mediaVideoActive) {
+        // TODO
+      }
     }
   });
 
