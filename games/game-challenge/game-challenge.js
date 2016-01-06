@@ -86,18 +86,15 @@ GameChallengeNewSchema = new SimpleSchema({
 
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
-    // TODO - upload, & save media
     var onLastChallenge =challenge.onLastChallenge;
     ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) {
       // Need to clear cache
       var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
       ggGame.clearCache(cacheKey);
       if(!err && Meteor.isClient) {
-        var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
-        var gameSlug =templateInst.data.gameSlug;
-        if(gameSlug) {
-          var url = onLastChallenge ? ggUrls.gameUserSummary(gameSlug) :
-           ggUrls.game(gameSlug);
+        if(game.slug) {
+          var url = onLastChallenge ? ggUrls.gameUserSummary(game.slug) :
+           ggUrls.game(game.slug);
           Router.go(url);
         }
       }
@@ -154,8 +151,19 @@ if(Meteor.isClient) {
         this.event.stopPropagation();
 
         var templateInst =msTemplate.getMainTemplate("Template.gameChallenge");
-        var game =GamesCollection.findOne({slug: templateInst.data.gameSlug});
-        Meteor.call("saveGameChallengeNew", game, insertDoc);
+        var gameSlug =templateInst.data.gameSlug;
+        var game =GamesCollection.findOne({slug: gameSlug});
+
+        // If have media, save to s3 and mutate to database schema format.
+        // This is a CLIENT only call so must be done here.
+        if(insertDoc.media) {
+          ggGame.uploadMedia(insertDoc, function(err, challenge) {
+            Meteor.call("saveGameChallengeNew", game, challenge);
+          });
+        }
+        else {
+          Meteor.call("saveGameChallengeNew", game, insertDoc);
+        }
 
         this.done();
         return false;
@@ -173,6 +181,8 @@ if(Meteor.isClient) {
       inspirationContent: null,
       mediaVideoVisible: false,
       mediaImageVisible: false,
+      mediaVideo: null,
+      mediaImage: null,
       mediaImageActive: false,
       mediaVideoActive: false,
       mediaContent: null
@@ -261,7 +271,9 @@ if(Meteor.isClient) {
             ],
             videoVisible: reactiveData.mediaVideoVisible,
             imageVisible: reactiveData.mediaImageVisible,
-            content: reactiveData.mediaContent
+            content: reactiveData.mediaContent,
+            image: reactiveData.mediaImage,
+            video: reactiveData.mediaVideo
           },
           onLastChallengeVal: onLastChallengeVal
         },
@@ -369,6 +381,10 @@ if(Meteor.isClient) {
       var reactiveData =template.reactiveData.get();
       reactiveData.mediaVideoVisible = ( typeVal ==='video' ) ? true : false;
       reactiveData.mediaImageVisible = ( typeVal ==='image' ) ? true : false;
+      // Reset.
+      reactiveData.mediaVideo =null;
+      reactiveData.mediaImage =null;
+      reactiveData.mediaContent =null;
       template.reactiveData.set(reactiveData);
     },
     'click .game-challenge-media-image-btn': function(evt, template) {
@@ -377,6 +393,7 @@ if(Meteor.isClient) {
         MeteorCamera.getPicture({}, function(err, data) {
           var reactiveData =template.reactiveData.get();
           reactiveData.mediaContent =data;
+          reactiveData.mediaImage =data;
           reactiveData.mediaImageActive =false;
           template.reactiveData.set(reactiveData);
         });

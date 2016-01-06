@@ -21,18 +21,20 @@
           {{ #if data.inputOpts.media.videoVisible }}
             <div class='font-small'>Under 1 minute long please.</div>
             <div class='game-challenge-media-video-btn btn-link inline-block margin-t'>Record Video</div>
-            {{>afQuickField name="media.video" type="hidden" class="game-challenge-media-video-input" }}
+            {{>afQuickField name="media.video" type="hidden" class="game-challenge-media-video-input" value=data.inputOpts.media.video }}
             {{ #if data.inputOpts.media.content }}
               <!-- TODO - show video -->
             {{ /if }}
           {{ /if }}
           {{ #if data.inputOpts.media.imageVisible }}
             <div class='game-challenge-media-image-btn btn-link inline-block margin-t'>Take Photo</div>
-            {{>afQuickField name="media.image" type="hidden" class='game-challenge-media-image-input' }}
+            {{>afQuickField name="media.image" type="hidden" class='game-challenge-media-image-input' value=data.inputOpts.media.image }}
             {{ #if data.inputOpts.media.content }}
               <img src='{{ data.inputOpts.media.content }}' class='img-100' />
             {{ /if }}
           {{ /if }}
+
+          {{>afQuickField name="media.message" type="text" label="Add a caption" placeholder="I did it - now it is your turn!" }}
         {{ else }}
           <div>You don't have a buddy yet! TODO</div>
         {{ /if }}

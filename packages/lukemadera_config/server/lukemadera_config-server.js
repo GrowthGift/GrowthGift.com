@@ -29,3 +29,17 @@ Config.email =function(params) {
   }
   return ret;
 };
+
+Config.amazon =function(params) {
+  var ret ={
+    s3: {
+      key: 'AKIAJU3XDCKL7GI47L5Q',
+      secret: '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',
+      buckets: {
+        mediaCapture: 'growthgift-dev-media-capture'
+      },
+      region: 'us-west-1'
+    }
+  };
+  return ret;
+};

@@ -21,6 +21,16 @@ Meteor.startup(function() {
       username: cfgEmail.sendgrid.username,
       password: cfgEmail.sendgrid.password
     });
+
+    var cfgAmazon =Config.amazon({});
+    S3.config ={
+      key: cfgAmazon.s3.key,
+      secret: cfgAmazon.s3.secret,
+      bucket: cfgAmazon.s3.buckets.mediaCapture,
+      // While not documented, region apparently is required and can NOT be
+      // set in the ops per call as documented.
+      region: cfgAmazon.s3.region
+    };
     
   }
 });

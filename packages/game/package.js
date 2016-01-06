@@ -28,6 +28,7 @@ Package.onUse(function(api) {
     'game-awards.js',
     'game-challenge.js',
     'game-inspiration.js',
+    'game-media.js',
     'game-get-cache.js'
   ]);
   api.export('ggGame');
