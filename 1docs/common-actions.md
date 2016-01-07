@@ -15,7 +15,7 @@ APPNAMEDEV appNameDev
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
     - prod: `ENV=prod meteor run android-device --mobile-server 107.170.212.162 --settings env/prod/settings.json`
-    - dev: `meteor run android-device --mobile-server http://growthgiftdev.meteor.com --setinggs env/dev/settings.json`
+    - dev: `meteor run android-device --mobile-server http://growthgiftdev.meteor.com --settings env/dev/settings.json`
   - build
     - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server 107.170.212.162 --settings env/prod/settings.json`
       - ios: open xcode project and fix things then build .ipa file
