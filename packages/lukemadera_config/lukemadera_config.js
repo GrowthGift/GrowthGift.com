@@ -50,7 +50,7 @@ Config.appInfo =function(params) {
     domain: Config.vars.APP_DOMAIN || 'localhost',
     shortDomain: Config.vars.APP_SHORT_DOMAIN || 'localhost',
     scheme: Config.vars.APP_SCHEME || 'http',
-    port: Config.vars.APP_SCHEME || null,
+    port: Config.vars.APP_PORT || null,
     version: '0.0.1'
   };
 
