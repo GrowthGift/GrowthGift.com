@@ -1,7 +1,7 @@
 {
   "name": "GrowthGift",
   "scripts": {
-    "prod": "ENV_FILE_PATH=env/prod/.env meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build/todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed",
-    "prodWin": "SET ENV_FILE_PATH=env/prod/.env && meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build\\todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed && SET ENV_FILE_PATH="
+    "prod": "meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build/todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed",
+    "prodWin": "meteor build 1build --architecture os.linux.x86_64 --server todoseed && scp 1build\\todoseed.tar.gz lmadera@todoseed:/tmp/todoseed.tar.gz && cat linux-prod-deploy.sh | ssh lmadera@todoseed"
   }
 }
