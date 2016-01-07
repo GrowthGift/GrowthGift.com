@@ -1,0 +1,7 @@
+{
+  "APP_PORT": "3000",
+  "SENDGRID_USERNAME": "todoseed",
+  "SENDGRID_PASSWORD": "todoseed",
+  "public": {
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "APP_NAME": "todoseedDev",
+  "APP_DOMAIN": "domainDev.com",
+  "APP_SHORT_DOMAIN": "shortDev.co",
+  "APP_SCHEME": "http",
+  "SENDGRID_USERNAME": "todoseed",
+  "SENDGRID_PASSWORD": "todoseed",
+  "public": {
+  }
+}

@@ -1,3 +1,4 @@
+// Meteor settings / environment variables are not loaded yet? So can not use them..
 var env = (this.process.env !== undefined && this.process.env.ENV !== undefined)
  ? this.process.env.ENV : 'dev';
 App.info({

@@ -10,17 +10,15 @@ APPNAMEDEV appNameDev
     - NOTE: apparently the `meteor build` tarball file name can not be set and it will just take the directory name so you MUST name your project folder `todoseed`
     - TODO: un-hardcoded meteor settings from METEOR_SETTINGS variable
     - TODO: un-hardcode other things too?
-  - prod: `meteor deploy APPNAME.meteor.com --setings env/prod/settings.json`
-    - TODO - `env` folder is NOT in version control so is not deployed so
-     `env_file_path` does not work on deployed app? Settings are not being used..
-  - dev: `meteor deploy APPNAMEDEV.meteor.com`
+  - prod: `meteor deploy APPNAME.meteor.com --settings env/prod/settings.json`
+  - dev: `meteor deploy APPNAMEDEV.meteor.com --settings env/dev/settings.json`
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
-    - prod: `ENV=prod meteor run android-device --mobile-server http://APPNAME.meteor.com`
-    - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com`
+    - prod: `ENV=prod meteor run android-device --mobile-server http://APPNAME.meteor.com --settings env/prod/settings.json`
+    - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com --setinggs env/dev/settings.json`
   - build
-    - prod: `ENV=prod meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAME.meteor.com`
-    - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com`
+    - prod: `ENV=prod meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAME.meteor.com --settings env/prod/settings.json`
+    - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com --settings env/dev/settings.json`
 3. upload the .apk/.ipa and do android/ios specific app store stuff
   1. Android: https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store
     1. `cd ~/Documents/web/1mobile-build/APPNAME/android && jarsigner -digestalg SHA1 unaligned.apk APPNAME`

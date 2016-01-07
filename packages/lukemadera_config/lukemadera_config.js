@@ -18,16 +18,41 @@ Config.setVars =function() {
     if(Meteor.settings ===undefined) {
       Meteor.settings ={};
     }
+
+    // If no Meteor settings environment variable, try to load a default one.
+    if(process.env.METEOR_SETTINGS === undefined) {
+      var fs = Npm.require('fs');
+      var rootPath =process.env.PWD + '/';
+      var path =rootPath + 'env/localhost/settings.json';
+      if(fs.existsSync(path)) {
+        var settingsObj =fs.readFileSync(path, { encoding: 'utf8' });
+        settingsObj =JSON.parse(settingsObj);
+        for(key in settingsObj) {
+          if(key !== 'public' && Meteor.settings[key] ===undefined) {
+            Meteor.settings[key] =settingsObj[key];
+          }
+        }
+      }
+    }
+
     if(Meteor.settings.public ===undefined) {
       Meteor.settings.public ={};
     }
     if(Meteor.settings.public.vars ===undefined) {
       Meteor.settings.public.vars ={};
     }
-    for(key in process.env) {
-      Config.vars[key] =process.env[key];
-      if( allowedPublic.indexOf(key) > -1 ) {
-        Meteor.settings.public.vars[key] =process.env[key];
+    // for(key in process.env) {
+    //   Config.vars[key] =process.env[key];
+    //   if( allowedPublic.indexOf(key) > -1 ) {
+    //     Meteor.settings.public.vars[key] =Config.vars[key];
+    //   }
+    // }
+    for(key in Meteor.settings) {
+      if(key !== 'public') {
+        Config.vars[key] =Meteor.settings[key];
+        if( allowedPublic.indexOf(key) > -1 ) {
+          Meteor.settings.public.vars[key] =Config.vars[key];
+        }
       }
     }
   }
