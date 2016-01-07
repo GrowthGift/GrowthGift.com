@@ -199,6 +199,13 @@
     {{ /if }}
 
 
+    {{ #if data.gameState.gameEnded }}
+    <div class='margin center'>
+      <a class='' href='{{ data.gameChallengeLink }}'>My Game Challenge Log</a>
+    </div>
+    {{ /if }}
+
+
     <div class='padding-large-t'>
       <div class='game-subheader-wrapper margin-large-lr'>
         <div class='game-subheader'>Your Daily Breakdown</div>
@@ -254,6 +261,38 @@
         </div>
         <div class='font-small'>{{ challenge.timeDisplay }}</div>
       </div>
+
+      <div class='center'>
+        {{ #if challenge.userMedia }}
+          <div class='inline-block max-250 padding-lr'>
+            <div>You:</div>
+            {{ #if challenge.userMedia.image }}
+              <img src='{{ challenge.userMedia.image }}' class='img-100' />
+            {{ /if }}
+            {{ #if challenge.userMedia.video }}
+              <!-- TODO -->
+            {{ /if }}
+            {{ #if challenge.userMedia.message }}
+              <div>{{ challenge.userMedia.message }}</div>
+            {{ /if }}
+          </div>
+        {{ /if }}
+        {{ #if challenge.buddyMedia }}
+          <div class='inline-block max-250 padding-lr'>
+            <div>Buddy:</div>
+            {{ #if challenge.buddyMedia.image }}
+              <img src='{{ challenge.buddyMedia.image }}' class='img-100' />
+            {{ /if }}
+            {{ #if challenge.buddyMedia.video }}
+              <!-- TODO -->
+            {{ /if }}
+            {{ #if challenge.buddyMedia.message }}
+              <div>{{ challenge.buddyMedia.message }}</div>
+            {{ /if }}
+          </div>
+        {{ /if }}
+      </div>
+
     </div>
   </div>
 </template>

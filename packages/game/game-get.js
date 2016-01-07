@@ -647,7 +647,9 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
        nowTime <= curChallengeEnd ) ? true : false,
       instruction: "Do " + actionsToDo + " " + gameRule.mainAction,   // May be updated
       buddyInstruction: ( buddyId || !userGame ) ? ( "Help your buddy do " + actionsToDoBuddy + " " +
-       gameRule.mainAction ) : "Choose a buddy"   // May be updated
+       gameRule.mainAction ) : "Choose a buddy",   // May be updated
+      userMedia: null,
+      buddyMedia: null
     };
 
     if(userGame) {
@@ -663,6 +665,13 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
            ( "You've done" ) ) + " " + uc.actionCount + " / " +
            actionsToDo
            + " " + gameRule.mainAction;
+
+          curChallenge.userMedia ={
+            message: uc.mediaMessage ? uc.mediaMessage : null,
+            image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
+            video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+          };
+
           break;
         }
         // If updated after this challenge ended, we're already too far, stop
@@ -686,6 +695,13 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
            ( "Buddy has done" ) ) + " " + uc.actionCount + " / " +
            actionsToDoBuddy
            + " " + gameRule.mainAction;
+
+          curChallenge.buddyMedia ={
+            message: uc.mediaMessage ? uc.mediaMessage : null,
+            image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
+            video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+          };
+
           break;
         }
         // If updated after this challenge ended, we're already too far, stop

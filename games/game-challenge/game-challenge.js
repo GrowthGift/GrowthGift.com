@@ -203,9 +203,17 @@ if(Meteor.isClient) {
       }
       var userId =Meteor.userId();
       var game =GamesCollection.findOne({slug: this.gameSlug});
-      var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:userId }) ) || null;
+      // Get both self and buddy user games
+      var gameUser =(game && userId ) ? ggGame.getGameUser(game, userId, {}) : null;
+      var buddyUserId = ( gameUser && gameUser.buddyId ) ? gameUser.buddyId : null;
+      var userIds =[userId];
+      if(buddyUserId) {
+        userIds.push(buddyUserId);
+      }
+      var userGames =(game && UserGamesCollection.find({ gameId:game._id,
+       userId: { $in: userIds } }).fetch() ) || null;
       var gameRule =(game && GameRulesCollection.findOne({ _id:game.gameRuleId }) ) || null;
-      if(!game || !userGame || !gameRule) {
+      if(!game || !userGames || !gameRule) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -217,15 +225,19 @@ if(Meteor.isClient) {
         return false;
       }
 
-      var gameUser =ggGame.getGameUser(game, userId, {});
+      var userGame =userGames[_.findIndex(userGames, 'userId', userId)];
+      var userGameBuddy = (buddyUserId) ?
+       userGames[_.findIndex(userGames, 'userId', buddyUserId)] : null;
       var curChallenge =ggGame.getCurrentChallenge(game, gameRule, null);
       var gameCurrentChallenge =curChallenge.currentChallenge;
       var reactiveData =Template.instance().reactiveData.get();
       var onLastChallengeVal = ( curChallenge.possibleCompletions ===
        gameRule.challenges.length ) ? 1 : 0;
 
+      var challenges =ggGame.getUserGameChallenges(game._id, userId);
+
       var ret ={
-        challenges: ggGame.getUserGameChallenges(game._id, userId),
+        challenges: challenges,
         gameLink: ggUrls.game(this.gameSlug),
         game: game,
         gameRule: {
@@ -266,7 +278,7 @@ if(Meteor.isClient) {
             // Only show if have buddy
             visible: gameUser.buddyId ? true : false,
             typeOpts: [
-              { value: 'video', label: 'Video' },
+              // { value: 'video', label: 'Video' },
               { value: 'image', label: 'Image' }
             ],
             videoVisible: reactiveData.mediaVideoVisible,
@@ -409,6 +421,13 @@ if(Meteor.isClient) {
 
   Template.gameChallengeCompleted.helpers({
     data: function() {
+      this.challenge.xDisplay ={
+        mediaImage: ( this.challenge.media && this.challenge.mediaType === 'image' )
+         ? true : false,
+        mediaVideo: ( this.challenge.media && this.challenge.mediaType === 'video' )
+         ? true : false
+      };
+
       // TODO - DRY this up; it's all copied from the main gameChallenge template.
       var game =(this.gameSlug && GamesCollection.findOne({slug: this.gameSlug}) ) || null;
       var userGame =(game && UserGamesCollection.findOne({ gameId:game._id, userId:Meteor.userId() }) ) || null;

@@ -129,5 +129,23 @@
       </div>
       <div>{{ challenge.description }}</div>
     {{/if}}
+
+    <div>
+      <h5>Buddy Motivation & Documentation</h5>
+      {{ #if challenge.xDisplay.mediaImage }}
+        <div class='max-300 center'>
+          <img src='{{ challenge.media }}' class='img-100' />
+        </div>
+      {{ /if }}
+      {{ #if challenge.xDisplay.mediaVideo }}
+        <div class='max-300 center'>
+          <!-- TODO -->
+        </div>
+      {{ /if }}
+      {{ #if challenge.mediaMessage }}
+        <div class='center'>{{ challenge.mediaMessage }}</div>
+      {{ /if }}
+    </div>
+
   </div>
 </template>
