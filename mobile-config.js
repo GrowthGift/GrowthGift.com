@@ -8,7 +8,7 @@ App.info({
   description: 'Grow togther.',
   // author: 'Percolate Studio Team',
   // email: 'us@percolatestudio.com',
-  name: ( env === 'prod' ) ? 'growthgift.com' : 'growthgiftdev.meteor.com',
+  website: ( env === 'prod' ) ? 'growthgift.com' : 'growthgiftdev.meteor.com',
   version: '1.2.1'
 });
 
@@ -71,7 +71,7 @@ App.setPreference('StatusBarBackgroundColor', '#8E9599');
 App.accessRule('*://meteor.local/*');
 App.accessRule('*://10.0.2.2/*');
 //environment specific (dev, prod) domains
-App.accessRule('*://*.growthgift.meteor.com/*');
+App.accessRule('*://*.growthgiftdev.meteor.com/*');
 App.accessRule('*://*.growthgift.com/*');
 App.accessRule('*://*.gr0.co/*');
 App.accessRule('*://107.170.212.162/*');
