@@ -8,7 +8,8 @@ GameChallengeNewSchema = new SimpleSchema({
     min: 1
   },
   description: {
-    type: String
+    type: String,
+    optional: true
   },
   privacy: {
     type: String
