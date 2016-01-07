@@ -1,6 +1,15 @@
 Config ={
-  vars: {}
+  vars: {},
+  publicVars: {}
 };
+
+Meteor.methods({
+  ConfigPublicVars: function() {
+    if(Meteor.isServer) {
+      return Config.publicVars;
+    }
+  }
+});
 
 Config.init =function(params) {
 };
@@ -35,32 +44,26 @@ Config.setVars =function() {
       }
     }
 
-    if(Meteor.settings.public ===undefined) {
-      Meteor.settings.public ={};
-    }
-    if(Meteor.settings.public.vars ===undefined) {
-      Meteor.settings.public.vars ={};
-    }
     // for(key in process.env) {
     //   Config.vars[key] =process.env[key];
     //   if( allowedPublic.indexOf(key) > -1 ) {
-    //     Meteor.settings.public.vars[key] =Config.vars[key];
+    //     Config.publicVars[key] =Config.vars[key];
     //   }
     // }
     for(key in Meteor.settings) {
       if(key !== 'public') {
         Config.vars[key] =Meteor.settings[key];
         if( allowedPublic.indexOf(key) > -1 ) {
-          Meteor.settings.public.vars[key] =Config.vars[key];
+          Config.publicVars[key] =Config.vars[key];
         }
       }
     }
   }
 
   if(Meteor.isClient) {
-    for(key in Meteor.settings.public.vars) {
-      Config.vars[key] =Meteor.settings.public.vars[key];
-    }
+    Meteor.call('ConfigPublicVars', function(err, result) {
+      Config.vars =result;
+    });
   }
 };
 
