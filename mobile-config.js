@@ -1,19 +1,14 @@
-if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.process.env.ENV ==='prod') {
-  App.info({
-    name: 'todoseed',
-    // description: 'A recipe sharing app made in Meteor.',
-    // author: 'Percolate Studio Team',
-    // email: 'us@percolatestudio.com',
-    // website: '',
-    version: '0.0.1'
-  });
-}
-else {
-  App.info({
-    name: 'todoseeddev',
-    version: '0.0.1'
-  });
-}
+var env = (this.process.env !== undefined && this.process.env.ENV !== undefined)
+ ? this.process.env.ENV : 'dev';
+App.info({
+  id: ( env === 'prod' ) ? 'com.todoseed' : 'com.todoseed.dev',
+  name: ( env === 'prod' ) ? 'todoseed' : 'todoseedDev',
+  // description: 'A recipe sharing app made in Meteor.',
+  // author: 'Percolate Studio Team',
+  // email: 'us@percolatestudio.com',
+  // website: '',
+  version: '0.0.1'
+});
 
 App.icons({
   // iOS

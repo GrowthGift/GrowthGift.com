@@ -2,3 +2,5 @@
 npm-debug.log
 
 1build
+.env
+env
