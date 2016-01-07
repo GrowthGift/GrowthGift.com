@@ -666,11 +666,13 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
            actionsToDo
            + " " + gameRule.mainAction;
 
-          curChallenge.userMedia ={
-            message: uc.mediaMessage ? uc.mediaMessage : null,
-            image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
-            video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
-          };
+          if(uc.media || uc.mediaMessage) {
+            curChallenge.userMedia ={
+              message: uc.mediaMessage ? uc.mediaMessage : null,
+              image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
+              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+            };
+          }
 
           break;
         }
@@ -696,11 +698,13 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
            actionsToDoBuddy
            + " " + gameRule.mainAction;
 
-          curChallenge.buddyMedia ={
-            message: uc.mediaMessage ? uc.mediaMessage : null,
-            image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
-            video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
-          };
+          if(uc.media || uc.mediaMessage) {
+            curChallenge.buddyMedia ={
+              message: uc.mediaMessage ? uc.mediaMessage : null,
+              image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
+              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+            };
+          }
 
           break;
         }
