@@ -15,7 +15,7 @@ APPNAMEDEV appNameDev
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
     - prod: `ENV=prod meteor run android-device --mobile-server http://APPNAME.meteor.com --settings env/prod/settings.json`
-    - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com --setinggs env/dev/settings.json`
+    - dev: `meteor run android-device --mobile-server http://APPNAMEDEV.meteor.com --settings env/dev/settings.json`
   - build
     - prod: `ENV=prod meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAME.meteor.com --settings env/prod/settings.json`
     - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com --settings env/dev/settings.json`
