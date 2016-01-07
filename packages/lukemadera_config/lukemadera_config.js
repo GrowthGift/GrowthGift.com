@@ -1,38 +1,58 @@
-Config ={};
-Config.ENV =false;
+Config ={
+  vars: {}
+};
 
 Config.init =function(params) {
+};
+
+Config.setVars =function() {
+  var key;
+
   if(Meteor.isServer) {
-    var env ='dev';   //DEFAULT
-    if(process.env !==undefined && process.env.ENV !==undefined) {
-      env =process.env.ENV;
+    var allowedPublic =[
+      'APP_NAME',
+      'APP_DOMAIN', 'APP_SHORT_DOMAIN',
+      'APP_SCHEME', 'APP_PORT',
+      'FACEBOOK_APP_ID'
+    ];
+
+    if(Meteor.settings ===undefined) {
+      Meteor.settings ={};
     }
-    else if(Meteor.settings !==undefined && Meteor.settings.public !==undefined && Meteor.settings.public.env !==undefined) {
-      env =Meteor.settings.public.env;
+    if(Meteor.settings.public ===undefined) {
+      Meteor.settings.public ={};
     }
-    Config.ENV =env;
-    console.info('Config.ENV: '+Config.ENV);
+    if(Meteor.settings.public.vars ===undefined) {
+      Meteor.settings.public.vars ={};
+    }
+    for(key in process.env) {
+      Config.vars[key] =process.env[key];
+      if( allowedPublic.indexOf(key) > -1 ) {
+        Meteor.settings.public.vars[key] =process.env[key];
+      }
+    }
   }
+
   if(Meteor.isClient) {
-    var env ='dev';   //DEFAULT
-    if(Meteor.settings !==undefined && Meteor.settings.public !==undefined && Meteor.settings.public.env !==undefined) {
-      env =Meteor.settings.public.env;
+    for(key in Meteor.settings.public.vars) {
+      Config.vars[key] =Meteor.settings.public.vars[key];
     }
-    Config.ENV =env;
-    console.info('Config.ENV: '+Config.ENV);
   }
 };
 
 Config.init({});
+Meteor.startup(function() {
+  Config.setVars();
+});
 
 Config.appInfo =function(params) {
   var ret ={
-    name: 'Growth Gift Dev',
-    version: '1.2.0',
-    domain: 'localhost',
-    shortDomain: 'localhost',
-    scheme: 'http',
-    port: '3000',
+    name: Config.vars.APP_NAME || 'Growth Gift Dev',
+    domain: Config.vars.APP_DOMAIN || 'localhost',
+    shortDomain: Config.vars.APP_SHORT_DOMAIN || 'localhost',
+    scheme: Config.vars.APP_SCHEME || 'http',
+    port: Config.vars.APP_SCHEME || null,
+    version: '1.2.1',
     mobileApps: {
       android: {
         link: 'https://play.google.com/store/apps/details?id=com.idmhuhu81ewth241q5f8l3'
@@ -42,20 +62,12 @@ Config.appInfo =function(params) {
       }
     },
     facebook: {
-      appId: '1637200843214153'
+      appId: Config.vars.FACEBOOK_APP_ID || null
     },
     twitter: {
       handle: 'GrowthGift'
     }
   };
-  if(Config.ENV ==='prod') {
-    ret.name ='Growth Gift';
-    ret.domain ='growthgift.com';
-    ret.shortDomain ='gr0.co';
-    ret.scheme ='http';
-    ret.port =null;
-    ret.facebook.appId ='1637200623214175';
-  }
 
   // Social share testing
   // ret.domain ='growthgiftdev.meteor.com';

@@ -1,25 +1,16 @@
-if(this.process.env !==undefined && this.process.env.ENV !==undefined && this.process.env.ENV ==='prod') {
-  App.info({
-    name: 'GrowthGift',
-    description: 'Grow togther.',
-    // author: 'Percolate Studio Team',
-    // email: 'us@percolatestudio.com',
-    website: 'growthgift.com',
-    version: '1.2.1',
-    // Too late for this.. can not change after publish to (Android)
-    // app store the first time..
-    // id: 'com.growthgift'
-  });
-}
-else {
-  App.info({
-    name: 'GrowthGiftDev',
-    description: 'Grow togther.',
-    website: 'growthgiftdev.meteor.com',
-    version: '1.2.1',
-    id: 'com.meteor.growthgiftdev'
-  });
-}
+var env = (this.process.env !== undefined && this.process.env.ENV !== undefined)
+ ? this.process.env.ENV : 'dev';
+App.info({
+  // Too late for this.. can not change after publish to (Android)
+  // app store the first time..
+  // id: ( env === 'prod' ) ? 'com.growthgift' : 'com.meteor.growthgiftdev',
+  name: ( env === 'prod' ) ? 'GrowthGift' : 'GrowthGiftDev',
+  description: 'Grow togther.',
+  // author: 'Percolate Studio Team',
+  // email: 'us@percolatestudio.com',
+  name: ( env === 'prod' ) ? 'growthgift.com' : 'growthgiftdev.meteor.com',
+  version: '1.2.1'
+});
 
 App.icons({
   // iOS

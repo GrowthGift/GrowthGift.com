@@ -8,7 +8,17 @@ GIT_REMOTE_URL   git@github.com:notorii/meteor-seed.git
 APP_NAME todoseed
 
 - clone repo
-    - `git clone GIT_REMOTE_URL --origin seed APP_NAME`
+  - `git clone GIT_REMOTE_URL --origin seed APP_NAME`
+- create a `.env` file in the root folder, using `.env-example` as an example.
+ The defaults should work for localhost development EXCEPT you'll need to set:
+ ```js
+ APP_DOMAIN=localhost
+ APP_SHORT_DOMAIN=localhost
+ APP_SCHEME=http
+ APP_PORT=3000
+ ```
+  - Add any values you want on the client to the `allowedPublic` array
+   in the `Config.setVars` function.
 - search for and update all `todoseed` items in code (should be self explanatory)
 - [OPTIONAL] add custom fonts in `public/font` and reference them in `client/less/fonts.import.less`
 - [LATER - only needed for mobile iOS push notifications] add .pem files for iOS push notifications in `private` folder and then reference them in `config.push.json` file
