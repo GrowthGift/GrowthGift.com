@@ -13,8 +13,8 @@
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
         {{>afQuickField name="description" type="textarea" label="Details" }}
 
+        <div class='margin-t'>Buddy Motivation & Documentation</div>
         {{ #if data.inputOpts.media.visible }}
-          <div class='margin-t'>Buddy Motivation & Documentation</div>
           <div class='font-small'>Send a message to your buddy with a photo or short video of your success to inspire them. You know your buddy best - your message could be encouraging or egging them on, whatever you think will get them the most fired up to complete their daily pledge!</div>
           {{>afQuickField name="media.userId" type="hidden" value=data.userId }}
           {{>afQuickField name="media.type" type="select" options=data.inputOpts.media.typeOpts class="game-challenge-media-type-input" }}
@@ -36,7 +36,10 @@
 
           {{>afQuickField name="media.message" type="text" label="Add a caption" placeholder="I did it - now it is your turn!" }}
         {{ else }}
-          <div>You don't have a buddy yet! TODO</div>
+          <div class='font-small'>You don't have a buddy yet!</div>
+          <div class='font-small'>Buddies are a core part of the games as they offer human connection and help with accountability and motivation. Plus the 'reach' and 'impact' awards are very difficult to earn without a buddy.</div>
+          <div class='font-small red'>Who is a friend, family member, co-worker, or acquaintance you could ask to be your buddy?</div>
+          {{ >gameInviteBuddyButtons gameSlug=../helperData.gameSlug gameUser=../helperData.gameUser gameMainAction=../helperData.gameMainAction }}
         {{ /if }}
 
         <!-- Hidden and auto set for now -->
@@ -130,22 +133,24 @@
       <div>{{ challenge.description }}</div>
     {{/if}}
 
-    <div>
-      <h5>Buddy Motivation & Documentation</h5>
-      {{ #if challenge.xDisplay.mediaImage }}
-        <div class='max-300 center'>
-          <img src='{{ challenge.media }}' class='img-100' />
-        </div>
-      {{ /if }}
-      {{ #if challenge.xDisplay.mediaVideo }}
-        <div class='max-300 center'>
-          <!-- TODO -->
-        </div>
-      {{ /if }}
-      {{ #if challenge.mediaMessage }}
-        <div class='center'>{{ challenge.mediaMessage }}</div>
-      {{ /if }}
-    </div>
+    {{ #if challenge.xDisplay.atLeastOneMedia }}
+      <div>
+        <h5>Buddy Motivation & Documentation</h5>
+        {{ #if challenge.xDisplay.mediaImage }}
+          <div class='max-300 center'>
+            <img src='{{ challenge.media }}' class='img-100' />
+          </div>
+        {{ /if }}
+        {{ #if challenge.xDisplay.mediaVideo }}
+          <div class='max-300 center'>
+            <!-- TODO -->
+          </div>
+        {{ /if }}
+        {{ #if challenge.mediaMessage }}
+          <div class='center'>{{ challenge.mediaMessage }}</div>
+        {{ /if }}
+      </div>
+    {{ /if }}
 
   </div>
 </template>

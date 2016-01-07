@@ -9,12 +9,9 @@
     <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
     <div class='font-small red'>Click one of the buttons below to contact your buddy to-be on social media or email. Or copy the link to manually paste it in another medium to send to your buddy.</div>
     {{ /if }}
-    <div class='margin-tb game-invite-buddy-social-share'>
-      {{ >lmSocialShare opts=data.optsSocialShare }}
 
-      <div class='margin-large-t'>Here's some example share text you can use:</div>
-      <div><textarea value='{{ data.exampleMessage }}' class='game-invite-buddy-input-example-message' ></textarea></div>
-    </div>
+    {{ >gameInviteBuddyButtons gameSlug=gameSlug gameUser=gameUser gameMainAction=gameMainAction }}
+
   </div>
   {{ else }}
   <div class='center'>You already have a buddy for this game!</div>
@@ -30,4 +27,13 @@
     </a>
   </div>
 
+</template>
+
+<template name="gameInviteBuddyButtons">
+  <div class='margin-tb game-invite-buddy-social-share'>
+    {{ >lmSocialShare opts=data.optsSocialShare }}
+
+    <div class='margin-large-t'>Here's some example share text you can use:</div>
+    <div><textarea value='{{ data.exampleMessage }}' class='game-invite-buddy-input-example-message' ></textarea></div>
+  </div>
 </template>

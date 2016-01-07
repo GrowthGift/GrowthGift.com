@@ -18,9 +18,41 @@ if(Meteor.isClient) {
         };
       }
 
+      var reactiveData =Template.instance().reactiveData.get();
+
+      var ret = {
+        gameUser: gameUser,
+        inputOpts: {
+          buddyTipVisible: reactiveData.buddyTipVisible
+        },
+        hrefNext: ggUrls.gameInviteReach(this.gameSlug)
+      };
+      return ret;
+    }
+  });
+
+  Template.gameInviteBuddy.events({
+    'click .game-invite-buddy-tip-btn': function(evt, template) {
+      var reactiveData =template.reactiveData.get();
+      reactiveData.buddyTipVisible =!reactiveData.buddyTipVisible;
+      template.reactiveData.set(reactiveData);
+    }
+  });
+
+  Template.gameInviteBuddyButtons.helpers({
+    data: function() {
+      var gameSlug =this.gameSlug;
+      var gameUser =this.gameUser;
+      var gameMainAction =this.gameMainAction
+      if(!gameSlug || !gameUser || !gameMainAction) {
+        return {
+          _xNotFound: true,
+          _xHref: ggUrls.myGames()
+        };
+      }
+
       var appInfo =Config.appInfo();
       var shortRootUrl =appInfo.shortRootUrl;
-      var reactiveData =Template.instance().reactiveData.get();
       var shareLinks ={
         buddy: shortRootUrl+ggUrls.game(gameSlug, { buddyRequestKey: gameUser.buddyRequestKey })
       }
@@ -32,10 +64,6 @@ if(Meteor.isClient) {
       var ret = {
         gameUser: gameUser,
         shareLinks: shareLinks,
-        inputOpts: {
-          buddyTipVisible: reactiveData.buddyTipVisible
-        },
-        hrefNext: ggUrls.gameInviteReach(this.gameSlug),
         optsSocialShare: {
           email: true,
           facebookMessage: true,
@@ -67,14 +95,9 @@ if(Meteor.isClient) {
     }
   });
 
-  Template.gameInviteBuddy.events({
+  Template.gameInviteBuddyButtons.events({
     'click .game-invite-buddy-input-example-message': function(evt, template) {
       ggDom.inputSelectAll('game-invite-buddy-input-example-message');
-    },
-    'click .game-invite-buddy-tip-btn': function(evt, template) {
-      var reactiveData =template.reactiveData.get();
-      reactiveData.buddyTipVisible =!reactiveData.buddyTipVisible;
-      template.reactiveData.set(reactiveData);
     }
   });
 }

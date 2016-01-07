@@ -362,6 +362,14 @@ if(Meteor.isClient) {
         }
       }
 
+      var helperData ={
+        gameMainAction: gameRule.mainAction,
+        gameUser: gameUser,
+        gameSlug: game.slug
+      };
+      // Set on template instance so it is accessible.
+      Template.instance().data.helperData =helperData;
+
       return ret;
     }
   });
@@ -425,6 +433,8 @@ if(Meteor.isClient) {
         mediaImage: ( this.challenge.media && this.challenge.mediaType === 'image' )
          ? true : false,
         mediaVideo: ( this.challenge.media && this.challenge.mediaType === 'video' )
+         ? true : false,
+        atLeastOneMedia: ( this.challenge.media || this.challenge.mediaMessage )
          ? true : false
       };
 
