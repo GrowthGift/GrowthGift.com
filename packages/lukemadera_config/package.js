@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'lukemadera_config.js',
     'config-email.js',
+    'config-startup.js',
     'config-amazon.js'
   ]);
 

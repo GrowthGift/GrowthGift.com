@@ -59,11 +59,13 @@ Config.setVars =function() {
         }
       }
     }
+    Config.startup();
   }
 
   if(Meteor.isClient) {
     Meteor.call('ConfigPublicVars', function(err, result) {
       Config.vars =result;
+      Config.startup();
     });
   }
 };
