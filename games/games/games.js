@@ -6,8 +6,10 @@ if(Meteor.isClient) {
   Template.games.helpers({
     data: function() {
 
-      // Want to get all games still happening.
-      var endTime =msTimezone.curDateTime();
+      // Want to get all games that end >= 1 day from now.
+      var dtFormat =msTimezone.dateTimeFormat;
+      var nowTime =msTimezone.curDateTime('moment');
+      var endTime =nowTime.clone().add(1, 'days').format(dtFormat);
       var games =GamesCollection.find({ end: { $gte : endTime } }).fetch();
       if(games) {
         var gameRuleIds =[];
@@ -43,6 +45,7 @@ if(Meteor.isClient) {
           xDisplay: {
             userInGame: userInGame,
             userMayJoin: (!userId || ggMay.joinGame(game, userId) ) ? true : false,
+            usersText: ( game.users && game.users.length > 1 ) ? game.users.length + " players" : null,
             description: gameRule && _.trunc(gameRule.challenges[0].description, {length: 100}),
             classes: {
               userInGame: userInGame ? 'user-in-game' : ''

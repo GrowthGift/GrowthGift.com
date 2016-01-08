@@ -24,11 +24,6 @@ if(Meteor.isClient) {
           gameRuleIds.push(game.gameRuleId)
         });
         var gameRules =GameRulesCollection.find({ _id: { $in: gameRuleIds } }).fetch();
-
-        if(Meteor.userId()) {
-          // Get all user's game to see if in a game.
-          var userGames =UserGamesCollection.find({ userId: Meteor.userId() }).fetch();
-        }
       }
 
       if(!games || !gameRules) {
@@ -39,8 +34,9 @@ if(Meteor.isClient) {
         };
       }
 
+      var userId =Meteor.userId();
       var nowTimeFormat =msTimezone.curDateTime();
-      var gameEnd, gameRule;
+      var gameEnd, gameRule, userInGame;
 
       // Slice top 3 games and then add in a "dummy one" for suggesting one.
       var maxGames =3;
@@ -51,8 +47,17 @@ if(Meteor.isClient) {
       games =_.sortByOrder(games.map(function(game) {
         gameRule =gameRules[_.findIndex(gameRules, '_id', game.gameRuleId)];
         gameEnd =game.end;
+        userInGame = ( userId && game.users &&
+         ( _.findIndex(game.users, 'userId', userId) > -1 ) ) ? true : false;
         return _.extend({}, game, {
           xDisplay: {
+            userInGame: userInGame,
+            userMayJoin: (!userId || ggMay.joinGame(game, userId) ) ? true : false,
+            usersText: ( game.users && game.users.length > 1 ) ? game.users.length + " players" : null,
+            description: gameRule && _.trunc(gameRule.challenges[0].description, {length: 100}),
+            classes: {
+              userInGame: userInGame ? 'user-in-game' : ''
+            },
             gameTime: (game.start > nowTimeFormat) ? ( "Starts " +
              msUser.toUserTime(Meteor.user(), game.start, null, 'fromNow') ) :
              ( "Ends " + msUser.toUserTime(Meteor.user(), gameEnd, null, 'fromNow') )
