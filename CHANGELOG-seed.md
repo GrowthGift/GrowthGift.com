@@ -1,5 +1,11 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.1.10 (2016-01-07)
+
+# Bug Fixes
+- Add `Config.startup` function and move `Meteor.startup` calls there to ensure config variables are initialized first
+
+
 # 1.1.9 (2016-01-07)
 
 ## Bug Fixes

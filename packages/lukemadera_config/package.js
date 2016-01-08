@@ -14,7 +14,8 @@ Package.onUse(function(api) {
   api.versionsFrom('1.0.3.1');
   api.addFiles([
     'lukemadera_config.js',
-    'config-email.js'
+    'config-email.js',
+    'config-startup.js'
   ]);
 
   api.export('Config');
