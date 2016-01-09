@@ -17,7 +17,7 @@ APPNAMEDEV appNameDev
     - prod: `ENV=prod meteor run android-device --mobile-server https://107.170.212.162 --settings env/prod/settings.json`
     - dev: `meteor run android-device --mobile-server http://growthgiftdev.meteor.com --settings env/dev/settings.json`
   - build
-    - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server https://107.170.212.162 --settings env/prod/settings.json`
+    - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server https://107.170.212.162 --mobile-settings env/prod/settings.json`
       - ios: open xcode project and fix things then build .ipa file
         - run dev version first (NOTE: can not figure out how to run the SAME project on device and for distribution release..)
         - delete project after confirm working, then rebuild it
@@ -29,7 +29,7 @@ APPNAMEDEV appNameDev
         - set device orientations to all
         - set build to generic device
         - run then archive
-    - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com --settings env/dev/settings.json`
+    - dev: `meteor build ~/Documents/web/1mobile-build/APPNAME --server APPNAMEDEV.meteor.com --mobile-settings env/dev/settings.json`
 3. upload the .apk/.ipa and do android/ios specific app store stuff
   1. Android: https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store
     1. `cd ~/Documents/projects/1mobile-build/growthgift/android && jarsigner -digestalg SHA1 release-unsigned.apk growthgift`
