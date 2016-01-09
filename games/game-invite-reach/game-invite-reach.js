@@ -51,17 +51,6 @@ if(Meteor.isClient) {
         },
         exampleMessage: shareContent.body + "\n" + shareLinks.reach
       };
-      
-      // TEMPORARY: iOS app needs to be approved before access rules take effect
-      if( Meteor.isCordova && navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ) {
-        ret.optsSocialShare.email =false;
-        ret.optsSocialShare.facebook =false;
-        ret.optsSocialShare.googlePlus =false;
-        ret.optsSocialShare.linkedIn =false;
-        ret.optsSocialShare.pinterest =false;
-        ret.optsSocialShare.sms =false;
-        ret.optsSocialShare.twitter =false;
-      }
 
       return ret;
     }
