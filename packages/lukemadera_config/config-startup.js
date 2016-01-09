@@ -35,5 +35,13 @@ Config.startup =function() {
       console.info("Redirecting "+appInfo.shortDomain+" to "+appInfo.domain+" ...");
       window.location.href =newLoc;
     }
+
+    // Redirect http to https, if using https scheme
+    if( appInfo.scheme === 'https' && window.location.href.indexOf('http://') > -1 ) {
+      var regEx =new RegExp('http://');
+      var newLoc =window.location.href.replace(regEx, 'https://');
+      console.info("Redirecting http to https...");
+      window.location.href =newLoc;
+    }
   }
 };
