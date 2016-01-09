@@ -11,3 +11,9 @@ https://forums.meteor.com/t/mup-and-ssl-configuration/2489
 
 1. set `ROOT_URL` to `https`
 2. run `mup setup` (then `mup deploy`)
+
+
+## Cordova apps
+
+Make sure to use `https` in front of the `--mobile-server` command otherwise
+ a `Mixed Content` error will happen (on `sockjs`).

@@ -411,7 +411,9 @@ if(Meteor.isClient) {
     'click .game-challenge-media-image-btn': function(evt, template) {
       var reactiveData =template.reactiveData.get();
       if(!reactiveData.mediaImageActive) {
-        MeteorCamera.getPicture({}, function(err, data) {
+        // Need to set orienation for Android:
+        // https://github.com/meteor/mobile-packages/issues/21
+        MeteorCamera.getPicture({ correctOrientation: true }, function(err, data) {
           var reactiveData =template.reactiveData.get();
           reactiveData.mediaContent =data;
           reactiveData.mediaImage =data;
