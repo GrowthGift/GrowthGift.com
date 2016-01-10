@@ -99,6 +99,9 @@ App.accessRule('*://*/*.png');
 
 // Video
 App.accessRule('*://*.youtube.com/*');
+App.accessRule('*://*.ytimg.com/*');
+App.accessRule('*://*.gstatic.com/*');
+App.accessRule('*://*.googlevideo.com/*');
 
 // Aamazon (S3)
 App.accessRule('*://*.amazonaws.com/*');
