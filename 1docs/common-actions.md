@@ -14,10 +14,10 @@ APPNAMEDEV appNameDev
   - dev: `meteor deploy growthgiftdev.meteor.com --settings env/dev/settings.json`
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
-    - prod: `ENV=prod meteor run android-device --mobile-server https://107.170.212.162 --settings env/prod/settings.json`
+    - prod: `ENV=prod meteor run android-device --mobile-server https://growthgift.com --settings env/prod/settings.json`
     - dev: `meteor run android-device --mobile-server http://growthgiftdev.meteor.com --settings env/dev/settings.json`
   - build
-    - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server https://107.170.212.162 --mobile-settings env/prod/settings.json`
+    - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server https://growthgift.com --mobile-settings env/prod/settings.json`
       - ios: open xcode project and fix things then build .ipa file
         - run dev version first (NOTE: can not figure out how to run the SAME project on device and for distribution release..)
         - delete project after confirm working, then rebuild it
