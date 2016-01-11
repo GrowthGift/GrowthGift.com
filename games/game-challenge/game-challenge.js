@@ -395,7 +395,7 @@ if(Meteor.isClient) {
       }
       else {
         AutoForm.removeStickyValidationError('gameChallengeNewForm', 'inspiration.video');
-        reactiveData.inspirationContent =val.replace('watch?v=', 'embed/');
+        reactiveData.inspirationContent =ggValidate.youtubeEmbedUrl(val);
       }
       template.reactiveData.set(reactiveData);
     },

@@ -50,7 +50,7 @@ if(Meteor.isClient) {
         ret[inspiration.type] =inspiration.content;
         if( inspiration.type === 'video' ) {
           // Convert Youtube video to embed format
-          ret[inspiration.type] =ret[inspiration.type].replace('watch?v=', 'embed/');
+          ret[inspiration.type] =ggValidate.youtubeEmbedUrl(ret[inspiration.type]);
         }
         ret.inspirationUser =Meteor.users.findOne({ _id: inspiration.userId });
         ret.inspirationNumLikes = inspiration.likes ? inspiration.likes.length : 0
