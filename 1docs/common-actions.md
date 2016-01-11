@@ -15,6 +15,7 @@ APPNAMEDEV appNameDev
 2.  package/build for mobile
   - run (use `ios-device` instead for ios)
     - prod: `ENV=prod meteor run android-device --mobile-server https://growthgift.com --settings env/prod/settings.json`
+      - ios: `ENV=prod meteor run ios-device --mobile-server https://growthgift.com --settings env/prod/settings.json`
     - dev: `meteor run android-device --mobile-server http://growthgiftdev.meteor.com --settings env/dev/settings.json`
   - build
     - prod: `ENV=prod meteor build ~/Documents/projects/1mobile-build/growthgift --server https://growthgift.com --mobile-settings env/prod/settings.json`
