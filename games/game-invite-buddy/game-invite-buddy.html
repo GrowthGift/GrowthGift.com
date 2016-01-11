@@ -25,6 +25,9 @@
         Next
       {{ /unless }}
     </a>
+    {{ #unless data.gameUser.buddyId }}
+      <a class='margin-l' href='{{ data.hrefNext }}'>Skip</a>
+    {{ /unless }}
   </div>
 
 </template>
