@@ -42,11 +42,12 @@ Config.startup =function() {
 
       window.location.href =newLoc;
     }
-
-    // Redirect http to https, if using https scheme
-    httpsUrl =_Config.httpsRedirect(null);
-    if(httpsUrl.redirectUrl) {
-      window.location.href =httpsUrl.redirectUrl;
+    else {
+      // Redirect http to https, if using https scheme
+      httpsUrl =_Config.httpsRedirect(null);
+      if(httpsUrl.redirectUrl) {
+        window.location.href =httpsUrl.redirectUrl;
+      }
     }
   }
 };
