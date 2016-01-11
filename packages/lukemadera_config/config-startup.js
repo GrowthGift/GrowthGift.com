@@ -33,15 +33,35 @@ Config.startup =function() {
       var regEx =new RegExp(appInfo.shortDomain);
       var newLoc =window.location.href.replace(regEx, appInfo.domain);
       console.info("Redirecting "+appInfo.shortDomain+" to "+appInfo.domain+" ...");
+
+      // Check for https too to avoid double redirect.
+      httpsUrl =_Config.httpsRedirect(newLoc);
+      if(httpsUrl.redirectUrl) {
+        newLoc =httpsUrl.redirectUrl;
+      }
+
       window.location.href =newLoc;
     }
 
     // Redirect http to https, if using https scheme
-    if( appInfo.scheme === 'https' && window.location.href.indexOf('http://') > -1 ) {
-      var regEx =new RegExp('http://');
-      var newLoc =window.location.href.replace(regEx, 'https://');
-      console.info("Redirecting http to https...");
-      window.location.href =newLoc;
+    httpsUrl =_Config.httpsRedirect(null);
+    if(httpsUrl.redirectUrl) {
+      window.location.href =httpsUrl.redirectUrl;
     }
   }
+};
+
+_Config.httpsRedirect =function(url) {
+  url = url || window.location.href;
+  var ret ={
+    redirectUrl: null
+  };
+  var appInfo =Config.appInfo({});
+  if( appInfo.scheme === 'https' && url.indexOf('http://') > -1 ) {
+    var regEx =new RegExp('http://');
+    var newLoc =url.replace(regEx, 'https://');
+    console.info("Redirecting http to https...");
+    ret.redirectUrl =newLoc;
+  }
+  return ret;
 };

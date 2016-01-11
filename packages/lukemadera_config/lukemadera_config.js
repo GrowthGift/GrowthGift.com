@@ -2,6 +2,7 @@ Config ={
   vars: {},
   publicVars: {}
 };
+_Config ={};
 
 Meteor.methods({
   ConfigPublicVars: function() {
