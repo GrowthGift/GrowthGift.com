@@ -12,7 +12,6 @@ accounts-password
 aldeed:autoform
 aldeed:collection2
 momentjs:moment
-raix:push
 fortawesome:fontawesome
 
 lukemadera:config
@@ -64,4 +63,4 @@ meteorseed:template
 lukemadera:social-share
 mdg:camera
 lepozepo:s3
-force-ssl
+raix:push

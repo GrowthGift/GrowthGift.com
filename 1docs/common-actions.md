@@ -50,3 +50,20 @@ APPNAMEDEV appNameDev
 
 https://lodash.com/custom-builds
 `cd lib/lodash && lodash -p include=capitalize,extend`
+
+
+## Make Push Certs
+
+### Prod
+
+openssl x509 -in aps_production_growth_gift_prod.cer -inform der -out PushGrowthGiftProdCert.pem
+openssl pkcs12 -nocerts -out PushGrowthGiftProdKey.pem -in LukeGrowthGiftProdPush.p12
+cat PushGrowthGiftProdCert.pem PushGrowthGiftProdKey.pem > PushGrowthGiftProd.pem
+openssl s_client -connect gateway.push.apple.com:2195 -CAfile entrust_2048_ca.cer -cert PushGrowthGiftProdCert.pem -key PushGrowthGiftProdKey.pem
+
+### Dev
+
+openssl x509 -in aps_development_growthgiftdev.cer -inform der -out PushGrowthGiftDevCert.pem
+openssl pkcs12 -nocerts -out PushGrowthGiftDevKey.pem -in LukeGrowthGiftDevPush.p12
+cat PushGrowthGiftDevCert.pem PushGrowthGiftDevKey.pem > PushGrowthGiftDev.pem
+openssl s_client -connect gateway.sandbox.push.apple.com:2195 -CAfile entrust_2048_ca.cer -cert PushGrowthGiftDevCert.pem -key PushGrowthGiftDevKey.pem

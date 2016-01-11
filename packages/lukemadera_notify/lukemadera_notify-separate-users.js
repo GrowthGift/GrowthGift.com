@@ -318,7 +318,7 @@ lmNotifyHelpers.checkNotificationSettings =function(user, params) {
 
   //app wide overrides
   // ret.email =false;   //do NOT send ANY emails right now    //@todo - change this to send emails again
-  ret.push =false;    // TESTING - TODO
+  // ret.push =false;    // TESTING - TODO
   ret.sms =false;   // do NOT send ANY sms text messages right now
 
   return ret;

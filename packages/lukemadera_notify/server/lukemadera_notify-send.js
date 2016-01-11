@@ -7,6 +7,15 @@
 5. sendAll
 */
 
+// Meteor.startup(function() {
+//   Push.debug = true;
+//   Push.allow({
+//     send: function(userId, notification) {
+//       return true; // Allow all users to send
+//     }
+//   });
+// });
+
 /**
 Sends a push notification to ONE user. Ideally could handle multiple users but since users will likely have DIFFERENT badge numbers even for the same message, need to do them all individually?
 @toc 1.
@@ -22,6 +31,7 @@ lmNotify.sendPush =function(pushData, userId, params) {
   pushObj.query ={
     userId: userId
   };
+  // pushObj.query ={};    // TESTING
 
   Push.send(pushObj);
   console.info('push sent: '+JSON.stringify(pushObj));
