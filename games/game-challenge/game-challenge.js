@@ -69,11 +69,13 @@ GameChallengeNewSchema = new SimpleSchema({
   },
   "inspiration.video": {
     type: String,
-    optional: true
+    optional: true,
+    custom: ggValidate.schemaHttpsUrl
   },
   "inspiration.image": {
     type: String,
-    optional: true
+    optional: true,
+    custom: ggValidate.schemaHttpsUrl
   },
   "inspiration.quote": {
     type: String,
