@@ -24,7 +24,12 @@
         </div>
         {{ #each data.users }}
           <div class='flexbox game-users-row {{xDisplay.classes.row}}'>
-            <div class='flex1'>{{{ xDisplay.displayHtml }}}</div>
+            <div class='flex1'>
+              {{{ xDisplay.displayHtml }}}
+              {{ #if xDisplay.buddyLink }}
+                <a href='{{ xDisplay.buddyLink }}' class='font-small btn-underline black'>Buddy</a>
+              {{ /if }}
+            </div>
             <div class='game-users-col-pledge font-small'>
               {{ #each xDisplay.pledgeStars }}
                 <i class='fa fa-star'></i>

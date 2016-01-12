@@ -109,6 +109,51 @@ lmNotifyTypes.gameBuddyAdded =function(type, data, params) {
   });
 };
 
+lmNotifyTypes.gameBuddyRequest =function(type, data, params) {
+  var notifId =type;
+
+  var userIds =data.notifyUserIds;
+  var userName =data.user.profile.name;
+  var gameName =data.game.title;
+  var gameUrl =ggUrls.game(data.game.slug, { buddyRequestKey: data.buddyRequestKey });
+  var hrefGame =ggUrls.removeLeadingSlash(gameUrl);
+  var gameFullUrl =Config.appInfo().shortRootUrl + gameUrl;
+
+  lmNotifyHelpers.separateUsers({type:type, userIds: userIds, notifId:notifId, noBulk:true}, function(retSep) {
+
+    var title ="Game Buddy Request";
+    var message =userName + ' wants to be your buddy for ' + gameName + '.';
+    var inAppData ={
+      subject: title,
+      html: message,
+      notificationType: type,
+      linkUrlPart: hrefGame
+    };
+    var pushData ={
+      title: title,
+      text: message
+    };
+    var emailData ={
+      subject: title,
+      html: "Lucky you! " + userName + " would like to play " + gameName + " with you, as your one and only buddy."+
+        "<br /><br />"+
+        "Buddies are very important in the G Games and come with one key responsibility:"+
+        "<br />"+
+        "1. A daily call (or text) to your buddy when you complete your daily pledge to let them know you completed yours and to remind and encourage your buddy to complete theirs."+
+        "<br />"+
+        "As buddies, your job is to ensure neither one of you misses a single day!"+
+        "<br /><br />"+
+        "Enjoy the game and see what you and your buddy can achieve together!"+
+        "<br /><br />"+
+        gameFullUrl
+    };
+    var smsData =false;
+
+    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {});
+
+  });
+};
+
 lmNotifyTypes.gameChallengeDueReminder =function(type, data, params) {
   var notifId =type;
 

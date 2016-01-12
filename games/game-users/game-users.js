@@ -1,7 +1,10 @@
 if(Meteor.isClient) {
-  function formatUsers(users, sortKeys, sortOrders) {
+  function formatUsers(users, sortKeys, sortOrders, showBuddyButton, gameSlug) {
     users.forEach(function(user) {
       if(user) {
+        var isSelf =( ( user.user1._id && user.user1._id === Meteor.userId() ) ||
+         ( user.user2._id && user.user2._id === Meteor.userId() ) )
+         ? true : false;
         user.xDisplay ={
           user1: {
             href: ( user.user1.username ) ? ggUrls.user(user.user1.username) : ''
@@ -10,10 +13,9 @@ if(Meteor.isClient) {
             href: ( user.user2.username ) ? ggUrls.user(user.user2.username) : ''
           },
           displayHtml: null,
+          buddyLink: null,
           classes: {
-            row: ( ( user.user1._id && user.user1._id === Meteor.userId() ) ||
-             ( user.user2._id && user.user2._id === Meteor.userId() ) ) ?
-             'self' : ''
+            row: isSelf ? 'self' : ''
           },
           // Would do number of stars but for use with #each, needs to be an
           // array. The values do not matter; just the length of the array.
@@ -35,11 +37,15 @@ if(Meteor.isClient) {
           user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user1.href
            + '>' + msUser.getName(user.user1) + '</a>';
           // user.xDisplay.displayHtml ='*' + msUser.getName(user.user1);
+          user.xDisplay.buddyLink = ( showBuddyButton && !isSelf ) ?
+           ggUrls.gameUserBuddyRequest(gameSlug, user.user1.username) : null;
         }
         else if(user.user2._id) {
           user.xDisplay.displayHtml ='*<a href=' + user.xDisplay.user2.href
            + '>' + msUser.getName(user.user2) + '</a>';
           // user.xDisplay.displayHtml ='*' + msUser.getName(user.user2);
+          user.xDisplay.buddyLink = ( showBuddyButton && !isSelf ) ?
+           ggUrls.gameUserBuddyRequest(gameSlug, user.user2.username) : null;
         }
       }
     });
@@ -75,6 +81,13 @@ if(Meteor.isClient) {
        || null;
       var userGames =(game && UserGamesCollection.find({ gameId:game._id }).fetch() ) || null;
       var gameUsers =ggGame.getGameUsersInfo(userGames);
+
+      var userId = Meteor.userId();
+      var gameUser =( game && userId ) ? ggGame.getGameUser(game, userId)
+       : null;
+      var user =( userId ) ? Meteor.users.findOne({ _id: userId },
+       { fields: { profile:1, username:1 } }) : null;
+
       // Have to wait until all users are loaded, which is when the game.users
       // array length matches the the userGames length.
       if(!game || !gameRule || !userGames || !userGames.length || !gameUsers
@@ -85,6 +98,9 @@ if(Meteor.isClient) {
         };
       }
 
+      var showBuddyButton = ( gameUser && !gameUser.buddyId ) ?
+       true : false;
+
       var users;
       var reactiveUsers =Template.instance().users.get();
       var dataLoaded =Template.instance().dataLoaded;
@@ -92,7 +108,8 @@ if(Meteor.isClient) {
        dataLoaded.gameUsersInfoLength !==gameUsers.length ||
        dataLoaded.userGamesLength !==userGames.length) {
         users =ggGame.getGameUsersStats(userGames, game, gameUsers, gameRule, null);
-        users =formatUsers(users, ['buddiedPledgePercent'], ['desc']);
+        users =formatUsers(users, ['buddiedPledgePercent'], ['desc'],
+         showBuddyButton, game.slug);
         Template.instance().users.set(users);
         // update for next time
         Template.instance().dataLoaded.gameUsersLength =game.users.length;

@@ -150,6 +150,12 @@
         "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00",
         "buddyId": "{String} [The user id of this user's champion / partner]",
         "buddyRequestKey": "{String} [unique key used to validate someone becoming this user's buddy for this game.]",
+        "buddyRequests": [
+          {
+            "userId": "{String}",
+            "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
+          }
+        ],
         "__commentReachTeam": "A list of users who joined because of this user and thus will count toward this user's score",
         "reachTeam": [
           {

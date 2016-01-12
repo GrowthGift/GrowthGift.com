@@ -45,6 +45,14 @@ ggUrls.gameInviteReach =function(gameSlug) {
   return ggUrls.gameInvite(gameSlug)+'?nav=reach';
 };
 
+ggUrls.gameUserBuddyRequest =function(gameSlug, username) {
+  return '/game-buddy/' + gameSlug + '/' + username;
+};
+
+ggUrls.gameUsers =function(gameSlug) {
+  return '/game-users/'+gameSlug;
+};
+
 ggUrls.gameRule =function(gameRuleSlug) {
   return '/gr/'+gameRuleSlug;
 };
@@ -55,10 +63,6 @@ ggUrls.games =function() {
 
 ggUrls.gamesSuggest =function() {
   return '/games-suggest';
-};
-
-ggUrls.gameUsers =function(gameSlug) {
-  return '/game-users/'+gameSlug;
 };
 
 ggUrls.gameUserSummary =function(gameSlug) {
