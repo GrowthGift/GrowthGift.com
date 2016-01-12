@@ -34,12 +34,18 @@ if(Meteor.isClient) {
       userBuddy.xDisplay ={
         img: msUser.getImage(userBuddy)
       };
+      var gameUser =ggGame.getGameUser(game, userId, {});
+      var gameUserBuddy =ggGame.getGameUser(game, userBuddy._id, {});
 
       return {
         game: game,
+        gameState: ggGame.getGameState(game, null, null),
+        userHasBuddy: ( ( gameUser && gameUser.buddyId ) || ( gameUserBuddy &&
+         gameUserBuddy.buddyId ) ) ? true : false,
         userBuddy: userBuddy,
         links: {
-          gameUsers: ggUrls.gameUsers(game.slug)
+          gameUsers: ggUrls.gameUsers(game.slug),
+          games: ggUrls.games()
         }
       };
     }

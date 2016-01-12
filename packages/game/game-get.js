@@ -192,15 +192,20 @@ ggGame.getCurrentChallenge =function(game, gameRule, nowTime) {
 };
 
 ggGame.getGameState =function(game, gameRule, nowTime) {
-  if(!game || !gameRule || !gameRule.challenges) {
+  if(!game || ( !game.end && ( !gameRule || !gameRule.challenges ) ) ) {
     return null;
   }
 
   nowTime =nowTime || msTimezone.curDateTime('moment');
   var gameStart =moment(game.start, msTimezone.dateTimeFormat).utc();
-  // Assume in order with the last due date as the last item in the array
-  var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
-  var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
+  if(game.end) {
+    gameEnd =moment(game.end, msTimezone.dateTimeFormat);
+  }
+  else {
+    // Assume in order with the last due date as the last item in the array
+    var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
+    var gameEnd =gameStart.clone().add(lastChallenge.dueFromStart, 'minutes');
+  }
   return {
     gameStarted: ( gameStart <= nowTime ) ? true : false,
     gameEnded: ( gameEnd < nowTime ) ? true : false,
@@ -210,10 +215,13 @@ ggGame.getGameState =function(game, gameRule, nowTime) {
 };
 
 ggGame.getGameEnd =function(game, gameRule) {
-  if(!game || !gameRule || !gameRule.challenges) {
+  if(!game || ( !game.end && ( !gameRule || !gameRule.challenges ) ) ) {
     return null;
   }
 
+  if(game.end) {
+    return game.end;
+  }
   var gameStart =moment(game.start, msTimezone.dateTimeFormat).utc();
   // Assume in order with the last due date as the last item in the array
   var lastChallenge =gameRule.challenges[(gameRule.challenges.length-1)];
