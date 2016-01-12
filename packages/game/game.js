@@ -316,5 +316,8 @@ ggGame.saveBuddyRequest =function(game, userSelf, userBuddy, callback) {
       lmNotify.send('gameBuddyRequest', { game: game, user: userSelf,
        buddyRequestKey: gameUser.buddyRequestKey, notifyUserIds: notifyUserIds }, {});
     }
+    if(Meteor.isClient) {
+      nrAlert.success("A buddy request has been sent to " + userBuddy.profile.name + ". We will let you know if they accept!");
+    }
   });
 };
