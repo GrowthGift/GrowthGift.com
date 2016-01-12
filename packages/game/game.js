@@ -77,7 +77,13 @@ ggGame.join =function(game, userId, buddyRequestKey, inviteUsername, callback) {
   var valid =ggMay.joinGame(game, userId);
   if(!valid) {
     if(Meteor.isClient) {
-      nrAlert.alert("You may not join this game.");
+      var status =ggMay.getGameUserStatus(game.users, userId);
+      if( status === "joined" ) {
+        nrAlert.success("You are already in this game.");
+      }
+      else {
+        nrAlert.alert("You may not join this game.");
+      }
     }
   }
   else {

@@ -29,7 +29,7 @@ _may.getUser =function(users, userId) {
   });
 };
 
-_may.getUserStatus =function(users, userId) {
+ggMay.getGameUserStatus =function(users, userId) {
   if(!users || !userId) {
     return null;
   }
@@ -65,13 +65,13 @@ ggMay.deleteGame =function(game, userId) {
 };
 
 ggMay.joinGame =function(game, userId) {
-  var status =_may.getUserStatus(game.users, userId);
+  var status =ggMay.getGameUserStatus(game.users, userId);
   return (!status || (status !=='joined' && status !=='blocked' &&
    status !=='requested') ) ? true : false;
 };
 
 ggMay.leaveGame =function(game, userId) {
-  var status =_may.getUserStatus(game.users, userId);
+  var status =ggMay.getGameUserStatus(game.users, userId);
   // May leave if joined and not a creator
   return (status && (status ==='joined') && !_may.isUserCreator(game.users, userId) )
    ? true : false;
@@ -148,7 +148,7 @@ ggMay.viewUserGameChallenge =function(game, userId) {
     return false;
   }
   // User must be in game
-  var status =_may.getUserStatus(game.users, userId);
+  var status =ggMay.getGameUserStatus(game.users, userId);
   if(!status || status !=='joined') {
     return false;
   }
