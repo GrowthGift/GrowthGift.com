@@ -399,6 +399,17 @@ if(Meteor.isClient) {
       }
       template.reactiveData.set(reactiveData);
     },
+    'change .game-challenge-inspiration-image-input, blur .game-challenge-inspiration-image-input': function(evt, template) {
+      var val =evt.target.value;
+      var reactiveData =template.reactiveData.get();
+      if(!ggValidate.httpsImageExtension(val)) {
+        reactiveData.inspirationContent =val;
+      }
+      else {
+        reactiveData.inspirationContent =null;
+      }
+      template.reactiveData.set(reactiveData);
+    },
     'change .game-challenge-media-type-input, blur .game-challenge-media-type-input': function(evt, template) {
       var typeVal =evt.target.value;
       var reactiveData =template.reactiveData.get();

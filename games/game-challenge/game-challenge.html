@@ -68,6 +68,10 @@
           {{ /if }}
           {{ #if data.inputOpts.inspiration.imageVisible }}
             {{>afQuickField name="inspiration.image" label="Your link to an inspirational image on the Internet" class='game-challenge-inspiration-image-input' }}
+            {{ #if data.inputOpts.inspiration.content }}
+              <div>Preview:</div>
+              <img class='img-100' src="{{ data.inputOpts.inspiration.content }}" />
+            {{ /if }}
           {{ /if }}
           {{ #if data.inputOpts.inspiration.quoteVisible }}
             {{>afQuickField name="inspiration.quote" type="textarea" label="Your inspirational quote (please cite the source if you know it!)" placeholder="Whether you think you can or you think you can't, you're correct. - Henry Ford"}}

@@ -19,7 +19,7 @@ ggValidate.youtubeEmbedUrl =function(url) {
 
 ggValidate.imageExtension =function(src) {
   if(src) {
-    var allowed =['jpg', 'jpeg', 'png'];
+    var allowed =['jpg', 'jpeg', 'png', 'gif'];
     var ii, match =false, regEx;
     for(ii =0; ii < allowed.length; ii++) {
       regEx =new RegExp("." + allowed[ii] + "$");
