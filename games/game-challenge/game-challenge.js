@@ -75,7 +75,7 @@ GameChallengeNewSchema = new SimpleSchema({
   "inspiration.image": {
     type: String,
     optional: true,
-    custom: ggValidate.schemaHttpsUrl
+    custom: ggValidate.schemaHttpsImageExtension
   },
   "inspiration.quote": {
     type: String,

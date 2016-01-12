@@ -95,6 +95,7 @@ App.accessRule('*://*.twitter.com/*');
 
 // Images
 App.accessRule('*://*/*.jpg');
+App.accessRule('*://*/*.jpeg');
 App.accessRule('*://*/*.png');
 
 // Video
