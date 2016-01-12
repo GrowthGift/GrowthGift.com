@@ -110,6 +110,28 @@ ggMay.beGameBuddy =function(game, buddyUserId, buddyRequestKey) {
   return false;
 };
 
+ggMay.requestGameBuddy =function(game, userId, buddyUserId) {
+  if(!game || !userId || ( buddyUserId && userId === buddyUserId ) ) {
+    return false;
+  }
+  var gameState =ggGame.getGameState(game, null, null);
+  if(gameState.gameEnded) {
+    return false;
+  }
+
+  var gameUserSelfIndex =_.findIndex(game.users, 'userId', userId);
+  var gameUserBuddyIndex =buddyUserId ?
+   _.findIndex(game.users, 'userId', buddyUserId) : -1;
+  var gameUser =( gameUserSelfIndex > -1 ) ?
+   game.users[gameUserSelfIndex] : null;
+  var gameUserBuddy =( gameUserBuddyIndex > -1 ) ?
+   game.users[gameUserBuddyIndex] : null;
+  if( ( gameUserBuddy && gameUserBuddy.buddyId ) || !gameUser || gameUser.buddyId ) {
+    return false;
+  }
+  return true;
+};
+
 ggMay.editGameRule =function(gameRule, userId) {
   if(!userId) {
     return false;

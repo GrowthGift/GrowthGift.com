@@ -276,22 +276,15 @@ ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
 };
 
 ggGame.saveBuddyRequest =function(game, userSelf, userBuddy, callback) {
-  var gameUserSelfIndex =_.findIndex(game.users, 'userId', userSelf._id);
-  if( gameUserSelfIndex < 0 ) {
-    callback(true);
-    return;
-  }
-  var gameUserBuddyIndex =_.findIndex(game.users, 'userId', userBuddy._id);
-  var gameUser =game.users[gameUserSelfIndex];
-  var gameUserBuddy =( gameUserBuddyIndex > -1 ) ?
-   game.users[gameUserBuddyIndex] : null;
-  if( ( gameUserBuddy && gameUserBuddy.buddyId ) || gameUser.buddyId ) {
+  if( !ggMay.requestGameBuddy(game, userSelf._id, userBuddy._id) ) {
     if(Meteor.isClient) {
       nrAlert.alert("You may not buddy with this person for this game.");
     }
     callback(true);
     return;
   }
+  var gameUserSelfIndex =_.findIndex(game.users, 'userId', userSelf._id);
+  var gameUser =game.users[gameUserSelfIndex];
   var buddyRequestObj ={
     userId: userBuddy._id,
     updatedAt: msTimezone.curDateTime()

@@ -39,9 +39,7 @@ if(Meteor.isClient) {
 
       return {
         game: game,
-        gameState: ggGame.getGameState(game, null, null),
-        userHasBuddy: ( ( gameUser && gameUser.buddyId ) || ( gameUserBuddy &&
-         gameUserBuddy.buddyId ) ) ? true : false,
+        mayBuddy: ggMay.requestGameBuddy(game, userId, userBuddy._id),
         userBuddy: userBuddy,
         links: {
           gameUsers: ggUrls.gameUsers(game.slug),

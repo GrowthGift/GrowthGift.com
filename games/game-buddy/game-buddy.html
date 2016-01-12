@@ -4,34 +4,28 @@
   {{else}}
   <div class='padding max-600'>
 
-    {{ #if data.gameState.gameEnded }}
+    {{ #unless data.mayBuddy }}
     <div class='center'>
-      <div>This game is already over but you can buddy with {{ data.userBuddy.profile.name }} in <a href='{{ data.links.games }}'>another game!</a></div>
+      <div>You may not buddy with this person for this game but you can try again with <a href='{{ data.links.games }}'>another game!</a></div>
+      <div class='font-small'>You may only buddy with people who are not already buddied, for games you are in, that are not already over.</div>
       <div><a class='margin-l' href='{{ data.links.gameUsers }}'>Back to {{ data.game.title }} users</a></div>
     </div>
     {{ else }}
-      {{ #if data.userHasBuddy }}
-      <div class='center'>
-        <div>One or both of you and {{ data.userBuddy.profile.name }} already have a buddy for this game but you can buddy with {{ data.userBuddy.profile.name }} in <a href='{{ data.links.games }}'>another game!</a></div>
-        <div><a class='margin-l' href='{{ data.links.gameUsers }}'>Back to {{ data.game.title }} users</a></div>
+      <div class='max-300'><img class='img-100' src='{{ data.userBuddy.xDisplay.img }}' /></div>
+      <!-- <div class='center margin-lr'>
+        <h2 class='margin-tb'>{{ data.userBuddy.profile.name }}</h2>
+      </div> -->
+
+      <div class='center margin-large-t margin-b'>
+        <div>Would you like to buddy with <b>{{ data.userBuddy.profile.name }}</b> for <b>{{ data.game.title }}</b>?</div>
+        <div class='font-small'>Note: If you ask more than one person to be your buddy, whomever accepts first will be your buddy.</div>
       </div>
-      {{ else }}
-        <div class='max-300'><img class='img-100' src='{{ data.userBuddy.xDisplay.img }}' /></div>
-        <!-- <div class='center margin-lr'>
-          <h2 class='margin-tb'>{{ data.userBuddy.profile.name }}</h2>
-        </div> -->
 
-        <div class='center margin-large-t margin-b'>
-          <div>Would you like to buddy with <b>{{ data.userBuddy.profile.name }}</b> for <b>{{ data.game.title }}</b>?</div>
-          <div class='font-small'>Note: If you ask more than one person to be your buddy, whomever accepts first will be your buddy.</div>
-        </div>
-
-        <div class='center'>
-          <div class='btn btn-primary game-buddy-request-btn'>Let's Buddy!</div>
-          <a class='margin-l' href='{{ data.links.gameUsers }}'>Not now</a>
-        </div>
-      {{ /if }}
-    {{ /if }}
+      <div class='center'>
+        <div class='btn btn-primary game-buddy-request-btn'>Let's Buddy!</div>
+        <a class='margin-l' href='{{ data.links.gameUsers }}'>Not now</a>
+      </div>
+    {{ /unless }}
 
   </div>
   {{/if}}

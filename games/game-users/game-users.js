@@ -98,9 +98,7 @@ if(Meteor.isClient) {
         };
       }
 
-      var gameState =ggGame.getGameState(game, null, null);
-      var showBuddyButton = ( !gameState.gameEnded && gameUser &&
-       !gameUser.buddyId ) ? true : false;
+      var showBuddyButton = ggMay.requestGameBuddy(game, userId, null);
 
       var users;
       var reactiveUsers =Template.instance().users.get();
