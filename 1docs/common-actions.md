@@ -1,3 +1,14 @@
+## Changelog, Versioning
+
+EACH change that is merged into master should come with a new version number.
+In general that just means incrementing the last digit (e.g. 1.2.2 to 1.2.3).
+This needs to be changed in THREE places:
+
+- `mobile-config.js`
+- `lukemadera_config.js`
+- Add a new git tag, e.g. `git tag v1.2.3`
+
+
 ## Deploy
 
 variables (replace accordingly)
