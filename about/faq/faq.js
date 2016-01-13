@@ -14,11 +14,11 @@ if(Meteor.isClient) {
           a: "It stems from the <a href='http://www.thehappymovie.com/' target='_blank'>Happy Documentary</a> focus on personal growth, relationships, and giving back. Secondly, from a strong belief in mentoring and a desire to start a (giving) movement.",
           link: 'where'
         },
-        {
-          q: "Why 2 categories?",
-          a: "The 'relationships' piece is inherent in the group and buddy aspects of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle.",
-          link: '2-categories'
-        },
+        // {
+        //   q: "Why 2 categories?",
+        //   a: "The 'relationships' piece is inherent in the group and buddy aspects of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle.",
+        //   link: '2-categories'
+        // },
         {
           q: "Is there a mobile app?",
           a: "Yep! Here's the <a href='"+appInfo.mobileApps.android.link+"' target='_blank'>Android app</a> and <a href='"+appInfo.mobileApps.ios.link+"' target='_blank'>iOS app</a>.",
@@ -95,7 +95,7 @@ if(Meteor.isClient) {
         },
         {
           q: "Who should I choose for my game buddy?",
-          a: "We recommend trying a broad range of different buddies to see what is most fulfilling and effective for you. Try pursuing a goal together with a close friend. Try reconnecting with an old friend or new acquaintance. Try building a new connection with a complete stranger. The one piece of guidance we can offer is that evenly matched buddies for the particular game tend to do the best together.",
+          a: "We recommend trying a broad range of different buddies to see what is most fulfilling and effective for you. Try pursuing a goal together with a close friend or loved one. Try reconnecting with an old friend or new acquaintance. Try building a new connection with a complete stranger. The one piece of guidance we can offer is that evenly matched buddies for the particular game tend to do the best together.",
           link: 'game-buddy-who'
         },
         {
