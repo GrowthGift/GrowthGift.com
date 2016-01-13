@@ -40,6 +40,10 @@
           <div class='font-small'>Buddies are a core part of the games as they offer human connection and help with accountability and motivation. Plus the 'reach' and 'impact' awards are very difficult to earn without a buddy.</div>
           <div class='font-small red'>Who is a friend, family member, co-worker, or acquaintance you could ask to be your buddy?</div>
           {{ >gameInviteBuddyButtons gameSlug=../helperData.gameSlug gameUser=../helperData.gameUser gameMainAction=../helperData.gameMainAction }}
+
+          <div class='margin-tb center'>
+            <a class='h5' href='{{ data.links.gameUsers }}'>Or, buddy with an existing game member.</a>
+          </div>
         {{ /if }}
 
         <!-- Hidden and auto set for now -->

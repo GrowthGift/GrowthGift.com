@@ -242,6 +242,9 @@ if(Meteor.isClient) {
       var ret ={
         challenges: challenges,
         gameLink: ggUrls.game(this.gameSlug),
+        links: {
+          gameUsers: ggUrls.gameUsers(this.gameSlug)
+        },
         game: game,
         gameRule: {
           mainAction: gameRule.mainAction,
