@@ -2,6 +2,9 @@ GameSuggestFormSchema = new SimpleSchema({
   email: {
     type: String
   },
+  gameTitle: {
+    type: String
+  },
   gameMainAction: {
     type: String
   },
@@ -43,6 +46,7 @@ if(Meteor.isClient) {
         var emailBody = "name: " +
          ( Meteor.userId() ? Meteor.user().profile.name : "" ) + "<br />" +
          "email: " + insertDoc.email + "<br />" +
+         "gameTitle: " + insertDoc.gameTitle + "<br />" +
          "gameMainAction: " + insertDoc.gameMainAction + "<br />" +
          "gameInstructions: " + insertDoc.gameInstructions + "<br />" +
          "other: " + ( insertDoc.other || "" ) + "<br />" +
@@ -58,8 +62,11 @@ if(Meteor.isClient) {
   Template.gameSuggestForm.helpers({
     data: function() {
       var ret ={
-        email: Meteor.userId() ? Meteor.user().emails[0].address : ''
+        inputOpts: {
+          email: Meteor.userId() ? Meteor.user().emails[0].address : ''
+        }
       };
+      ret.inputOpts.emailType = ret.inputOpts.email ? 'hidden' : 'email';
       return ret;
     }
   });
