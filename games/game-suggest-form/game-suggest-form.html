@@ -1,0 +1,18 @@
+<template name="gameSuggestForm">
+  <div class='max-600 padding'>
+    <h3 class='margin-t center'>Suggest a Game</h3>
+    {{#autoForm schema="GameSuggestFormSchema" id='gameSuggestForm' validation="blur" }}
+      {{>afQuickField name="email" type="email" label="Your email" placeholder="you@email.com" value=data.email }}
+      {{>afQuickField name="gameMainAction" label="What is the main action to measure?" placeholder="E.g. pushups, smiles, meditation minutes" }}
+      {{>afQuickField name="gameInstructions" type="textarea" label="Describe the game" placeholder="E.g. What are the daily instructions? How does one play?" }}
+      {{>afQuickField name="other" type="textarea" label="Anything else?" }}
+
+      <div class='margin-large-t flexbox'>
+        <div class='flex1'>&nbsp;</div>
+        <div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    {{/autoForm}}
+  </div>
+</template>

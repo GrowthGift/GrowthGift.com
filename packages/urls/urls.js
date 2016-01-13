@@ -53,6 +53,10 @@ ggUrls.gameUsers =function(gameSlug) {
   return '/game-users/'+gameSlug;
 };
 
+ggUrls.gameSuggestForm =function() {
+  return '/game-suggest-form';
+};
+
 ggUrls.gameRule =function(gameRuleSlug) {
   return '/gr/'+gameRuleSlug;
 };

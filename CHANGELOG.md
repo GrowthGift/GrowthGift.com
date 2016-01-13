@@ -4,6 +4,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
+- Add Game Suggest Form that sends email, rather than a direct mailto: link for game suggesting.
 - Add banner log it button to game page if have not logged the challenge for the day.
 - Better error message if try to join game and are already in game.
 

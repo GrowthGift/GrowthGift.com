@@ -10,8 +10,14 @@ Config.email =function(params) {
       notify: {
         name: appName+" Notification",
         email: "notify@"+emailDomain
+      },
+      hi: {
+        name: appName+" Hi",
+        email: "hi@"+emailDomain
       }
-    }
+    },
+    appName: appName,
+    emailDomain: emailDomain
   };
 
   if(Meteor.isServer) {

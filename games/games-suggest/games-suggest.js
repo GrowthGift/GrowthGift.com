@@ -74,7 +74,7 @@ if(Meteor.isClient) {
   Template.gamesSuggestNew.helpers({
     data: function() {
       return {
-        hiEmail: "mailto:hi@growthgift.com"   // TODO - pull from config
+        link: ggUrls.gameSuggestForm()
       };
     }
   });
