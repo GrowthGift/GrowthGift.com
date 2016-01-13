@@ -25,6 +25,7 @@ Meteor.methods({
        subject: 'Game Suggest Form Submission', html: emailBody });
     }
     if(Meteor.isClient) {
+      nrAlert.success("Thanks for submitting your idea! We'll be in touch shortly.");
       history.back();
     }
   }
