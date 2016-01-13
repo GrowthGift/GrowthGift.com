@@ -92,7 +92,7 @@ lmNotifyTypes.gameBuddyAdded =function(type, data, params) {
       subject: title,
       html: "Congratulations! " + buddyUserName + " is now your buddy for " + gameName + "."+
         "<br /><br />"+
-        "Buddies are very important in the G Games and come with one key responsibility:"+
+        "Buddies are very important in the Growth & Giving Games and come with one key responsibility:"+
         "<br />"+
         "1. A daily call (or text) to your buddy when you complete your daily pledge to let them know you completed yours and to remind and encourage your buddy to complete theirs."+
         "<br />"+
@@ -137,7 +137,7 @@ lmNotifyTypes.gameBuddyRequest =function(type, data, params) {
       subject: title,
       html: "Lucky you! " + userName + " would like to play " + gameName + " with you, as your one and only buddy."+
         "<br /><br />"+
-        "Buddies are very important in the G Games and come with one key responsibility:"+
+        "Buddies are very important in the Growth & Giving Games and come with one key responsibility:"+
         "<br />"+
         "1. A daily call (or text) to your buddy when you complete your daily pledge to let them know you completed yours and to remind and encourage your buddy to complete theirs."+
         "<br />"+

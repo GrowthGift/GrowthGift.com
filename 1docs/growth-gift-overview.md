@@ -33,13 +33,13 @@ Once we get 15 to 30 "growers" and 1 "giver" for a particular topic / skill
  / gift, we will suggest they use an online learning platform such as OneRoom
  for the giver to teach the growers.
 
-High level: 1. G Games, 1.5. next steps (for giving & growing), 2. connecting
+High level: 1. Growth / Giving Games, 1.5. next steps (for giving & growing), 2. connecting
  people to achieve those next steps.
 Next steps and journaling used to be key parts though we're shifting to an
  active focus - less about self writing and tracking and more about DOING.
  Less thinking and planning and more about taking that next step NOW, via
  playing a game / challenging friends and strangers to one of either: Growth
- Games, Giving Games, Gratitude Games.
+ Games, Giving Games.
 The Games is more of the daily, small scale stuff - anyone can participate and
  it's about getting as many people involved as possible and about building
  habits. The Gifts is a more personalized, longer term goal focus - in
@@ -74,7 +74,7 @@ The business case for baked in social interaction is pretty obvious - virality.
 
 ### Solo value
 
-Originally the ideas of a G3 Journal (Gratitude, Grow, Give) and next steps
+Originally the ideas of a G3 Journal (Grow, Give) and next steps
  (breaking Gifts down into smaller, 1 hour or less tasks) was an idea for
  this but now it's all social based with the Games. The idea is that people
  are supposed to recruit a friend (or stranger) to start playing, so they
@@ -96,7 +96,7 @@ I keep a gratitude journal myself and haven't been good about doing it daily so
 
 ### The G(3) Games
 
-Challenge a friend (or strangers) to grow, give, or practice gratitude with
+Challenge a friend (or strangers) to grow or give with
  you for a week. These are more of the lifestyle / habit focused things to
  do on a daily basis, though they CAN be a (step of a) "gift" (growth goal
  , give goal). Anyone can create a new challenge and we'll pre-seed challenges

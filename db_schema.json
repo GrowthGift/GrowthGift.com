@@ -109,7 +109,7 @@
   "gameRules": {
     "_id": "{String}",
     "slug": "{String}",
-    "type": "{String} one of 'giving', 'growth', 'gratitude'",
+    "type": "{String} one of 'giving', 'growth'",
     "mainAction": "{String} e.g. 'pushups', 'smiles given'. Should be plural.",
     "title": "{String}",
     "description": "{String}",

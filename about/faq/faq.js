@@ -15,9 +15,9 @@ if(Meteor.isClient) {
           link: 'where'
         },
         {
-          q: "Why 3 categories?",
-          a: "The 'relationships' piece is inherent in the group and buddy aspects of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle. And we think 'gratitude' is so powerful that we added it too.",
-          link: '3-categories'
+          q: "Why 2 categories?",
+          a: "The 'relationships' piece is inherent in the group and buddy aspects of the games, leaving 'growth' and 'giving' as the other 2 pieces of the happiness puzzle.",
+          link: '2-categories'
         },
         {
           q: "Is there a mobile app?",
@@ -50,18 +50,13 @@ if(Meteor.isClient) {
         },
         {
           q: "What is the game structure?",
-          a: "The 'G Games' are weekly (5 day) group challenges comprised of simple, small actions.",
+          a: "The Growth & Giving Games are weekly (5 day) group challenges comprised of simple, small actions.",
           link: 'game-structure'
         },
         {
           q: "Can I join mid-week, after a game has already started?",
           a: "Yep, join any time! Some awards require playing all 5 days to earn but there are no penalties for joining late.",
           link: 'game-join-late'
-        },
-        {
-          q: "What does 'G Games' stand for?",
-          a: "The 'G' represents both the 3 categories of games and the group aspect of them all. So it can be used for any of 'Growth Games', 'Giving Games', 'Gratitude Games' and / or 'Group Games'.",
-          link: 'g-games'
         },
         {
           q: "Are these competitive?",
@@ -115,7 +110,7 @@ if(Meteor.isClient) {
         },
         {
           q: "I have a game idea, can I create a game?",
-          a: "Yep! Send us an email at <a href='mailto:"+hiEmail+"' target='_blank'>"+hiEmail+"</a> with the game type (Growth, Giving, Gratitude) and the details!",
+          a: "Yep! <a href='"+ggUrls.gameSuggestForm()+"'>Click Here.</a>",
           link: 'game-create'
         },
         {

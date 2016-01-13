@@ -108,7 +108,6 @@ if(Meteor.isClient) {
         slugDisabled: disabled,
         typeOpts: [
           { value: 'giving', label: 'Giving' },
-          { value: 'gratitude', label: 'Gratitude' },
           { value: 'growth', label: 'Growth' }
         ]
       };

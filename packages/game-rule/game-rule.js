@@ -82,7 +82,6 @@ ggGameRule.inputOpts =function() {
   return {
     typeOpts: [
       { value: 'giving', label: 'Giving' },
-      { value: 'gratitude', label: 'Gratitude' },
       { value: 'growth', label: 'Growth' }
     ]
   };
