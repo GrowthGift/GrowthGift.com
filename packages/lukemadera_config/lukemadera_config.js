@@ -83,7 +83,7 @@ Config.appInfo =function(params) {
     shortDomain: Config.vars.APP_SHORT_DOMAIN || 'localhost',
     scheme: Config.vars.APP_SCHEME || 'http',
     port: Config.vars.APP_PORT || null,
-    version: '1.2.6',
+    version: '1.2.7',
     mobileApps: {
       android: {
         link: 'https://play.google.com/store/apps/details?id=com.idmhuhu81ewth241q5f8l3'

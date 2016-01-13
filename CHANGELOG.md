@@ -4,8 +4,9 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
-- Simplify game page. Remove awards and impact sections.
+- Change all 'game' to 'challenge'.
 - Remove 'reach' - switch to 'team'.
+- Simplify game page. Remove awards and impact sections.
 
 
 # 1.2.6

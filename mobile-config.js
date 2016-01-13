@@ -10,7 +10,7 @@ App.info({
   // author: 'Percolate Studio Team',
   // email: 'us@percolatestudio.com',
   website: ( env === 'prod' ) ? 'growthgift.com' : 'growthgiftdev.meteor.com',
-  version: '1.2.6'
+  version: '1.2.7'
 });
 
 App.icons({
