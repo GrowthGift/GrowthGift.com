@@ -28,7 +28,7 @@ if(Meteor.isClient) {
         icon: '/svg/',
         earned: earned,
         classes: ( earned ) ? 'earned' : 'not-earned',
-        earnedText: ( earned ) ? 'You and your buddy earned this!' : 'You did not earn this award this game.',
+        earnedText: ( earned ) ? 'You and your buddy earned this!' : 'You did not earn this award this challenge.',
         scoreToWin: award.scoreToWin || 0,
         yourScore: award.selfUser ? award.selfUser.val : 0
       };

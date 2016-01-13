@@ -1,11 +1,11 @@
 <template name="saveGame">
   {{#if data._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
   <div class='padding max-600'>
     {{#autoForm collection="GamesCollection" doc=data.game id="saveGameForm" type=afMethod meteormethod="saveGame" validation="blur" }}
-      {{>afQuickField name="gameRuleId" label="Game" type="select" options=data.inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
-      <div><a href='{{ data.gameRuleSelectData.hrefLookup }}'>Lookup</a> or <a href='{{ data.gameRuleSelectData.hrefCreate }}'>Create</a> a game, then search (by slug) and select it above.</div>
+      {{>afQuickField name="gameRuleId" label="Challenge" type="select" options=data.inputOpts.gameRuleIdOpts class="save-game-input-game-rule-id" }}
+      <div><a href='{{ data.gameRuleSelectData.hrefLookup }}'>Lookup</a> or <a href='{{ data.gameRuleSelectData.hrefCreate }}'>Create</a> a challenge, then search (by slug) and select it above.</div>
 
       {{> afQuickField name="actionGoal" }}
       {{> afQuickField name="title" class="save-game-input-title" }}

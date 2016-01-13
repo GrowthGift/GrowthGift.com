@@ -17,7 +17,7 @@ if(Meteor.isClient) {
       ret.atLeastOneAward = ( ret.awards.reachTeamsNumActions.winner ||
        ret.awards.teamSize.winner || ret.awards.pledgePercent.winner ||
        ret.awards.completionPercent.winner ) ? true : false;
-      ret.title = ( ret.gameState.gameEnded ) ? "Players of the Game" : "Top Players";
+      ret.title = ( ret.gameState.gameEnded ) ? "Players of the Challenge" : "Top Players";
 
       return ret;
     }

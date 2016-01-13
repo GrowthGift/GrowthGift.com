@@ -15,7 +15,7 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
 
   if(!valid) {
     if(Meteor.isClient) {
-      nrAlert.alert("Only game admins may edit games.");
+      nrAlert.alert("Only challenge admins may edit challenges.");
     }
   }
   else {
@@ -79,10 +79,10 @@ ggGame.join =function(game, userId, buddyRequestKey, inviteUsername, callback) {
     if(Meteor.isClient) {
       var status =ggMay.getGameUserStatus(game.users, userId);
       if( status === "joined" ) {
-        nrAlert.success("You are already in this game.");
+        nrAlert.success("You are already in this challenge.");
       }
       else {
-        nrAlert.alert("You may not join this game.");
+        nrAlert.alert("You may not join this challenge.");
       }
     }
   }
@@ -153,7 +153,7 @@ ggGame.leave =function(game, userId, callback) {
   var valid =ggMay.leaveGame(game, userId);
   if(!valid) {
     if(Meteor.isClient) {
-      nrAlert.alert("You may not leave this game.");
+      nrAlert.alert("You may not leave this challenge.");
     }
   }
   else {
@@ -204,7 +204,7 @@ ggGame.saveGameInvite =function(game, userId, gameUserData, callback) {
 ggGame.saveBuddy =function(game, selfUserId, buddyRequestKey, callback) {
   if(!ggMay.beGameBuddy(game, selfUserId, buddyRequestKey)) {
     if(Meteor.isClient) {
-      nrAlert.alert("You may not buddy with this person for this game.");
+      nrAlert.alert("You may not buddy with this person for this challenge.");
     }
     callback(true);
     return;
@@ -247,7 +247,7 @@ ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
   // Want to add the userId user to the invite user's reach team
   var userIndex =_.findIndex(game.users, 'userId', inviteUserId);
   if(userIndex <0) {
-    callback(true, { msg: 'Invite user is not in game'});
+    callback(true, { msg: 'Invite user is not in challenge'});
     return;
   }
   var reachTeam =game.users[userIndex].reachTeam;
@@ -284,7 +284,7 @@ ggGame.saveReachUser =function(game, userId, inviteUsername, callback) {
 ggGame.saveBuddyRequest =function(game, userSelf, userBuddy, callback) {
   if( !ggMay.requestGameBuddy(game, userSelf._id, userBuddy._id) ) {
     if(Meteor.isClient) {
-      nrAlert.alert("You may not buddy with this person for this game.");
+      nrAlert.alert("You may not buddy with this person for this challenge.");
     }
     callback(true);
     return;

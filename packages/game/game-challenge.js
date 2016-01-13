@@ -35,7 +35,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
     var userGame =ggGame.getUserGame(game._id, userId);
     if(!userGame) {
       if(Meteor.isClient) {
-        nrAlert.alert("User is not in this game; join the game first.");
+        nrAlert.alert("User is not in this challenge; join the challenge first.");
       }
     }
     else {

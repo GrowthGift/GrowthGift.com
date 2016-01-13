@@ -58,7 +58,7 @@ if(Meteor.isClient) {
       }
       var shareContent ={
         subject: 'Be My '+  gameMainAction + ' Buddy',
-        body: "I'm doing " + gameMainAction + " for 5 minutes a day this week. It's a simple partnered habits game and I chose you to be my one and only buddy!\nClick below to join me!"
+        body: "I'm doing " + gameMainAction + " for 5 minutes a day this week. It's a simple partnered habits challenge and I chose you to be my one and only buddy!\nClick below to join me!"
       };
 
       var ret = {

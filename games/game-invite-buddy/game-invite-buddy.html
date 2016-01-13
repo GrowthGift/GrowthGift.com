@@ -2,8 +2,8 @@
 
   {{ #unless data.gameUser.buddyId }}
   <div class='margin-b'>
-    <h5>Who would you like to buddy up with for this game?</h5>
-    <div>Contact a friend to invite them to be your partner for this game. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
+    <h5>Who would you like to buddy up with for this challenge?</h5>
+    <div>Contact a friend to invite them to be your partner for this challenge. <span class='game-invite-buddy-tip-btn btn-link'>More Info</span></div>
     {{ #if data.inputOpts.buddyTipVisible }}
     <div class='font-small'>Someone who is at a similar level to you and may have a similar pledge is usually best.</div>
     <div class='font-small'>If you request more than one buddy, it will be whomever accepts first.</div>
@@ -14,7 +14,7 @@
 
   </div>
   {{ else }}
-  <div class='center'>You already have a buddy for this game!</div>
+  <div class='center'>You already have a buddy for this challenge!</div>
   {{ /unless}}
 
   <div class='center margin-large-t'>

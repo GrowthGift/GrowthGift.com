@@ -86,7 +86,7 @@ if(Meteor.isClient) {
       var gameRule =GameRulesCollection.findOne({slug: this.gameRuleSlug});
       if(!Template.instance().inited) {
         if(!gameRule || !gameRule._id || !ggMay.editGameRule(gameRule, Meteor.userId()) ) {
-          nrAlert.alert("No game rule you may edit with slug "+this.gameRuleSlug);
+          nrAlert.alert("No challenge rule you may edit with slug "+this.gameRuleSlug);
           Router.go('myGames');
         }
         Template.instance().inited =true;

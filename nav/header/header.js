@@ -26,14 +26,14 @@ if(Meteor.isClient){
       left: [
         {
           icon: 'fa fa-cube',
-          html: 'My Games',
+          html: 'My Challenges',
           click: function() {
             Router.go('myGames')
           }
         },
         {
           icon: 'fa fa-cubes',
-          html: 'All Games',
+          html: 'All Challenges',
           click: function() {
             Router.go('games')
           }

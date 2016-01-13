@@ -1,19 +1,19 @@
 <template name="gameRule">
   {{#if data._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
 
   {{#if data.privileges.edit }}
     <div class='flexbox'>
       <div class='flex1'>&nbsp;</div>
-      <div class='margin-r'><a class='' href='{{ data.privileges.editHref }}'>Edit Game Rule</a></div>
+      <div class='margin-r'><a class='' href='{{ data.privileges.editHref }}'>Edit Challenge Rule</a></div>
     </div>
   {{/if}}
 
   <div class='padding max-600 center'>
     <h2>{{ data.gameRule.xDisplay.mainAction }}</h2>
     <h4>{{ data.gameRule.title }}</h4>
-    <!-- <div>{{ data.gameRule.xDisplay.type }} Game</div> -->
+    <!-- <div>{{ data.gameRule.xDisplay.type }} Challenge</div> -->
     <div>{{ data.gameRule.description }}</div>
     <!-- <h4>Instructions:</h4> -->
     <!-- <h4>{{ data.gameRule.challenges.[0].title }}</h4>

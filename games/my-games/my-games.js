@@ -23,7 +23,7 @@ if(Meteor.isClient) {
           },
           // {
           //   icon: 'fa fa-plus',
-          //   html: 'New Game',
+          //   html: 'New Challenge',
           //   click: function() {
           //     Router.go('saveGame');
           //   }

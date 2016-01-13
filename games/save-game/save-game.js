@@ -21,7 +21,7 @@ Meteor.methods({
     var game =GamesCollection.findOne({_id: docId});
     if(!ggMay.deleteGame(game, Meteor.userId()) ) {
       if(Meteor.isClient) {
-        nrAlert.alert("Only game creators may delete games.");
+        nrAlert.alert("Only challenge creators may delete challenges.");
       }
     }
     else {

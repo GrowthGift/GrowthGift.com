@@ -32,7 +32,7 @@ if(Meteor.isClient) {
        '?slug='+this.gameSelect+'&gameRule='+gameRule.slug) || '?gameRule='+gameRule.slug;
       ret.gameSelectData ={
         href: '/save-game'+hrefPart,
-        text: (this.gameSelect && 'Use this game') || 'Create game from this'
+        text: (this.gameSelect && 'Use this challenge') || 'Create challenge from this'
       };
 
       return ret;

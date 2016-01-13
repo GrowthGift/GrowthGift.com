@@ -25,7 +25,7 @@ Meteor.methods({
       lmNotify.sendEmail({to: [ cfgEmail.addresses.hi.email ],
        from: cfgEmail.appName + " Form Submission <automated@" + cfgEmail.emailDomain +">",
        replyTo: [ replyTo ],
-       subject: 'Game Suggest Form Submission', html: emailBody });
+       subject: 'Challenge Suggest Form Submission', html: emailBody });
     }
     if(Meteor.isClient) {
       nrAlert.success("Thanks for submitting your idea! We'll be in touch shortly.");

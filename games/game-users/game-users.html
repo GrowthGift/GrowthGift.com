@@ -1,6 +1,6 @@
 <template name="gameUsers">
   {{#if data._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
   <div class='padding max-600'>
     <a class='a-block h2 center margin-b' href='{{ data.gameLink }}'>{{ data.game.title }}</a>
@@ -52,7 +52,7 @@
 
 <template name="gameUsersInfoPledgeImpact">
   <div class='font-small'>
-    <div>Add to your <b>Team Size</b> by inviting more people to join the game, thus multiplying your impact!</div>
+    <div>Add to your <b>Team Size</b> by inviting more people to join the challenge, thus multiplying your impact!</div>
     <div><b>Pledge Completion</b> is how on track you and your buddy are to meeting your pledges. For example, if you each pledged 1 per day (5 total over 5 days) and it was day 2, if you had each done 2 you would be at 100%, or 5 stars.</div>
   </div>
 </template>

@@ -1,10 +1,10 @@
 <template name="gameUserAwardsAll">
   {{ #unless data._xNotFound }}
   <div class='center padding margin-large-t'>
-    <h4 class='margin-b'>Game Top Scores</h4>
+    <h4 class='margin-b'>Challenge Top Scores</h4>
     <div class='center margin-large-b'>
       <div class='game-user-award-all-item bg-white padding margin'>
-        <h4>Game Streak</h4>
+        <h4>Challenge Streak</h4>
         <div class='flexbox'>
           <div class='flex1'>
             <h1>{{ data.awards.weekStreak.longest.amount }}</h1>
@@ -15,7 +15,7 @@
             <div>Current</div>
           </div>
         </div>
-        <div class='font-small'>Weeks in a row you played at least 1 game with at least 50% days completed.</div>
+        <div class='font-small'>Weeks in a row you played at least 1 challenge with at least 50% days completed.</div>
       </div>
       <div class='game-user-award-all-item bg-white padding margin'>
         <h4>Team</h4>
@@ -25,11 +25,11 @@
             <div>Largest</div>
           </div>
         </div>
-        <div class='font-small'>Number of people on you and your buddy's team in one game.</div>
+        <div class='font-small'>Number of people on you and your buddy's team in one challenge.</div>
       </div>
     </div>
 
-    <h4 class='margin-b'>Game Awards Earned</h4>
+    <h4 class='margin-b'>Challenge Awards Earned</h4>
     <div class='center margin-large-b'>
       {{ >gameUserAwardAll awardType="perfectPledge" awards=data.awards.perfectPledge }}
       {{ >gameUserAwardAll awardType="perfectAttendance" awards=data.awards.perfectAttendance }}

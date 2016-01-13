@@ -20,7 +20,7 @@ if(Meteor.isClient) {
       };
       var shareContent ={
         subject: 'Join My '+  gameMainAction + ' Team',
-        body: "I'm doing " + gameMainAction + " for 5 minutes a day this week. It's a simple team habits game to make the biggest positive difference.\nClick below to join our team!",
+        body: "I'm doing " + gameMainAction + " for 5 minutes a day this week. It's a simple team habits challenge to make the biggest positive difference.\nClick below to join our team!",
         defaultShareText: 'Join our 5 minutes a day '+  gameMainAction + ' team'
       };
       var image =ggGame.getImage(game);

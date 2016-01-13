@@ -1,9 +1,9 @@
 <template name="gamesSuggest">
   {{ #if data._xNotFound }}
-  <div class='padding center'>No games at the moment. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>No challenges at the moment. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{ else }}
     <div class='padding-tb'>
-      <h3 class='center'>What Game Do You Want to Play Next?</h3>
+      <h3 class='center'>What Challenge Do You Want to Do Next?</h3>
       <div class='center padding-large-tb'>
         {{ #each data.games }}
           <div class='games-game bg-white padding margin inline-block  {{ xDisplay.classes.userInGame }}'>
@@ -22,8 +22,8 @@
   <div class='games-game bg-white padding margin inline-block'>
     <a class='a-div' href='{{ data.link }}'>
       <div class='margin-b'><i class='fa fa-question games-suggest-question'></i></div>
-      <h3 class='center ellipsis'>[Your Game Here]</h3>
-      <div>Have a game idea? Suggest it!</div>
+      <h3 class='center ellipsis'>[Your Challenge Here]</h3>
+      <div>Have a challenge idea? Suggest it!</div>
     </a>
   </div>
 </template>

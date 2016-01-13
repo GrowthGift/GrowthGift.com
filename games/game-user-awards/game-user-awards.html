@@ -1,12 +1,12 @@
 <template name="gameUserAwards">
   {{ #if data._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{ else }}
 
   <h4 class='margin-b'>Your Top Scores</h4>
   <div class='center margin-large-b'>
     <div class='game-user-award-item bg-white padding margin'>
-      <h4>Game Streak</h4>
+      <h4>Challenge Streak</h4>
       <div class='flexbox'>
         <div class='flex1'>
           <h1>{{ data.awards.selfStreak.longest.amount }}</h1>
@@ -17,7 +17,7 @@
           <div>Current</div>
         </div>
       </div>
-      <div class='font-small'>Weeks in a row you played at least 1 game with at least 50% days completed.</div>
+      <div class='font-small'>Weeks in a row you played at least 1 challenge with at least 50% days completed.</div>
     </div>
     <div class='game-user-award-item bg-white padding margin'>
       <h4>Team</h4>
@@ -28,14 +28,14 @@
         </div>
         <div class='flex1 red'>
           <h1>{{ data.awards.selfReach.game }}</h1>
-          <div>This Game</div>
+          <div>This Challenge</div>
         </div>
       </div>
-      <div class='font-small'>Number of people on you and your buddy's team in one game.</div>
+      <div class='font-small'>Number of people on you and your buddy's team in one challenge.</div>
     </div>
   </div>
 
-  <h4 class='margin-b'>Game Awards</h4>
+  <h4 class='margin-b'>Challenge Awards</h4>
   <div class='center margin-large-b'>
     {{ >gameUserAward awardType="perfectPledge" award=data.awards.perfectPledge gameMainAction=data.gameMainAction }}
     {{ >gameUserAward awardType="perfectAttendance" award=data.awards.perfectAttendance gameMainAction=data.gameMainAction }}

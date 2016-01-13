@@ -1,6 +1,6 @@
 <template name="game">
   {{#if data._xNotFound }}
-  <div class='padding center'>Game either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Games.</a></div>
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
   <div class='max-600 bg-white relative'>
 
@@ -13,13 +13,13 @@
     {{#if data.privileges.edit }}
       <div class='flexbox'>
         <div class='flex1'>&nbsp;</div>
-        <div class='margin-r'><a class='' href='{{ data.privileges.editLink }}'>Edit Game</a></div>
+        <div class='margin-r'><a class='' href='{{ data.privileges.editLink }}'>Edit Challenge</a></div>
       </div>
     {{/if}}
     {{#if data.privileges.leave }}
       <div class='flexbox'>
         <div class='flex1'>&nbsp;</div>
-        <div class='btn-underline text-warning game-leave'>Leave Game</div>
+        <div class='btn-underline text-warning game-leave'>Leave Challenge</div>
       </div>
     {{/if}}
 
@@ -44,7 +44,7 @@
         <div class='font-small margin-t'>{{ data.gameRule.challenges.[0].description }}</div>
       </div>
 
-      <!-- <div>Game Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
+      <!-- <div>Challenge Details: <a href='{{ data.game.xHref.gameRule }}'>{{ data.game.xHref.gameRuleText }}</a></div>
         <div>Start: {{ data.game.xDisplay.start }}</div> -->
     </div>
 
@@ -57,7 +57,7 @@
               {{#if data.privileges.buddy }}
                 Join with {{ data.buddyName }}
               {{else}}
-                Join Game
+                Join Challenge
               {{/if}}
             </div>
             {{#if data.privileges.buddy }}
@@ -97,8 +97,8 @@
         {{ #unless data.privileges.buddy }}
           {{ #unless data.showLogItBanner }}
           <div class='margin-large-b'>
-            <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
-            <div class='font-small center'>Join any time, even after the game has started.</div>
+            <div class='font-small center'>Challenges are just 5 minutes a day for 5 days.</div>
+            <div class='font-small center'>Join any time, even after the challenge has started.</div>
           </div>
           {{ /unless }}
         {{ /unless }}
@@ -109,7 +109,7 @@
     <div class='center'>
       {{ #if data.showGameSummaryLink }}
         <div class='inline-block margin-t margin-large-b margin-r'>
-          <a class='btn btn-primary' href='{{ data.showGameSummaryLink }}'>My Game Summary</a>
+          <a class='btn btn-primary' href='{{ data.showGameSummaryLink }}'>My Challenge Summary</a>
         </div>
       {{ /if }}
       {{ #if data.gameState.gameEnded }}
@@ -123,22 +123,22 @@
     {{ #unless data.gameState.gameEnded }}
       {{ #unless data.gameState.gameStarted }}
         <div class='bg-gray-light center padding-large-tb'>
-          <h4>Game Starts:</h4>
+          <h4>Challenge Starts:</h4>
           <div>{{ data.gameState.starts }}</div>
           <div class='font-small'>Ends: {{ data.gameState.ends }}</div>
         </div>
       {{ else }}
         {{ #unless data.userInGame }}
           <div class='bg-red-light center padding-large-tb'>
-            <h4>Game Happening Now</h4>
+            <h4>Challenge Happening Now</h4>
             <div>Ends: {{ data.gameState.ends }}</div>
           </div>
         {{ /unless }}
       {{ /unless }}
     {{ else }}
       <div class='center bg-gray-dark white padding-large-tb'>
-        <h4>Game Over</h4>
-        <div>Go to <a class='red' href='{{ data.myGamesLink }}'>My Games</a> to see your current games. Or join a new one!</div>
+        <h4>Challenge Over</h4>
+        <div>Go to <a class='red' href='{{ data.myGamesLink }}'>My Challenges</a> to see your current challenges. Or join a new one!</div>
         <div class='font-small'>Started: {{ data.gameState.starts }}</div>
         <div class='font-small'>Ended: {{ data.gameState.ends }}</div>
       </div>
@@ -160,7 +160,7 @@
             {{ /if }}
           </div>
           <!-- <div>2. Invite friends</div> -->
-          <div>2. Once the game starts, each day of the game:</div>
+          <div>2. Once the challenge starts, each day of the challenge:</div>
           <div class='margin-l'>
             a. Complete your pledge for the day &
             {{#if data.privileges.viewChallenges }}
