@@ -4,11 +4,11 @@
   {{else}}
   <div class='max-600 bg-white relative'>
 
-    {{ #if data.showLogItBanner }}
+    <!-- {{ #if data.showLogItBanner }}
       <div class='game-alert-banner center padding-large-tb'>
         <a class='btn btn-primary btn-large' href='{{ data.gameChallengeLink }}'>Complete Today's Challenge</a>
       </div>
-    {{ /if }}
+    {{ /if }} -->
 
     {{#if data.privileges.edit }}
       <div class='flexbox'>
@@ -29,7 +29,7 @@
     </div>
     <div class='padding-t padding-large-b'>
       <div class='center margin-lr'>
-        <h2>{{ data.game.title }}</h2>
+        <!-- <h2>{{ data.game.title }}</h2> -->
         <div>
           {{ #unless data.gameState.gameStarted }}
             <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</span>
@@ -80,24 +80,44 @@
               <div class='text-warning margin-b'>{{ data.buddyErrorMessage }}</div>
             {{/if}}
             {{ #unless data.privileges.buddy }}
-              <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
-                Grow Your Reach Team
-              </a>
+
+              {{ #if data.showLogItBanner }}
+                <a class='a-div btn btn-primary margin-b' href='{{ data.gameChallengeLink }}'>
+                  Complete Today's Challenge
+                </a>
+              {{ else }}
+                <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
+                  Grow Your Reach Team
+                </a>
+              {{ /if }}
+
             {{ /unless }}
           </div>
         {{/if}}
         {{ #unless data.privileges.buddy }}
+          {{ #unless data.showLogItBanner }}
           <div class='margin-large-b'>
             <div class='font-small center'>Games are just 5 minutes a day for 5 days.</div>
             <div class='font-small center'>Join any time, even after the game has started.</div>
           </div>
+          {{ /unless }}
         {{ /unless }}
       </div>
     {{ /unless }}
 
 
-    <!-- {{ >gameAwards gameSlug=../gameSlug dataReady=../templateHelperData.dataReady }} -->
-    {{ >gameAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction gameState=../templateHelperData.gameState gameSlug=../gameSlug }}
+    <div class='center'>
+      {{ #if data.showGameSummaryLink }}
+        <div class='inline-block margin-t margin-large-b margin-r'>
+          <a class='btn btn-primary' href='{{ data.showGameSummaryLink }}'>My Game Summary</a>
+        </div>
+      {{ /if }}
+      {{ #if data.gameState.gameEnded }}
+      <div class='inline-block margin-t margin-large-b'>
+        <a class='btn btn-primary' href='{{ data.gameChallengeLink }}'>My Challenge Log</a>
+      </div>
+      {{ /if }}
+    </div>
 
 
     {{ #unless data.gameState.gameEnded }}
@@ -155,7 +175,12 @@
     {{ /if }}
 
 
-    {{ #if data.showImpact }}
+    <!-- {{ #if data.gameState.gameEnded }}
+      {{ >gameAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction gameState=../templateHelperData.gameState gameSlug=../gameSlug }}
+    {{ /if }} -->
+
+
+    <!-- {{ #if data.showImpact }}
       <div class='padding-large-t'>
         <div class='game-subheader-wrapper margin-large-lr'>
           <div class='game-subheader'>Your Impact</div>
@@ -196,20 +221,8 @@
             </div>
           {{ /if }}
         </div>
-        <div class='margin-large-b margin-large-t center'>
-          {{ #if data.showGameSummaryLink }}
-            <a class='btn a-div' href='{{ data.showGameSummaryLink }}'>My Game Summary</a>
-          {{ /if }}
-        </div>
       </div>
-    {{ /if }}
-
-
-    {{ #if data.gameState.gameEnded }}
-    <div class='margin center'>
-      <a class='' href='{{ data.gameChallengeLink }}'>My Game Challenge Log</a>
-    </div>
-    {{ /if }}
+    {{ /if }} -->
 
 
     <div class='padding-large-t'>
