@@ -79,6 +79,8 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
       buddy: ( templateData.buddy ? ggMay.beGameBuddy(game, userId, templateData.buddy) : false )
     },
     challenges: ggGame.getChallengesWithUser(game, gameRule, userGame, null, userGameBuddy),
+    userActiveChallenge: ggGame.getUserActiveChallenge(userGame, game,
+     gameRule, null),
     gameState: ggGame.getGameState(game, gameRule, null),
     userChallengeTotals: ggGame.getChallengeTotals(game, userGames, gameRule),
     gameUserStats: ggGame.getGameUserStats(userGames, game, gameUsers, gameRule, userId, null),
@@ -97,14 +99,14 @@ ggGame.getCacheGameByUser =function(key, userId, user, game, gameRule,
     awards: ggGame.getAwards(userGames, game, gameUsers, gameRule, null, null)
   };
 
+  ret.showLogItBanner = ( !ret.userActiveChallenge && ret.gameState.gameStarted
+   && !ret.gameState.gameEnded ) ? true : false;
   ret.showHowToPlay =ret.userInGame ? false : true;
   ret.showImpact = ( ret.userInGame && ret.gameState.gameStarted ) ? true : false;
-  var userActiveChallenge =ggGame.getUserActiveChallenge(userGame, game,
-   gameRule, null);
   var isLastChallenge =( ret.userChallengeTotals.possible ===
    gameRule.challenges.length ) ? true : false;
   ret.showGameSummaryLink = ( ret.userInGame && ( ret.gameState.gameEnded
-   || ( userActiveChallenge && isLastChallenge ) ) ) ? ggUrls.gameUserSummary(game.slug) : null;
+   || ( ret.userActiveChallenge && isLastChallenge ) ) ) ? ggUrls.gameUserSummary(game.slug) : null;
 
   if(ret.gameState && ret.gameState.starts && ret.gameState.ends) {
     ret.gameState.starts =msUser.toUserTime(user, ret.gameState.starts, null, msTimezone.dateTimeDisplay);
