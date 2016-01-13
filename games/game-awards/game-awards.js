@@ -48,7 +48,7 @@ if(Meteor.isClient) {
         ret.icon +='superhero-take-off.svg';
       }
       else if(award.winner.teamSize) {
-        ret.title ="Reach";
+        ret.title ="Team";
         ret.value =award.winner.teamSize + " team members";
         ret.icon +='group-male-female.svg';
       }

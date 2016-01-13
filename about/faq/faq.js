@@ -65,7 +65,7 @@ if(Meteor.isClient) {
         },
         {
           q: "What are the awards?",
-          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'reach' as well as for completing your pledge each day. And perhaps most important is the 'game streak', for how many weeks in a row you've played a game. You can see all your awards at any time on your user profile.",
+          a: "You, your buddy, and everyone you and your buddy invite to the game form your team. There are 4 team awards for making the biggest 'impact' and 'team' as well as for completing your pledge each day. And perhaps most important is the 'game streak', for how many weeks in a row you've played a game. You can see all your awards at any time on your user profile.",
           link: 'game-awards'
         },
         {

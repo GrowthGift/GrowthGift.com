@@ -30,7 +30,7 @@ if(Meteor.isClient) {
           },
           {
             icon: 'fa fa-users',
-            html: 'Reach',
+            html: 'Team',
             click: function() {
               Router.go(urls.reach);
             }

@@ -38,7 +38,7 @@ if(Meteor.isClient) {
         ret.icon +='superhero-take-off.svg';
       }
       else if(awardType === 'biggestReach' ) {
-        ret.title ="Reach";
+        ret.title ="Team";
         ret.description ="Your team had the most team members";
         ret.icon +='group-male-female.svg';
       }
