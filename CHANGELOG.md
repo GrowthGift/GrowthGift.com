@@ -4,6 +4,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
+- Send buddy motivation notification on challenge completion if media.
 - Make action goal optional and remove from game display.
 - Put back in awards.
 

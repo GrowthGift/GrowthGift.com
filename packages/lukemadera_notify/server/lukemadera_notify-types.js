@@ -64,6 +64,56 @@ lmNotifyTypes.gameChallengeComplete =function(type, data, params) {
   });
 };
 
+lmNotifyTypes.gameChallengeBuddyMotivation =function(type, data, params) {
+  var notifId =type;
+
+  var userIds =data.notifyUserIds;
+  var userName =data.user.profile.name;
+  var gameName =data.game.title;
+  var hrefGame =ggUrls.removeLeadingSlash(ggUrls.game(data.game.slug));
+  var gameMainAction =data.gameMainAction;
+  var challenge =data.challenge;
+
+  lmNotifyHelpers.separateUsers({type:type, userIds: userIds, notifId:notifId, noBulk:true}, function(retSep) {
+
+    var maxLen =75;
+    var messageTitle = challenge.mediaMessage ?
+     ( ( challenge.mediaMessage.length > maxLen ) ?
+     challenge.mediaMessage.slice(0, maxLen) : challenge.mediaMessage )
+     : null;
+    var title = messageTitle || ( userName + " Motivation for " + gameMainAction );
+    var mediaHtml ="";
+    if( challenge.media ) {
+      if( challenge.mediaType === 'image' ) {
+        mediaHtml += "<img src='" + challenge.media + "' style='max-width: 480px;' />";
+      }
+      else {
+        mediaHtml += challenge.media;
+      }
+      mediaHtml +="<br /><br />";
+    }
+    if( challenge.mediaMessage ) {
+      mediaHtml += userName + " says: \"" + challenge.mediaMessage + "\"<br /><br />";
+    }
+    var message = userName + " did " + gameMainAction + ". Have you done yours?";
+    var messageEmail = mediaHtml + message;
+
+    var inAppData =false;
+    var pushData ={
+      title: title,
+      text: message
+    };
+    var emailData ={
+      subject: title,
+      html: messageEmail
+    };
+    var smsData =false;
+
+    lmNotify.sendAll(retSep.users, inAppData, pushData, emailData, smsData, {});
+
+  });
+};
+
 lmNotifyTypes.gameBuddyAdded =function(type, data, params) {
   var notifId =type;
 

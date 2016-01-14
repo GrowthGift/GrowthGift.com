@@ -105,6 +105,20 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
 
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);
 
+        // If buddy motivation, notify buddy
+        if(Meteor.isServer && ( challenge.media || challenge.mediaMessage ) ) {
+          var gameUserIndex =_.findIndex(game.users, 'userId', userId);
+          var gameUser = ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
+          var buddyId = gameUser ? gameUser.buddyId : null;
+          if( buddyId ) {
+            var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1} });
+            var notifyUserIds =[ buddyId ];
+            lmNotify.send('gameChallengeBuddyMotivation', { game: game,
+             gameMainAction: gameRule.mainAction, challenge: challenge,
+             user: user, notifyUserIds: notifyUserIds }, {});
+          }
+        }
+
         // Not using notifications any more, focus on human connection instead.
         // // Send notifications
         // if(Meteor.isServer) {
