@@ -32,7 +32,7 @@
         <!-- <h2>{{ data.game.title }}</h2> -->
         <div>
           {{ #unless data.gameState.gameStarted }}
-            <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} / {{ data.game.actionGoal }} {{ data.gameRule.mainAction }} pledged</span>
+            <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} pledged</span>
           {{ else }}
             <span class='h4 red'>{{ data.userChallengeTotals.userActions }} / {{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} completed</span>
           {{ /unless }}
