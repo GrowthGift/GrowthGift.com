@@ -6,17 +6,17 @@
   {{ #if data.atLeastOneAward }}
     <div class='padding-tb center bg-yellow-light'>
       <h3 class='center'>{{ data.title }}</h3>
-      {{ #if data.awards.reachTeamsNumActions.winner }}
-        {{ >gameAward award=data.awards.reachTeamsNumActions gameMainAction=data.gameMainAction gameSlug=gameSlug }}
-      {{ /if }}
       {{ #if data.awards.teamSize.winner }}
         {{ >gameAward award=data.awards.teamSize gameMainAction=data.gameMainAction gameSlug=gameSlug }}
       {{ /if }}
-      {{ #if data.awards.pledgePercent.winner }}
-        {{ >gameAward award=data.awards.pledgePercent gameMainAction=data.gameMainAction gameSlug=gameSlug }}
+      {{ #if data.awards.reachTeamsNumActions.winner }}
+        {{ >gameAward award=data.awards.reachTeamsNumActions gameMainAction=data.gameMainAction gameSlug=gameSlug }}
       {{ /if }}
       {{ #if data.awards.completionPercent.winner }}
         {{ >gameAward award=data.awards.completionPercent gameMainAction=data.gameMainAction gameSlug=gameSlug }}
+      {{ /if }}
+      {{ #if data.awards.pledgePercent.winner }}
+        {{ >gameAward award=data.awards.pledgePercent gameMainAction=data.gameMainAction gameSlug=gameSlug }}
       {{ /if }}
     </div>
   {{ /if }}

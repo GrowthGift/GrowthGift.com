@@ -87,7 +87,8 @@
                 </a>
               {{ else }}
                 <a class='a-div btn btn-primary margin-b' href='{{ data.links.gameInviteReach }}'>
-                  Grow Your Team
+                  <!-- Grow Your Team -->
+                  Invite Friends
                 </a>
               {{ /if }}
 
@@ -175,9 +176,9 @@
     {{ /if }}
 
 
-    <!-- {{ #if data.gameState.gameEnded }}
-      {{ >gameAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction gameState=../templateHelperData.gameState gameSlug=../gameSlug }}
-    {{ /if }} -->
+
+    {{ >gameAwards awards=../templateHelperData.awards gameMainAction=../templateHelperData.gameMainAction gameState=../templateHelperData.gameState gameSlug=../gameSlug }}
+
 
 
     <!-- {{ #if data.showImpact }}
