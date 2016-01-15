@@ -99,9 +99,13 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
         ggGame.saveUserAwardsBiggestReach(null, game, userId, game._id, function() {});
         if(onLastChallenge) {
           ggGame.saveUserAwardsWeekStreak(null, game, null, null, userId,
-           game._id, msTimezone.curDateTime(), function() {});
+           game._id, msTimezone.curDateTime(), function() {
+            callback(err, result);
+           });
         }
-        callback(err, result);
+        else {
+          callback(err, result);
+        }
 
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);
 
