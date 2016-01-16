@@ -11,7 +11,7 @@
       <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
       {{#autoForm schema="GameChallengeNewSchema" id='gameChallengeNewForm' validation="blur" }}
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
-        {{>afQuickField name="description" type="textarea" label="Details" }}
+        {{>afQuickField name="description" type="textarea" label="Details (private)" }}
 
         <div class='margin-t'>Buddy Motivation & Documentation</div>
         {{ #if data.inputOpts.media.visible }}
@@ -34,7 +34,10 @@
             {{ /if }}
           {{ /if }}
 
-          {{>afQuickField name="media.message" type="text" label="Add a caption" placeholder="I did it - now it is your turn!" }}
+          {{>afQuickField name="media.message" type="text" label="Add a message" placeholder="I did it - now it is your turn!" }}
+
+          {{>afQuickField name="media.privacy" type="select" options=data.inputOpts.media.privacyOpts defaultValue="buddy" firstOption=false label="Who can see this?" }}
+
         {{ else }}
           <div class='font-small'>You don't have a buddy yet!</div>
           <div class='font-small'>Buddies are a core part of the challenges as they offer human connection and help with accountability and motivation.</div>

@@ -38,6 +38,10 @@ GameChallengeNewSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  "media.privacy": {
+    type: String,
+    optional: true
+  },
   updatedAt: {
     type: String,
     optional: true,   // If can not auto set, need to make optional to pass validation..
@@ -291,7 +295,11 @@ if(Meteor.isClient) {
             imageVisible: reactiveData.mediaImageVisible,
             content: reactiveData.mediaContent,
             image: reactiveData.mediaImage,
-            video: reactiveData.mediaVideo
+            video: reactiveData.mediaVideo,
+            privacyOpts: [
+              { value: 'buddy', label: 'Just My Buddy' },
+              { value: 'public', label: 'Anyone' }
+            ],
           },
           onLastChallengeVal: onLastChallengeVal
         },

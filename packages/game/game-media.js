@@ -9,6 +9,9 @@ ggGame.uploadMedia =function(challenge, callback) {
   if( challenge.media.message ) {
     challenge.mediaMessage =challenge.media.message;
   }
+  if( challenge.media.privacy ) {
+    challenge.mediaPrivacy =challenge.media.privacy;
+  }
   if(!media) {
     delete challenge.media;
     return callback(null, challenge);

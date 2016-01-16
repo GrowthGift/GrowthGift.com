@@ -203,6 +203,7 @@
         "media": "{String} [Mixed, a video or image url]",
         "mediaType": "{String} 'image', 'video'",
         "mediaMessage": "{String}",
+        "mediaPrivacy": "{String} One of 'buddy', 'public'",
         "updatedAt": "{String} [timestamp YYYY-MM-DD HH:mm:ssZ] 2013-06-13 15:30:00+00:00"
       }
     ],
