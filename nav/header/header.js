@@ -126,6 +126,11 @@ if(Meteor.isClient){
   navConfig.gameChallenge.urlRegEx ="gc\/[.]*";
   navConfig.gameChallenge.layoutClasses.cont ='layout-game';
 
+  navConfig.gameChallengeLog =EJSON.clone(navDefault);
+  navConfig.gameChallengeLog.urlRegEx ="gcl\/[.]*";
+  navConfig.gameChallengeLog.auth ={};
+  navConfig.gameChallengeLog.layoutClasses.cont ='layout-game';
+
   navConfig.gameInvite =EJSON.clone(navDefault);
   navConfig.gameInvite.urlRegEx ="gi\/[.]*";
   navConfig.gameInvite.layoutClasses.cont ='layout-game';

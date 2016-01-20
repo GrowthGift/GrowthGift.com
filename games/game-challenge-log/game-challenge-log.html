@@ -1,0 +1,78 @@
+<template name="gameChallengeLog">
+  {{#if data._xNotFound }}
+  <div class='padding center'>Challenge either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
+  {{else}}
+  <div class='padding max-600'>
+
+    <a class='a-block h3 center margin-b' href='{{ data.links.gameUsers }}'>{{ data.game.title }}</a>
+
+    {{ #if data.noChallenges }}
+      <div class='center'>
+        <span>No challenges completed by these users,</span> <a href='{{ data.links.gameUsers }}'>see all game users</a>
+      </div>
+    {{ else }}
+      <div class='bg-white'>
+        <!-- Header with user names -->
+        <div class='center game-challenge-log-header bg-gray-lighter padding-tb'>
+          {{ #if data.userMain }}
+            <div class='game-challenge-log-col padding-lr align-top'>
+                <a class='h5' href='{{ data.links.userMain }}'>{{ data.userMain.profile.name }}</a>
+            </div>
+          {{ /if }}
+          {{ #if data.userBuddy }}
+            <div class='game-challenge-log-col padding-lr align-top'>
+              <a class='h5' href='{{ data.links.userBuddy }}'>{{ data.userBuddy.profile.name }}</a>
+            </div>
+          {{ /if }}
+        </div>
+        {{ #each data.challenges }}
+          {{ >gameChallengeLogUser challenge=this data=../helperData }}
+        {{ /each }}
+      </div>
+    {{ /if }}
+
+  </div>
+  {{/if}}
+</template>
+
+<template name="gameChallengeLogUser">
+  <div class='center game-challenge-log-row padding-tb'>
+    <div class='font-small'>{{ challenge.timeDisplay }}</div>
+    {{ #if data.userMain }}
+      <div class='game-challenge-log-col padding-lr align-top'>
+        <div><b>{{ challenge.userActionCount }}</b> {{ data.gameMainAction}}</div>
+        {{ #if challenge.privileges.userMainMedia }}
+          {{ #if challenge.userMedia.image }}
+            <img src='{{ challenge.userMedia.image }}' class='img-100' />
+          {{ /if }}
+          {{ #if challenge.userMedia.video }}
+            <!-- TODO -->
+          {{ /if }}
+          {{ #if challenge.userMedia.message }}
+            <div>{{ challenge.userMedia.message }}</div>
+          {{ /if }}
+        {{ /if }}
+      </div>
+    <!-- {{ else }}
+      <div>&nbsp;</div> -->
+    {{ /if }}
+    {{ #if data.userBuddy }}
+      <div class='game-challenge-log-col padding-lr align-top'>
+        <div><b>{{ challenge.buddyActionCount }}</b> {{ data.gameMainAction }}</div>
+        {{ #if challenge.privileges.userBuddyMedia }}
+          {{ #if challenge.buddyMedia.image }}
+            <img src='{{ challenge.buddyMedia.image }}' class='img-100' />
+          {{ /if }}
+          {{ #if challenge.buddyMedia.video }}
+            <!-- TODO -->
+          {{ /if }}
+          {{ #if challenge.buddyMedia.message }}
+            <div>{{ challenge.buddyMedia.message }}</div>
+          {{ /if }}
+        {{ /if }}
+      </div>
+    <!-- {{ else }}
+      <div>&nbsp;</div> -->
+    {{ /if }}
+  </div>
+</template>

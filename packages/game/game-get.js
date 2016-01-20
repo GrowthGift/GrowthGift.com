@@ -648,6 +648,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
        : ( challengeStarted && !challengeEnded ) ? 'present' : 'past',
       userSelfGoal: userSelfGoalPerChallenge,
       userActionCount: 0,    // May be updated
+      buddyActionCount: 0,    // May be updated
       // May update if this is the current challenge
       mayUpdate: ( userMayViewChallenges && nowTime >= lastChallengeEnd &&
        nowTime <= curChallengeEnd ) ? true : false,
@@ -676,7 +677,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
             curChallenge.userMedia ={
               message: uc.mediaMessage ? uc.mediaMessage : null,
               image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
-              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null,
+              privacy: uc.mediaPrivacy
             };
           }
 
@@ -698,6 +700,7 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
         ucUpdated =moment(uc.updatedAt, dtFormat).utc();
         // If updated between start and end of this challenge, this is it.
         if( ucUpdated >= lastChallengeEnd && ucUpdated <= curChallengeEnd ) {
+          curChallenge.buddyActionCount =uc.actionCount;
           // Update instruction
           curChallenge.buddyInstruction = ( ( challengeEnded ) ? ( "Buddy did" ) :
            ( "Buddy has done" ) ) + " " + uc.actionCount + " / " +
@@ -708,7 +711,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
             curChallenge.buddyMedia ={
               message: uc.mediaMessage ? uc.mediaMessage : null,
               image: ( uc.media && uc.mediaType === 'image' ) ? uc.media : null,
-              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null
+              video: ( uc.media && uc.mediaType === 'video' ) ? uc.media : null,
+              privacy: uc.mediaPrivacy
             };
           }
 

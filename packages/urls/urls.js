@@ -32,6 +32,10 @@ ggUrls.gameChallenge =function(gameSlug) {
   return '/gc/'+gameSlug;
 };
 
+ggUrls.gameChallengeLog =function(gameSlug, username) {
+  return '/gcl/' + gameSlug + '/' + username;
+};
+
 ggUrls.gameInvite =function(gameSlug) {
   return '/gi/'+gameSlug;
 };

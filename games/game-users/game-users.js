@@ -7,10 +7,14 @@ if(Meteor.isClient) {
          ? true : false;
         user.xDisplay ={
           user1: {
-            href: ( user.user1.username ) ? ggUrls.user(user.user1.username) : ''
+            // href: ( user.user1.username ) ? ggUrls.user(user.user1.username) : ''
+            href: ( user.user1.username ) ?
+             ggUrls.gameChallengeLog(gameSlug, user.user1.username) : ''
           },
           user2: {
-            href: ( user.user2.username ) ? ggUrls.user(user.user2.username) : ''
+            // href: ( user.user2.username ) ? ggUrls.user(user.user2.username) : ''
+            href: ( user.user2.username ) ?
+             ggUrls.gameChallengeLog(gameSlug, user.user2.username) : ''
           },
           displayHtml: null,
           buddyLink: null,

@@ -29,7 +29,7 @@
     </div>
     <div class='padding-t padding-large-b'>
       <div class='center margin-lr'>
-        <!-- <h2>{{ data.game.title }}</h2> -->
+        <!-- <h3>{{ data.game.title }}</h3> -->
         <div>
           {{ #unless data.gameState.gameStarted }}
             <span class='h4 red'>{{ data.userChallengeTotals.userGoals }} {{ data.gameRule.mainAction }} pledged</span>
@@ -284,7 +284,7 @@
 
       <div class='center'>
         {{ #if challenge.userMedia }}
-          <div class='inline-block max-250 padding-lr'>
+          <div class='inline-block max-250 padding-lr align-top'>
             <div>You:</div>
             {{ #if challenge.userMedia.image }}
               <img src='{{ challenge.userMedia.image }}' class='img-100' />
@@ -298,7 +298,7 @@
           </div>
         {{ /if }}
         {{ #if challenge.buddyMedia }}
-          <div class='inline-block max-250 padding-lr'>
+          <div class='inline-block max-250 padding-lr align-top'>
             <div>Buddy:</div>
             {{ #if challenge.buddyMedia.image }}
               <img src='{{ challenge.buddyMedia.image }}' class='img-100' />
