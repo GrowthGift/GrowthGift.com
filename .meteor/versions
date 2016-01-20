@@ -73,6 +73,7 @@ lukemadera:mocks@0.0.1
 lukemadera:notify@0.0.1
 lukemadera:sendgrid@0.0.1
 lukemadera:social-share@1.2.0
+lukemadera:video-capture@1.0.6
 mdg:camera@1.2.0
 mdg:validation-error@0.2.0
 meteor@1.1.10

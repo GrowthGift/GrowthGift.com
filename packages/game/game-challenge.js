@@ -115,7 +115,7 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
           var gameUser = ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
           var buddyId = gameUser ? gameUser.buddyId : null;
           if( buddyId ) {
-            var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1} });
+            var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1, emails: 1} });
             var notifyUserIds =[ buddyId ];
             lmNotify.send('gameChallengeBuddyMotivation', { game: game,
              gameMainAction: gameRule.mainAction, challenge: challenge,

@@ -242,6 +242,7 @@ if(Meteor.isClient) {
        gameRule.challenges.length ) ? 1 : 0;
 
       var challenges =ggGame.getUserGameChallenges(game._id, userId);
+      var templateInst =Template.instance();
 
       var ret ={
         challenges: challenges,
@@ -288,7 +289,7 @@ if(Meteor.isClient) {
             // Only show if have buddy
             visible: gameUser.buddyId ? true : false,
             typeOpts: [
-              // { value: 'video', label: 'Video' },
+              { value: 'video', label: 'Video' },
               { value: 'image', label: 'Image' }
             ],
             videoVisible: reactiveData.mediaVideoVisible,
@@ -296,6 +297,20 @@ if(Meteor.isClient) {
             content: reactiveData.mediaContent,
             image: reactiveData.mediaImage,
             video: reactiveData.mediaVideo,
+            videoOpts: {
+              // maxTime: 15,
+              classes: {
+                recordBtn: 'btn-link inline-block margin-t',
+                stopBtn: 'btn-link inline-block margin-l margin-t'
+              },
+              onVideoRecorded: function(err, base64Data) {
+                var reactiveData =templateInst.reactiveData.get();
+                reactiveData.mediaContent =base64Data;
+                reactiveData.mediaVideo =base64Data;
+                reactiveData.mediaVideoActive =false;
+                templateInst.reactiveData.set(reactiveData);
+              }
+            },
             privacyOpts: [
               { value: 'buddy', label: 'Just My Buddy' },
               { value: 'public', label: 'Anyone' }
@@ -444,12 +459,6 @@ if(Meteor.isClient) {
           reactiveData.mediaImageActive =false;
           template.reactiveData.set(reactiveData);
         });
-      }
-    },
-    'click .game-challenge-media-video-btn': function(evt, template) {
-      var reactiveData =template.reactiveData.get();
-      if(!reactiveData.mediaVideoActive) {
-        // TODO
       }
     }
   });

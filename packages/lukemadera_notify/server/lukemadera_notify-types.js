@@ -69,6 +69,7 @@ lmNotifyTypes.gameChallengeBuddyMotivation =function(type, data, params) {
 
   var userIds =data.notifyUserIds;
   var userName =data.user.profile.name;
+  var replyTo =data.user.emails[0].address;
   var gameName =data.game.title;
   var hrefGame =ggUrls.removeLeadingSlash(ggUrls.game(data.game.slug));
   var gameMainAction =data.gameMainAction;
@@ -105,7 +106,8 @@ lmNotifyTypes.gameChallengeBuddyMotivation =function(type, data, params) {
     };
     var emailData ={
       subject: title,
-      html: messageEmail
+      html: messageEmail,
+      replyTo: replyTo
     };
     var smsData =false;
 

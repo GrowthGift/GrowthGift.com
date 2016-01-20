@@ -46,7 +46,7 @@
             <img src='{{ challenge.userMedia.image }}' class='img-100' />
           {{ /if }}
           {{ #if challenge.userMedia.video }}
-            <!-- TODO -->
+            <video src='{{ challenge.userMedia.video }}' class='img-100' controls></video>
           {{ /if }}
           {{ #if challenge.userMedia.message }}
             <div>{{ challenge.userMedia.message }}</div>
@@ -64,7 +64,7 @@
             <img src='{{ challenge.buddyMedia.image }}' class='img-100' />
           {{ /if }}
           {{ #if challenge.buddyMedia.video }}
-            <!-- TODO -->
+            <video src='{{ challenge.buddyMedia.video }}' class='img-100' controls></video>
           {{ /if }}
           {{ #if challenge.buddyMedia.message }}
             <div>{{ challenge.buddyMedia.message }}</div>
