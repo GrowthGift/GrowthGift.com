@@ -93,10 +93,12 @@ GameChallengeNewSchema = new SimpleSchema({
 
 Meteor.methods({
   saveGameChallengeNew: function(game, challenge) {
+    var userId =Meteor.userId();
     var onLastChallenge =challenge.onLastChallenge;
-    ggGame.saveUserGameChallengeNew(game, Meteor.userId(), challenge, function(err, result) {
+    ggGame.saveUserGameChallengeNew(game, userId, challenge,
+     function(err, result, challenge) {
       // Need to clear cache
-      var cacheKey ='game_slug_'+game.slug+'_user_id_'+Meteor.userId();
+      var cacheKey ='game_slug_'+game.slug+'_user_id_'+userId;
       ggGame.clearCache(cacheKey);
       if(!err && Meteor.isClient) {
         if(game.slug) {
@@ -161,16 +163,30 @@ if(Meteor.isClient) {
         var gameSlug =templateInst.data.gameSlug;
         var game =GamesCollection.findOne({slug: gameSlug});
 
+        // For some reason the S3.upload call was failing if it was not called
+        // here. But we need the challengeId to update the media. So, we form
+        // the challenge id HERE and then start BOTH the media update AND
+        // challenge insert calls now. We need both to be able to handle insert
+        // and update since we do not know which operation will happen first.
         // If have media, save to s3 and mutate to database schema format.
         // This is a CLIENT only call so must be done here.
+        // TODO - add privileges checks here too, just like in
+        // `ggGame.saveUserGameChallengeNew`.
+        insertDoc.id =(Math.random() + 1).toString(36).substring(7);
         if(insertDoc.media) {
-          ggGame.uploadMedia(insertDoc, function(err, challenge) {
-            Meteor.call("saveGameChallengeNew", game, challenge);
-          });
+          // We CLONE the data since we will delete part of it.
+          ggGame.challengeMediaUploadAndSave(game, Meteor.userId(), insertDoc.id,
+           EJSON.clone(insertDoc), null);
+          if( insertDoc.media.type === 'image' ||
+           insertDoc.media.type === 'video' ) {
+            message = "Your " + insertDoc.media.type
+             + " is processing and will be available shortly."
+            nrAlert.success(message);
+          }
+          delete insertDoc.media;
         }
-        else {
-          Meteor.call("saveGameChallengeNew", game, insertDoc);
-        }
+
+        Meteor.call("saveGameChallengeNew", game, insertDoc);
 
         this.done();
         return false;

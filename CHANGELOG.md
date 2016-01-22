@@ -4,6 +4,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
+- Process challenge media simultaneously, in background, to avoid slow loading times (for video uploads).
 - Add in challenge video documentation / buddy motivation.
 
 

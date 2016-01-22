@@ -75,7 +75,9 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
       }
 
       modifier ={};   // Reset in case feedback set it
-      challenge.id =(Math.random() + 1).toString(36).substring(7);
+      if(!challenge.id) {
+        challenge.id =(Math.random() + 1).toString(36).substring(7);
+      }
       challenge.updatedAt =msTimezone.curDateTime();
       if(!userGame.challenges) {
         modifier ={
@@ -85,13 +87,25 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
         };
       }
       else {
-        modifier ={
-          $push: {
-            challenges: {
-              $each: [ challenge ]
-            }
+        // Handle if challenge is already inserted (via media).
+        var challengeIndex =_.findIndex(userGame.challenges, 'id', challenge.id);
+        if( challengeIndex > -1 ) {
+          modifier.$set ={};
+          var key;
+          for(key in challenge) {
+            modifier.$set["challenges."+challengeIndex+"."+key] =
+             challenge[key];
           }
-        };
+        }
+        else {
+          modifier ={
+            $push: {
+              challenges: {
+                $each: [ challenge ]
+              }
+            }
+          };
+        }
       }
 
       UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
@@ -100,28 +114,14 @@ ggGame.saveUserGameChallengeNew =function(game, userId, challenge, callback) {
         if(onLastChallenge) {
           ggGame.saveUserAwardsWeekStreak(null, game, null, null, userId,
            game._id, msTimezone.curDateTime(), function() {
-            callback(err, result);
+            callback(err, result, challenge);
            });
         }
         else {
-          callback(err, result);
+          callback(err, result, challenge);
         }
 
         // console.info('ggGame.saveUserGameChallengeNew UserGamesCollection.update', challenge, modifier, userId, game._id);
-
-        // If buddy motivation, notify buddy
-        if(Meteor.isServer && ( challenge.media || challenge.mediaMessage ) ) {
-          var gameUserIndex =_.findIndex(game.users, 'userId', userId);
-          var gameUser = ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
-          var buddyId = gameUser ? gameUser.buddyId : null;
-          if( buddyId ) {
-            var user =Meteor.users.findOne({ _id: userId }, { fields: { profile: 1, emails: 1} });
-            var notifyUserIds =[ buddyId ];
-            lmNotify.send('gameChallengeBuddyMotivation', { game: game,
-             gameMainAction: gameRule.mainAction, challenge: challenge,
-             user: user, notifyUserIds: notifyUserIds }, {});
-          }
-        }
 
         // Not using notifications any more, focus on human connection instead.
         // // Send notifications
