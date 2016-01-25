@@ -1,5 +1,16 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.2.11
+
+## Bug Fixes
+
+- Ensure `updatedAt` set in `userGames` for media update when completing a challenge.
+
+## Features
+
+- Go to games suggest after last challenge completion FIRST, before game summary.
+
+
 # 1.2.10
 
 ## Features

@@ -102,8 +102,11 @@ Meteor.methods({
       ggGame.clearCache(cacheKey);
       if(!err && Meteor.isClient) {
         if(game.slug) {
-          var url = onLastChallenge ? ggUrls.gameUserSummary(game.slug) :
-           ggUrls.game(game.slug);
+          // var url = onLastChallenge ? ggUrls.gameUserSummary(game.slug) :
+          //  ggUrls.game(game.slug);
+          var urlNext = onLastChallenge ? ggUrls.gameUserSummary(game.slug) :
+           null;
+          var url =ggUrls.gamesSuggest(urlNext);
           Router.go(url);
         }
       }

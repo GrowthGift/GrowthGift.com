@@ -24,6 +24,7 @@ Package.onUse(function(api) {
     'game-get.js',
     'game-get-awards.js',
     'game-get-inspiration.js',
+    'game-get-user.js',
     'game.js',
     'game-awards.js',
     'game-challenge.js',

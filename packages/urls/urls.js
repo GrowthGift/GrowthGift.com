@@ -69,8 +69,9 @@ ggUrls.games =function() {
   return '/games';
 };
 
-ggUrls.gamesSuggest =function() {
-  return '/games-suggest';
+ggUrls.gamesSuggest =function(next) {
+  return '/games-suggest' +
+   ( next ? ( '?next=' + next ) : '' );
 };
 
 ggUrls.gameUserSummary =function(gameSlug) {

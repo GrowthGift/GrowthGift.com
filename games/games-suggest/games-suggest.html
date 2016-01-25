@@ -16,6 +16,12 @@
       </div>
     </div>
   {{ /if }}
+
+  {{ #if data.next.url }}
+  <div class='center margin-xlarge-b'>
+    <a class='a-div btn btn-primary btn-large' href='{{ data.next.url }}'>{{ data.next.text }}</a>
+  </div>
+  {{ /if }}
 </template>
 
 <template name="gamesSuggestNew">

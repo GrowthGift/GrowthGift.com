@@ -6,6 +6,12 @@ if(Meteor.isClient) {
   Template.gamesSuggest.helpers({
     data: function() {
 
+      var next ={
+        url: this.urlNext,
+        text: ( this.urlNext && this.urlNext
+        .indexOf('game-user-summary' > -1) ) ? 'Go To Game Summary' : 'Next'
+      }
+
       // Get games that start next week (not this week or 2+ weeks in future)
       // OR end more than 2 days from now (for current games).
       var dtFormat =msTimezone.dateTimeFormat;
@@ -30,7 +36,8 @@ if(Meteor.isClient) {
         // Games do not exist (or have not loaded yet).
         return {
           _xNotFound: true,
-          _xHref: ggUrls.myGames()
+          _xHref: ggUrls.myGames(),
+          next: next
         };
       }
 
@@ -43,6 +50,14 @@ if(Meteor.isClient) {
       if(games.length > maxGames ) {
         games = games.slice(0, maxGames);
       }
+
+      // If no games and have a next url, just go to it.
+      // Update: good in theory but have loading timing issue where the first
+      // times there are no games even if later there may be.. So SOMETIMES
+      // get false positives to go to next url even when should not.
+      // if( this.urlNext && ( !games || !games.length ) ) {
+      //   Router.go(this.urlNext);
+      // }
 
       games =_.sortByOrder(games.map(function(game) {
         gameRule =gameRules[_.findIndex(gameRules, '_id', game.gameRuleId)];
@@ -66,7 +81,8 @@ if(Meteor.isClient) {
       }), ['start'], ['asc']);
 
       return {
-        games: games
+        games: games,
+        next: next
       };
     }
   });
