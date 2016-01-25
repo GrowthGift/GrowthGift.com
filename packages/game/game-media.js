@@ -68,22 +68,32 @@ ggGame.saveChallengeMedia =function(game, userId, challengeId, challengeMedia, c
   }
   else {
     var modifier ={};
-    if( challengeIndex > -1 ) {
-      modifier.$set ={};
-      var keys =['media', 'mediaType', 'mediaMessage', 'mediaPrivacy'];
-      keys.forEach(function(key) {
-        if( challengeMedia[key] !== undefined ) {
-          modifier.$set["challenges."+challengeIndex+"."+key] =
-           challengeMedia[key];
-        }
-      });
-    }
-    else {
+    challengeMedia.updatedAt =msTimezone.curDateTime();
+    if(!userGame.challenges) {
       modifier ={
-        $push: {
-          challenges: challengeMedia
+        $set: {
+          challenges: [ challengeMedia ]
         }
       };
+    }
+    else {
+      if( challengeIndex > -1 ) {
+        modifier.$set ={};
+        var keys =['media', 'mediaType', 'mediaMessage', 'mediaPrivacy', 'updatedAt'];
+        keys.forEach(function(key) {
+          if( challengeMedia[key] !== undefined ) {
+            modifier.$set["challenges."+challengeIndex+"."+key] =
+             challengeMedia[key];
+          }
+        });
+      }
+      else {
+        modifier ={
+          $push: {
+            challenges: challengeMedia
+          }
+        };
+      }
     }
     return UserGamesCollection.update({ userId:userId, gameId:game._id }, modifier,
      function (err, result) {
