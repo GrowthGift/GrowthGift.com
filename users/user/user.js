@@ -1,42 +1,32 @@
-Meteor.methods({
-  saveUserProfile: function(userProfile, docId) {
-    msUser.saveProfile(userProfile, docId, Meteor.userId(), function(err, result) { });
-  }
-
-  // userFollow: function(followUserId) {
-  //   ggFriend.follow(Meteor.userId(), followUserId, function(err, result) { });
-  // },
-  // userUnfollow: function(unfollowUserId) {
-  //   ggFriend.unfollow(Meteor.userId(), unfollowUserId, function(err, result) { });
-  // }
-});
-
 if(Meteor.isClient) {
-  AutoForm.hooks({
-    userProfileForm: {
-      onSubmit: function(insertDoc, updateDoc, currentDoc) {
-        var self =this;
-        //without this, the Meteor.call line submits the form..
-        this.event.preventDefault();
-        this.event.stopPropagation();
-
-        var templateInst =msTemplate.getMainTemplate("Template.user");
-        Meteor.call("saveUserProfile", insertDoc, templateInst.userId);
-
-        this.done();
-        return false;
-      }
-    }
-  });
-
   Template.user.created =function() {
     if(Template.instance().data && Template.instance().data.username) {
       Meteor.subscribe('user-username', Template.instance().data.username);
     }
-    this.userId =null;
   };
 
   Template.user.helpers({
+    nav: function() {
+      var username =this.username;
+      return {
+        buttons: [
+          {
+            icon: 'fa fa-trophy',
+            html: 'Awards',
+            click: function() {
+              Router.go(ggUrls.userGameAwards(username));
+            }
+          },
+          {
+            icon: 'fa fa-user',
+            html: 'Profile',
+            click: function() {
+              Router.go(ggUrls.userProfile(username));
+            }
+          }
+        ]
+      };
+    },
     data: function() {
       if(!this.username) {
         if(Meteor.user() && Meteor.user().username) {
@@ -57,35 +47,15 @@ if(Meteor.isClient) {
         };
       }
 
-      Template.instance().userId =user._id;
-      user.xDisplay ={
-        img: msUser.getImage(user)
-      };
+      var nav = this.nav ? this.nav : 'game-awards';
       var ret ={
-        user: user,
-        // isFollowing: ( Meteor.userId() &&
-        //  ggFriend.isFollowing(Meteor.userId(), user._id, null) ) || false,
-        isSelf: ( Meteor.userId() && Meteor.userId() ===user._id ) ? true : false,
-        inputOpts: {
-          genderOpts: [
-            { value: 'female', label: 'Female' },
-            { value: 'male', label: 'Male' }
-          ]
-        }
+        template: ( nav === 'game-awards' ) ? 'userGameAwards' :
+        ( nav === 'game-history' ) ? 'gameHistory' :
+        'userProfile',
+        user: user
       };
 
       return ret;
     }
   });
-
-  // Template.user.events({
-  //   'click .user-follow': function(evt, template) {
-  //     var user =Meteor.users.findOne({ username: this.username });
-  //     Meteor.call('userFollow', user._id);
-  //   },
-  //   'click .user-unfollow': function(evt, template) {
-  //     var user =Meteor.users.findOne({ username: this.username });
-  //     Meteor.call('userUnfollow', user._id);
-  //   }
-  // });
 }

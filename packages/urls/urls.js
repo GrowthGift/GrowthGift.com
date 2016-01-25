@@ -87,5 +87,11 @@ ggUrls.saveGameRule =function(gameRuleSlug) {
 };
 
 ggUrls.user =function(username) {
-  return '/u/'+username;
+  return '/u' + ( username ? ( '/' + username ) : '' );
+};
+ggUrls.userProfile =function(username) {
+  return ggUrls.user(username) + '/?nav=profile';
+};
+ggUrls.userGameAwards =function(username) {
+  return ggUrls.user(username) + '/?nav=game-awards';
 };
