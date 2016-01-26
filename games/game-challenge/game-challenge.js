@@ -341,14 +341,6 @@ if(Meteor.isClient) {
       };
       ret.hasChallenges =ret.challenges.length ? true : false;
 
-      // temporary: filter out ios until apple approves app update.
-      if(Meteor.isCordova && navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-        ret.inputOpts.media.typeOpts =[
-          // { value: 'video', label: 'Video' },
-          { value: 'image', label: 'Image' }
-        ];
-      }
-
       // Important to only set this ONCE since it returns a DIFFERENT prompt
       // each time and this template helper runs more than once! Without this,
       // the prompt displayed was often DIFFERENT than the prompt saved!
