@@ -146,9 +146,7 @@ lmNotifyTypes.gameBuddyAdded =function(type, data, params) {
         "<br /><br />"+
         "Buddies are very important in the Growth & Giving Challenges and come with one key responsibility:"+
         "<br />"+
-        "1. A daily call (or text) to your buddy when you complete your daily pledge to let them know you completed yours and to remind and encourage your buddy to complete theirs."+
-        "<br />"+
-        "As buddies, your job is to ensure neither one of you misses a single day!"+
+        "To ensure your buddy completes their pledge every single day."+
         "<br /><br />"+
         "Enjoy the challenge and see what you and your buddy can achieve together!"+
         "<br /><br />"+
@@ -191,9 +189,7 @@ lmNotifyTypes.gameBuddyRequest =function(type, data, params) {
         "<br /><br />"+
         "Buddies are very important in the Growth & Giving Challenges and come with one key responsibility:"+
         "<br />"+
-        "1. A daily call (or text) to your buddy when you complete your daily pledge to let them know you completed yours and to remind and encourage your buddy to complete theirs."+
-        "<br />"+
-        "As buddies, your job is to ensure neither one of you misses a single day!"+
+        "To ensure your buddy completes their pledge every single day."+
         "<br /><br />"+
         "Enjoy the challenge and see what you and your buddy can achieve together!"+
         "<br /><br />"+
