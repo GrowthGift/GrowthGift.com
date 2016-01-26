@@ -106,7 +106,8 @@ Meteor.methods({
           //  ggUrls.game(game.slug);
           var urlNext = onLastChallenge ? ggUrls.gameUserSummary(game.slug) :
            null;
-          var url =ggUrls.gamesSuggest(urlNext);
+          var url = onLastChallenge ? ggUrls.gamesSuggest(urlNext) :
+           ggUrls.game(game.slug);
           Router.go(url);
         }
       }
