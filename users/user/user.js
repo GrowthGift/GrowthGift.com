@@ -18,6 +18,13 @@ if(Meteor.isClient) {
             }
           },
           {
+            icon: 'fa fa-ellipsis-v',
+            html: 'Timeline',
+            click: function() {
+              Router.go(ggUrls.userGameTimeline(username));
+            }
+          },
+          {
             icon: 'fa fa-user',
             html: 'Profile',
             click: function() {
@@ -50,7 +57,7 @@ if(Meteor.isClient) {
       var nav = this.nav ? this.nav : 'game-awards';
       var ret ={
         template: ( nav === 'game-awards' ) ? 'userGameAwards' :
-        ( nav === 'game-history' ) ? 'gameHistory' :
+        ( nav === 'game-timeline' ) ? 'userGameTimeline' :
         'userProfile',
         user: user
       };

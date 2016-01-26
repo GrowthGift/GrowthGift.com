@@ -1,12 +1,38 @@
 .game-challenge-log-header {
+  border-bottom: solid 1px @grayLight1;
 }
 .game-challenge-log-row {
   border-bottom: dashed 1px @grayLighter;
+  padding-top: 5px;
 }
 .game-challenge-log-row:nth-child(odd) {
   //background-color: @grayLighter;
 }
 .game-challenge-log-col {
   display: inline-block;
-  width: 250px;
+  width: 200px;
+}
+.game-challenge-log-user-main {
+  .bg-give-lighter;
+}
+.game-challenge-log-user-buddy {
+  .bg-grow-lighter;
+}
+
+@media (min-width: 350px) {
+  .game-challenge-log-col {
+    width: 250px;
+  }
+}
+
+@media (min-width: 570px) {
+  .game-challenge-log-header {
+    .bg-gray-lighter;
+  }
+  .game-challenge-log-user-main {
+    background-color: inherit;
+  }
+  .game-challenge-log-user-buddy {
+    background-color: inherit;
+  }
 }

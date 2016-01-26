@@ -32,12 +32,6 @@ if(Meteor.isClient) {
       var userGameBuddy = ( userGameBuddyIndex > -1 ) ?
        userGames[userGameBuddyIndex] : null;
 
-      Template.instance().data.helperData ={
-        userMain: userMain,
-        userBuddy: userBuddy,
-        gameMainAction: gameRule.mainAction
-      };
-
       var challenges =ggGame.getChallengesWithUser(game, gameRule, userGame, null, userGameBuddy).challenges;
       if( challenges && challenges.length ) {
         // Add in privileges
@@ -60,20 +54,38 @@ if(Meteor.isClient) {
         });
       }
 
-      return {
-        game: game,
-        challenges: challenges,
-        noChallenges: ( !challenges || !challenges.length ) ? true : false,
+      var links ={
+        game: ggUrls.game(game.slug),
+        gameUsers: ggUrls.gameUsers(game.slug),
+        userMain: ggUrls.user(userMain.username),
+        userBuddy: userBuddy ? ggUrls.user(userBuddy.username) : null,
+      };
+      var helperData ={
         userMain: userMain,
         userBuddy: userBuddy,
-        links: {
-          game: ggUrls.game(game.slug),
-          gameUsers: ggUrls.gameUsers(game.slug),
-          userMain: ggUrls.user(userMain.username),
-          userBuddy: userBuddy ? ggUrls.user(userBuddy.username) : null,
-        }
+        gameMainAction: gameRule.mainAction,
+        links: links,
+        challenges: challenges
+      };
+      Template.instance().data.helperData =helperData;
+
+      return {
+        game: game,
+        noChallenges: ( !challenges || !challenges.length ) ? true : false,
+        links: links
       };
     }
   });
 
+  Template.gameChallengeLogUser.helpers({
+    data: function() {
+      var helperData ={
+        userMain: this.data.userMain,
+        userBuddy: this.data.userBuddy,
+        gameMainAction: this.data.gameMainAction
+      };
+      Template.instance().data.helperData =helperData;
+      return this.data;
+    }
+  });
 }

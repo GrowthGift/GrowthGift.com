@@ -95,3 +95,6 @@ ggUrls.userProfile =function(username) {
 ggUrls.userGameAwards =function(username) {
   return ggUrls.user(username) + '/?nav=game-awards';
 };
+ggUrls.userGameTimeline =function(username) {
+  return ggUrls.user(username) + '/?nav=game-timeline';
+};
