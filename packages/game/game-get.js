@@ -551,11 +551,11 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
     challengeStarted =( lastChallengeEnd <= nowTime ) ? true : false;
     actionsToDo =( !challengeEnded && userAdjustedGoalPerChallenge > 0 ) ?
      userAdjustedGoalPerChallenge :
-     ( ( userSelfGoalPerChallenge > 0 ) ? userSelfGoalPerChallenge : "??" );
+     ( ( userSelfGoalPerChallenge > 0 ) ? userSelfGoalPerChallenge : "?" );
 
-    actionsToDoBuddy = !buddyId ? "??" : ( !challengeEnded &&
+    actionsToDoBuddy = !buddyId ? "?" : ( !challengeEnded &&
      buddyAdjustedGoalPerChallenge > 0 ) ? buddyAdjustedGoalPerChallenge :
-     ( ( buddySelfGoalPerChallenge > 0 ) ? buddySelfGoalPerChallenge : "??" );
+     ( ( buddySelfGoalPerChallenge > 0 ) ? buddySelfGoalPerChallenge : "?" );
 
     curChallenge ={
       title: challenge.title,
@@ -572,6 +572,8 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
       userSelfGoal: userSelfGoalPerChallenge,
       userActionCount: 0,    // May be updated
       buddyActionCount: 0,    // May be updated
+      actionsToDo: actionsToDo,
+      actionsToDoBuddy: actionsToDoBuddy,
       // May update if this is the current challenge
       mayUpdate: ( userMayViewChallenges && nowTime >= lastChallengeEnd &&
        nowTime <= curChallengeEnd ) ? true : false,
@@ -657,3 +659,30 @@ ggGame.getChallengesWithUser =function(game, gameRule, userGame, nowTime, userGa
 
   return ret;
 }
+
+ggGame.getUserChallengeLog =function(game, gameRule, userGame, nowTime, userGameBuddy, userSelf, userMain, userBuddy) {
+  var challenges =ggGame.getChallengesWithUser(game, gameRule, userGame,
+   nowTime, userGameBuddy).challenges;
+  if( challenges && challenges.length ) {
+    // Add in privileges
+    var userId =userSelf._id;
+    var userIsMain = ( userId && userMain._id === userId ) ? true : false;
+    var userIsBuddy = ( userId && userBuddy && userBuddy._id === userId ) ?
+     true : false;
+    var user =userSelf;
+    challenges.forEach(function(challenge, index) {
+      challenges[index].privileges ={
+        userMainMedia: ( userIsMain || userIsBuddy || ( challenge.userMedia
+         && challenge.userMedia.privacy === 'public' ) ) ? true : false,
+        userBuddyMedia: ( userIsBuddy || userIsMain || ( challenge.buddyMedia
+         && challenge.buddyMedia.privacy === 'public' ) ) ? true : false
+      };
+      challenges[index].timeDisplay = ( !challenge.started) ?
+       ( "Starts " + msUser.toUserTime(user, challenge.start, null, 'from') )
+       : ( challenge.started && !challenge.ended) ?
+       ( "Ends " + msUser.toUserTime(user, challenge.end, null, 'from') )
+       : ( "Ended " + msUser.toUserTime(user, challenge.end, null, 'from') );
+    });
+  }
+  return challenges;
+};

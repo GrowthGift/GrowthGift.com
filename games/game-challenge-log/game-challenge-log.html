@@ -44,7 +44,7 @@
     <div class='font-small'>{{ challenge.timeDisplay }}</div>
     {{ #if data.userMain }}
       <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-main'>
-        <div><b>{{ challenge.userActionCount }}</b> {{ data.gameMainAction}}</div>
+        <div><b>{{ challenge.userActionCount }}</b> / {{ challenge.actionsToDo }} {{ data.gameMainAction}}</div>
         {{ #if challenge.privileges.userMainMedia }}
           {{ #if challenge.userMedia.image }}
             <img src='{{ challenge.userMedia.image }}' class='img-100' />
@@ -62,7 +62,7 @@
     {{ /if }}
     {{ #if data.userBuddy }}
       <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-buddy'>
-        <div><b>{{ challenge.buddyActionCount }}</b> {{ data.gameMainAction }}</div>
+        <div><b>{{ challenge.buddyActionCount }}</b> / {{ challenge.actionsToDoBuddy }} {{ data.gameMainAction }}</div>
         {{ #if challenge.privileges.userBuddyMedia }}
           {{ #if challenge.buddyMedia.image }}
             <img src='{{ challenge.buddyMedia.image }}' class='img-100' />

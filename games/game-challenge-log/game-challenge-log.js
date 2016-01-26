@@ -18,7 +18,8 @@ if(Meteor.isClient) {
        { fields: { username: 1, profile: 1} }) : null;
       var userGames =( game && userMain ) ? UserGamesCollection.find({ gameId:game._id,
        userId: { $in: [ userMain._id, buddyId ] } }).fetch() : null;
-      if(!game || !userMain) {
+      if(!game || !gameRule || !userMain || !userGames ||
+       ( buddyId && ( userGames.length < 2 || !userBuddy ) ) ) {
         return {
           _xNotFound: true,
           _xHref: ggUrls.myGames()
@@ -32,27 +33,8 @@ if(Meteor.isClient) {
       var userGameBuddy = ( userGameBuddyIndex > -1 ) ?
        userGames[userGameBuddyIndex] : null;
 
-      var challenges =ggGame.getChallengesWithUser(game, gameRule, userGame, null, userGameBuddy).challenges;
-      if( challenges && challenges.length ) {
-        // Add in privileges
-        var userId = Meteor.userId();
-        var userIsMain = ( userId && userMain._id === userId ) ? true : false;
-        var userIsBuddy = ( userId && userBuddy && userBuddy._id === userId ) ? true : false;
-        var user =Meteor.user();
-        challenges.forEach(function(challenge, index) {
-          challenges[index].privileges ={
-            userMainMedia: ( userIsMain || userIsBuddy || ( challenge.userMedia
-             && challenge.userMedia.privacy === 'public' ) ) ? true : false,
-            userBuddyMedia: ( userIsBuddy || userIsMain || ( challenge.buddyMedia
-             && challenge.buddyMedia.privacy === 'public' ) ) ? true : false
-          };
-          challenges[index].timeDisplay = ( !challenge.started) ?
-           ( "Starts " + msUser.toUserTime(user, challenge.start, null, 'from') )
-           : ( challenge.started && !challenge.ended) ?
-           ( "Ends " + msUser.toUserTime(user, challenge.end, null, 'from') )
-           : ( "Ended " + msUser.toUserTime(user, challenge.end, null, 'from') );
-        });
-      }
+      var challenges =ggGame.getUserChallengeLog(game, gameRule, userGame,
+       null, userGameBuddy, Meteor.user(), userMain, userBuddy);
 
       var links ={
         game: ggUrls.game(game.slug),
@@ -79,12 +61,14 @@ if(Meteor.isClient) {
 
   Template.gameChallengeLogUser.helpers({
     data: function() {
-      var helperData ={
-        userMain: this.data.userMain,
-        userBuddy: this.data.userBuddy,
-        gameMainAction: this.data.gameMainAction
-      };
-      Template.instance().data.helperData =helperData;
+      if(this.data) {
+        var helperData ={
+          userMain: this.data.userMain,
+          userBuddy: this.data.userBuddy,
+          gameMainAction: this.data.gameMainAction
+        };
+        Template.instance().data.helperData =helperData;
+      }
       return this.data;
     }
   });
