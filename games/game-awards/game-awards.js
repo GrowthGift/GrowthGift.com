@@ -36,7 +36,10 @@ if(Meteor.isClient) {
       var ret ={
         icon: '/svg/',
         user1: award.winner.user1,
+        user1Href: ggUrls.gameChallengeLog(this.gameSlug, award.winner.user1.username),
         user2: ( award.winner.user2.profile ) ? award.winner.user2 : null,
+        user2Href: ( award.winner.user2.profile ) ?
+         ggUrls.gameChallengeLog(this.gameSlug, award.winner.user2.username) : null,
         otherWinnersHtml: otherWinners.length ? ( "<a href='" +
          ggUrls.gameUsers(this.gameSlug) + "'>" + otherWinners.length +
          " other winner" + ( ( otherWinners.length ===1 ) ? "" : "s" ) + ".</a>" ) : null

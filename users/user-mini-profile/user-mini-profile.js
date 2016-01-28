@@ -20,7 +20,8 @@ if(Meteor.isClient) {
 
       user.xDisplay ={
         img: msUser.getImage(user),
-        href: ( user.username ) ? ggUrls.user(user.username) : ''
+        href: this.userHref ? this.userHref :
+         ( user.username ) ? ggUrls.user(user.username) : ''
       };
       var displayType = this.displayType ? this.displayType : 'vertical';
       var ret ={
