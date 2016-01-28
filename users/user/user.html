@@ -2,40 +2,7 @@
   {{#if data._xNotFound }}
   <div class='padding center'>User either is still loading or does not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
-  <div class='max-600'>
-
-    <div class='max-300'><img class='img-100' src='{{ data.user.xDisplay.img }}' /></div>
-    <div class='center margin-lr'>
-      <h2>{{ data.user.profile.name }}</h2>
-      <!-- {{#unless data.isSelf}}
-      <div class='center margin-tb'>
-        {{#if data.isFollowing}}
-        <div class='btn btn-warning user-unfollow'>Unfollow</div>
-        {{else}}
-        <div class='btn btn-primary user-follow'>Follow</div>
-        {{/if}}
-      </div>
-      {{/unless}} -->
-    </div>
-
-    {{ #if data.isSelf }}
-    {{#autoForm schema="UserProfileSchema" doc=data.user.profile id="userProfileForm" resetOnSuccess=false }}
-      {{>afQuickField name="name" }}
-      {{>afQuickField name="image" label="Image URL (to a public image on the Internet)" }}
-      {{>afQuickField name="gender" type="select" options=data.inputOpts.genderOpts }}
-
-      <div class='margin-large-t flexbox'>
-        <div class='flex1'>&nbsp;</div>
-        <div>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </div>
-    {{/autoForm}}
-    {{ /if }}
-
-  </div>
-
-  {{ >gameUserAwardsAll userId=data.user._id }}
-
+    {{> msNavSecondary nav=nav }}
+    {{> UI.dynamic template=data.template data=data }}
   {{/if}}
 </template>

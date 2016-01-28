@@ -8,6 +8,9 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
+- Make game awards user link go to challenge log instead of user profile.
+- Add game user timeline to user profile page.
+- Refactor user profile to have secondary (sub) nav.
 - Go to games suggest after last challenge completion FIRST, before game summary.
 
 

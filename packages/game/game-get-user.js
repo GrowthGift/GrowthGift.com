@@ -74,3 +74,77 @@ ggGame.getCurrentUserChallenge =function(gameId, userId, userGame) {
   ret.mostRecentChallenge =challenges[(challenges.length -1)];
   return ret;
 };
+
+ggGame.getUserChallengesByWeek =function(users, userId, userGames, userGamesBuddy, games, gameRules, gamesVisible) {
+  var gameUser, gameUserIndex, buddyId;
+  var userMainIndex = _.findIndex(users, '_id', userId);
+  var userMain = users[userMainIndex];
+
+  var challengesByWeek =[];
+  var gameIndex, game, gameRuleIndex, gameRule;
+  var userBuddyIndex, userBuddy;
+  var userGameBuddyIndex, userGameBuddy;
+  var challenges, links;
+  var curItem;
+  userGames.forEach(function(userGame) {
+    // See if we want to load this game. Default to false.
+    if(gamesVisible[userGame.gameId] === undefined) {
+      gamesVisible[userGame.gameId] =false;
+    }
+
+    gameIndex = _.findIndex(games, '_id', userGame.gameId);
+    game = ( gameIndex > -1 ) ? games[gameIndex] : null;
+    gameRuleIndex = game ? _.findIndex(gameRules, '_id', game.gameRuleId)
+     : -1;
+    gameRule = ( gameRuleIndex > -1 ) ? gameRules[gameRuleIndex] : null;
+    // console.log(userGame, game);
+    if(game && gameRule) {
+      var curItem ={
+        gameId: userGame.gameId,
+        gameStart: game.start,
+        gameTitle: game.title,
+        xVisible: false
+      };
+
+      if( gamesVisible[userGame.gameId] ) {
+        // Get buddy user id, if exists.
+        gameUserIndex =_.findIndex(game.users, 'userId', userId);
+        gameUser = ( gameUserIndex > -1 ) ? game.users[gameUserIndex] : null;
+        buddyId = gameUser && gameUser.buddyId || null;
+        userBuddyIndex = buddyId ? _.findIndex(users, '_id', buddyId) : null;
+        userBuddy = ( userBuddyIndex > -1 ) ? users[userBuddyIndex] : null;
+
+        userGameBuddyIndex =buddyId ?
+         _.findIndex(userGamesBuddy, 'userId', buddyId) : -1;
+        userGameBuddy = ( userGameBuddyIndex > -1 ) ?
+         userGamesBuddy[userGameBuddyIndex] : null;
+
+        challenges =ggGame.getUserChallengeLog(game, gameRule, userGame,
+         null, userGameBuddy, Meteor.user(), userMain, userBuddy);
+
+        links ={
+          game: ggUrls.game(game.slug),
+          gameUsers: ggUrls.gameUsers(game.slug),
+          userMain: ggUrls.user(userMain.username),
+          userBuddy: userBuddy ? ggUrls.user(userBuddy.username) : null,
+        };
+
+        curItem.userMain = userMain;
+        curItem.userBuddy = userBuddy;
+        curItem.gameMainAction = gameRule.mainAction;
+        curItem.links = links;
+        curItem.challenges = challenges;
+        curItem.xVisible = true;
+      }
+
+      challengesByWeek.push(curItem);
+    }
+  });
+
+  // Sort by game start
+  challengesByWeek =_.sortByOrder(challengesByWeek, ['gameStart'], ['desc']);
+  return {
+    challengesByWeek: challengesByWeek,
+    gamesVisible: gamesVisible
+  };
+};

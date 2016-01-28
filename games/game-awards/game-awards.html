@@ -27,11 +27,11 @@
 <template name="gameAward">
   <div class='game-award-item bg-white padding margin'>
     <div class='inline-block game-award-item-user'>
-      {{ >userMiniProfile user=data.user1 }}
+      {{ >userMiniProfile user=data.user1 userHref=data.user1Href }}
     </div>
     {{ #if data.user2 }}
       <div class='inline-block game-award-item-user'>
-        {{ >userMiniProfile user=data.user2 }}
+        {{ >userMiniProfile user=data.user2 userHref=data.user2Href }}
       </div>
     {{ /if }}
     <div>

@@ -11,24 +11,7 @@
         <span>No challenges completed by these users,</span> <a href='{{ data.links.gameUsers }}'>see all game users</a>
       </div>
     {{ else }}
-      <div class='bg-white'>
-        <!-- Header with user names -->
-        <div class='center game-challenge-log-header bg-gray-lighter padding-tb'>
-          {{ #if data.userMain }}
-            <div class='game-challenge-log-col padding-lr align-top'>
-                <a class='h5' href='{{ data.links.userMain }}'>{{ data.userMain.profile.name }}</a>
-            </div>
-          {{ /if }}
-          {{ #if data.userBuddy }}
-            <div class='game-challenge-log-col padding-lr align-top'>
-              <a class='h5' href='{{ data.links.userBuddy }}'>{{ data.userBuddy.profile.name }}</a>
-            </div>
-          {{ /if }}
-        </div>
-        {{ #each data.challenges }}
-          {{ >gameChallengeLogUser challenge=this data=../helperData }}
-        {{ /each }}
-      </div>
+      {{ >gameChallengeLogUser data=../helperData }}
     {{ /if }}
 
   </div>
@@ -36,11 +19,32 @@
 </template>
 
 <template name="gameChallengeLogUser">
-  <div class='center game-challenge-log-row padding-tb'>
+  <div class='bg-white'>
+    <!-- Header with user names -->
+    <div class='center game-challenge-log-header'>
+      {{ #if data.userMain }}
+        <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-main'>
+            <a class='h5' href='{{ data.links.userMain }}'>{{ data.userMain.profile.name }}</a>
+        </div>
+      {{ /if }}
+      {{ #if data.userBuddy }}
+        <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-buddy'>
+          <a class='h5' href='{{ data.links.userBuddy }}'>{{ data.userBuddy.profile.name }}</a>
+        </div>
+      {{ /if }}
+    </div>
+    {{ #each data.challenges }}
+      {{ >gameChallengeLogUserData challenge=this data=../helperData }}
+    {{ /each }}
+  </div>
+</template>
+
+<template name="gameChallengeLogUserData">
+  <div class='center game-challenge-log-row'>
     <div class='font-small'>{{ challenge.timeDisplay }}</div>
     {{ #if data.userMain }}
-      <div class='game-challenge-log-col padding-lr align-top'>
-        <div><b>{{ challenge.userActionCount }}</b> {{ data.gameMainAction}}</div>
+      <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-main'>
+        <div><b>{{ challenge.userActionCount }}</b> / {{ challenge.actionsToDo }} {{ data.gameMainAction}}</div>
         {{ #if challenge.privileges.userMainMedia }}
           {{ #if challenge.userMedia.image }}
             <img src='{{ challenge.userMedia.image }}' class='img-100' />
@@ -57,8 +61,8 @@
       <div>&nbsp;</div> -->
     {{ /if }}
     {{ #if data.userBuddy }}
-      <div class='game-challenge-log-col padding-lr align-top'>
-        <div><b>{{ challenge.buddyActionCount }}</b> {{ data.gameMainAction }}</div>
+      <div class='game-challenge-log-col padding-lr padding-tb align-top game-challenge-log-user-buddy'>
+        <div><b>{{ challenge.buddyActionCount }}</b> / {{ challenge.actionsToDoBuddy }} {{ data.gameMainAction }}</div>
         {{ #if challenge.privileges.userBuddyMedia }}
           {{ #if challenge.buddyMedia.image }}
             <img src='{{ challenge.buddyMedia.image }}' class='img-100' />
