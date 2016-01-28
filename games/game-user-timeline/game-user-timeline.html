@@ -2,6 +2,17 @@
   {{#if data._xNotFound }}
     <div class='padding center'>Challenges either are still loading or do not exist. <a href='{{ data._xHref }}'>Return to My Challenges.</a></div>
   {{else}}
-    Game User Timeline TODO
+    <div class='center margin-xlarge-t'>
+      {{ #each data.challengesByWeek }}
+        <div class='game-user-timeline-item margin-xlarge-b'>
+          <div class='h4 center padding-tb bg-gray-light-1 game-user-timeline-title pointer'>{{ gameTitle }}</div>
+          {{ #if xVisible }}
+            {{ >gameChallengeLogUser data=this }}
+          {{ else }}
+            <div class='game-user-timeline-more-info center padding-tb pointer bg-white'>Click to view details</div>
+          {{ /if }}
+        </div>
+      {{ /each }}
+    </div>
   {{/if}}
 </template>
