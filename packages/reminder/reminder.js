@@ -183,6 +183,7 @@ ggReminder.gameChallengeDue =function() {
 };
 
 ggReminder.gameJoinNextWeek =function() {
+	/*
   // Get games that start next week (not this week or 2+ weeks in future).
   var dtFormat =msTimezone.dateTimeFormat;
   var nowTime =msTimezone.curDateTime('moment');
@@ -245,5 +246,114 @@ ggReminder.gameJoinNextWeek =function() {
   }
   if(paramsNotifyNoStreak.notifyUserIds.length) {
     lmNotify.send('gameJoinNextWeekReminder', paramsNotifyNoStreak, {});
+  }
+  */
+  
+  // Get games that start next week (not this week or 2+ weeks in future).
+  var dtFormat =msTimezone.dateTimeFormat;
+  var nowTime =msTimezone.curDateTime('moment');
+  var nextWeekTime =nowTime.clone().add(5, 'days').format(dtFormat);
+  var sundayTime =nowTime.clone().startOf('week');
+  // Allow same day, but if past the day, set to next week.
+  if(sundayTime.format('YYYY-MM-DD') < nowTime.format('YYYY-MM-DD')) {
+    sundayTime =sundayTime.add(7, 'days');
+  }
+  sundayTime =sundayTime.format(dtFormat);
+
+  var nextGames =GamesCollection.find({ start: { $gte : sundayTime,
+   $lte : nextWeekTime } }, { fields: { "users.userId": 1 } }).fetch();
+  
+  // Get this week's games
+  sundayTime =nowTime.clone().startOf('week');
+  if(sundayTime.format('YYYY-MM-DD') >= nowTime.format('YYYY-MM-DD')) {
+    sundayTime =sundayTime.subtract(7, 'days');
+  }
+  sundayTime =sundayTime.format(dtFormat);
+  nowTime =nowTime.format(dtFormat);
+
+  var games =GamesCollection.find({ start: { $gte : sundayTime,
+   $lte : nowTime } }, { fields: { "_id": 1, "title": 1, "gameRuleId": 1 } }).fetch();
+   
+  var gameIds = [];
+  var gameRulesIds = [];
+  games.forEach(function(game) {
+    var gameIdString = game._id;
+	if(gameIdString.toHexString) {
+	  gameIdString = gameIdString.toHexString();
+	}
+	gameIds.push(gameIdString);
+	gameRulesIds.push(game.gameRuleId);
+  });
+  //Get rules for these games
+  var gameRules = GameRulesCollection.find({_id : {$in: gameRulesIds} }, {}).fetch();
+  games.forEach(function(game) {
+    gameRules.forEach(function(gameRule) {
+	  if(game.gameRuleId == gameRule._id) {
+	    game.gameRule = gameRule;
+		ggGame.getChallengeTotals(game, userGames, gameRule, nowTime)
+	  }
+	});
+  });
+  
+  //Get awards for these games
+  var userGames = UserGamesCollection.find({gameId : {$in: gameIds}, awards: {$exists: true, $ne: []} }, {}).fetch();
+  
+  games.forEach(function(game) {
+    gameRules.forEach(function(gameRule) {
+	  if(game.gameRuleId == gameRule._id) {
+	    game.gameRule = gameRule;
+		ggGame.getChallengeTotals(game, userGames, gameRule, nowTime)
+	  }
+	});
+	var gameUserGames = [];
+	userGames.forEach(function(userGame) {
+	  if(userGame.gameId == game._id) {
+		gameUserGames.push(userGame);
+	  }
+	});
+	game.challengeTotals = ggGame.getChallengeTotals(game, gameUserGames, game.gameRule);
+  });
+  
+  //List of ids of users that won an award this week
+  var userIds = [];
+  userGames.forEach(function(userGame) {
+	userIds.push(userGame.userId);
+  });
+  
+  // Find all users
+  var userId;
+  var paramsNotifyNoStreak ={
+    notifyUserIds: [],
+    weekStreakCurrent: false,
+	pastGames: games,
+	nextGames: nextGames
+  };
+  var users =Meteor.users.find({}, { fields:
+   { profile: 1 } }).fetch();
+   
+  users.forEach(function(user) {
+    userId =user._id;
+    paramsNotifyNoStreak.notifyUserIds.push(userId);	//Users to be emailed (all users get the newsletter)
+	
+	//Append user's name to userGame if this user won an award this week
+	if(userIds.indexOf(userId) >= 0)
+	{
+      userGames.forEach(function(userGame) {
+        if(userId == userGame.userId)
+		{
+			userGame.profileName = user.profile.name;
+		}
+      });
+	}
+	
+  });
+  
+  //Get awards from this week, complete with user profile names
+  var awards = ggGame.getUserAwardsAll(userGames, {}, '');
+  
+  paramsNotifyNoStreak.awards = awards;
+  
+  if(paramsNotifyStreak.notifyUserIds.length) {
+    lmNotify.send('gameJoinNextWeekReminder', paramsNotifyStreak, {});
   }
 };

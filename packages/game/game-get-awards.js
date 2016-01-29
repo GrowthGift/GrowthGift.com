@@ -263,7 +263,9 @@ ggGame.getUserAwardsAll =function(userGames, userAward, userId) {
       ug.awards.forEach(function(award) {
         awards[award.type].push({
           score: award.score,
-          createdAt: award.createdAt
+          createdAt: award.createdAt,
+		  userId: ug.userId,
+		  profileName: ug.profileName
         })
       });
     }

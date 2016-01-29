@@ -221,10 +221,93 @@ lmNotifyTypes.gameJoinNextWeekReminder =function(type, data, params) {
     //  + " challenge" + ( ( gameStreak === 1 ) ? "" : "s" ) + " alive" ) :
     //  ( "Start a new challenge streak" ) );
     // var title = ( gameStreak > 0 ) ? "Keep Your Challenge Streak Alive" : "Join Challenge Reminder";
+   
+    /*
     var streakText = gameStreak ? ( "Keep your challenge streak alive" ) :
      ( "Start a new challenge streak" );
     var title = gameStreak ? "Keep Your Challenge Streak Alive" : "Join Challenge Reminder";
     var message =streakText + " by joining a challenge this week.";
+    */
+	var title = "Keep the challenge going!";	//Change this
+	var message = '';
+	var ii;
+	var xx;
+	
+	var max_games_featured_next = 2;
+	var max_games_featured_past = 2;
+	var max_award_winners = 2;
+	var connector = '';
+	
+	
+	
+	if(data.nextGames && data.nextGames.length > 0)
+	{
+		message += 'Next week\'s games include ';
+		if(data.nextGames.length === 1)
+		{
+			message += data.nextGames[0].title;
+		}
+		else if(data.nextGames.length === 2)
+		{
+			message += data.nextGames[0].title + ' and ' + data.nextGames[1].title;
+		}
+		else
+		{
+			connector = '';
+			for(ii = 0; ii < data.nextGames.length && ii < max_games_featured_next; ii++)
+			{
+				message += connector + data.nextGames[ii].title;
+				connector = ', ';
+			}
+			
+			if(data.nextGames.length - max_games_featured_next > 0)
+			{
+				message += ', and ' + (data.nextGames.length - max_games_featured_next) + ' other games.';
+			}
+		}
+	}
+	
+	if(data.pastGames && data.pastGames.length > 0)
+	{
+		message += '<br/><br/>This week on GrowthGift:<br/>';
+		for(ii = 0; ii < data.pastGames.length && ii < max_games_featured_past; ii++)
+		{
+			message += data.pastGames[ii].challengeTotals.userActions + ' ' + data.pastGames[ii].gameRule.mainAction + ' completed by ' + data.pastGames[ii].challengeTotals.numUsers + ' players<br/>';
+		}
+		if(data.pastGames.length - max_games_featured_past > 0)
+		{
+			message += 'And ' + (data.pastGames.length - max_games_featured_past) + ' other games this week.';
+		}
+	}
+	
+	if(data.awards)
+	{
+		message += '<br/><br/>Congratulations to our award winners this week!';
+		
+		var loop_keys = {'perfectPledge': {'award_name': 'Marksman'}, 'perfectAttendance': {'award_name': 'Reliable'}, 'biggestImpact': {'award_name': 'Impact'}, 'biggestReach': {'award_name': 'Reach'}};
+		
+		for(xx in loop_keys)
+		{
+			if(data.awards[xx] && data.awards[xx].length > 0)
+			{
+				message += '<br/>' + loop_keys[xx].award_name + ' Award: ';
+				
+				connector = '';
+				for(ii = 0; ii < data.awards[xx].length && ii < max_award_winners; ii++)
+				{
+					message += connector + data.awards[xx][ii].profileName;
+					connector = ' & ';
+				}
+				if(data.awards[xx].length - max_award_winners > 0)
+				{
+					message += '. And ' + (data.awards[xx].length - max_award_winners) + ' other winners.';
+				}
+			}
+		});
+	}
+	
+	message += '<br/><br/>Join in the challenges next week at GrowthGift!';
+	
     var inAppData =false;
     var pushData ={
       title: title,
