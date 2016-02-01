@@ -13,6 +13,9 @@ APP_NAME todoseed
  Running `meteor` with no `--settings` argument will use the `env/localhost/settings.json` as a default.
   - Add any values you want on the client to the `allowedPublic` array
    in the `Config.setVars` function.
+- create a `config.push.json` file using `config-example.push.json` as an example.
+  - Create and add in your Google & Apple credentials: https://atmospherejs.com/raix/push
+  - Create a new `private` folder and add your Apple `.pem` files to it.
 - search for and update all `todoseed` items in code (should be self explanatory)
 - [OPTIONAL] add custom fonts in `public/font` and reference them in `client/less/fonts.import.less`
 - [LATER - only needed for mobile iOS push notifications] add .pem files for iOS push notifications in `private` folder and then reference them in `config.push.json` file

@@ -2,5 +2,11 @@
 npm-debug.log
 
 1build
+
+# environment variables, credentials
 .env
 env
+
+# push notifications credentials
+config.push.json
+private

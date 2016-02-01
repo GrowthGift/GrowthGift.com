@@ -9,15 +9,20 @@ msUser.saveProfile =function(userProfile, docId, userId, callback) {
   }
   else {
     var modifier ={
-      $set: {
-        profile: {}
-      }
+      $set: {}
     };
-    var key;
-    for(key in userProfile) {
-      modifier.$set.profile[key] =userProfile[key];
+    var user =Meteor.users.findOne({ _id: docId }, { fields: { profile: 1 } });
+    if(!user.profile) {
+      modifier.$set.profile =userProfile;
+      modifier.$set.profile.updatedAt =msTimezone.curDateTime();
     }
-    modifier.$set.profile.updatedAt =msTimezone.curDateTime();
+    else {
+      var key;
+      for(key in userProfile) {
+        modifier.$set["profile."+key] =userProfile[key];
+      }
+      modifier.$set["profile.updatedAt"] =msTimezone.curDateTime();
+    }
 
     Meteor.users.update({_id:docId}, modifier, callback);
   }
