@@ -1,0 +1,24 @@
+.btn-group {
+  .flexbox;
+  //.flexbox-center();
+  .justify-content(center);
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn-group-btn {
+  .btn;
+  .btn-small;
+  .flex(1 1 0);
+  max-width: 150px;
+}
+.btn-group-btn:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.btn-group-btn:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.btn-group-btn.selected {
+  .btn-primary;
+}

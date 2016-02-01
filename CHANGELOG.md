@@ -1,5 +1,14 @@
 Each entry (version) should have a date and one or more of 3 sections: 'Features', 'Bug Fixes', 'Breaking Changes'. Make sure to `git tag` the commit to match the version. Sub / pre-release versions should be hypenated (i.e. 1.0.3-2).
 
+# 1.2.12
+
+## Features
+
+- Add image picker for user profile and save game
+  - Add button-group styles.
+  - Add s3 package for deleting Amazon S3 objects.
+
+
 # 1.2.11
 
 ## Bug Fixes

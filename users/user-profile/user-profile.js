@@ -31,6 +31,7 @@ if(Meteor.isClient) {
 
   Template.userProfile.created =function() {
     this.userId =null;
+    this.userImage = new ReactiveVar(null);
   };
 
   Template.userProfile.helpers({
@@ -43,7 +44,8 @@ if(Meteor.isClient) {
         };
       }
 
-      Template.instance().userId =user._id;
+      var templateInst =Template.instance();
+      templateInst.userId =user._id;
 
       user.xDisplay ={
         img: msUser.getImage(user)
@@ -57,8 +59,38 @@ if(Meteor.isClient) {
           genderOpts: [
             { value: 'female', label: 'Female' },
             { value: 'male', label: 'Male' }
-          ]
-        }
+          ],
+          imageVal: templateInst.userImage.get(),
+          optsImagePicker: {
+            classes: {
+              btns: 'btn-group',
+              btn: 'btn-group-btn',
+              saveBtn: 'btn btn-primary margin-tb'
+            },
+            resizeMax: {
+              width: 600,
+              height: 600
+            },
+            onImageSaved: function(err, base64Data) {
+              // Delete old one, if it exists
+              var existingImage = templateInst.userImage.get() ||
+               user.profile.image;
+              ggS3.deleteFile(existingImage);
+
+              S3.upload({
+                files: [ base64Data ],
+                encoding: 'base64'
+              }, function(err, result) {
+                if(err) {
+                  templateInst.userImage.set(null);
+                }
+                else {
+                  templateInst.userImage.set(result.secure_url);
+                }
+              });
+            }
+          }
+        },
       }
     }
   });

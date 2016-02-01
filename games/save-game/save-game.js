@@ -66,6 +66,7 @@ if(Meteor.isClient) {
     Meteor.subscribe('save-game', Template.instance().data.gameSlug);
     this.inited =false;
     this.initAttempts =0;
+    this.gameImage = new ReactiveVar(null);
   };
 
   Template.saveGame.rendered =function() {
@@ -90,6 +91,7 @@ if(Meteor.isClient) {
         Router.go('myGames');
       }
 
+      var templateInst = Template.instance();
       var ret ={
         game: game,
         privileges: {
@@ -140,7 +142,41 @@ if(Meteor.isClient) {
             format: msTimezone.dateTimeDisplay
           }
         },
-        gameRuleIdOpts: ggGameRule.allSelectOpts()
+        gameRuleIdOpts: ggGameRule.allSelectOpts(),
+        imageVal: templateInst.gameImage.get(),
+        optsImagePicker: {
+          classes: {
+            btns: 'btn-group',
+            btn: 'btn-group-btn',
+            saveBtn: 'btn btn-primary margin-tb'
+          },
+          JcropOpts: {
+            aspectRatio: 2,
+            minSize: [ 200, 100 ]
+          },
+          resizeMax: {
+            width: 600,
+            height: 300
+          },
+          onImageSaved: function(err, base64Data) {
+            // Delete old one, if it exists
+            var existingImage = templateInst.gameImage.get() ||
+             game.image;
+            ggS3.deleteFile(existingImage);
+
+            S3.upload({
+              files: [ base64Data ],
+              encoding: 'base64'
+            }, function(err, result) {
+              if(err) {
+                templateInst.gameImage.set(null);
+              }
+              else {
+                templateInst.gameImage.set(result.secure_url);
+              }
+            });
+          }
+        }
       };
 
       return ret;

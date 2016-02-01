@@ -66,3 +66,5 @@ raix:push
 growthgift:validate
 lukemadera:video-capture
 mdg:camera
+lukemadera:image-picker
+growthgift:s3

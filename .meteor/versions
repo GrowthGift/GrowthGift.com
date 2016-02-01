@@ -19,6 +19,7 @@ caching-compiler@1.0.0
 caching-html-compiler@1.0.2
 callback-hook@1.0.4
 check@1.1.0
+classcraft:imagemagick@0.9.1
 coffeescript@1.0.11
 ddp@1.2.2
 ddp-client@1.2.1
@@ -44,6 +45,7 @@ growthgift:game-rule@0.0.1
 growthgift:may@0.0.1
 growthgift:mock-data@0.0.1
 growthgift:reminder@0.0.1
+growthgift:s3@0.0.1
 growthgift:urls@0.0.1
 growthgift:validate@0.0.1
 hot-code-push@1.0.0
@@ -69,6 +71,7 @@ logging@1.0.8
 lukemadera:accounts-password@0.0.1
 lukemadera:auth@0.0.1
 lukemadera:config@0.0.1
+lukemadera:image-picker@0.0.2
 lukemadera:mocks@0.0.1
 lukemadera:notify@0.0.1
 lukemadera:sendgrid@0.0.1
