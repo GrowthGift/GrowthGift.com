@@ -45,7 +45,7 @@
             {{ /if }}
           {{ /if }}
 
-          {{>afQuickField name="media.message" type="text" label="Add a message" placeholder="I did it - now it is your turn!" }}
+          {{>afQuickField name="media.message" type="textarea" label="Add a message" placeholder="Tell your buddy what you did - add some documentation or notes to motivate them." }}
 
           {{>afQuickField name="media.privacy" type="select" options=data.inputOpts.media.privacyOpts defaultValue="buddy" firstOption=false label="Who can see this?" }}
 
