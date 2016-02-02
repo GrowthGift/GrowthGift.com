@@ -23,6 +23,8 @@
       <!-- {{> afQuickField name="privacy" type="select" disabled=data.inputOpts.privacyDisabled options=data.inputOpts.privacyOpts }} -->
       <!-- To start, all games are public -->
       {{> afQuickField name="privacy" type="hidden" value="public" }}
+
+      {{> afQuickField name="numWeeks" label="How many weeks long is this challenge?" defaultValue="4" }}
       
       {{> afQuickField name="start" type="datetimepicker" readonly=data.inputOpts.startReadonly disabled=data.inputOpts.startDisabled opts=data.inputOpts.optsDatetimepicker value=data.inputOpts.start }}
       <div class='margin-large-t flexbox'>

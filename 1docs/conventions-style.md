@@ -138,6 +138,20 @@ The `*-save.js`, `*-remove.js` and `*-get-query.js` files mostly test
  database Collection calls.
 TODO - figure out & add testing framework / conventions for this.
 
+### Running Unit Tests
+
+We need test collections, that are distinct from non-test collections, and
+ currently we have not found a automated way to toggle this. So, need to
+ uncomment any collections before running tests:
+
+ - packages/game/lib/collections.js
+
+TODO - fix this
+
+`meteor test-packages`
+
+Make sure to re-comment any collections when done testing!
+
 
 ### Templates (End to End Tests)
 

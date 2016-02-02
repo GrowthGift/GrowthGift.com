@@ -241,7 +241,7 @@ SAFE TO RE-RUN? YES
 */
 _ggDatabaseMigrate.addGameEnd =function() {
   var modifier ={}, result, gameRule, gameEnd;
-  var games =GamesCollection.find({}, { fields: { start:1, end:1, gameRuleId:1 } }).fetch();
+  var games =GamesCollection.find({}, { fields: { start:1, end:1, gameRuleId:1, numWeeks:1 } }).fetch();
   games.forEach(function(game) {
     gameRule =GameRulesCollection.findOne({ _id: game.gameRuleId });
     gameEnd =ggGame.getGameEnd(game, gameRule);

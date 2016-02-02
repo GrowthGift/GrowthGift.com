@@ -23,6 +23,7 @@ Package.onUse(function(api) {
     'lib/collections.js',
     'game-get.js',
     'game-get-awards.js',
+    'game-get-challenge.js',
     'game-get-inspiration.js',
     'game-get-user.js',
     'game.js',
@@ -50,7 +51,7 @@ Package.onTest(function(api) {
     'lib/collections.js',
     'game-tests.js',
     'game-awards-tests.js',
-    'game-challenge-tests.js',
+    'game-get-challenge-tests.js',
     'game-get-tests.js'
   ]);
 });

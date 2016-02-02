@@ -12,6 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0.3.1');
+  api.use('lepozepo:s3@5.1.6');
   api.addFiles([
     'lukemadera_config.js',
     'config-email.js',

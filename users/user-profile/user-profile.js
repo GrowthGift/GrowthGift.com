@@ -74,7 +74,7 @@ if(Meteor.isClient) {
             onImageSaved: function(err, base64Data) {
               // Delete old one, if it exists
               var existingImage = templateInst.userImage.get() ||
-               user.profile.image;
+               (user.profile && user.profile.image ) || null;
               ggS3.deleteFile(existingImage);
 
               S3.upload({

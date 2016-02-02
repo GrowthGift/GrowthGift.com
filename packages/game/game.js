@@ -33,7 +33,8 @@ ggGame.save =function(gameDoc, gameDocId, userId, callback) {
           gameRuleId = game.gameRuleId;
         }
         gameRule =GameRulesCollection.findOne({ _id: gameRuleId });
-        gameEnd =ggGame.getGameEnd({ start: modifier.$set.start }, gameRule);
+        gameEnd =ggGame.getGameEnd({ start: modifier.$set.start,
+         numWeeks: modifier.$set.numWeeks }, gameRule);
         modifier.$set.end =msTimezone.convertToUTC(gameEnd, {});
       }
       GamesCollection.update({_id:gameDocId}, modifier, callback);

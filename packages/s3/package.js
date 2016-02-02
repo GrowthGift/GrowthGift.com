@@ -13,6 +13,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
   api.use('ecmascript');
+  api.use('lepozepo:s3@5.1.6');
   api.addFiles('s3.js');
   api.export('ggS3');
 });
