@@ -206,7 +206,8 @@ if(Meteor.isClient) {
       inspirationImageVisible: false,
       inspirationQuoteVisible: false,
       inspirationContent: null,
-      mediaVideoVisible: false,
+      // Video defaults to active / visible.
+      mediaVideoVisible: true,
       mediaImageVisible: false,
       mediaVideo: null,
       mediaImage: null,
@@ -312,16 +313,21 @@ if(Meteor.isClient) {
               { value: 'video', label: 'Video' },
               { value: 'image', label: 'Image' }
             ],
+            type: reactiveData.mediaVideoVisible ? 'video' : 'image',
             videoVisible: reactiveData.mediaVideoVisible,
             imageVisible: reactiveData.mediaImageVisible,
+            classes: {
+              btnVideo: reactiveData.mediaVideoVisible ? 'selected' : '',
+              btnImage: reactiveData.mediaImageVisible ? 'selected' : '',
+            },
             content: reactiveData.mediaContent,
             image: reactiveData.mediaImage,
             video: reactiveData.mediaVideo,
             videoOpts: {
               // maxTime: 15,
               classes: {
-                recordBtn: 'btn-link inline-block margin-t',
-                stopBtn: 'btn-link inline-block margin-l margin-t'
+                recordBtn: 'btn-link font-large inline-block margin-t',
+                stopBtn: 'btn-link font-large inline-block margin-l margin-t'
               },
               onVideoRecorded: function(err, base64Data) {
                 var reactiveData =templateInst.reactiveData.get();
@@ -456,19 +462,22 @@ if(Meteor.isClient) {
       }
       template.reactiveData.set(reactiveData);
     },
-    'change .game-challenge-media-type-input, blur .game-challenge-media-type-input': function(evt, template) {
-      var typeVal =evt.target.value;
+    'click .game-challenge-media-video-btn': function(evt, template) {
       var reactiveData =template.reactiveData.get();
-      reactiveData.mediaVideoVisible = ( typeVal ==='video' ) ? true : false;
-      reactiveData.mediaImageVisible = ( typeVal ==='image' ) ? true : false;
+      reactiveData.mediaVideoVisible = true;
+      reactiveData.mediaImageVisible = false;
       // Reset.
-      reactiveData.mediaVideo =null;
       reactiveData.mediaImage =null;
       reactiveData.mediaContent =null;
       template.reactiveData.set(reactiveData);
     },
     'click .game-challenge-media-image-btn': function(evt, template) {
       var reactiveData =template.reactiveData.get();
+      reactiveData.mediaImageVisible = true;
+      reactiveData.mediaVideoVisible = false;
+      // Reset.
+      reactiveData.mediaVideo =null;
+      reactiveData.mediaContent =null;
       if(!reactiveData.mediaImageActive) {
         // Need to set orienation for Android:
         // https://github.com/meteor/mobile-packages/issues/21
@@ -480,6 +489,7 @@ if(Meteor.isClient) {
           template.reactiveData.set(reactiveData);
         });
       }
+      template.reactiveData.set(reactiveData);
     }
   });
 

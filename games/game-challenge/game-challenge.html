@@ -11,13 +11,23 @@
       <h4 class='center'>Add {{ data.gameRule._xDisplay.mainAction }}</h4>
       {{#autoForm schema="GameChallengeNewSchema" id='gameChallengeNewForm' validation="blur" }}
         {{>afQuickField name="actionCount" label=data.inputOpts.actionCountLabel }}
-        {{>afQuickField name="description" type="textarea" label="Details (private)" placeholder="Optional: (Personal) notes of what you did" }}
+        <!-- {{>afQuickField name="description" type="textarea" label="Details (private)" placeholder="Optional: (Personal) notes of what you did" }} -->
 
-        <div class='margin-t'>Buddy Motivation & Documentation</div>
+        <!-- <div>Buddy Motivation & Documentation</div> -->
+
+        {{>afQuickField name="media.userId" type="hidden" value=data.userId }}
+
         {{ #if data.inputOpts.media.visible }}
-          <div class='font-small'>Send a message to your buddy with a photo or short video of your success to inspire them. You know your buddy best - your message could be encouraging or egging them on, whatever you think will get them the most fired up to complete their daily pledge!</div>
-          {{>afQuickField name="media.userId" type="hidden" value=data.userId }}
-          {{>afQuickField name="media.type" type="select" options=data.inputOpts.media.typeOpts class="game-challenge-media-type-input" }}
+          <div class='margin-t'>Document It & Motivate Your Buddy!</div>
+          <div class='font-small'>You know your buddy best - your message could be encouraging or egging them on, whatever you think will get them the most fired up to complete their daily pledge!</div>
+
+          <!-- {{>afQuickField name="media.type" type="select" options=data.inputOpts.media.typeOpts class="game-challenge-media-type-input" }} -->
+          {{>afQuickField name="media.type" type="hidden" value=data.inputOpts.media.type }}
+          <div class='btn-group margin-tb'>
+            <div class='btn-group-btn game-challenge-media-video-btn {{ data.inputOpts.media.classes.btnVideo }}'>Video</div>
+            <div class='btn-group-btn game-challenge-media-image-btn {{ data.inputOpts.media.classes.btnImage }}'>Photo</div>
+          </div>
+
           {{ #if data.inputOpts.media.videoVisible }}
             <!-- <div class='font-small'>Under 1 minute long please.</div> -->
             <!-- <div class='game-challenge-media-video-btn btn-link inline-block margin-t'>Record Video</div> -->
@@ -27,8 +37,8 @@
               <video src='{{ data.inputOpts.media.content }}' class='img-100' controls></video>
             {{ /if }} -->
           {{ /if }}
+
           {{ #if data.inputOpts.media.imageVisible }}
-            <div class='game-challenge-media-image-btn btn-link inline-block margin-t'>Take Photo</div>
             {{>afQuickField name="media.image" type="hidden" class='game-challenge-media-image-input' value=data.inputOpts.media.image }}
             {{ #if data.inputOpts.media.content }}
               <img src='{{ data.inputOpts.media.content }}' class='img-100' />
@@ -40,7 +50,10 @@
           {{>afQuickField name="media.privacy" type="select" options=data.inputOpts.media.privacyOpts defaultValue="buddy" firstOption=false label="Who can see this?" }}
 
         {{ else }}
-          <div class='font-small'>You don't have a buddy yet!</div>
+          {{>afQuickField name="media.message" type="textarea" label="Details" placeholder="Add some documentation or notes of what you did" }}
+          {{>afQuickField name="media.privacy" type="hidden" value="buddy" }}
+
+          <div class='font-small margin-t'>You don't have a buddy yet!</div>
           <div class='font-small'>Buddies are a core part of the challenges as they offer human connection and help with accountability and motivation.</div>
           <div class='font-small red'>Who is a friend, family member, co-worker, or acquaintance you could ask to be your buddy?</div>
           {{ >gameInviteBuddyButtons gameSlug=../helperData.gameSlug gameUser=../helperData.gameUser gameMainAction=../helperData.gameMainAction }}
@@ -61,7 +74,7 @@
           </div>
         {{ /if }}
 
-        {{ #if data.inputOpts.inspiration.visible }}
+        <!-- {{ #if data.inputOpts.inspiration.visible }}
           <div class='margin-large-t'>Feeling inspirational? (Optional)</div>
           <div class='font-small'>You've been selected to choose an inspirational video, image, or quote to be displayed on the main challenge page and sent in the challenge reminders to those who have not yet completed their challenges. No pressure - if you're not in the mood right now, keep playing and you'll get more opportunities later!</div>
           {{>afQuickField name="inspiration.userId" type="hidden" value=data.userId }}
@@ -84,7 +97,7 @@
           {{ #if data.inputOpts.inspiration.quoteVisible }}
             {{>afQuickField name="inspiration.quote" type="textarea" label="Your inspirational quote (please cite the source if you know it!)" placeholder="Whether you think you can or you think you can't, you're correct. - Henry Ford"}}
           {{ /if }}
-        {{ /if }}
+        {{ /if }} -->
 
 
         {{>afQuickField name="onLastChallenge" type="hidden" value=data.inputOpts.onLastChallengeVal }}
@@ -123,7 +136,7 @@
     {{#if challenge._xPrivileges.edit }}
       {{#autoForm collection="UserGamesCollection" doc=data.userGame id=challenge._xFormData.id type="method-update" meteormethod="saveGameChallenge" validation="blur" }}
         {{>afQuickField name=challenge._xFormData.fieldNames.actionCount label=data.inputOpts.actionCountLabel }}
-        {{>afQuickField name=challenge._xFormData.fieldNames.description type="textarea" label="Details" }}
+        <!-- {{>afQuickField name=challenge._xFormData.fieldNames.description type="textarea" label="Details" }} -->
 
         <!-- Hidden and auto set for now -->
         {{>afQuickField name=challenge._xFormData.fieldNames.privacy type="hidden" value="private" }}
@@ -147,7 +160,7 @@
 
     {{ #if challenge.xDisplay.atLeastOneMedia }}
       <div>
-        <h5>Buddy Motivation & Documentation</h5>
+        <h5>Documentation & Buddy Motivation</h5>
         {{ #if challenge.xDisplay.mediaImage }}
           <div class='max-300 center'>
             <img src='{{ challenge.media }}' class='img-100' />

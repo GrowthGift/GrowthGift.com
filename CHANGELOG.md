@@ -4,6 +4,7 @@ Each entry (version) should have a date and one or more of 3 sections: 'Features
 
 ## Features
 
+- Remove challenge description and replace with media message. Improve / simplify UI.
 - Add image picker for user profile and save game
   - Add button-group styles.
   - Add s3 package for deleting Amazon S3 objects.
