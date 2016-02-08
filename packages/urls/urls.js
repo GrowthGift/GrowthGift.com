@@ -82,6 +82,10 @@ ggUrls.myGames =function(view) {
   return (view ==='past') ? '/my-games?view=past' : '/my-games';
 };
 
+ggUrls.saveGame =function() {
+  return '/save-game';
+};
+
 ggUrls.saveGameRule =function(gameRuleSlug) {
   return '/save-game-rule/?slug='+gameRuleSlug;
 };

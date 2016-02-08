@@ -90,7 +90,8 @@ if(Meteor.isClient) {
   Template.gamesSuggestNew.helpers({
     data: function() {
       return {
-        link: ggUrls.gameSuggestForm()
+        // link: ggUrls.gameSuggestForm()
+        link: ggUrls.saveGame()
       };
     }
   });
