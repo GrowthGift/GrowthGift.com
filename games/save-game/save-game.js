@@ -111,6 +111,7 @@ if(Meteor.isClient) {
       var disabled =edit ? true : false;
       // Form start date
       var start =(edit && game.start) ? game.start : null;
+      var startOpts =[];
       if(!edit) {
         // We WANT a local (browser) time since that is what the date time
         // picker uses. TODO - if user's timezone does NOT match the browser
@@ -124,7 +125,19 @@ if(Meteor.isClient) {
         //   start =start.add(7, 'days');
         // }
         // As with above, do NOT convert time; just keep local.
+        var startMoment =start.clone();
         start =start.format(msTimezone.dateTimeFormat);
+
+        // Now giving a few options for start dates, this week and a few in
+        // the future.
+        var ii;
+        for(ii =0; ii<3; ii++) {
+          startOpts.push({
+            value: startMoment.format(msTimezone.dateTimeFormat),
+            label: startMoment.format(msTimezone.dateTimeDisplay)
+          });
+          startMoment =startMoment.add(7, 'days');
+        }
       }
 
       ret.inputOpts ={
@@ -137,6 +150,7 @@ if(Meteor.isClient) {
         startDisabled: disabled,
         startReadonly: !disabled,
         start: start,
+        startOpts: startOpts,
         optsDatetimepicker: {
           pikaday: {
             format: msTimezone.dateTimeDisplay

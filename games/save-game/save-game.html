@@ -24,7 +24,11 @@
       <!-- To start, all games are public -->
       {{> afQuickField name="privacy" type="hidden" value="public" }}
       
-      {{> afQuickField name="start" type="datetimepicker" readonly=data.inputOpts.startReadonly disabled=data.inputOpts.startDisabled opts=data.inputOpts.optsDatetimepicker value=data.inputOpts.start }}
+      <!-- {{> afQuickField name="start" type="datetimepicker" readonly=data.inputOpts.startReadonly disabled=data.inputOpts.startDisabled opts=data.inputOpts.optsDatetimepicker value=data.inputOpts.start }} -->
+      {{ #unless data.inputOpts.startDisabled }}
+        {{> afQuickField name="start" type="select" options=data.inputOpts.startOpts }}
+      {{ /unless }}
+
       <div class='margin-large-t flexbox'>
         <div class='flex1'>&nbsp;</div>
         <div>
